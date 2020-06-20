@@ -1,0 +1,16 @@
+@import '../../../../assets/styles/offsets';
+
+.img {
+    &Container {
+        width: 100%;
+        text-align: center;
+        margin-bottom: var(--offset-md);
+    }
+
+    height: 300px;
+    width: auto;
+}
+
+.title {
+    margin-bottom: var(--offset-md);
+}

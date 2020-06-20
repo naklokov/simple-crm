@@ -4,5 +4,17 @@
         "title.server": "Произошла ошибка на сервере",
         "title.404": "Страница не найдена",
         "subtitle.default": "Обратитесь к системному администратору"
+    },
+    "login": {
+        "title": "Проф - Ресурс CRM",
+        "password.remember": "Запомнить меня",
+        "password.forgot": "Забыл пароль",
+        "submit.button": "Войти",
+
+        "placeholder.username": "Почта",
+        "placeholder.password": "Пароль",
+
+        "rules.username.required": "Введите адрес вашей почты",
+        "rules.password.required": "Введите пароль"
     }
 }
