@@ -1,36 +1,51 @@
-import React from "react";
+import React, {useC} from "react";
 import axios from 'axios'
-import { Form as FormUI, Input, Button, Checkbox } from "antd";
+import { Form as FormUI, Input, Button, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
 import { useTranslation } from "react-i18next";
 
 import style from "./form.module.scss";
 import { Link } from "react-router-dom";
+import { useForm } from "antd/lib/form/util";
+import { RuleObject } from "antd/lib/form";
+import { Store } from "antd/lib/form/interface";
+
+import { URLS } from '../../../../constants'
 
 const { Item } = FormUI;
 
-const onFinish = () => {
-  console.log("Success");
-};
-
-const onFinishFailed = () => {
-  console.log("Failed");
-};
+interface FormValuesProps {
+  username?: string,
+  password?: string,
+  rememberMe: boolean;
+}
 
 export const Form = () => {
   const [t] = useTranslation("login");
+  const [form] = useForm()
 
-  const initialValues = {
-    remember: true,
+  const onFinish = async (values: Store) => {
+    try {
+      //TODO Симулировать ответ от mock api
+      await axios.post(URLS.login.submit, {...values})
+      //TODO добавить сохранение rememberMe в localStorage
+    } catch (err) {
+      //TODO Прикрутить логирование
+      message.error(t('message.error'))
+    }
   };
 
-  const rules = {
+  const initialValues = {
+    rememberMe: true,
+  };
+
+  const rules: {[key: string]: RuleObject[]} = {
     username: [
       {
-        required: true,
-        message: t("rules.username.required"),
-      },
+        type: 'email',
+        message: t('rules.username.format')
+      }
     ],
     password: [
       {
@@ -42,11 +57,11 @@ export const Form = () => {
 
   return (
     <FormUI
+      form={form}
       name="loginForm"
       className={style.loginForm}
       initialValues={initialValues}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
     >
       <Item
         name="username"
@@ -66,9 +81,9 @@ export const Form = () => {
       </Item>
       <Item>
         <Item
-          name="remember"
+          name="rememberMe"
           valuePropName="checked"
-          className={style.rememberCheckbox}
+          className={style.rememberMeCheckbox}
         >
           <Checkbox>{t("password.remember")}</Checkbox>
         </Item>

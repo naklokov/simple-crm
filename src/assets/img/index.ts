@@ -1,4 +1,4 @@
-const logo = require('./mikrolev.png')
+const logo = require('./logo.png')
 
 export {
     logo
