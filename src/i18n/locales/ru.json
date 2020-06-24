@@ -14,6 +14,7 @@
         "placeholder.username": "Почта",
         "placeholder.password": "Пароль",
 
+        "rules.username.required": "Введите адрес почты",
         "rules.username.format": "Введите корректный адрес почты",
         "rules.password.required": "Введите пароль",
 
