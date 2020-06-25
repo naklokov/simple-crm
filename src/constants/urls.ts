@@ -1,8 +1,8 @@
 export const URLS = {
     login: {
-        submit: '/login'
+        submit: '/crm/login'
     },
     log: {
-        base: '/log'
+        base: '/crm/log'
     }
 }
