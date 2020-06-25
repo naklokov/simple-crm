@@ -3,7 +3,6 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import { Form as FormUI, Input, Button, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { RouteComponentProps } from 'react-router-dom'
 
 import { useTranslation } from "react-i18next";
 
@@ -13,9 +12,9 @@ import { useForm } from "antd/lib/form/util";
 import { RuleObject } from "antd/lib/form";
 import { Store } from "antd/lib/form/interface";
 
-import { URLS } from '../../../../constants';
+import { urls } from '../../../../constants';
 
-const { Item } = FormUI;
+const { Item } = FormUI
 
 const saveToken = () => {
   const token = Cookies.get('rememberMe')
@@ -24,23 +23,26 @@ const saveToken = () => {
   }
 }
 
-export const Form = ({ location, history, ...props }: RouteComponentProps) => {
-  const [t] = useTranslation("login");
+export const Form = () => {
+  const [t] = useTranslation("login")
   const [form] = useForm()
-  console.log(props)
+  // TODO исправить на корректный тип
+  const history: any = useHistory()
 
   const onFinish = async (values: Store) => {
     try {
-      await axios.post(URLS.login.submit, {...values})
+      await axios.post(urls.login.submit, {...values})
       // сохраняем токет "Запомнить меня"
       const { rememberMe } = values
       if (rememberMe) {
         saveToken()
       }
-
-      history.push('/clients')
+      
+      const from = history?.location?.state?.from?.pathname ?? '/'
+      history.push(from)
     } catch (err) {
       //TODO Прикрутить логирование
+      //TODO Добавить обработку ошибок
       message.error(t('message.error'))
     }
   };
@@ -113,3 +115,6 @@ export const Form = ({ location, history, ...props }: RouteComponentProps) => {
     </FormUI>
   );
 };
+
+
+export default Form
