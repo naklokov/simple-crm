@@ -1,7 +1,7 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
 
-import { URLS } from '../constants'
+import { urls } from '../constants'
 
 enum LogLevelsEnum {
     DEBUG = 'DEBUG',
@@ -40,5 +40,5 @@ export const log = ({
             break;
     }
 
-    axios.post(URLS.log.base, { message: prefix, level })
+    axios.post(urls.log.base, { message: prefix, level })
 }

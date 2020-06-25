@@ -1,4 +1,4 @@
-import { HTTP_CODES } from "../../constants";
+import { HTTP_CODES } from "../../constants/http";
 import { ExceptionStatusType } from 'antd/lib/result'
 
 export const getErrorInfo = (code: number, t: Function): { title: string, status: ExceptionStatusType } => {
