@@ -1,6 +1,5 @@
 import React from "react";
-import axios from 'axios'
-import Cookies from 'js-cookie'
+import axios from "axios";
 import { Form as FormUI, Input, Button, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
@@ -8,81 +7,47 @@ import { useTranslation } from "react-i18next";
 
 import style from "./form.module.scss";
 import { Link, useHistory } from "react-router-dom";
-import { useForm } from "antd/lib/form/util";
-import { RuleObject } from "antd/lib/form";
 import { Store } from "antd/lib/form/interface";
 
-import { urls } from '../../../../constants';
+import { urls } from "../../../../constants";
+import {
+  storeRememberMeParams,
+  getPrevUrl,
+  getRules,
+  getInitialValues,
+} from "./utils";
 
-const { Item } = FormUI
+const { Item } = FormUI;
 
-const saveToken = () => {
-  const token = Cookies.get('rememberMe')
-  if (token) {
-    localStorage.setItem('token', token)
-  }
-}
-
+// TODO Добавить обработку rememberMe параметров из localStorage
 export const Form = () => {
-  const [t] = useTranslation("login")
-  const [form] = useForm()
-  // TODO исправить на корректный тип
-  const history: any = useHistory()
+  const [t] = useTranslation("login");
+  const history = useHistory();
+  const rules = getRules(t);
+  const initialValues = getInitialValues();
 
   const onFinish = async (values: Store) => {
     try {
-      await axios.post(urls.login.submit, {...values})
-      // сохраняем токет "Запомнить меня"
-      const { rememberMe } = values
-      if (rememberMe) {
-        saveToken()
-      }
-      
-      const from = history?.location?.state?.from?.pathname ?? '/'
-      history.push(from)
+      await axios.post(urls.login.submit, { ...values });
+      storeRememberMeParams();
+      const prevUrl = getPrevUrl(history);
+      history.push(prevUrl);
     } catch (err) {
-      //TODO Прикрутить логирование
-      //TODO Добавить обработку ошибок
-      message.error(t('message.error'))
+      //TODO Добавить тексты ошибок от бека
+      // TODO возвращать ошибку по полям с бека (типа валидационных ошибок)
+      console.error(err.message, values.username);
+      message.error(t("message.error"));
     }
-  };
-
-  const initialValues = {
-    rememberMe: true,
-  };
-
-  const rules: {[key: string]: RuleObject[]} = {
-    username: [
-      {
-        type: 'email',
-        message: t('rules.username.format')
-      },
-      {
-        required: true,
-        message: t('rules.username.required')
-      }
-    ],
-    password: [
-      {
-        required: true,
-        message: t("rules.password.required"),
-      },
-    ],
   };
 
   return (
     <FormUI
-      form={form}
       name="loginForm"
       className={style.loginForm}
       initialValues={initialValues}
       onFinish={onFinish}
     >
-      <Item
-        name="username"
-        rules={rules.username}
-        validateTrigger="onBlur"
-      >
+      <Item name="username" rules={rules.username} validateTrigger="onBlur">
         <Input
           prefix={<UserOutlined />}
           placeholder={t("placeholder.username")}
@@ -116,5 +81,4 @@ export const Form = () => {
   );
 };
 
-
-export default Form
+export default Form;

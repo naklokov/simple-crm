@@ -1,39 +1,38 @@
-const validUsername = 'admin@mail.ru'
-const authCookie = 123456
-const rememberMeCookie = 777777777
+const validUsername = "admin@mail.ru";
+const authCookie = 123456;
+const rememberMeCookie = 777777777;
 
 const {
-    AUTH_COOKIE_SESSION,
-    AUTH_COOKIE_USERNAME,
-    AUTH_COOKIE_REMEMBER_ME,
-} = require('../../src/constants/http')
+  AUTH_COOKIE_SESSION,
+  AUTH_COOKIE_USERNAME,
+  AUTH_COOKIE_REMEMBER_ME,
+} = require("../../src/constants/http");
 
 const addAuthCookie = (req, res, next) => {
-    if (req.body) {
-        const { username, rememberMe } = req.body
-        if (username === validUsername) {
-            res.cookie(AUTH_COOKIE_SESSION, authCookie)
-            res.cookie(AUTH_COOKIE_USERNAME, username)
-            if (rememberMe) {
-                res.cookie(AUTH_COOKIE_REMEMBER_ME, rememberMeCookie)
-            }
-        }
+  if (req.body) {
+    const { username, rememberMe } = req.body;
+    if (username === validUsername) {
+      res.cookie(AUTH_COOKIE_SESSION, authCookie);
+      res.cookie(AUTH_COOKIE_USERNAME, username);
+      if (rememberMe) {
+        res.cookie(AUTH_COOKIE_REMEMBER_ME, rememberMeCookie);
+      }
     }
-    next()
-}
+  }
+  next();
+};
 
 const sendStatus = (req, res) => {
-    if (req.body) {
-        const username = req.body.username
-        if (username === validUsername) {
-            res.status(200)
-            res.json({})
-        }
+  if (req.body) {
+    const username = req.body.username;
+    if (username === validUsername) {
+      res.status(200).json({});
     }
-    res.status(500).json({
-        error: 'server error',
-        errorDescription: 'Некорректный логин или пароль'
-    })
-}
+  }
+  res.status(500).json({
+    error: "server error",
+    errorDescription: "Некорректный логин или пароль",
+  });
+};
 
-module.exports = { addAuthCookie, sendStatus }
+module.exports = { addAuthCookie, sendStatus };
