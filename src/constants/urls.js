@@ -1,8 +1,8 @@
-export const URLS = {
+module.exports = {
     login: {
         submit: '/crm/login'
     },
     log: {
-        base: '/crm/log'
+        base: '/crm/rest/log'
     }
 }
