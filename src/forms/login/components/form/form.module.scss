@@ -1,20 +1,20 @@
-@import '../../../../assets/styles/offsets';
+@import "../../../../assets/styles/offsets";
 
 .loginForm {
-    width: 282px;
-    margin: 0 auto !important;
+  width: 282px;
+  margin: auto !important;
 }
 
 .forgotPassword {
-    margin-top: var(--offset-xs);
-    float: right;
+  margin-top: var(--offset-xs);
+  float: right;
 }
 
 .rememberMeCheckbox {
-    margin-bottom: 0 !important;
-    float: left;
+  margin-bottom: 0 !important;
+  float: left;
 }
 
 .submitButton {
-    width: 100%;
+  width: 100%;
 }

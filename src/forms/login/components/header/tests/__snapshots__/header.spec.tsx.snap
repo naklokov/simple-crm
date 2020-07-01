@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login Header render correct 1`] = `
+Array [
+  <div
+    className="imgContainer"
+  >
+    <img
+      alt="logo"
+      className="img"
+      src="logo.png"
+    />
+  </div>,
+  <h2
+    className="ant-typography title"
+    style={
+      Object {
+        "WebkitLineClamp": null,
+      }
+    }
+  >
+    title
+  </h2>,
+]
+`;

@@ -6,7 +6,7 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 
 import style from "./form.module.scss";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
 
 import { urls } from "../../../../constants";
@@ -33,7 +33,7 @@ export const Form = () => {
       const prevUrl = getPrevUrl(history);
       history.push(prevUrl);
     } catch (err) {
-      //TODO Добавить тексты ошибок от бека
+      // TODO Добавить тексты ошибок от бека
       // TODO возвращать ошибку по полям с бека (типа валидационных ошибок)
       console.error(err.message, values.username);
       message.error(t("message.error"));
@@ -68,9 +68,9 @@ export const Form = () => {
         >
           <Checkbox>{t("password.remember")}</Checkbox>
         </Item>
-        <Link className={style.forgotPassword} to="/forgotPassword">
+        <a className={style.forgotPassword} href="/forgotPassword">
           {t("password.forgot")}
-        </Link>
+        </a>
       </Item>
       <Item>
         <Button type="primary" htmlType="submit" className={style.submitButton}>

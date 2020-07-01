@@ -1,14 +1,14 @@
-@import '../../assets/styles/offsets';
+@import "../../assets/styles/offsets";
 
 .container {
-    position: relative;
-    top: 10vh;
+  position: relative;
+  top: 10vh;
 }
 
 .header {
-    width: 100%;
-    flex-wrap: wrap;
-    display: flex;
-    justify-content: center;
-    margin-bottom: var(--offset-lg);
+  width: 100%;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--offset-lg);
 }
