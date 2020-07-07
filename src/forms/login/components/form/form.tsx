@@ -49,12 +49,14 @@ export const Form = () => {
     >
       <Item name="username" rules={rules.username} validateTrigger="onBlur">
         <Input
+          className={style.username}
           prefix={<UserOutlined />}
           placeholder={t("placeholder.username")}
         />
       </Item>
       <Item name="password" rules={rules.password}>
         <Input.Password
+          className={style.password}
           prefix={<LockOutlined />}
           type="password"
           placeholder={t("placeholder.password")}

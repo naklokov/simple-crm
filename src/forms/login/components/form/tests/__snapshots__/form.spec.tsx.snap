@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Login Form render correct 1`] = `
+exports[`render correct 1`] = `
 <form
   className="ant-form ant-form-horizontal loginForm"
   id="loginForm"
@@ -21,7 +21,7 @@ exports[`Login Form render correct 1`] = `
           className="ant-form-item-control-input-content"
         >
           <span
-            className="ant-input-affix-wrapper"
+            className="username ant-input-affix-wrapper"
             onMouseUp={[Function]}
           >
             <span
@@ -80,7 +80,7 @@ exports[`Login Form render correct 1`] = `
           className="ant-form-item-control-input-content"
         >
           <span
-            className="ant-input-password ant-input-affix-wrapper"
+            className="ant-input-password password ant-input-affix-wrapper"
             onMouseUp={[Function]}
           >
             <span
