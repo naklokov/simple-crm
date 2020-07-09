@@ -1,23 +1,23 @@
 {
-    "error": {
-        "title.client": "Произошла ошибка на клиенте",
-        "title.server": "Произошла ошибка на сервере",
-        "title.404": "Страница не найдена",
-        "subtitle.default": "Обратитесь к системному администратору"
-    },
-    "login": {
-        "title": "Проф - Ресурс CRM",
-        "password.remember": "Запомнить меня",
-        "password.forgot": "Забыл пароль",
-        "submit.button": "Войти",
+  "error": {
+    "title.client": "Произошла ошибка на клиенте",
+    "title.server": "Произошла ошибка на сервере",
+    "title.404": "Страница не найдена",
+    "subtitle.default": "Обратитесь к системному администратору"
+  },
+  "login": {
+    "title": "Проф - Ресурс CRM",
+    "password.remember": "Запомнить меня",
+    "password.forgot": "Забыл пароль",
+    "submit.button": "Войти",
 
-        "placeholder.username": "Почта",
-        "placeholder.password": "Пароль",
+    "placeholder.username": "Почта",
+    "placeholder.password": "Пароль",
 
-        "rules.username.required": "Введите адрес почты",
-        "rules.username.format": "Введите корректный адрес почты",
-        "rules.password.required": "Введите пароль",
+    "rules.username.required": "Введите адрес почты",
+    "rules.username.format": "Введите корректный адрес почты",
+    "rules.password.required": "Введите пароль",
 
-        "message.error": "Произошла ошибка"
-    }
+    "authentication.successfull": "Аутентификация успешна"
+  }
 }

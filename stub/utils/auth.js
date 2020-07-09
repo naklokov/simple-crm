@@ -6,6 +6,7 @@ const {
   AUTH_COOKIE_SESSION,
   AUTH_COOKIE_USERNAME,
   AUTH_COOKIE_REMEMBER_ME,
+  HTTP_CODES,
 } = require("../../src/constants/http");
 
 const addAuthCookie = (req, res, next) => {
@@ -26,12 +27,13 @@ const sendStatus = (req, res) => {
   if (req.body) {
     const username = req.body.username;
     if (username === validUsername) {
-      res.status(200).json({});
+      res.status(HTTP_CODES.SUCCESS).json({});
     }
   }
-  res.status(500).json({
-    error: "server error",
-    errorDescription: "Некорректный логин или пароль",
+  res.status(HTTP_CODES.BAD_REQUEST).json({
+    errorCode: "OLVE-6",
+    errorDescription: "Неверный логин или пароль",
+    errorMessage: "Bad credentials",
   });
 };
 
