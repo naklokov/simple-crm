@@ -1,8 +1,32 @@
 {
-    "error": {
-        "title.client": "Произошла ошибка на клиенте",
-        "title.server": "Произошла ошибка на сервере",
-        "title.404": "Страница не найдена",
-        "subtitle.default": "Обратитесь к системному администратору"
-    }
+  "error": {
+    "title.client": "Произошла ошибка на клиенте",
+    "title.server": "Произошла ошибка на сервере",
+    "title.404": "Страница не найдена",
+    "subtitle.default": "Обратитесь к системному администратору"
+  },
+  "login": {
+    "title": "Проф - Ресурс CRM",
+    "password.remember": "Запомнить меня",
+    "password.forgot": "Забыл пароль",
+    "submit.button": "Войти",
+    "placeholder.username": "Почта",
+    "placeholder.password": "Пароль",
+    "rules.username.required": "Введите адрес почты",
+    "rules.username.format": "Введите корректный адрес почты",
+    "rules.password.required": "Введите пароль",
+    "authentication.successfull": "Аутентификация успешна",
+    "message.error": "Произошла ошибка",
+    "message.success": "Письмо на адрес {{username}} успешно отправлено"
+  },
+  "forgotPassword": {
+    "title": "Проф - Ресурс CRM",
+    "description": "Если вы забыли пароль, введите email, указанный при регистрации. \n\nНа почту будет отправлен новый пароль.",
+    "placeholder.username": "Почта",
+    "rules.username.required": "Введите адрес почты",
+    "rules.username.format": "Введите корректный адрес почты",
+    "submit.button": "Отправить письмо",
+    "message.success": "Письмо на адрес {{username}} успешно отправлено",
+    "message.error": "Произошла ошибка"
+  }
 }

@@ -1,0 +1,20 @@
+@import "../../assets/styles/offsets";
+
+.loginForm {
+  width: 282px;
+  margin: auto !important;
+}
+
+.forgotPassword {
+  margin-top: var(--offset-xs);
+  float: right;
+}
+
+.rememberMeCheckbox {
+  margin-bottom: 0 !important;
+  float: left;
+}
+
+.submitButton {
+  width: 100%;
+}

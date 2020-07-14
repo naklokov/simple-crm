@@ -1,0 +1,32 @@
+@import "../../assets/styles/offsets";
+@import "../../assets/styles/colors";
+@import "../../assets/styles/common";
+
+.form {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: var(--unauthorize-form-width);
+}
+
+.title,
+.description {
+  margin-bottom: var(--offset-md2) !important;
+}
+
+.img {
+  &Container {
+    width: 100%;
+    text-align: center;
+    margin-bottom: var(--offset-md);
+  }
+
+  // высота пропорциональна ширине
+  height: var(--unauthorize-form-width);
+  width: auto;
+}
