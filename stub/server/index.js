@@ -2,7 +2,7 @@ const jsonServer = require("json-server");
 const server = jsonServer.create();
 const router = jsonServer.router("db.json");
 
-const { login, log } = require("../../src/constants/urls");
+const { login, log, forgotPassword } = require("../../src/constants/urls");
 
 const { addAuthCookie, sendStatus, loggerStub } = require("../utils");
 
@@ -16,7 +16,10 @@ server.use(jsonServer.bodyParser);
 server.use(login.submit, addAuthCookie, sendStatus);
 
 //logger stub
-server.use(log.base, loggerStub);
+server.post(log.base, loggerStub);
+
+//forgotPassword
+server.post(forgotPassword.submit, (req, res) => res.status(200).json({}));
 
 // Use default router
 server.use(router);

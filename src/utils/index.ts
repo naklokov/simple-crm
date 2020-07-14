@@ -1,3 +1,3 @@
-import logger from "./remote-logger";
+import * as logger from "./remote-logger";
 
 export { logger };

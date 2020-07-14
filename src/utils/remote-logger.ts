@@ -1,6 +1,11 @@
 import axios from "axios";
 import { urls } from "../constants";
 
+export const HEADERS = {
+  Accept: "application/json",
+  "Content-Type": "application/json",
+};
+
 enum LogLevelsEnum {
   DEBUG = "DEBUG",
   INFO = "INFO",
@@ -11,10 +16,10 @@ enum LogLevelsEnum {
 interface LoggerProps {
   message: string;
   username?: string;
-  value?: string;
+  value?: string | number;
 }
 
-const getFullMessage = ({ message, value, username }: LoggerProps) => {
+export const getFullMessage = ({ message, value, username }: LoggerProps) => {
   let fullMessage = message;
 
   if (value) {
@@ -36,35 +41,28 @@ const sendRemote = (
     urls.log.base,
     { message, logLevel },
     {
-      headers: {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      },
+      headers: HEADERS,
     }
   );
 };
 
-const error = (props: LoggerProps) => {
+export const error = (props: LoggerProps) => {
   const logLevel = LogLevelsEnum.ERROR;
   const fullMessage = getFullMessage(props);
 
   sendRemote(fullMessage, logLevel);
 };
 
-const warn = (props: LoggerProps) => {
+export const warn = (props: LoggerProps) => {
   const logLevel = LogLevelsEnum.WARNING;
   const fullMessage = getFullMessage(props);
 
   sendRemote(fullMessage, logLevel);
 };
 
-const info = (props: LoggerProps) => {
-  const logLevel = LogLevelsEnum.INFO;
+export const debug = (props: LoggerProps) => {
+  const logLevel = LogLevelsEnum.DEBUG;
   const fullMessage = getFullMessage(props);
 
   sendRemote(fullMessage, logLevel);
 };
-
-export default { info, warn, error };

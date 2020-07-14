@@ -23,6 +23,7 @@ const { Item } = FormUI;
 
 // TODO Добавить обработку rememberMe параметров из localStorage
 export const Login = () => {
+  const [form] = FormUI.useForm();
   const [t] = useTranslation("login");
   const history = useHistory();
   const rules = getRules(t);
@@ -33,7 +34,7 @@ export const Login = () => {
       await axios.post(urls.login.submit, { ...values });
       storeRememberMeParams();
 
-      logger.info({
+      logger.debug({
         message: t("authentication.successfull"),
         username: values.username,
       });
@@ -41,21 +42,25 @@ export const Login = () => {
       const prevUrl = getPrevUrl(history);
       history.push(prevUrl);
     } catch ({ response: { data } }) {
-      // TODO Добавить тексты ошибок от бека
-      // TODO возвращать ошибку по полям с бека (типа валидационных ошибок)
       logger.error({
         value: data.errorCode,
         message: data.errorDescription,
         username: values.username,
       });
 
-      message.error(data.errorDescription);
+      message.error(data.errorDescription || t("message.error"));
     }
+  };
+
+  const handleClickForgotPassword = () => {
+    const username = form.getFieldValue("username");
+    history.push(urls.forgotPassword.path, { username });
   };
 
   return (
     <UnauthorizedLayout title={t("title")}>
       <FormUI
+        form={form}
         name="loginForm"
         className={style.loginForm}
         initialValues={initialValues}
@@ -84,7 +89,10 @@ export const Login = () => {
           >
             <Checkbox>{t("password.remember")}</Checkbox>
           </Item>
-          <a className={style.forgotPassword} href="/forgotPassword">
+          <a
+            className={style.forgotPassword}
+            onClick={handleClickForgotPassword}
+          >
             {t("password.forgot")}
           </a>
         </Item>
