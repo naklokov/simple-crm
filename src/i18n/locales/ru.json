@@ -28,5 +28,17 @@
     "submit.button": "Отправить письмо",
     "message.success": "Письмо на адрес {{username}} успешно отправлено",
     "message.error": "Произошла ошибка"
+  },
+  "restorePassword": {
+    "title": "Проф - Ресурс CRM",
+    "description": "Восстановление пароля",
+    "placeholder.password": "Новый пароль",
+    "placeholder.password.confirm": "Подтверждение пароля",
+    "rules.password.required": "Введите пароль",
+    "submit.button": "Отправить пароль",
+    "check.success": "Токен проверен успешно",
+    "check.error": "Проверка токена не пройдена",
+    "message.success": "Пароль успешно изменён",
+    "message.error": "Произошла ошибка"
   }
 }

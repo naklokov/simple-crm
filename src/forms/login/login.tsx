@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import axios from "axios";
 import { Form as FormUI, Input, Button, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
@@ -52,9 +52,10 @@ export const Login = () => {
     }
   };
 
-  const handleClickForgotPassword = () => {
+  const handleClickForgotPassword = (event: SyntheticEvent) => {
     const username = form.getFieldValue("username");
     history.push(urls.forgotPassword.path, { username });
+    event.preventDefault();
   };
 
   return (
@@ -92,6 +93,7 @@ export const Login = () => {
           <a
             className={style.forgotPassword}
             onClick={handleClickForgotPassword}
+            href={urls.forgotPassword.path}
           >
             {t("password.forgot")}
           </a>

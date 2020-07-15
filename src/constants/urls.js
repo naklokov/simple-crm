@@ -10,6 +10,11 @@ module.exports = {
     path: "/forgotPassword",
     submit: "/crm/rest/password/initiate",
   },
+  restorePassword: {
+    path: "/restorePassword",
+    check: "/crm/rest/password/checkToken",
+    submit: "/crm/rest/password/change",
+  },
   log: {
     base: "/crm/log",
   },

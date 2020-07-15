@@ -1,5 +1,5 @@
 import React from "react";
-import Cookie from "js-cookie";
+import axios from "axios";
 
 import {
   BrowserRouter as Router,
@@ -8,44 +8,29 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import { Error, Login, ForgotPassword, Clients } from "../forms";
+import {
+  Error,
+  Login,
+  ForgotPassword,
+  Clients,
+  RestorePassword,
+} from "../forms";
+import PrivateRoute from "./private-route";
+
 import { http, urls } from "../constants";
+import { concatErrorPath } from "../utils";
+import { errorsInterceptor } from "./interceptors";
 
-const { AUTH_COOKIE_SESSION, AUTH_COOKIE_USERNAME, HTTP_CODES } = http;
+const {
+  HTTP_CODES: { NOT_FOUND },
+} = http;
 
-const isAuth = () =>
-  !!Cookie.get(AUTH_COOKIE_SESSION) && !!Cookie.get(AUTH_COOKIE_USERNAME);
-
-interface PrivateRouteProps {
-  path: string;
-  children: JSX.Element;
-}
-
-const PrivateRoute = ({ children, ...rest }: PrivateRouteProps) => {
-  console.log("auth", isAuth());
-  return (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        isAuth() ? (
-          children
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: location },
-            }}
-          />
-        )
-      }
-    />
-  );
-};
+axios.interceptors.response.use((response) => response, errorsInterceptor);
 
 const App = () => (
   <Router>
     <Switch>
-      <Route path={urls.error.path}>
+      <Route path={concatErrorPath()}>
         <Error />
       </Route>
       <PrivateRoute path={urls.clients.path}>
@@ -57,10 +42,11 @@ const App = () => (
       <Route path={urls.forgotPassword.path}>
         <ForgotPassword />
       </Route>
-      <Redirect from="/" to={{ pathname: urls.clients.path }} />
-      <Route path="*">
-        <Error code={HTTP_CODES.NOT_FOUND} />
+      <Route path={urls.restorePassword.path}>
+        <RestorePassword />
       </Route>
+      <Redirect from="/" to={{ pathname: urls.clients.path }} />
+      <Redirect from="*" to={{ pathname: concatErrorPath(NOT_FOUND) }} />
     </Switch>
   </Router>
 );
