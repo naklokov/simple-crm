@@ -1,10 +1,11 @@
 import React from "react";
-import { Result } from "antd";
+import { Result, Button } from "antd";
 import { useTranslation } from "react-i18next";
 
 import { getErrorInfo } from "./utils";
 import { useParams, useHistory } from "react-router";
 
+//TODO any history type
 const getErrorMessage = (history: any, t: Function) =>
   history?.location?.state?.username || t("subtitle.default");
 
@@ -24,6 +25,11 @@ export const Error = () => {
       status={status}
       title={title}
       subTitle={getErrorMessage(history, t)}
+      extra={
+        <Button type="primary" href="/">
+          {t("button")}
+        </Button>
+      }
     />
   );
 };

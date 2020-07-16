@@ -7,7 +7,15 @@ export const getErrorInfo = (
 ): { title: string; status: ExceptionStatusType } => {
   switch (code) {
     case HTTP_CODES.UNAUTHORIZED:
+      return {
+        title: t("title.unauthorized"),
+        status: 403,
+      };
     case HTTP_CODES.FORBIDDEN:
+      return {
+        title: t("title.forbidden"),
+        status: 403,
+      };
     case HTTP_CODES.BAD_REQUEST:
       return {
         title: t("title.client"),
