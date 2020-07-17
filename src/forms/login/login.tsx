@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from "react";
+import React, { SyntheticEvent, useState } from "react";
 import axios from "axios";
 import { Form as FormUI, Input, Button, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
@@ -34,9 +34,11 @@ export const Login = ({ setAuthentication }: LoginProps) => {
   const history = useHistory();
   const rules = getRules(t);
   const initialValues = getInitialValues();
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   const onFinish = async (values: Store) => {
     try {
+      setSubmitLoading(true);
       await axios.post(urls.login.submit, { ...values });
       setAuthentication(true);
       storeRememberMeParams();
@@ -56,6 +58,8 @@ export const Login = ({ setAuthentication }: LoginProps) => {
       });
 
       message.error(data.errorDescription || t("message.error"));
+    } finally {
+      setSubmitLoading(false);
     }
   };
 
@@ -110,6 +114,7 @@ export const Login = ({ setAuthentication }: LoginProps) => {
             type="primary"
             htmlType="submit"
             className={style.submitButton}
+            loading={submitLoading}
           >
             {t("submit.button")}
           </Button>

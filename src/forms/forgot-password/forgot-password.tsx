@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Form as FormUI, Input, Button, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
@@ -21,9 +21,11 @@ export const ForgotPassword = () => {
   const history = useHistory();
   const rules = getRules(t);
   const initialValues = getInitialValues(history);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   const onFinish = async ({ username }: Store) => {
     try {
+      setSubmitLoading(true);
       const messageSuccess = t("message.success", { username });
       await axios.post(urls.forgotPassword.submit, { username });
 
@@ -41,6 +43,8 @@ export const ForgotPassword = () => {
       });
 
       message.error(data.errorDescription || t("message.error"));
+    } finally {
+      setSubmitLoading(false);
     }
   };
 
@@ -64,6 +68,7 @@ export const ForgotPassword = () => {
             type="primary"
             htmlType="submit"
             className={style.submitButton}
+            loading={submitLoading}
           >
             {t("submit.button")}
           </Button>

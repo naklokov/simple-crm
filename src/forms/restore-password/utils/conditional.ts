@@ -10,8 +10,13 @@ export const checkEqualPasswords = (form: FormInstance) => {
   return passwordConfirm === password;
 };
 
-export const checkToken = async (token: string, t: Function) => {
+export const checkToken = async (
+  token: string,
+  t: Function,
+  setLoading: Function
+) => {
   try {
+    setLoading(true);
     await axios.post(urls.restorePassword.check, { token });
 
     logger.debug({
@@ -23,6 +28,8 @@ export const checkToken = async (token: string, t: Function) => {
       message: t("check.error"),
       value: token,
     });
+  } finally {
+    setLoading(false);
   }
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, SyntheticEvent } from "react";
+import React, { useEffect, SyntheticEvent, useState } from "react";
 import axios from "axios";
 import { Form as FormUI, Input, Button, message } from "antd";
 import { LockOutlined } from "@ant-design/icons";
@@ -14,18 +14,26 @@ import { logger } from "../../utils";
 
 import { getRules, checkEqualPasswords, checkToken, getToken } from "./utils";
 import { UnauthorizedLayout } from "../../layouts";
+import { connect } from "react-redux";
+import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
+import * as actions from "../../__data__";
 
 const { Item } = FormUI;
 const token = getToken();
 
-export const RestorePassword = () => {
+interface RestorePasswordProps {
+  setLoading: (loading: boolean) => void;
+}
+
+export const RestorePassword = ({ setLoading }: RestorePasswordProps) => {
   const [form] = FormUI.useForm();
   const [t] = useTranslation(FORM_NAME);
   const history = useHistory();
+  const [submitLoading, setSubmitLoading] = useState(false);
   const rules = getRules(t);
 
   useEffect(() => {
-    checkToken(token, t);
+    checkToken(token, t, setLoading);
   }, []);
 
   const handleClick = (event: SyntheticEvent) => {
@@ -37,6 +45,7 @@ export const RestorePassword = () => {
 
   const onFinish = async ({ [FIELDS.PASSWORD]: password }: Store) => {
     try {
+      setSubmitLoading(true);
       await axios.post(urls.restorePassword.submit, { password, token });
 
       logger.debug({
@@ -51,6 +60,8 @@ export const RestorePassword = () => {
       });
 
       message.error(data.errorDescription || t("message.error"));
+    } finally {
+      setSubmitLoading(false);
     }
   };
 
@@ -84,6 +95,7 @@ export const RestorePassword = () => {
             type="primary"
             htmlType="submit"
             className={style.submitButton}
+            loading={submitLoading}
           >
             {t("submit.button")}
           </Button>
@@ -93,4 +105,8 @@ export const RestorePassword = () => {
   );
 };
 
-export default RestorePassword;
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  setLoading: (loaded: boolean) => dispatch(actions.setLoading(loaded)),
+});
+
+export default connect(null, mapDispatchToProps)(RestorePassword);

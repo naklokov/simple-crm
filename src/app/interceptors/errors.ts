@@ -16,8 +16,8 @@ export const errorsInterceptor = (dispatch: Function) => (error: any) => {
 
     if (NODE_ENV === "development") {
       console.error(
-        `[ERROR] Responce with statusCode: ${statusCode}`,
-        error?.responce?.data
+        `[ERROR] Response with statusCode: ${statusCode}`,
+        error?.response?.data
       );
     }
 

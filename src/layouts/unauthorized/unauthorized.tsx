@@ -3,14 +3,23 @@ import React from "react";
 import style from "./unauthorized.module.scss";
 import { logo } from "../../assets/img";
 import { Typography } from "antd";
+import { State } from "../../__data__/interfaces";
+import { connect } from "react-redux";
+import { Loader } from "../../components";
 
 interface LoginProps {
   title?: string;
+  loading: boolean;
   description?: string;
   children: JSX.Element;
 }
 
-export const Unauthorized = ({ title, description, children }: LoginProps) => (
+export const Unauthorized = ({
+  title,
+  description,
+  loading,
+  children,
+}: LoginProps) => (
   <form className={style.form}>
     <div className={style.container}>
       <div className={style.layout}>
@@ -37,4 +46,8 @@ export const Unauthorized = ({ title, description, children }: LoginProps) => (
   </form>
 );
 
-export default Unauthorized;
+const mapStateToProps = (state: State) => ({
+  loading: state?.persist?.loading ?? false,
+});
+
+export default connect(mapStateToProps)(Unauthorized);

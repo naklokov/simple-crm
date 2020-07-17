@@ -1,8 +1,19 @@
 import React from "react";
-import { PacmanLoader } from "halogen";
+import { css } from "@emotion/core";
+import PacmanLoader from "react-spinners/PacmanLoader";
 
-const Loader = (color = "#26A65B") => {
-  <PacmanLoader color={color} size={16} margin={4} />;
-};
+import style from "./loader.module.scss";
+
+const override = css`
+  display: block;
+  left: -50px;
+  border-color: red;
+`;
+
+const Loader = () => (
+  <div className={style.loader}>
+    <PacmanLoader css={override} size={70} loading color={"#FFA500 "} />
+  </div>
+);
 
 export default Loader;
