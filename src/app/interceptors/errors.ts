@@ -1,6 +1,6 @@
 import { ERROR_SCREEN_CODES, HTTP_CODES } from "../../constants/http";
 import { concatErrorPath, logger } from "../../utils";
-import { setAuth, setLoading } from "../../__data__";
+import { setAuth } from "../../__data__";
 import Cookie from "js-cookie";
 
 const {

@@ -3,6 +3,7 @@ import React from "react";
 import { Redirect, Route } from "react-router";
 import { urls } from "../../constants";
 import { connect } from "react-redux";
+import { State } from "../../__data__/interfaces";
 
 interface PrivateRouteProps {
   auth: boolean;
@@ -32,14 +33,8 @@ export const PrivateRoute = ({
   />
 );
 
-interface State {
-  common: {
-    auth: boolean;
-  };
-}
-
 const mapStateToProps = (state: State) => ({
-  auth: state?.common?.auth ?? false,
+  auth: state?.persist?.auth ?? false,
 });
 
 export default connect(mapStateToProps)(PrivateRoute);

@@ -1,8 +1,8 @@
 import React from "react";
-import PackmanLoader from "halogen/PacmanLoader";
+import { PacmanLoader } from "halogen";
 
 const Loader = (color = "#26A65B") => {
-  <PackmanLoader color="#26A65B" size="16px" margin="4px" />;
+  <PacmanLoader color={color} size={16} margin={4} />;
 };
 
 export default Loader;

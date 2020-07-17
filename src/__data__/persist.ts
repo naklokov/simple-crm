@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const commonSlice = createSlice({
-  name: "common",
+const persistSlice = createSlice({
+  name: "persist",
   initialState: {
     auth: false,
     permissions: [],
@@ -20,6 +20,6 @@ const commonSlice = createSlice({
   },
 });
 
-export const { setAuth, setPermissions, setLoading } = commonSlice.actions;
+export const { setAuth, setPermissions, setLoading } = persistSlice.actions;
 
-export default commonSlice.reducer;
+export default persistSlice.reducer;

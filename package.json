@@ -9,6 +9,7 @@
     "@reduxjs/toolkit": "^1.4.0",
     "@types/axios": "^0.14.0",
     "@types/enzyme": "^3.10.5",
+    "@types/halogen": "^0.2.6",
     "@types/jest": "^26.0.0",
     "@types/js-cookie": "^2.2.6",
     "@types/node": "^14.0.13",

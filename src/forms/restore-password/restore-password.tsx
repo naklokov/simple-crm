@@ -1,6 +1,6 @@
-import React, { useEffect, useCallback, SyntheticEvent, useState } from "react";
+import React, { useEffect, SyntheticEvent } from "react";
 import axios from "axios";
-import { Form as FormUI, Input, Button, Checkbox, message, Form } from "antd";
+import { Form as FormUI, Input, Button, message } from "antd";
 import { LockOutlined } from "@ant-design/icons";
 
 import { useTranslation } from "react-i18next";
