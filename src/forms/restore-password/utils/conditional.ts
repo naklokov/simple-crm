@@ -10,9 +10,7 @@ export const checkEqualPasswords = (form: FormInstance) => {
   return passwordConfirm === password;
 };
 
-export const checkToken = async (t: Function) => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get("token") || void 0;
+export const checkToken = async (token: string, t: Function) => {
   try {
     await axios.post(urls.restorePassword.check, { token });
 
@@ -26,4 +24,9 @@ export const checkToken = async (t: Function) => {
       value: token,
     });
   }
+};
+
+export const getToken = (): string => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("token") || "";
 };
