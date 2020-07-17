@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render correct 1`] = `
+<form
+  className="form"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="layout"
+    >
+      <div
+        className="imgContainer"
+      >
+        <img
+          alt="logo"
+          className="img"
+          src="logo.png"
+        />
+      </div>
+      <h2
+        className="ant-typography title"
+        style={
+          Object {
+            "WebkitLineClamp": null,
+          }
+        }
+      >
+        Заголовок
+      </h2>
+      <h4
+        className="ant-typography description ant-typography-secondary"
+        style={
+          Object {
+            "WebkitLineClamp": null,
+          }
+        }
+      >
+        Описание
+      </h4>
+    </div>
+    <div />
+  </div>
+</form>
+`;

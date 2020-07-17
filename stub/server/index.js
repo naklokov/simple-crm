@@ -2,9 +2,20 @@ const jsonServer = require("json-server");
 const server = jsonServer.create();
 const router = jsonServer.router("db.json");
 
-const { login, log } = require("../../src/constants/urls");
+const {
+  login,
+  log,
+  forgotPassword,
+  restorePassword,
+} = require("../../src/constants/urls");
 
-const { addAuthCookie, sendStatus, loggerStub } = require("../utils");
+const {
+  addAuthCookie,
+  sendStatus,
+  loggerStub,
+  checkToken,
+  emptySuccess,
+} = require("../utils");
 
 // const middlewares = jsonServer.defaults()
 // Set default middlewares (logger, static, cors and no-cache)
@@ -16,7 +27,15 @@ server.use(jsonServer.bodyParser);
 server.use(login.submit, addAuthCookie, sendStatus);
 
 //logger stub
-server.use(log.base, loggerStub);
+server.post(log.base, loggerStub);
+
+//forgotPassword
+server.post(forgotPassword.submit, emptySuccess);
+
+//checkToken
+server.post(restorePassword.check, checkToken);
+//restorePassword
+server.post(restorePassword.submit, emptySuccess);
 
 // Use default router
 server.use(router);

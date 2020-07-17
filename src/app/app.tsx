@@ -1,62 +1,35 @@
-import React from 'react';
-import Cookie from 'js-cookie'
+import React from "react";
+import axios from "axios";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom'
+import { Routes } from "./routes";
+import { reducers } from "../__data__";
+import { errorsInterceptor } from "./interceptors";
+import { storage } from "../utils";
 
-import { Error, Login, Clients } from '../forms'
-import { http } from '../constants';
+const persistedState = storage.loadState();
 
-const { AUTH_COOKIE_SESSION, AUTH_COOKIE_USERNAME, HTTP_CODES } = http
+const store = configureStore({
+  reducer: { ...reducers },
+  preloadedState: persistedState,
+});
 
-const isAuth = () => 
-  !!Cookie.get(AUTH_COOKIE_SESSION) && !!Cookie.get(AUTH_COOKIE_USERNAME) 
+store.subscribe(() => {
+  storage.saveState({
+    persist: store.getState().persist,
+  });
+});
 
-interface PrivateRouteProps {
-  path: string,
-  children: JSX.Element,
-}
-
-const PrivateRoute = ({ children, ...rest }: PrivateRouteProps) => {
-  console.log('auth', isAuth())
-  return (
-    <Route
-      {...rest}
-      render={
-        ({ location }) => isAuth()
-          ? children
-          : <Redirect to={{ 
-              pathname: '/login', 
-              state: { from: location }
-            }}
-          />
-      }
-    />
-  )
-}
+axios.interceptors.response.use(
+  (response) => response,
+  errorsInterceptor(store.dispatch)
+);
 
 const App = () => (
-  <Router>
-    <Switch>
-      <Route path="/error">
-        <Error />
-      </Route>
-      <PrivateRoute path="/clients">
-        <Clients/>
-      </PrivateRoute>
-      <Route path="/login">
-        <Login />
-      </Route>
-      <Redirect from='/' to={{ pathname: '/clients' }}/>
-      <Route path="*">
-        <Error code={HTTP_CODES.NOT_FOUND} />
-      </Route>
-    </Switch>
-  </Router>
-)
+  <Provider store={store}>
+    <Routes />
+  </Provider>
+);
 
 export default App;
