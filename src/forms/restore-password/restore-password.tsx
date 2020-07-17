@@ -12,10 +12,11 @@ import { urls } from "../../constants";
 import { FIELDS, FORM_NAME } from "./constants";
 import { logger } from "../../utils";
 
-import { getRules, checkEqualPasswords, checkToken } from "./utils";
+import { getRules, checkEqualPasswords, checkToken, getToken } from "./utils";
 import { UnauthorizedLayout } from "../../layouts";
 
 const { Item } = FormUI;
+const token = getToken();
 
 export const RestorePassword = () => {
   const [form] = FormUI.useForm();
@@ -24,7 +25,7 @@ export const RestorePassword = () => {
   const rules = getRules(t);
 
   useEffect(() => {
-    checkToken(t);
+    checkToken(token, t);
   }, []);
 
   const handleClick = (event: SyntheticEvent) => {
@@ -34,21 +35,19 @@ export const RestorePassword = () => {
     }
   };
 
-  const onFinish = async ({ username }: Store) => {
+  const onFinish = async ({ [FIELDS.PASSWORD]: password }: Store) => {
     try {
-      const messageSuccess = t("message.success", { username });
-      await axios.post(urls.restorePassword.submit, { username });
+      await axios.post(urls.restorePassword.submit, { password, token });
 
       logger.debug({
-        message: messageSuccess,
+        message: t("message.success"),
       });
-      message.success(messageSuccess);
+      message.success(t("message.success"));
       history.push("/");
     } catch ({ response: { data } }) {
       logger.error({
         value: data.errorCode,
         message: data.errorDescription,
-        username,
       });
 
       message.error(data.errorDescription || t("message.error"));
