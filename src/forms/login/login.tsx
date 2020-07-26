@@ -51,8 +51,7 @@ export const Login = ({ setAuthentication }: LoginProps) => {
 
       const prevUrl = getPrevUrl(history);
       history.push(prevUrl);
-    } catch ({ response: { data }, ...error }) {
-      console.log(error);
+    } catch ({ response: { data } }) {
       if (data) {
         logger.error({
           value: data.errorCode,

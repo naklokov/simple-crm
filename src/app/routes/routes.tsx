@@ -17,6 +17,8 @@ import PrivateRoute from "./private-route";
 
 import { concatErrorPath } from "../../utils";
 import { urls, http } from "../../constants";
+import { Typography } from "antd";
+import { AuthorizedLayout } from "../../layouts";
 
 const {
   HTTP_CODES: { NOT_FOUND },
@@ -30,6 +32,21 @@ const Routes = () => (
       </Route>
       <PrivateRoute path={urls.clients.path}>
         <Clients />
+      </PrivateRoute>
+      <PrivateRoute path={urls.tasks.path}>
+        <AuthorizedLayout>
+          <Typography.Title>Планы</Typography.Title>
+        </AuthorizedLayout>
+      </PrivateRoute>
+      <PrivateRoute path={urls.deals.path}>
+        <AuthorizedLayout>
+          <Typography.Title>Сделки</Typography.Title>
+        </AuthorizedLayout>
+      </PrivateRoute>
+      <PrivateRoute path={urls.knowledge.path}>
+        <AuthorizedLayout>
+          <Typography.Title>База знаний</Typography.Title>
+        </AuthorizedLayout>
       </PrivateRoute>
       <Route path={urls.login.path}>
         <Login />
