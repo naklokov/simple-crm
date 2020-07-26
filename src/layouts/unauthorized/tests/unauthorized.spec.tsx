@@ -2,11 +2,15 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { shallow } from "enzyme";
 
-import { UnauthorizedLayout } from "..";
+import { Unauthorized as UnauthorizedLayout } from "../unauthorized";
 
 test("render correct", () => {
   const component = renderer.create(
-    <UnauthorizedLayout title="Заголовок" description="Описание">
+    <UnauthorizedLayout
+      loading={false}
+      title="Заголовок"
+      description="Описание"
+    >
       <div />
     </UnauthorizedLayout>
   );
@@ -17,7 +21,7 @@ test("render correct", () => {
 
 test("render title optionally", () => {
   const wrapper = shallow(
-    <UnauthorizedLayout title="Заголовок">
+    <UnauthorizedLayout loading={false} title="Заголовок">
       <div />
     </UnauthorizedLayout>
   );
@@ -25,7 +29,7 @@ test("render title optionally", () => {
   expect(wrapper.find(".title").length).toBe(1);
 
   const wrapperWithoutTitle = shallow(
-    <UnauthorizedLayout>
+    <UnauthorizedLayout loading={false}>
       <div />
     </UnauthorizedLayout>
   );
@@ -35,7 +39,7 @@ test("render title optionally", () => {
 
 test("render description optionally", () => {
   const wrapper = shallow(
-    <UnauthorizedLayout description="Описание">
+    <UnauthorizedLayout loading={false} description="Описание">
       <div />
     </UnauthorizedLayout>
   );
@@ -43,7 +47,7 @@ test("render description optionally", () => {
   expect(wrapper.find(".description").length).toBe(1);
 
   const wrapperWithoutTitle = shallow(
-    <UnauthorizedLayout>
+    <UnauthorizedLayout loading={false}>
       <div />
     </UnauthorizedLayout>
   );

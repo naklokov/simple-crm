@@ -32,7 +32,7 @@ exports[`render correct 1`] = `
     </div>
     <form
       className="ant-form ant-form-horizontal loginForm"
-      id="loginForm"
+      id="login"
       onSubmit={[Function]}
     >
       <div
@@ -79,7 +79,7 @@ exports[`render correct 1`] = `
                 </span>
                 <input
                   className="ant-input"
-                  id="loginForm_username"
+                  id="login_username"
                   onBlur={[Function]}
                   onChange={[Function]}
                   onFocus={[Function]}
@@ -139,7 +139,7 @@ exports[`render correct 1`] = `
                 <input
                   action="click"
                   className="ant-input"
-                  id="loginForm_password"
+                  id="login_password"
                   onBlur={[Function]}
                   onChange={[Function]}
                   onFocus={[Function]}
@@ -223,7 +223,7 @@ exports[`render correct 1`] = `
                           <input
                             checked={true}
                             className="ant-checkbox-input"
-                            id="loginForm_rememberMe"
+                            id="login_rememberMe"
                             onBlur={[Function]}
                             onChange={[Function]}
                             onFocus={[Function]}
@@ -243,6 +243,7 @@ exports[`render correct 1`] = `
               </div>
               <a
                 className="forgotPassword"
+                href="/forgotPassword"
                 onClick={[Function]}
               >
                 password.forgot

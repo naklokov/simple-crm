@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SyntheticEvent, useState } from "react";
 import axios from "axios";
 import { Form as FormUI, Input, Button, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
 import { urls } from "../../constants";
 import { logger } from "../../utils";
+import { FORM_NAME, FIELDS } from "./constants";
 
 import {
   storeRememberMeParams,
@@ -18,62 +19,80 @@ import {
   getInitialValues,
 } from "./utils";
 import { UnauthorizedLayout } from "../../layouts";
+import { connect } from "react-redux";
+import { setAuth } from "../../__data__";
 
 const { Item } = FormUI;
 
+interface LoginProps {
+  setAuthentication: (auth: boolean) => void;
+}
+
 // TODO Добавить обработку rememberMe параметров из localStorage
-export const Login = () => {
+export const Login = ({ setAuthentication }: LoginProps) => {
   const [form] = FormUI.useForm();
-  const [t] = useTranslation("login");
+  const [t] = useTranslation(FORM_NAME);
   const history = useHistory();
   const rules = getRules(t);
   const initialValues = getInitialValues();
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   const onFinish = async (values: Store) => {
     try {
+      setSubmitLoading(true);
       await axios.post(urls.login.submit, { ...values });
+      setAuthentication(true);
       storeRememberMeParams();
 
       logger.debug({
         message: t("authentication.successfull"),
-        username: values.username,
+        username: values[FIELDS.USERNAME],
       });
 
       const prevUrl = getPrevUrl(history);
       history.push(prevUrl);
-    } catch ({ response: { data } }) {
-      logger.error({
-        value: data.errorCode,
-        message: data.errorDescription,
-        username: values.username,
-      });
-
-      message.error(data.errorDescription || t("message.error"));
+    } catch ({ response: { data }, ...error }) {
+      console.log(error);
+      if (data) {
+        logger.error({
+          value: data.errorCode,
+          message: data.errorDescription,
+          username: values[FIELDS.USERNAME],
+        });
+        message.error(data.errorDescription || t("message.error"));
+      }
+    } finally {
+      setSubmitLoading(false);
     }
   };
 
-  const handleClickForgotPassword = () => {
-    const username = form.getFieldValue("username");
+  const handleClickForgotPassword = (event: SyntheticEvent) => {
+    const username = form.getFieldValue(FIELDS.USERNAME);
     history.push(urls.forgotPassword.path, { username });
+    event.preventDefault();
   };
 
   return (
     <UnauthorizedLayout title={t("title")}>
       <FormUI
         form={form}
-        name="loginForm"
+        name={FORM_NAME}
         className={style.loginForm}
         initialValues={initialValues}
         onFinish={onFinish}
       >
-        <Item name="username" rules={rules.username} validateTrigger="onBlur">
+        <Item
+          name={FIELDS.USERNAME}
+          rules={rules.username}
+          validateTrigger="onBlur"
+        >
           <Input
             className={style.username}
             prefix={<UserOutlined />}
             placeholder={t("placeholder.username")}
           />
         </Item>
-        <Item name="password" rules={rules.password}>
+        <Item name={FIELDS.PASSWORD} rules={rules.password}>
           <Input.Password
             className={style.password}
             prefix={<LockOutlined />}
@@ -83,7 +102,7 @@ export const Login = () => {
         </Item>
         <Item>
           <Item
-            name="rememberMe"
+            name={FIELDS.REMEMBER_ME}
             valuePropName="checked"
             className={style.rememberMeCheckbox}
           >
@@ -92,6 +111,7 @@ export const Login = () => {
           <a
             className={style.forgotPassword}
             onClick={handleClickForgotPassword}
+            href={urls.forgotPassword.path}
           >
             {t("password.forgot")}
           </a>
@@ -101,6 +121,7 @@ export const Login = () => {
             type="primary"
             htmlType="submit"
             className={style.submitButton}
+            loading={submitLoading}
           >
             {t("submit.button")}
           </Button>
@@ -110,4 +131,8 @@ export const Login = () => {
   );
 };
 
-export default Login;
+const mapDispatchToProps = (dispatch: Function) => ({
+  setAuthentication: (auth: boolean) => dispatch(setAuth(auth)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);

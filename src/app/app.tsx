@@ -1,68 +1,39 @@
 import React from "react";
-import Cookie from "js-cookie";
+import axios from "axios";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { Routes } from "./routes";
+import { reducers } from "../__data__";
+import { errorsInterceptor } from "./interceptors";
+import { storage } from "../utils";
+import { Loader } from "../components";
 
-import { Error, Login, ForgotPassword, Clients } from "../forms";
-import { http, urls } from "../constants";
+const persistedState = storage.loadState();
 
-const { AUTH_COOKIE_SESSION, AUTH_COOKIE_USERNAME, HTTP_CODES } = http;
+const store = configureStore({
+  reducer: { ...reducers },
+  preloadedState: persistedState,
+});
 
-const isAuth = () =>
-  !!Cookie.get(AUTH_COOKIE_SESSION) && !!Cookie.get(AUTH_COOKIE_USERNAME);
+store.subscribe(() => {
+  storage.saveState({
+    persist: store.getState().persist,
+  });
+});
 
-interface PrivateRouteProps {
-  path: string;
-  children: JSX.Element;
-}
+axios.interceptors.response.use(
+  (response) => response,
+  errorsInterceptor(store.dispatch)
+);
 
-const PrivateRoute = ({ children, ...rest }: PrivateRouteProps) => {
-  console.log("auth", isAuth());
-  return (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        isAuth() ? (
-          children
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: location },
-            }}
-          />
-        )
-      }
-    />
-  );
-};
+const loading = store.getState()?.persist?.loading ?? false;
 
 const App = () => (
-  <Router>
-    <Switch>
-      <Route path={urls.error.path}>
-        <Error />
-      </Route>
-      <PrivateRoute path={urls.clients.path}>
-        <Clients />
-      </PrivateRoute>
-      <Route path={urls.login.path}>
-        <Login />
-      </Route>
-      <Route path={urls.forgotPassword.path}>
-        <ForgotPassword />
-      </Route>
-      <Redirect from="/" to={{ pathname: urls.clients.path }} />
-      <Route path="*">
-        <Error code={HTTP_CODES.NOT_FOUND} />
-      </Route>
-    </Switch>
-  </Router>
+  <Provider store={store}>
+    {loading && <Loader />}
+    <Routes />
+  </Provider>
 );
 
 export default App;

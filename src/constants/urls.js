@@ -1,6 +1,6 @@
 module.exports = {
   error: {
-    path: "/error",
+    path: "/errors",
   },
   login: {
     path: "/login",
@@ -9,6 +9,11 @@ module.exports = {
   forgotPassword: {
     path: "/forgotPassword",
     submit: "/crm/rest/password/initiate",
+  },
+  restorePassword: {
+    path: "/restorePassword",
+    check: "/crm/rest/password/checkToken",
+    submit: "/crm/rest/password/change",
   },
   log: {
     base: "/crm/log",
