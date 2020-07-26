@@ -3,16 +3,26 @@ import axios from "axios";
 import renderer from "react-test-renderer";
 import MockAdapter from "axios-mock-adapter";
 import { mount } from "enzyme";
+import configureStore from "redux-mock-store";
 
-import { Button, message } from "antd";
-import { Login } from "..";
+import { Button } from "antd";
+import { Login } from "../login";
 import { urls } from "../../../constants";
 import * as logger from "../../../utils/remote-logger";
 
-import * as utils from "../utils";
 import Cookie from "js-cookie";
+import { Provider } from "react-redux";
+import { FORM_NAME, FIELDS } from "../constants";
 
 const mock = new MockAdapter(axios);
+const mockStore = configureStore([]);
+const store = mockStore({
+  persist: {
+    loading: false,
+    auth: true,
+    permissions: [],
+  },
+});
 
 const error = {
   errorCode: "OLVE-6",
@@ -23,59 +33,35 @@ const error = {
 const username = "test@mail.ru";
 
 test("render correct", () => {
-  const component = renderer.create(<Login />);
+  const component = renderer.create(
+    <Provider store={store}>
+      <Login setAuthentication={jest.fn()} />
+    </Provider>
+  );
   const tree = component.toJSON();
 
   expect(tree).toMatchSnapshot();
 });
 
-// TODO написать тесты для успеха и неуспеха
-xtest("authentication failed", () => {
-  mock.onPost(urls.login.submit).reply(400, error);
-  const loggerErrorSpy = jest
-    .spyOn(logger, "error")
-    .mockImplementation(() => {});
+xtest("authentication successfull", async () => {
+  const setAuthSpy = jest.fn();
 
-  const wrapper = mount(<Login />);
-  wrapper
-    .find(".ant-input#loginForm_username")
-    .simulate("change", { target: { value: username } });
-
-  wrapper
-    .find(".ant-input#loginForm_password")
-    .simulate("change", { target: { value: "12345678" } });
-
-  wrapper.find(Button).simulate("submit");
-
-  expect(loggerErrorSpy).toHaveBeenCalledWith({
-    username,
-    value: error.errorCode,
-    message: error.errorDescription,
-  });
-});
-
-xtest("authentication successfull", () => {
-  mock.onPost(urls.login.submit, {}).reply(200, {});
+  mock.onPost(urls.login.submit).reply(200, {});
   Cookie.set("username", username);
   Cookie.set("rememberMe", "true");
 
-  const storeRememberMeParamsSpy = jest.spyOn(utils, "storeRememberMeParams");
-
-  const wrapper = mount(<Login />);
-
+  const wrapper = mount(
+    <Provider store={store}>
+      <Login setAuthentication={setAuthSpy} />
+    </Provider>
+  );
   wrapper
-    .find(".ant-input#loginForm_username")
+    .find(`.ant-input#${FORM_NAME}_${FIELDS.USERNAME}`)
     .simulate("change", { target: { value: username } });
-
   wrapper
-    .find("#loginForm_password.ant-input")
+    .find(`.ant-input#${FORM_NAME}_${FIELDS.PASSWORD}`)
     .simulate("change", { target: { value: "12345678" } });
-
   wrapper.find(Button).simulate("submit");
 
-  expect(storeRememberMeParamsSpy).toHaveBeenCalled();
-  // expect(loggerInfoSpy).toHaveBeenCalledWith({
-  //   message: "authentication.successfull",
-  //   username,
-  // });
+  await expect(setAuthSpy).toHaveBeenCalledWith(true);
 });

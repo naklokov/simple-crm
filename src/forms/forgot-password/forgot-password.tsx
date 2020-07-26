@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
 import { urls } from "../../constants";
 import { logger } from "../../utils";
+import { FORM_NAME, FIELDS } from "./constants";
 
 import { getRules, getInitialValues } from "./utils";
 import { UnauthorizedLayout } from "../../layouts";
@@ -17,7 +18,7 @@ import { UnauthorizedLayout } from "../../layouts";
 const { Item } = FormUI;
 
 export const ForgotPassword = () => {
-  const [t] = useTranslation("forgotPassword");
+  const [t] = useTranslation(FORM_NAME);
   const history = useHistory();
   const rules = getRules(t);
   const initialValues = getInitialValues(history);
@@ -51,12 +52,16 @@ export const ForgotPassword = () => {
   return (
     <UnauthorizedLayout title={t("title")} description={t("description")}>
       <FormUI
-        name="forgotPasswordForm"
+        name={FORM_NAME}
         className={style.forgotPasswordForm}
         initialValues={initialValues}
         onFinish={onFinish}
       >
-        <Item name="username" rules={rules.username} validateTrigger="onBlur">
+        <Item
+          name={FIELDS.USERNAME}
+          rules={rules.username}
+          validateTrigger="onBlur"
+        >
           <Input
             className={style.username}
             prefix={<UserOutlined />}

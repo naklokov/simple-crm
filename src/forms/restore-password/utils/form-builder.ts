@@ -8,10 +8,7 @@ interface RestorePasswordValues {
 export const checkNotEqual = ({
   password,
   passwordConfirm,
-}: RestorePasswordValues) => {
-  console.log(passwordConfirm);
-  return password !== passwordConfirm;
-};
+}: RestorePasswordValues) => password !== passwordConfirm;
 
 export const getRules = (t: Function): { [key: string]: RuleObject[] } => ({
   password: [

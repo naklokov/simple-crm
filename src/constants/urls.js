@@ -1,6 +1,6 @@
 module.exports = {
   error: {
-    path: "/error",
+    path: "/errors",
   },
   login: {
     path: "/login",

@@ -21,6 +21,7 @@ export const Unauthorized = ({
   children,
 }: LoginProps) => (
   <form className={style.form}>
+    {loading && <Loader />}
     <div className={style.container}>
       <div className={style.layout}>
         <div className={style.imgContainer}>

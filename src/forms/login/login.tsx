@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
 import { urls } from "../../constants";
 import { logger } from "../../utils";
+import { FORM_NAME, FIELDS } from "./constants";
 
 import {
   storeRememberMeParams,
@@ -30,7 +31,7 @@ interface LoginProps {
 // TODO Добавить обработку rememberMe параметров из localStorage
 export const Login = ({ setAuthentication }: LoginProps) => {
   const [form] = FormUI.useForm();
-  const [t] = useTranslation("login");
+  const [t] = useTranslation(FORM_NAME);
   const history = useHistory();
   const rules = getRules(t);
   const initialValues = getInitialValues();
@@ -45,26 +46,28 @@ export const Login = ({ setAuthentication }: LoginProps) => {
 
       logger.debug({
         message: t("authentication.successfull"),
-        username: values.username,
+        username: values[FIELDS.USERNAME],
       });
 
       const prevUrl = getPrevUrl(history);
       history.push(prevUrl);
-    } catch ({ response: { data } }) {
-      logger.error({
-        value: data.errorCode,
-        message: data.errorDescription,
-        username: values.username,
-      });
-
-      message.error(data.errorDescription || t("message.error"));
+    } catch ({ response: { data }, ...error }) {
+      console.log(error);
+      if (data) {
+        logger.error({
+          value: data.errorCode,
+          message: data.errorDescription,
+          username: values[FIELDS.USERNAME],
+        });
+        message.error(data.errorDescription || t("message.error"));
+      }
     } finally {
       setSubmitLoading(false);
     }
   };
 
   const handleClickForgotPassword = (event: SyntheticEvent) => {
-    const username = form.getFieldValue("username");
+    const username = form.getFieldValue(FIELDS.USERNAME);
     history.push(urls.forgotPassword.path, { username });
     event.preventDefault();
   };
@@ -73,19 +76,23 @@ export const Login = ({ setAuthentication }: LoginProps) => {
     <UnauthorizedLayout title={t("title")}>
       <FormUI
         form={form}
-        name="loginForm"
+        name={FORM_NAME}
         className={style.loginForm}
         initialValues={initialValues}
         onFinish={onFinish}
       >
-        <Item name="username" rules={rules.username} validateTrigger="onBlur">
+        <Item
+          name={FIELDS.USERNAME}
+          rules={rules.username}
+          validateTrigger="onBlur"
+        >
           <Input
             className={style.username}
             prefix={<UserOutlined />}
             placeholder={t("placeholder.username")}
           />
         </Item>
-        <Item name="password" rules={rules.password}>
+        <Item name={FIELDS.PASSWORD} rules={rules.password}>
           <Input.Password
             className={style.password}
             prefix={<LockOutlined />}
@@ -95,7 +102,7 @@ export const Login = ({ setAuthentication }: LoginProps) => {
         </Item>
         <Item>
           <Item
-            name="rememberMe"
+            name={FIELDS.REMEMBER_ME}
             valuePropName="checked"
             className={style.rememberMeCheckbox}
           >
