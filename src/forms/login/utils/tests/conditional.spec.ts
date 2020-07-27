@@ -1,21 +1,24 @@
 import Cookies from "js-cookie";
 
 import { storeRememberMeParams, getPrevUrl } from "../conditional";
+import { http } from "../../../../constants";
+
+const { COOKIES } = http;
 
 test("test storeRememberMeParams without cookie", () => {
   storeRememberMeParams();
 
-  expect(localStorage.getItem("rememberMe")).toBeNull();
-  expect(localStorage.getItem("username")).toBeNull();
+  expect(localStorage.getItem(COOKIES.REMEMBER_ME)).toBeNull();
+  expect(localStorage.getItem(COOKIES.USERNAME)).toBeNull();
 });
 
 test("test storeRememberMeParams with cookie", () => {
-  Cookies.set("rememberMe", "true");
-  Cookies.set("username", "123@mail.ru");
+  Cookies.set(COOKIES.REMEMBER_ME, "true");
+  Cookies.set(COOKIES.USERNAME, "123@mail.ru");
 
   storeRememberMeParams();
-  expect(localStorage.getItem("rememberMe")).toBe("true");
-  expect(localStorage.getItem("username")).toBe("123@mail.ru");
+  expect(localStorage.getItem(COOKIES.REMEMBER_ME)).toBe("true");
+  expect(localStorage.getItem(COOKIES.USERNAME)).toBe("123@mail.ru");
 });
 
 test("test getPrevUrl", () => {

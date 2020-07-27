@@ -1,8 +1,10 @@
-import { ERROR_SCREEN_CODES, HTTP_CODES } from "../../constants/http";
+import Cookie from "js-cookie";
+import { http } from "../../constants";
 import { concatErrorPath, logger } from "../../utils";
 import { setAuth } from "../../__data__";
 import { message } from "antd";
-import Cookie from "js-cookie";
+
+const { ERROR_SCREEN_CODES, HTTP_CODES } = http;
 
 const {
   env: { NODE_ENV },
