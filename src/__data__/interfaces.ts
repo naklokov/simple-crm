@@ -1,7 +1,7 @@
 export interface PersistState {
-  auth: boolean;
   permissions: string[];
   loading: boolean;
+  menuCollapsed: boolean;
 }
 
 export interface State {

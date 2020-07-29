@@ -1,5 +1,6 @@
+import Cookie from "js-cookie";
 import { errorsInterceptor } from "../errors";
-import { setAuth } from "../../../__data__";
+import { COOKIES } from "../../../constants/http";
 
 const getError = (status = 401) => ({
   response: {
@@ -17,7 +18,10 @@ test("error interceptors 401", () => {
 
   errorsInterceptor(dispatchSpy)(getError());
 
-  expect(dispatchSpy).toHaveBeenCalledWith(setAuth(false));
+  expect(Cookie.get(COOKIES.JSESSIONID)).toBeUndefined();
+  expect(Cookie.get(COOKIES.REMEMBER_ME)).toBeUndefined();
+  expect(Cookie.get(COOKIES.USERNAME)).toBeUndefined();
+
   expect(replaceSpy).toHaveBeenLastCalledWith("/");
 });
 

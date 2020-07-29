@@ -15,7 +15,7 @@ import { logger } from "../../utils";
 import { getRules, checkEqualPasswords, checkToken, getToken } from "./utils";
 import { UnauthorizedLayout } from "../../layouts";
 import { connect } from "react-redux";
-import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
+import { Dispatch } from "@reduxjs/toolkit";
 import * as actions from "../../__data__";
 
 const { Item } = FormUI;

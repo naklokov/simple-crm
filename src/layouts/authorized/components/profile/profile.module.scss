@@ -1,0 +1,9 @@
+@import "../../../../assets/styles/offsets";
+
+.dropdownContainer {
+  cursor: pointer;
+  display: inline;
+  & > * {
+    margin-left: var(--offset-sm);
+  }
+}

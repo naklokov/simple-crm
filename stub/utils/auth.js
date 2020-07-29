@@ -2,21 +2,16 @@ const validUsername = "admin@mail.ru";
 const authCookie = 123456;
 const rememberMeCookie = 777777777;
 
-const {
-  AUTH_COOKIE_SESSION,
-  AUTH_COOKIE_USERNAME,
-  AUTH_COOKIE_REMEMBER_ME,
-  HTTP_CODES,
-} = require("../../src/constants/http");
+const { COOKIES, HTTP_CODES } = require("../../src/constants/http");
 
 const addAuthCookie = (req, res, next) => {
   if (req.body) {
     const { username, rememberMe } = req.body;
     if (username === validUsername) {
-      res.cookie(AUTH_COOKIE_SESSION, authCookie);
-      res.cookie(AUTH_COOKIE_USERNAME, username);
+      res.cookie(COOKIES.JSESSIONID, authCookie);
+      res.cookie(COOKIES.USERNAME, username);
       if (rememberMe) {
-        res.cookie(AUTH_COOKIE_REMEMBER_ME, rememberMeCookie);
+        res.cookie(COOKIES.REMEMBER_ME, rememberMeCookie);
       }
     }
   }

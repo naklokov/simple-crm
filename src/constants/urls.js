@@ -21,4 +21,13 @@ module.exports = {
   clients: {
     path: "/clients",
   },
+  tasks: {
+    path: "/tasks",
+  },
+  deals: {
+    path: "/deals",
+  },
+  knowledge: {
+    path: "/knowledge",
+  },
 };

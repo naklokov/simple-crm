@@ -1,0 +1,28 @@
+@import "../../assets/styles/common";
+@import "../../assets/styles/colors";
+@import "../../assets/styles/offsets";
+
+.sider {
+  filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.15)) !important;
+  height: 100vh;
+}
+
+// Из-за использования css констант реализоция стилей через js неудобна, приходится перебивать стили через important
+.header {
+  padding: 0 var(--offset-md2) !important;
+  height: var(--authorize-header-height) !important;
+  background-color: var(--background-color-base) !important;
+  filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.15));
+  width: 100%;
+}
+
+.buttonCollapsed {
+  position: relative;
+  top: var(--offset-xs);
+}
+
+.profile {
+  position: absolute;
+  right: var(--offset-md2);
+  display: inline-block;
+}

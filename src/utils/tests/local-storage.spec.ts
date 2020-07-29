@@ -2,7 +2,7 @@ import { loadState, saveState } from "../local-storage";
 
 const state = {
   persist: {
-    auth: false,
+    menuCollapsed: false,
     loading: true,
     permissions: [],
   },
@@ -14,7 +14,7 @@ test("loadState", () => {
   localStorage.setItem("state", JSON.stringify(state));
   expect(loadState()).toEqual(state);
 
-  localStorage.setItem("state", void 0);
+  localStorage.setItem("state", "undefined");
 });
 
 test("saveState", () => {

@@ -43,5 +43,9 @@
     "check.error": "Проверка токена не пройдена",
     "message.success": "Пароль успешно изменён",
     "message.error": "Произошла ошибка"
+  },
+  "authorizedLayout": {
+    "profile.view": "Просмотр профиля",
+    "profile.logout": "Выйти"
   }
 }

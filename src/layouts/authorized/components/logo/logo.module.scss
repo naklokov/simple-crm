@@ -1,0 +1,23 @@
+@import "../../../../assets/styles/offsets";
+@import "../../../../assets/styles/common";
+
+.logo {
+  padding: var(--offset-md) 0;
+  height: var(--authorize-header-height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img {
+  width: 40px;
+}
+
+.title {
+  margin-left: var(--offset-xs);
+  display: inline;
+}
+
+.collapsed {
+  display: none;
+}
