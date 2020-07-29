@@ -2,22 +2,15 @@ import React from "react";
 
 import { Redirect, Route } from "react-router";
 import { urls } from "../../constants";
-import { connect } from "react-redux";
-import { State } from "../../__data__/interfaces";
 import { hasAuthCookie } from "../../utils";
 
 interface PrivateRouteProps {
-  auth: boolean;
   path: string;
   children: JSX.Element;
 }
 
-export const PrivateRoute = ({
-  children,
-  auth,
-  ...rest
-}: PrivateRouteProps) => {
-  const isAuth = hasAuthCookie() && auth;
+export const PrivateRoute = ({ children, ...rest }: PrivateRouteProps) => {
+  const isAuth = hasAuthCookie();
   return (
     <Route
       {...rest}
@@ -37,8 +30,4 @@ export const PrivateRoute = ({
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  auth: state?.persist?.auth ?? false,
-});
-
-export default connect(mapStateToProps)(PrivateRoute);
+export default PrivateRoute;

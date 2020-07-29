@@ -13,7 +13,7 @@ export const TITLE = "БИЗНЕС РЕСУРС";
 
 export const LOGO = logo;
 
-export const MENUS_ELEMENTS = [
+export const MENU_ITEMS = [
   {
     id: "clients",
     title: "Клиенты",

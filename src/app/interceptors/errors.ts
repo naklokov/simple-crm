@@ -1,7 +1,6 @@
 import Cookie from "js-cookie";
 import { http } from "../../constants";
-import { concatErrorPath, logger } from "../../utils";
-import { setAuth } from "../../__data__";
+import { concatErrorPath, logger, logout } from "../../utils";
 import { message } from "antd";
 
 const { ERROR_SCREEN_CODES, HTTP_CODES } = http;
@@ -25,13 +24,12 @@ export const errorsInterceptor = (dispatch: Function) => (error: any) => {
     }
 
     if (statusCode === HTTP_CODES.UNAUTHORIZED) {
-      dispatch(setAuth(false));
       const errorDescription = error?.response?.data?.errorDescription;
       if (errorDescription) {
         message.error(errorDescription);
       }
-      // go to login page
-      window.location.replace("/");
+
+      logout();
     }
 
     if (ERROR_SCREEN_CODES.includes(statusCode) && !originalRequest._retry) {

@@ -15,4 +15,9 @@
 
 .title {
   margin-left: var(--offset-xs);
+  display: inline;
+}
+
+.collapsed {
+  display: none;
 }

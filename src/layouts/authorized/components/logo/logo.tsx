@@ -1,4 +1,5 @@
 import React from "react";
+import cn from "classnames";
 
 import { Typography } from "antd";
 import { LOGO, TITLE } from "../../../../constants/layouts";
@@ -12,11 +13,12 @@ interface LogoProps {
 export const Logo = ({ collapsed }: LogoProps) => (
   <div className={style.logo}>
     <img className={style.img} alt="logo" src={LOGO} />
-    {!collapsed && (
-      <Typography.Text className={style.title}>
-        {TITLE.toUpperCase()}
-      </Typography.Text>
-    )}
+    <Typography.Text
+      strong
+      className={cn(style.title, { [style.collapsed]: collapsed })}
+    >
+      {TITLE.toUpperCase()}
+    </Typography.Text>
   </div>
 );
 

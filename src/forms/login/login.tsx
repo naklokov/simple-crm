@@ -19,17 +19,11 @@ import {
   getInitialValues,
 } from "./utils";
 import { UnauthorizedLayout } from "../../layouts";
-import { connect } from "react-redux";
-import { setAuth } from "../../__data__";
 
 const { Item } = FormUI;
 
-interface LoginProps {
-  setAuthentication: (auth: boolean) => void;
-}
-
 // TODO Добавить обработку rememberMe параметров из localStorage
-export const Login = ({ setAuthentication }: LoginProps) => {
+export const Login = () => {
   const [form] = FormUI.useForm();
   const [t] = useTranslation(FORM_NAME);
   const history = useHistory();
@@ -41,7 +35,6 @@ export const Login = ({ setAuthentication }: LoginProps) => {
     try {
       setSubmitLoading(true);
       await axios.post(urls.login.submit, { ...values });
-      setAuthentication(true);
       storeRememberMeParams();
 
       logger.debug({
@@ -130,8 +123,4 @@ export const Login = ({ setAuthentication }: LoginProps) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Function) => ({
-  setAuthentication: (auth: boolean) => dispatch(setAuth(auth)),
-});
-
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;
