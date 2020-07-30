@@ -19,6 +19,7 @@ import { concatErrorPath } from "../../utils";
 import { urls, http } from "../../constants";
 import { Typography } from "antd";
 import { AuthorizedLayout } from "../../layouts";
+import { Profile } from "../../layouts/authorized/components";
 
 const {
   HTTP_CODES: { NOT_FOUND },
@@ -27,27 +28,25 @@ const {
 const Routes = () => (
   <Router>
     <Switch>
-      <Route path={concatErrorPath()}>
-        <Error />
-      </Route>
-      <PrivateRoute path={urls.clients.path}>
-        <Clients />
-      </PrivateRoute>
-      <PrivateRoute path={urls.tasks.path}>
-        <AuthorizedLayout>
-          <Typography.Title>Планы</Typography.Title>
-        </AuthorizedLayout>
-      </PrivateRoute>
-      <PrivateRoute path={urls.deals.path}>
-        <AuthorizedLayout>
-          <Typography.Title>Сделки</Typography.Title>
-        </AuthorizedLayout>
-      </PrivateRoute>
-      <PrivateRoute path={urls.knowledge.path}>
-        <AuthorizedLayout>
-          <Typography.Title>База знаний</Typography.Title>
-        </AuthorizedLayout>
-      </PrivateRoute>
+      <AuthorizedLayout>
+        <Switch>
+          <PrivateRoute path={urls.clients.path}>
+            <Profile />
+          </PrivateRoute>
+          <PrivateRoute path={urls.clients.path}>
+            <Clients />
+          </PrivateRoute>
+          <PrivateRoute path={urls.tasks.path}>
+            <Typography.Title>Планы</Typography.Title>
+          </PrivateRoute>
+          <PrivateRoute path={urls.deals.path}>
+            <Typography.Title>Сделки</Typography.Title>
+          </PrivateRoute>
+          <PrivateRoute path={urls.knowledge.path}>
+            <Typography.Title>База знаний</Typography.Title>
+          </PrivateRoute>
+        </Switch>
+      </AuthorizedLayout>
       <Route path={urls.login.path}>
         <Login />
       </Route>
@@ -56,6 +55,9 @@ const Routes = () => (
       </Route>
       <Route path={urls.restorePassword.path}>
         <RestorePassword />
+      </Route>
+      <Route path={concatErrorPath()}>
+        <Error />
       </Route>
       <Redirect from="/" to={{ pathname: urls.clients.path }} exact />
       <Redirect from="*" to={{ pathname: concatErrorPath(NOT_FOUND) }} />

@@ -18,6 +18,10 @@ module.exports = {
   log: {
     base: "/crm/log",
   },
+  profile: {
+    path: "/profile",
+    info: "/crm/",
+  },
   clients: {
     path: "/clients",
   },

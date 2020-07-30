@@ -7,6 +7,7 @@ const {
   log,
   forgotPassword,
   restorePassword,
+  profile,
 } = require("../../src/constants/urls");
 
 const {
@@ -36,6 +37,9 @@ server.post(forgotPassword.submit, emptySuccess);
 server.post(restorePassword.check, checkToken);
 //restorePassword
 server.post(restorePassword.submit, emptySuccess);
+
+//getProfileInfo
+server.get(profile.info, (req, res) => res.status(HTTP_CODES.SUCCESS).json({}));
 
 // Use default router
 server.use(router);
