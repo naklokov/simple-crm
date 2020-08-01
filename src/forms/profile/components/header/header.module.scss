@@ -13,7 +13,10 @@
 
 .background {
   height: 200px;
-  background-color: var(--profile-background-color);
+  background: linear-gradient(
+    var(--profile-background-color-from),
+    var(--profile-background-color-to) 70.71%
+  );
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
 }
 
