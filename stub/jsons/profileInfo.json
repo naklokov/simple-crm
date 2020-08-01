@@ -1,0 +1,21 @@
+{
+  "_links": {},
+  "aboutMe": "Что тут сказать - просто СУПЕР-ПУПЕР-СУПЕР-ТОП!",
+  "birthDate": "1990-10-05T00:00:00.000",
+  "businessId": "efb0a329-6c51-4789-83ff-28c1fae7c16b",
+  "creationDate": "2020-07-30T15:09:58.475",
+  "email": "EMAIL",
+  "firstName": "Колбаска",
+  "id": "4028b881739f9e5901739fa10bcf0000",
+  "isActive": true,
+  "isDeleted": false,
+  "isLocked": false,
+  "lastName": "Мясная",
+  "location": "4 этаж, 15 место(у окна)",
+  "login": "ADMIN@MAIL.RU",
+  "parentId": "4028b881739f824f01739f830c6b0001",
+  "position": "BOSS",
+  "secondName": "Особая",
+  "userRoleId": "ae14b449-08fc-4cf1-9d84-9f0edc260a58",
+  "avatar": "ODTLcjxAfvqbxHnVXCYX.png"
+}

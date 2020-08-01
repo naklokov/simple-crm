@@ -46,6 +46,7 @@
   },
   "authorizedLayout": {
     "profile.view": "Просмотр профиля",
-    "profile.logout": "Выйти"
+    "profile.logout": "Выйти",
+    "profile.get.success": "Профиль успешно загружен"
   }
 }

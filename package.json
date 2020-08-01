@@ -45,7 +45,7 @@
   "proxy": "http://localhost:8080",
   "scripts": {
     "start": "react-scripts start",
-    "server": "node stub/server/index.js",
+    "server": "node stub/server.js",
     "dev": "concurrently \"npm run server\" \"npm start\"",
     "rest": "npm start",
     "build": "react-scripts build",

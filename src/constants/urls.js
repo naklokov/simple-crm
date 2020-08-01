@@ -5,6 +5,7 @@ module.exports = {
   login: {
     path: "/login",
     submit: "/crm/login",
+    logout: "/crm/logout",
   },
   forgotPassword: {
     path: "/forgotPassword",
@@ -20,7 +21,7 @@ module.exports = {
   },
   profile: {
     path: "/profile",
-    info: "/crm/",
+    info: "/crm/rest/entity/userProfile",
   },
   clients: {
     path: "/clients",
@@ -33,5 +34,8 @@ module.exports = {
   },
   knowledge: {
     path: "/knowledge",
+  },
+  dictionaries: {
+    position: "/crm/rest/dictionary/POSITION",
   },
 };

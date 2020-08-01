@@ -13,7 +13,6 @@ import { FIELDS, FORM_NAME } from "./constants";
 import { logger } from "../../utils";
 
 import { getRules, checkEqualPasswords, checkToken, getToken } from "./utils";
-import { UnauthorizedLayout } from "../../layouts";
 import { connect } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import * as actions from "../../__data__";
@@ -66,42 +65,40 @@ export const RestorePassword = ({ setLoading }: RestorePasswordProps) => {
   };
 
   return (
-    <UnauthorizedLayout title={t("title")} description={t("description")}>
-      <FormUI
-        form={form}
-        name={FORM_NAME}
-        className={style.restorePassword}
-        onFinish={onFinish}
-      >
-        <Item name={FIELDS.PASSWORD} rules={rules.password}>
-          <Input.Password
-            className={style.password}
-            prefix={<LockOutlined />}
-            type="password"
-            placeholder={t("placeholder.password")}
-          />
-        </Item>
-        <Item name={FIELDS.PASSWORD_CONFIRM} rules={rules.password}>
-          <Input.Password
-            className={style.passwordConfirm}
-            prefix={<LockOutlined />}
-            type="password"
-            placeholder={t("placeholder.password.confirm")}
-          />
-        </Item>
-        <Item>
-          <Button
-            onClick={handleClick}
-            type="primary"
-            htmlType="submit"
-            className={style.submitButton}
-            loading={submitLoading}
-          >
-            {t("submit.button")}
-          </Button>
-        </Item>
-      </FormUI>
-    </UnauthorizedLayout>
+    <FormUI
+      form={form}
+      name={FORM_NAME}
+      className={style.restorePassword}
+      onFinish={onFinish}
+    >
+      <Item name={FIELDS.PASSWORD} rules={rules.password}>
+        <Input.Password
+          className={style.password}
+          prefix={<LockOutlined />}
+          type="password"
+          placeholder={t("placeholder.password")}
+        />
+      </Item>
+      <Item name={FIELDS.PASSWORD_CONFIRM} rules={rules.password}>
+        <Input.Password
+          className={style.passwordConfirm}
+          prefix={<LockOutlined />}
+          type="password"
+          placeholder={t("placeholder.password.confirm")}
+        />
+      </Item>
+      <Item>
+        <Button
+          onClick={handleClick}
+          type="primary"
+          htmlType="submit"
+          className={style.submitButton}
+          loading={submitLoading}
+        >
+          {t("submit.button")}
+        </Button>
+      </Item>
+    </FormUI>
   );
 };
 

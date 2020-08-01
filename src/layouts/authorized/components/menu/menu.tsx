@@ -18,7 +18,7 @@ export const Menu = ({ collapsed }: MenuProps) => {
   return (
     <MenuUI
       mode="inline"
-      selectedKeys={[selectedKey]}
+      selectedKeys={selectedKey ? [selectedKey] : []}
       inlineCollapsed={collapsed}
     >
       {MENU_ITEMS.map(({ id, icon, title, url }) => (

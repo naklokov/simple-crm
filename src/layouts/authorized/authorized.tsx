@@ -1,8 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Layout } from "antd";
-import axios from "axios";
-import Cookie from "js-cookie";
-import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 
@@ -11,11 +8,7 @@ import { Logo, Menu, Profile } from "./components";
 import { State } from "../../__data__/interfaces";
 
 import style from "./authorized.module.scss";
-import { setMenuCollapsed, setProfileInfo } from "../../__data__";
-import { urls } from "../../constants";
-import { COOKIES } from "../../constants/http";
-import { logger } from "../../utils";
-import { useHistory } from "react-router";
+import { setMenuCollapsed } from "../../__data__";
 
 const { Sider, Content, Header } = Layout;
 
@@ -24,7 +17,6 @@ interface AuthorizedProps {
   loading: boolean;
   isMenuCollapsed: boolean;
   setCollapsed: (value: boolean) => void;
-  setProfile: (profileInfo: {}) => void;
 }
 
 export const Authorized = ({
@@ -32,30 +24,10 @@ export const Authorized = ({
   loading,
   isMenuCollapsed,
   setCollapsed,
-  setProfile,
 }: AuthorizedProps) => {
-  const history = useHistory();
-
   const handleCollapseMenu = () => {
     setCollapsed(!isMenuCollapsed);
   };
-
-  const getProfileInfo = async () => {
-    const username = Cookie.get(COOKIES.USERNAME);
-    try {
-      const profileInfo = await axios.get(urls.profile.info, {
-        params: { username },
-      });
-      setProfile(profileInfo);
-    } catch (error) {
-      logger.error({ message: error.message, username });
-      // TODO как обработать ошибки клиента?
-    }
-  };
-
-  useEffect(() => {
-    getProfileInfo();
-  }, []);
 
   return (
     <div>
@@ -92,9 +64,6 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setCollapsed: (value: boolean) => {
     dispatch(setMenuCollapsed(value));
-  },
-  setProfile: (profileInfo: {}) => {
-    dispatch(setProfileInfo(profileInfo));
   },
 });
 

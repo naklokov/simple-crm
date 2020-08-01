@@ -1,15 +1,18 @@
-const { addAuthCookie, sendStatus } = require("./auth");
+const { addAuthCookie, checkLogin } = require("./auth");
 const { HTTP_CODES } = require("../../src/constants/http");
 
 const loggerStub = require("./logger");
 const { checkToken } = require("./token");
 
-const emptySuccess = (req, res) => res.status(HTTP_CODES.SUCCESS).json({});
+const sendSuccessResponce = (json = {}) => (req, res) => {
+  console.log("enter send success");
+  res.status(HTTP_CODES.SUCCESS).json(json);
+};
 
 module.exports = {
   addAuthCookie,
-  sendStatus,
+  checkLogin,
   loggerStub,
   checkToken,
-  emptySuccess,
+  sendSuccessResponce,
 };

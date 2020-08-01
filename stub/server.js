@@ -1,6 +1,7 @@
 const jsonServer = require("json-server");
 const server = jsonServer.create();
-const router = jsonServer.router("db.json");
+
+const { dictionaries, profileInfo } = require("./jsons");
 
 const {
   login,
@@ -8,15 +9,15 @@ const {
   forgotPassword,
   restorePassword,
   profile,
-} = require("../../src/constants/urls");
+} = require("../src/constants/urls");
 
 const {
   addAuthCookie,
-  sendStatus,
+  checkLogin,
   loggerStub,
   checkToken,
-  emptySuccess,
-} = require("../utils");
+  sendSuccessResponce,
+} = require("./utils");
 
 // const middlewares = jsonServer.defaults()
 // Set default middlewares (logger, static, cors and no-cache)
@@ -24,25 +25,26 @@ const {
 
 server.use(jsonServer.bodyParser);
 
-// auth
-server.use(login.submit, addAuthCookie, sendStatus);
+// auth stub
+server.use(login.submit, addAuthCookie, checkLogin);
+server.use(login.logout, sendSuccessResponce());
 
 //logger stub
 server.post(log.base, loggerStub);
 
 //forgotPassword
-server.post(forgotPassword.submit, emptySuccess);
+server.post(forgotPassword.submit, sendSuccessResponce());
 
 //checkToken
 server.post(restorePassword.check, checkToken);
 //restorePassword
-server.post(restorePassword.submit, emptySuccess);
+server.post(restorePassword.submit, sendSuccessResponce());
 
 //getProfileInfo
-server.get(profile.info, (req, res) => res.status(HTTP_CODES.SUCCESS).json({}));
+server.get(profile.info, sendSuccessResponce(profileInfo));
 
-// Use default router
-server.use(router);
+server.use(dictionaries.position, sendSuccessResponce(dictionaries.position));
+
 server.listen(8080, () => {
   console.log("JSON server is running!");
 });

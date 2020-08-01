@@ -1,0 +1,8 @@
+@import "../../../../assets/styles/offsets";
+@import "../../../../assets/styles/colors";
+
+.container {
+  margin-top: var(--offset-md2);
+  background-color: var(--background-color-base);
+  height: 100%;
+}

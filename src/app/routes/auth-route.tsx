@@ -3,20 +3,21 @@ import React from "react";
 import { Redirect, Route } from "react-router";
 import { urls } from "../../constants";
 import { hasAuthCookie } from "../../utils";
+import { AuthorizedLayout } from "../../layouts";
 
-interface PrivateRouteProps {
+interface AuthorizeRouteProps {
   path: string;
   children: JSX.Element;
 }
 
-export const PrivateRoute = ({ children, ...rest }: PrivateRouteProps) => {
+export const AuthorizeRoute = ({ children, ...rest }: AuthorizeRouteProps) => {
   const isAuth = hasAuthCookie();
   return (
     <Route
       {...rest}
       render={({ location }) =>
         isAuth ? (
-          children
+          <AuthorizedLayout>{children}</AuthorizedLayout>
         ) : (
           <Redirect
             to={{
@@ -30,4 +31,4 @@ export const PrivateRoute = ({ children, ...rest }: PrivateRouteProps) => {
   );
 };
 
-export default PrivateRoute;
+export default AuthorizeRoute;

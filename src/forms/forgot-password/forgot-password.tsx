@@ -50,36 +50,34 @@ export const ForgotPassword = () => {
   };
 
   return (
-    <UnauthorizedLayout title={t("title")} description={t("description")}>
-      <FormUI
-        name={FORM_NAME}
-        className={style.forgotPasswordForm}
-        initialValues={initialValues}
-        onFinish={onFinish}
+    <FormUI
+      name={FORM_NAME}
+      className={style.forgotPasswordForm}
+      initialValues={initialValues}
+      onFinish={onFinish}
+    >
+      <Item
+        name={FIELDS.USERNAME}
+        rules={rules.username}
+        validateTrigger="onBlur"
       >
-        <Item
-          name={FIELDS.USERNAME}
-          rules={rules.username}
-          validateTrigger="onBlur"
+        <Input
+          className={style.username}
+          prefix={<UserOutlined />}
+          placeholder={t("placeholder.username")}
+        />
+      </Item>
+      <Item>
+        <Button
+          type="primary"
+          htmlType="submit"
+          className={style.submitButton}
+          loading={submitLoading}
         >
-          <Input
-            className={style.username}
-            prefix={<UserOutlined />}
-            placeholder={t("placeholder.username")}
-          />
-        </Item>
-        <Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={style.submitButton}
-            loading={submitLoading}
-          >
-            {t("submit.button")}
-          </Button>
-        </Item>
-      </FormUI>
-    </UnauthorizedLayout>
+          {t("submit.button")}
+        </Button>
+      </Item>
+    </FormUI>
   );
 };
 

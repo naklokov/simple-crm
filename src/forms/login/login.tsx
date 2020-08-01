@@ -18,7 +18,6 @@ import {
   getRules,
   getInitialValues,
 } from "./utils";
-import { UnauthorizedLayout } from "../../layouts";
 
 const { Item } = FormUI;
 
@@ -65,61 +64,59 @@ export const Login = () => {
   };
 
   return (
-    <UnauthorizedLayout title={t("title")}>
-      <FormUI
-        form={form}
-        name={FORM_NAME}
-        className={style.loginForm}
-        initialValues={initialValues}
-        onFinish={onFinish}
+    <FormUI
+      form={form}
+      name={FORM_NAME}
+      className={style.loginForm}
+      initialValues={initialValues}
+      onFinish={onFinish}
+    >
+      <Item
+        name={FIELDS.USERNAME}
+        rules={rules.username}
+        validateTrigger="onBlur"
       >
+        <Input
+          className={style.username}
+          prefix={<UserOutlined />}
+          placeholder={t("placeholder.username")}
+        />
+      </Item>
+      <Item name={FIELDS.PASSWORD} rules={rules.password}>
+        <Input.Password
+          className={style.password}
+          prefix={<LockOutlined />}
+          type="password"
+          placeholder={t("placeholder.password")}
+        />
+      </Item>
+      <Item>
         <Item
-          name={FIELDS.USERNAME}
-          rules={rules.username}
-          validateTrigger="onBlur"
+          name={FIELDS.REMEMBER_ME}
+          valuePropName="checked"
+          className={style.rememberMeCheckbox}
         >
-          <Input
-            className={style.username}
-            prefix={<UserOutlined />}
-            placeholder={t("placeholder.username")}
-          />
+          <Checkbox>{t("password.remember")}</Checkbox>
         </Item>
-        <Item name={FIELDS.PASSWORD} rules={rules.password}>
-          <Input.Password
-            className={style.password}
-            prefix={<LockOutlined />}
-            type="password"
-            placeholder={t("placeholder.password")}
-          />
-        </Item>
-        <Item>
-          <Item
-            name={FIELDS.REMEMBER_ME}
-            valuePropName="checked"
-            className={style.rememberMeCheckbox}
-          >
-            <Checkbox>{t("password.remember")}</Checkbox>
-          </Item>
-          <a
-            className={style.forgotPassword}
-            onClick={handleClickForgotPassword}
-            href={urls.forgotPassword.path}
-          >
-            {t("password.forgot")}
-          </a>
-        </Item>
-        <Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={style.submitButton}
-            loading={submitLoading}
-          >
-            {t("submit.button")}
-          </Button>
-        </Item>
-      </FormUI>
-    </UnauthorizedLayout>
+        <a
+          className={style.forgotPassword}
+          onClick={handleClickForgotPassword}
+          href={urls.forgotPassword.path}
+        >
+          {t("password.forgot")}
+        </a>
+      </Item>
+      <Item>
+        <Button
+          type="primary"
+          htmlType="submit"
+          className={style.submitButton}
+          loading={submitLoading}
+        >
+          {t("submit.button")}
+        </Button>
+      </Item>
+    </FormUI>
   );
 };
 

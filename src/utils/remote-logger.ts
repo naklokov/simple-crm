@@ -50,6 +50,7 @@ export const error = (props: LoggerProps) => {
   const logLevel = LogLevelsEnum.ERROR;
   const fullMessage = getFullMessage(props);
 
+  console.error(fullMessage);
   sendRemote(fullMessage, logLevel);
 };
 
@@ -57,6 +58,7 @@ export const warn = (props: LoggerProps) => {
   const logLevel = LogLevelsEnum.WARNING;
   const fullMessage = getFullMessage(props);
 
+  console.warn(fullMessage);
   sendRemote(fullMessage, logLevel);
 };
 
