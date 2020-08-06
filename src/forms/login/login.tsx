@@ -43,7 +43,8 @@ export const Login = () => {
 
       const prevUrl = getPrevUrl(history);
       history.push(prevUrl);
-    } catch ({ response: { data } }) {
+    } catch (err) {
+      const data = err?.responce?.data;
       if (data) {
         logger.error({
           value: data.errorCode,

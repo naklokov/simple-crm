@@ -48,5 +48,9 @@
     "profile.view": "Просмотр профиля",
     "profile.logout": "Выйти",
     "profile.get.success": "Профиль успешно загружен"
+  },
+  "profileMain": {
+    "title": "Информация о профиле",
+    "rules.required": "Пожалуйста, заполните поле"
   }
 }
