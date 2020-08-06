@@ -1,10 +1,10 @@
 import React from "react";
-import { Form, Input, Col } from "antd";
+import { Col, Form, DatePicker } from "antd";
 import { FormFieldProps } from "../../../constants";
 
-export const Text = ({
+export const DateTime = ({
   id,
-  format,
+  format = "DD:MM:YYYY",
   rules,
   title,
   description,
@@ -21,13 +21,14 @@ export const Text = ({
       extra={description}
       rules={rules}
     >
-      <Input
-        placeholder={placeholder}
-        disabled={disabled}
-        readOnly={readonly}
-      />
+      {/* <DatePicker
+        // format={format}
+        // placeholder={placeholder}
+        // disabled={disabled}
+        // inputReadOnly={readonly}
+      /> */}
     </Form.Item>
   </Col>
 );
 
-export default Text;
+export default DateTime;

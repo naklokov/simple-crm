@@ -79,7 +79,7 @@ export const getFields = (t: Function): FormFieldProps[] => [
   },
 ];
 
-export const getForm = (t) => ({
+export const getForm = (t: Function) => ({
   name: FORM_NAME,
   title: t("title"),
   fields: getFields(t),

@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Typography } from "antd";
+import { Form, Input, Typography, Row } from "antd";
 import { FORM_NAME } from "./constansts";
 import { connect } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -17,17 +17,6 @@ interface MainProps {
   setLoading: (loading: boolean) => void;
 }
 
-const formLayout = {
-  labelCol: {
-    span: 7,
-    offset: 1,
-  },
-  wrapperCol: {
-    span: 7,
-    offset: 1,
-  },
-};
-
 export const Main = ({ profileInfo, setProfile, setLoading }: MainProps) => {
   const [form] = Form.useForm();
   const [t] = useTranslation(FORM_NAME);
@@ -37,13 +26,14 @@ export const Main = ({ profileInfo, setProfile, setLoading }: MainProps) => {
     <div className={style.container}>
       <Typography.Title level={4}>{title}</Typography.Title>
       <Form
-        {...formLayout}
         layout="vertical"
         name={FORM_NAME}
         form={form}
         initialValues={profileInfo}
       >
-        {fields.map((field) => createFormField(field))}
+        <Row gutter={[80, 16]}>
+          {fields.map((field) => createFormField(field))}
+        </Row>
       </Form>
     </div>
   );

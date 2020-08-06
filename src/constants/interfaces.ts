@@ -11,4 +11,5 @@ export interface FormFieldProps {
   rules: Object[];
   ref?: string;
   rows?: number;
+  span?: number;
 }
