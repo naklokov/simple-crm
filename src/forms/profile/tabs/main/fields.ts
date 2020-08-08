@@ -45,7 +45,7 @@ export const getFields = (t: Function): FormFieldProps[] => [
     type: "dictionary",
     readonly: false,
     disabled: false,
-    rules: [{ required: true, message: t("rules.required") }],
+    rules: [],
     url: urls.dictionaries.position,
     span: 8,
   },

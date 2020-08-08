@@ -9,11 +9,9 @@ import { Dispatch } from "@reduxjs/toolkit";
 import { setProfileInfo, setLoading } from "../../../../__data__";
 import { connect } from "react-redux";
 import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
-import Cookie from "js-cookie";
 
 import style from "./profile.module.scss";
 import { useTranslation } from "react-i18next";
-import { COOKIES } from "../../../../constants/http";
 import { urls } from "../../../../constants";
 
 interface ProfileProps {
@@ -31,18 +29,16 @@ export const Profile = ({
   const { secondName, firstName, avatar } = profileInfo;
 
   const fetchProfile = async () => {
-    const username = Cookie.get(COOKIES.USERNAME);
     try {
       setLoading(true);
       const responce = await axios.get(urls.profile.info);
       setProfile(responce?.data ?? {});
 
       logger.debug({
-        username: Cookie.get(COOKIES.USERNAME),
         message: t("profile.get.success"),
       });
     } catch (error) {
-      logger.error({ message: error.message, username });
+      logger.error({ message: error.message });
     } finally {
       setLoading(false);
     }
@@ -55,7 +51,7 @@ export const Profile = ({
   const menu = (
     <Menu>
       <Menu.Item>
-        <Link to="/profile">{t("profile.view")}</Link>
+        <Link to={urls.profile.path}>{t("profile.view")}</Link>
       </Menu.Item>
       <Menu.Item onClick={logout}>{t("profile.logout")}</Menu.Item>
     </Menu>
@@ -63,7 +59,9 @@ export const Profile = ({
 
   return (
     <React.Fragment>
-      <Avatar src={avatar} icon={<UserOutlined />} />
+      <Link to={"/"}>
+        <Avatar src={avatar} icon={<UserOutlined />} />
+      </Link>
       <Dropdown overlay={menu}>
         <div className={style.dropdownContainer}>
           <Typography.Text

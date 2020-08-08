@@ -13,12 +13,14 @@ export const logout = () => {
   Cookie.remove(COOKIES.USERNAME);
   Cookie.remove(COOKIES.JSESSIONID);
   Cookie.remove(COOKIES.REMEMBER_ME);
+  localStorage.clear();
 
   try {
     axios.get(urls.login.logout);
     window.location.replace("/");
+    logger.debug({ message: "Пользователь вышел из системы", username });
   } catch (error) {
-    logger.error({ username, message: error.message });
+    logger.error({ message: error.message, username });
   }
 };
 
