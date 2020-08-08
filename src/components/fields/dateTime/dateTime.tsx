@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { Col, Form, DatePicker } from "antd";
-import { FormFieldProps, DATE_FORMATS } from "../../../constants";
+import { FormFieldProps, DATE_FORMATS, DEFAULT_SPAN } from "../../../constants";
 
 import "moment/locale/ru";
 import locale from "antd/es/date-picker/locale/ru_RU";
@@ -23,7 +23,7 @@ export const DateTime = ({
   placeholder = "Введите дату",
   disabled = false,
   readonly = false,
-  span = 24,
+  span = DEFAULT_SPAN,
 }: FormFieldProps) => (
   <Col span={span} key={id}>
     <Form.Item

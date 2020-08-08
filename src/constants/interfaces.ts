@@ -12,14 +12,15 @@ export interface FormFieldProps {
   url?: string;
   rows?: number;
   span?: number;
+  offset?: number;
 }
 
 export interface DictionaryProps {
-  id: string;
-  dictionaryCode: string;
-  dictionaryName: string;
+  id?: string;
+  dictionaryCode?: string;
+  dictionaryName?: string;
   dictionaryDescription?: string;
-  dictionaryValueEntities: OptionProps[];
+  dictionaryValueEntities?: OptionProps[];
 }
 
 export interface OptionProps {

@@ -6,3 +6,9 @@ export const DATE_FORMATS = {
 export const TEXT_FORMATS = {
   TEXT_AREA: "textarea",
 };
+
+export const DEFAULT_SPAN = 24;
+export const GUTTER_FULL_WIDTH = {
+  HORIZONTAL: 128,
+  VERTICAL: 16,
+};

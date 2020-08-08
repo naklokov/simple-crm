@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Input, Col } from "antd";
-import { FormFieldProps } from "../../../constants";
+import { FormFieldProps, DEFAULT_SPAN } from "../../../constants";
 
 export const TextArea = ({
   id,
@@ -11,7 +11,7 @@ export const TextArea = ({
   disabled = false,
   readonly = false,
   rows = 4,
-  span = 24,
+  span = DEFAULT_SPAN,
 }: FormFieldProps) => {
   return (
     <Col span={span} key={id}>

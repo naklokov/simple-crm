@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { fields } from "../components";
 import { FormFieldProps, TEXT_FORMATS } from "../constants";
-import mapValues from "lodash/mapValues";
+import isEqual from "lodash/isEqual";
+import some from "lodash/some";
 
 const { Text, TextArea, DateTime, Dictionary } = fields;
 
-export const convertInitialValues = (values: Object) =>
-  mapValues(values, (field: FormFieldProps) => {
-    if (field.type == "date") {
-      return;
-    }
-  });
+export const isValuesChanged = (
+  prev: { [key: string]: any },
+  next: { [key: string]: any }
+): boolean => {
+  const keys = Object.keys(next);
+  return some(keys, (key) => !isEqual(prev[key], next[key]));
+};
 
 export const createFormField = (field: FormFieldProps) => {
   switch (field.type) {

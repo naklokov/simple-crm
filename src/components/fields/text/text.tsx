@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Input, Col } from "antd";
-import { FormFieldProps } from "../../../constants";
+import { FormFieldProps, DEFAULT_SPAN } from "../../../constants";
 
 export const Text = ({
   id,
@@ -11,7 +11,7 @@ export const Text = ({
   placeholder,
   disabled = false,
   readonly = false,
-  span = 24,
+  span = DEFAULT_SPAN,
 }: FormFieldProps) => (
   <Col span={span} key={id}>
     <Form.Item

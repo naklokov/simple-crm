@@ -40,7 +40,6 @@ export const errorsInterceptor = (dispatch: Function) => (error: any) => {
   } catch (error) {
     logger.error({
       message: error.message,
-      username: Cookie.get("username"),
     });
 
     Promise.reject(error);

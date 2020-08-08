@@ -3,21 +3,22 @@ import axios from "axios";
 import Cookie from "js-cookie";
 import isEmpty from "lodash/isEmpty";
 import { Col, Form, Select } from "antd";
-import { FormFieldProps, OptionProps } from "../../../constants";
+import { Dispatch } from "@reduxjs/toolkit";
+import {
+  FormFieldProps,
+  DictionaryProps,
+  DEFAULT_SPAN,
+} from "../../../constants";
 import { COOKIES } from "../../../constants/http";
 import { logger } from "../../../utils";
+import { setLoading } from "../../../__data__";
+import { connect } from "react-redux";
 
 const { Option } = Select;
 
-const fetchDictionary = async (ref: string) => {
-  const username = Cookie.get(COOKIES.USERNAME);
-  try {
-    const responce = await axios.get(ref);
-    return responce?.data ?? {};
-  } catch (error) {
-    logger.error({ message: error.message, username });
-  }
-};
+interface DictionaryComponentProps extends FormFieldProps {
+  setLoading: (loading: boolean) => void;
+}
 
 export const Dictionary = ({
   id,
@@ -29,18 +30,29 @@ export const Dictionary = ({
   disabled = false,
   readonly = false,
   url = "",
-  span = 24,
-}: FormFieldProps) => {
-  debugger;
-  const [options, setOptions] = useState<OptionProps[]>([]);
+  span = DEFAULT_SPAN,
+  setLoading,
+}: DictionaryComponentProps) => {
+  const [dictionary, setDictionary] = useState<DictionaryProps>({});
+  const { dictionaryValueEntities: options } = dictionary;
+
+  const fetchDictionary = async () => {
+    try {
+      setLoading(true);
+      const responce = await axios.get(url);
+      setDictionary(responce?.data ?? {});
+    } catch (error) {
+      logger.error({ message: error.message });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    debugger;
-    const dictionary: any = fetchDictionary(url);
-    setOptions(dictionary?.dictionaryValueEntities || []);
+    fetchDictionary();
   }, [url]);
 
-  if (isEmpty(options)) {
+  if (!options || isEmpty(options)) {
     return null;
   }
 
@@ -52,8 +64,10 @@ export const Dictionary = ({
           style={{ width: "100%" }}
           disabled={disabled}
         >
-          {options.map(({ id, value }) => (
-            <Option value={id}>{value}</Option>
+          {options.map(({ id, value, valueCode }) => (
+            <Option key={id} value={valueCode}>
+              {value}
+            </Option>
           ))}
         </Select>
       </Form.Item>
@@ -61,4 +75,8 @@ export const Dictionary = ({
   );
 };
 
-export default Dictionary;
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  setLoading: (loading: boolean) => dispatch(setLoading(loading)),
+});
+
+export default connect(null, mapDispatchToProps)(Dictionary);

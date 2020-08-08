@@ -9,6 +9,7 @@ const {
   forgotPassword,
   restorePassword,
   profile,
+  dictionaries: dictionariesUrls,
 } = require("../src/constants/urls");
 
 const {
@@ -17,6 +18,7 @@ const {
   loggerStub,
   checkToken,
   sendSuccessResponce,
+  sendPostResponce,
 } = require("./utils");
 
 // const middlewares = jsonServer.defaults()
@@ -42,8 +44,12 @@ server.post(restorePassword.submit, sendSuccessResponce());
 
 //getProfileInfo
 server.get(profile.info, sendSuccessResponce(profileInfo));
+server.post(profile.info, sendPostResponce(profileInfo));
 
-server.use(dictionaries.position, sendSuccessResponce(dictionaries.position));
+server.get(
+  dictionariesUrls.position,
+  sendSuccessResponce(dictionaries.position)
+);
 
 server.listen(8080, () => {
   console.log("JSON server is running!");

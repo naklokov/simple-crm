@@ -1,4 +1,3 @@
-import { FORM_NAME } from "./constansts";
 import { urls, TEXT_FORMATS, DATE_FORMATS } from "../../../../constants";
 import { FormFieldProps } from "../../../../constants";
 
@@ -6,6 +5,24 @@ export const getFields = (t: Function): FormFieldProps[] => [
   {
     id: "secondName",
     title: "Фамилия",
+    type: "string",
+    readonly: false,
+    disabled: false,
+    rules: [{ required: true, message: t("rules.required") }],
+    span: 8,
+  },
+  {
+    id: "firstName",
+    title: "Имя",
+    type: "string",
+    readonly: false,
+    disabled: false,
+    rules: [{ required: true, message: t("rules.required") }],
+    span: 8,
+  },
+  {
+    id: "lastName",
+    title: "Отчество",
     type: "string",
     readonly: false,
     disabled: false,
@@ -33,20 +50,11 @@ export const getFields = (t: Function): FormFieldProps[] => [
     span: 8,
   },
   {
-    id: "firstName",
-    title: "Имя",
-    type: "string",
-    readonly: true,
-    disabled: false,
-    rules: [{ required: true, message: t("rules.required") }],
-    span: 8,
-  },
-  {
     id: "email",
     title: "Email",
     type: "string",
-    readonly: true,
-    disabled: false,
+    readonly: false,
+    disabled: true,
     rules: [
       { required: true, message: t("rules.required") },
       {
@@ -54,15 +62,6 @@ export const getFields = (t: Function): FormFieldProps[] => [
         message: "Пожалуйста, введите корректный email",
       },
     ],
-    span: 8,
-  },
-  {
-    id: "lastName",
-    title: "Отчество",
-    type: "string",
-    readonly: false,
-    disabled: false,
-    rules: [{ required: true, message: t("rules.required") }],
     span: 8,
   },
   {
@@ -87,9 +86,3 @@ export const getFields = (t: Function): FormFieldProps[] => [
     span: 16,
   },
 ];
-
-export const getForm = (t: Function) => ({
-  name: FORM_NAME,
-  title: t("title"),
-  fields: getFields(t),
-});

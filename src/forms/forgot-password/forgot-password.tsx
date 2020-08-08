@@ -13,7 +13,6 @@ import { logger } from "../../utils";
 import { FORM_NAME, FIELDS } from "./constants";
 
 import { getRules, getInitialValues } from "./utils";
-import { UnauthorizedLayout } from "../../layouts";
 
 const { Item } = FormUI;
 
@@ -40,7 +39,6 @@ export const ForgotPassword = () => {
       logger.error({
         value: data.errorCode,
         message: data.errorDescription,
-        username,
       });
 
       message.error(data.errorDescription || t("message.error"));

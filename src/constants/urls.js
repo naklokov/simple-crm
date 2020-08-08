@@ -36,6 +36,6 @@ module.exports = {
     path: "/knowledge",
   },
   dictionaries: {
-    position: "/crm/rest/dictionary/POSITION",
+    position: "/crm/rest/dictionary/position",
   },
 };

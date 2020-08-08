@@ -1,5 +1,9 @@
 import axios from "axios";
 import { urls } from "../constants";
+import Cookie from "js-cookie";
+import { COOKIES } from "../constants/http";
+
+const usernameFromCookie = Cookie.get(COOKIES.USERNAME);
 
 export const HEADERS = {
   Accept: "application/json",
@@ -19,7 +23,11 @@ interface LoggerProps {
   value?: string | number;
 }
 
-export const getFullMessage = ({ message, value, username }: LoggerProps) => {
+export const getFullMessage = ({
+  message,
+  value,
+  username = usernameFromCookie,
+}: LoggerProps) => {
   let fullMessage = message;
 
   if (value) {
