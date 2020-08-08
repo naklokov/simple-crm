@@ -28,7 +28,6 @@ export const Main = ({ profileInfo, setProfile }: MainProps) => {
 
   const handleValuesChange = (changed: Object, allValues: Object) => {
     const isChanged = isValuesChanged(profileInfo, allValues);
-    console.log(isChanged);
     setSubmitDisabled(!isChanged);
   };
 

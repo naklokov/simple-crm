@@ -56,7 +56,6 @@ export const getFields = (t: Function): FormFieldProps[] => [
     readonly: false,
     disabled: true,
     rules: [
-      { required: true, message: t("rules.required") },
       {
         type: "email",
         message: "Пожалуйста, введите корректный email",
