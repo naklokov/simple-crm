@@ -1,5 +1,5 @@
 import { FORM_NAME } from "./constansts";
-import { urls } from "../../../../constants";
+import { urls, TEXT_FORMATS, DATE_FORMATS } from "../../../../constants";
 import { FormFieldProps } from "../../../../constants";
 
 export const getFields = (t: Function): FormFieldProps[] => [
@@ -10,23 +10,27 @@ export const getFields = (t: Function): FormFieldProps[] => [
     readonly: false,
     disabled: false,
     rules: [{ required: true, message: t("rules.required") }],
+    span: 8,
   },
   {
     id: "birthDate",
     title: "Дата рождения",
     type: "date",
+    format: DATE_FORMATS.DATE,
     readonly: false,
     disabled: false,
     rules: [{ required: true, message: t("rules.required") }],
+    span: 8,
   },
   {
     id: "position",
     title: "Должность",
     type: "dictionary",
     readonly: false,
-    disabled: true,
+    disabled: false,
     rules: [{ required: true, message: t("rules.required") }],
-    ref: urls.dictionaries.position,
+    url: urls.dictionaries.position,
+    span: 8,
   },
   {
     id: "firstName",
@@ -35,10 +39,11 @@ export const getFields = (t: Function): FormFieldProps[] => [
     readonly: true,
     disabled: false,
     rules: [{ required: true, message: t("rules.required") }],
+    span: 8,
   },
   {
     id: "email",
-    title: "Имя",
+    title: "Email",
     type: "string",
     readonly: true,
     disabled: false,
@@ -49,6 +54,7 @@ export const getFields = (t: Function): FormFieldProps[] => [
         message: "Пожалуйста, введите корректный email",
       },
     ],
+    span: 8,
   },
   {
     id: "lastName",
@@ -57,6 +63,7 @@ export const getFields = (t: Function): FormFieldProps[] => [
     readonly: false,
     disabled: false,
     rules: [{ required: true, message: t("rules.required") }],
+    span: 8,
   },
   {
     id: "location",
@@ -65,17 +72,19 @@ export const getFields = (t: Function): FormFieldProps[] => [
     readonly: false,
     disabled: false,
     rules: [{ required: true, message: t("rules.required") }],
+    span: 8,
   },
   {
     id: "aboutMe",
     title: "О себе",
     type: "string",
-    format: "textarea",
+    format: TEXT_FORMATS.TEXT_AREA,
     placeholder: "Введите информацию о ваших увлечениях, хобби, интересах...",
     description: "Максимум 2000 символов",
     readonly: false,
     disabled: false,
     rules: [],
+    span: 16,
   },
 ];
 

@@ -4,7 +4,6 @@ import { FormFieldProps } from "../../../constants";
 
 export const TextArea = ({
   id,
-  format,
   rules,
   title,
   description,
@@ -12,7 +11,7 @@ export const TextArea = ({
   disabled = false,
   readonly = false,
   rows = 4,
-  span = 16,
+  span = 24,
 }: FormFieldProps) => {
   return (
     <Col span={span} key={id}>

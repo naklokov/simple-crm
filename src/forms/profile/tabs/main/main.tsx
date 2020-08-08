@@ -31,7 +31,7 @@ export const Main = ({ profileInfo, setProfile, setLoading }: MainProps) => {
         form={form}
         initialValues={profileInfo}
       >
-        <Row gutter={[80, 16]}>
+        <Row gutter={[128, 16]}>
           {fields.map((field) => createFormField(field))}
         </Row>
       </Form>

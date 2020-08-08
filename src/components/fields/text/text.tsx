@@ -11,7 +11,7 @@ export const Text = ({
   placeholder,
   disabled = false,
   readonly = false,
-  span = 8,
+  span = 24,
 }: FormFieldProps) => (
   <Col span={span} key={id}>
     <Form.Item

@@ -1,32 +1,46 @@
 import React from "react";
+import moment from "moment";
 import { Col, Form, DatePicker } from "antd";
-import { FormFieldProps } from "../../../constants";
+import { FormFieldProps, DATE_FORMATS } from "../../../constants";
+
+import "moment/locale/ru";
+import locale from "antd/es/date-picker/locale/ru_RU";
+
+const handleValueProp = (value: any) => {
+  if (typeof value === "string") {
+    return { value: moment(value) };
+  }
+
+  return { value };
+};
 
 export const DateTime = ({
   id,
-  format = "DD:MM:YYYY",
+  format = DATE_FORMATS.DATE,
   rules,
   title,
   description,
-  placeholder,
+  placeholder = "Введите дату",
   disabled = false,
   readonly = false,
-  span = 8,
+  span = 24,
 }: FormFieldProps) => (
   <Col span={span} key={id}>
     <Form.Item
-      style={{ width: "100%" }}
       name={id}
       label={title}
       extra={description}
       rules={rules}
+      getValueProps={handleValueProp}
     >
-      {/* <DatePicker
-        // format={format}
-        // placeholder={placeholder}
-        // disabled={disabled}
-        // inputReadOnly={readonly}
-      /> */}
+      <DatePicker
+        style={{ width: "100%" }}
+        format={format}
+        locale={locale}
+        placeholder={placeholder}
+        disabled={disabled}
+        inputReadOnly={readonly}
+      />
     </Form.Item>
   </Col>
 );

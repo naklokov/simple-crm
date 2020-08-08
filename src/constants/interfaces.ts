@@ -9,7 +9,24 @@ export interface FormFieldProps {
   disabled: boolean;
   format?: string;
   rules: Object[];
-  ref?: string;
+  url?: string;
   rows?: number;
   span?: number;
+}
+
+export interface DictionaryProps {
+  id: string;
+  dictionaryCode: string;
+  dictionaryName: string;
+  dictionaryDescription?: string;
+  dictionaryValueEntities: OptionProps[];
+}
+
+export interface OptionProps {
+  id: string;
+  dictionaryId: string;
+  valueCode: string;
+  value: string;
+  valueDescription?: string;
+  deleted: boolean;
 }
