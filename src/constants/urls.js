@@ -1,18 +1,18 @@
 module.exports = {
   error: {
-    path: "/crm/errors",
+    path: "/errors",
   },
   login: {
-    path: "/crm/login",
+    path: "/login",
     submit: "/crm/login",
     logout: "/crm/logout",
   },
   forgotPassword: {
-    path: "/crm/forgotPassword",
+    path: "/forgotPassword",
     submit: "/crm/rest/password/initiate",
   },
   restorePassword: {
-    path: "/crm/restorePassword",
+    path: "/restorePassword",
     check: "/crm/rest/password/checkToken",
     submit: "/crm/rest/password/change",
   },
@@ -26,16 +26,16 @@ module.exports = {
     entity: "/crm/rest/entity/userProfile",
   },
   clients: {
-    path: "/crm/clients",
+    path: "/clients",
   },
   tasks: {
-    path: "/crm/tasks",
+    path: "/tasks",
   },
   deals: {
-    path: "/crm/deals",
+    path: "/deals",
   },
   knowledge: {
-    path: "/crm/knowledge",
+    path: "/knowledge",
   },
   dictionaries: {
     position: "/crm/rest/dictionary/position",

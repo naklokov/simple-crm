@@ -31,7 +31,7 @@ const {
 const Routes = () => {
   const [t] = useTranslation();
   return (
-    <Router>
+    <Router basename={http.ROOT_URL}>
       <Switch>
         <AuthorizeRoute path={urls.profile.path}>
           <Profile />

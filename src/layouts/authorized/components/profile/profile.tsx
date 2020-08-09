@@ -12,7 +12,7 @@ import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
 
 import style from "./profile.module.scss";
 import { useTranslation } from "react-i18next";
-import { urls } from "../../../../constants";
+import { urls, http } from "../../../../constants";
 
 interface ProfileProps {
   profileInfo: ProfileInfoProps;
@@ -59,7 +59,7 @@ export const Profile = ({
 
   return (
     <React.Fragment>
-      <Link to={"/"}>
+      <Link to="/">
         <Avatar src={avatar} icon={<UserOutlined />} />
       </Link>
       <Dropdown overlay={menu}>

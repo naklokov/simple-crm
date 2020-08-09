@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import style from "./forgot-password.module.scss";
 import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
-import { urls } from "../../constants";
+import { urls, http } from "../../constants";
 import { logger } from "../../utils";
 import { FORM_NAME, FIELDS } from "./constants";
 
