@@ -36,7 +36,10 @@ export const Main = ({ profileInfo, setProfile }: MainProps) => {
       setSubmitLoading(true);
       const responce = await axios.put(
         `${urls.profile.entity}/${profileInfo.businessId}`,
-        values
+        {
+          ...profileInfo,
+          ...values,
+        }
       );
 
       setProfile(responce.data);
