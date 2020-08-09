@@ -15,6 +15,11 @@ export const errorsInterceptor = (dispatch: Function) => (error: any) => {
   try {
     let originalRequest = error.config;
     const statusCode = error?.response?.status;
+    const errorDescription = error?.response?.data?.errorDescription ?? "";
+
+    logger.error({
+      message: errorDescription,
+    });
 
     if (NODE_ENV === "development") {
       console.error(
@@ -24,7 +29,6 @@ export const errorsInterceptor = (dispatch: Function) => (error: any) => {
     }
 
     if (statusCode === HTTP_CODES.UNAUTHORIZED) {
-      const errorDescription = error?.response?.data?.errorDescription;
       if (errorDescription) {
         message.error(errorDescription);
       }

@@ -44,7 +44,7 @@ server.post(restorePassword.submit, sendSuccessResponce());
 
 //getProfileInfo
 server.get(profile.info, sendSuccessResponce(profileInfo));
-server.post(profile.info, sendPostResponce(profileInfo));
+server.post(profile.entity, sendPostResponce(profileInfo));
 
 server.get(
   dictionariesUrls.position,
