@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 
 import {
-  Error,
   Login,
   ForgotPassword,
   Clients,
@@ -23,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import { FORM_NAME as loginFormName } from "../../forms/login/constants";
 import { FORM_NAME as forgotPasswordFormName } from "../../forms/forgot-password/constants";
 import { FORM_NAME as restorePasswordFormName } from "../../forms/restore-password/constants";
+import { NotFound } from "../../forms/errors/not-found";
 
 const {
   HTTP_CODES: { NOT_FOUND },
@@ -70,11 +70,20 @@ const Routes = () => {
           <RestorePassword />
         </UnauthorizeRoute>
 
-        <Route path={concatErrorPath()}>
+        <Route path={}>
           <Error />
         </Route>
-        <Redirect from="/" to={{ pathname: urls.clients.path }} exact />
-        <Redirect from="*" to={{ pathname: concatErrorPath(NOT_FOUND) }} />
+        <Route path={}>
+          <Error />
+        </Route>
+        <Redirect
+          from={http.ROOT_URL}
+          to={{ pathname: urls.clients.path }}
+          exact
+        />
+        <Route path="*">
+          <NotFound />
+        </Route>
       </Switch>
     </Router>
   );

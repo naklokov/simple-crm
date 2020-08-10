@@ -31,3 +31,9 @@ export interface OptionProps {
   valueDescription?: string;
   deleted: boolean;
 }
+
+export interface ErrorProps {
+  errorDescription?: string;
+  errorCode?: string;
+  errorMessage?: string;
+}

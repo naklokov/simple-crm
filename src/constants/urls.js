@@ -1,6 +1,7 @@
 module.exports = {
-  error: {
-    path: "/errors",
+  errors: {
+    forbidden: "/forbidden",
+    serverError: "/serverError",
   },
   login: {
     path: "/login",

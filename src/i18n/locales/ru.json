@@ -1,6 +1,5 @@
 {
   "error": {
-    "title.client": "Что-то пошло не так...",
     "title.forbidden": "Недостаточно прав",
     "title.unauthorized": "Произошла ошибка авторизации",
     "title.server": "Произошла техническая ошибка",
