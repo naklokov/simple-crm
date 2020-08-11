@@ -1,0 +1,41 @@
+@import "../../../../assets/styles/offsets";
+@import "../../../../assets/styles/colors";
+
+.container {
+  height: 310px;
+  background-color: var(--background-color-base);
+}
+
+.header {
+  width: 100%;
+  height: 100%;
+}
+
+.background {
+  height: 200px;
+  background: linear-gradient(
+    var(--profile-background-color-from),
+    var(--profile-background-color-to) 70.71%
+  );
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
+}
+
+.avatar {
+  position: relative;
+  top: var(--offset-lg);
+  left: var(--offset-lg);
+  z-index: 5;
+}
+
+.fio {
+  position: relative;
+  left: calc(var(--offset-lg) + 218px);
+  vertical-align: bottom;
+  display: inline;
+}
+
+.tabs {
+  position: relative;
+  left: var(--offset-lg);
+  top: var(--offset-md2);
+}

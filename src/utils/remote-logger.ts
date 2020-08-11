@@ -1,5 +1,9 @@
 import axios from "axios";
 import { urls } from "../constants";
+import Cookie from "js-cookie";
+import { COOKIES } from "../constants/http";
+
+const usernameFromCookie = Cookie.get(COOKIES.USERNAME);
 
 export const HEADERS = {
   Accept: "application/json",
@@ -19,7 +23,11 @@ interface LoggerProps {
   value?: string | number;
 }
 
-export const getFullMessage = ({ message, value, username }: LoggerProps) => {
+export const getFullMessage = ({
+  message,
+  value,
+  username = usernameFromCookie,
+}: LoggerProps) => {
   let fullMessage = message;
 
   if (value) {
@@ -50,6 +58,7 @@ export const error = (props: LoggerProps) => {
   const logLevel = LogLevelsEnum.ERROR;
   const fullMessage = getFullMessage(props);
 
+  console.error(fullMessage);
   sendRemote(fullMessage, logLevel);
 };
 
@@ -57,6 +66,7 @@ export const warn = (props: LoggerProps) => {
   const logLevel = LogLevelsEnum.WARNING;
   const fullMessage = getFullMessage(props);
 
+  console.warn(fullMessage);
   sendRemote(fullMessage, logLevel);
 };
 

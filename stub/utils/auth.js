@@ -18,7 +18,7 @@ const addAuthCookie = (req, res, next) => {
   next();
 };
 
-const sendStatus = (req, res) => {
+const checkLogin = (req, res) => {
   if (req.body) {
     const username = req.body.username;
     if (username === validUsername) {
@@ -32,4 +32,4 @@ const sendStatus = (req, res) => {
   });
 };
 
-module.exports = { addAuthCookie, sendStatus };
+module.exports = { addAuthCookie, checkLogin };

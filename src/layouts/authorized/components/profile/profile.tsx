@@ -1,31 +1,60 @@
-import React from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
 import { Avatar, Typography, Dropdown, Menu } from "antd";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
-import { logout } from "../../../../utils";
+import { logout as logoutMethod, logger } from "../../../../utils";
+import { Dispatch } from "@reduxjs/toolkit";
+import { setProfileInfo, setLoading } from "../../../../__data__";
+import { connect } from "react-redux";
+import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
+
 import style from "./profile.module.scss";
+import { useTranslation } from "react-i18next";
+import { urls, http } from "../../../../constants";
 
-const getAvatar = () => {
-  return "";
-};
+interface ProfileProps {
+  profileInfo: ProfileInfoProps;
+  setProfile: (profileInfo: object) => void;
+  setLoading: (loading: boolean) => void;
+  logout: () => void;
+}
 
-const getUser = () => ({
-  firstName: "Василий",
-  secondName: "Чапаев",
-  middleName: "Иванович",
-});
-
-export const Profile = () => {
-  const avatar = getAvatar();
-  const user = getUser();
+export const Profile = ({
+  profileInfo,
+  setProfile,
+  setLoading,
+  logout,
+}: ProfileProps) => {
   const [t] = useTranslation("authorizedLayout");
+  const { secondName, firstName, avatar } = profileInfo;
+
+  const fetchProfile = async () => {
+    try {
+      setLoading(true);
+      const responce = await axios.get(urls.profile.info);
+      setProfile(responce?.data ?? {});
+
+      logger.debug({
+        message: t("profile.get.success"),
+      });
+    } catch (error) {
+      const data = error?.response?.data ?? {};
+      logger.error({ message: data.errorDescription || t("profile.error") });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
   const menu = (
     <Menu>
       <Menu.Item>
-        <Link to="/profile">{t("profile.view")}</Link>
+        <Link to={urls.profile.path}>{t("profile.view")}</Link>
       </Menu.Item>
       <Menu.Item onClick={logout}>{t("profile.logout")}</Menu.Item>
     </Menu>
@@ -33,12 +62,14 @@ export const Profile = () => {
 
   return (
     <React.Fragment>
-      <Avatar src={avatar} icon={<UserOutlined />} />
+      <Link to="/">
+        <Avatar src={avatar} icon={<UserOutlined />} />
+      </Link>
       <Dropdown overlay={menu}>
         <div className={style.dropdownContainer}>
           <Typography.Text
             strong
-          >{`${user.secondName} ${user.firstName}`}</Typography.Text>
+          >{`${secondName} ${firstName}`}</Typography.Text>
           <DownOutlined />
         </div>
       </Dropdown>
@@ -46,4 +77,16 @@ export const Profile = () => {
   );
 };
 
-export default Profile;
+const mapStateToProps = (state: State) => ({
+  profileInfo: state?.persist?.profileInfo ?? {},
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  setProfile: (profileInfo: ProfileInfoProps) => {
+    dispatch(setProfileInfo(profileInfo));
+  },
+  setLoading: (loading: boolean) => dispatch(setLoading(loading)),
+  logout: () => logoutMethod(dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

@@ -1,6 +1,5 @@
 import React from "react";
-import { Layout, Button } from "antd";
-import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
+import { Layout } from "antd";
 import { connect } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 
@@ -26,19 +25,13 @@ export const Authorized = ({
   isMenuCollapsed,
   setCollapsed,
 }: AuthorizedProps) => {
-  const iconCollapsed = isMenuCollapsed ? (
-    <MenuUnfoldOutlined />
-  ) : (
-    <MenuFoldOutlined />
-  );
-
   const handleCollapseMenu = () => {
     setCollapsed(!isMenuCollapsed);
   };
 
   return (
     <div>
-      {loading && <Loader />}
+      {/* {loading && <Loader />} */}
       <Layout>
         <Sider
           collapsible
@@ -52,11 +45,6 @@ export const Authorized = ({
         </Sider>
         <Layout>
           <Header className={style.header}>
-            <Button
-              className={style.buttonCollapsed}
-              icon={iconCollapsed}
-              onClick={handleCollapseMenu}
-            />
             <div className={style.profile}>
               <Profile />
             </div>
@@ -69,7 +57,7 @@ export const Authorized = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  loading: state?.persist?.loading,
+  loading: state?.app?.loading,
   isMenuCollapsed: state?.persist?.menuCollapsed,
 });
 

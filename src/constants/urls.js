@@ -1,10 +1,12 @@
 module.exports = {
-  error: {
-    path: "/errors",
+  errors: {
+    forbidden: "/forbidden",
+    serverError: "/serverError",
   },
   login: {
     path: "/login",
     submit: "/crm/login",
+    logout: "/crm/logout",
   },
   forgotPassword: {
     path: "/forgotPassword",
@@ -16,7 +18,13 @@ module.exports = {
     submit: "/crm/rest/password/change",
   },
   log: {
-    base: "/crm/log",
+    base: "/crm/rest/log",
+  },
+  profile: {
+    path: "/profile",
+    info: "/crm/rest/user/profile",
+    permissions: "/crm/rest/user/permission",
+    entity: "/crm/rest/entity/userProfiles",
   },
   clients: {
     path: "/clients",
@@ -29,5 +37,8 @@ module.exports = {
   },
   knowledge: {
     path: "/knowledge",
+  },
+  dictionaries: {
+    position: "/crm/rest/dictionary/position",
   },
 };

@@ -9,7 +9,7 @@ exports[`render correct with collapsed false 1`] = `
   style={Object {}}
 >
   <li
-    className="ant-menu-item ant-menu-item-selected"
+    className="ant-menu-item"
     onClick={[Function]}
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
@@ -184,7 +184,7 @@ exports[`render correct with collapsed true 1`] = `
   style={Object {}}
 >
   <li
-    className="ant-menu-item ant-menu-item-selected"
+    className="ant-menu-item"
     onClick={[Function]}
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}

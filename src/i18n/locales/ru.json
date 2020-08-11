@@ -1,9 +1,8 @@
 {
   "error": {
-    "title.client": "Что-то пошло не так...",
     "title.forbidden": "Недостаточно прав",
     "title.unauthorized": "Произошла ошибка авторизации",
-    "title.server": "Произошла системная ошибка",
+    "title.server": "Произошла техническая ошибка",
     "title.404": "Страница не найдена",
     "subtitle.default": "Обратитесь к системному администратору",
     "button": "Вернуться на главную"
@@ -46,6 +45,15 @@
   },
   "authorizedLayout": {
     "profile.view": "Просмотр профиля",
-    "profile.logout": "Выйти"
+    "profile.logout": "Выйти",
+    "profile.get.success": "Профиль успешно загружен",
+    "profile.error": "Произошла ошибка при загрузке профиля"
+  },
+  "profileMain": {
+    "title": "Информация о профиле",
+    "rules.required": "Пожалуйста, заполните поле",
+    "submit.button": "Сохранить",
+    "message.success": "Профиль успешно отредактирован",
+    "message.error": "Ошибка при изменении профиля"
   }
 }

@@ -7,60 +7,76 @@ import {
 } from "react-router-dom";
 
 import {
-  Error,
   Login,
   ForgotPassword,
   Clients,
   RestorePassword,
+  Profile,
+  ServerError,
+  ForbiddenError,
+  NotFoundError,
 } from "../../forms";
-import PrivateRoute from "./private-route";
+import { AuthorizeRoute, UnauthorizeRoute } from ".";
 
-import { concatErrorPath } from "../../utils";
-import { urls, http } from "../../constants";
+import { urls, http, ErrorProps } from "../../constants";
+import { ErrorScreenWrapper } from "../wrappers";
 import { Typography } from "antd";
-import { AuthorizedLayout } from "../../layouts";
+import { useTranslation } from "react-i18next";
+import { FORM_NAME as loginFormName } from "../../forms/login/constants";
+import { FORM_NAME as forgotPasswordFormName } from "../../forms/forgot-password/constants";
+import { FORM_NAME as restorePasswordFormName } from "../../forms/restore-password/constants";
 
-const {
-  HTTP_CODES: { NOT_FOUND },
-} = http;
+const MAIN_PAGE = urls.clients.path;
 
-const Routes = () => (
-  <Router>
-    <Switch>
-      <Route path={concatErrorPath()}>
-        <Error />
-      </Route>
-      <PrivateRoute path={urls.clients.path}>
-        <Clients />
-      </PrivateRoute>
-      <PrivateRoute path={urls.tasks.path}>
-        <AuthorizedLayout>
+const Routes = (error: ErrorProps) => {
+  const [t] = useTranslation();
+  return (
+    <Router basename={http.ROOT_URL}>
+      <Switch>
+        <AuthorizeRoute path={urls.profile.path}>
+          <Profile />
+        </AuthorizeRoute>
+        <AuthorizeRoute path={urls.clients.path}>
+          <Clients />
+        </AuthorizeRoute>
+        <AuthorizeRoute path={urls.tasks.path}>
           <Typography.Title>Планы</Typography.Title>
-        </AuthorizedLayout>
-      </PrivateRoute>
-      <PrivateRoute path={urls.deals.path}>
-        <AuthorizedLayout>
+        </AuthorizeRoute>
+        <AuthorizeRoute path={urls.deals.path}>
           <Typography.Title>Сделки</Typography.Title>
-        </AuthorizedLayout>
-      </PrivateRoute>
-      <PrivateRoute path={urls.knowledge.path}>
-        <AuthorizedLayout>
+        </AuthorizeRoute>
+        <AuthorizeRoute path={urls.knowledge.path}>
           <Typography.Title>База знаний</Typography.Title>
-        </AuthorizedLayout>
-      </PrivateRoute>
-      <Route path={urls.login.path}>
-        <Login />
-      </Route>
-      <Route path={urls.forgotPassword.path}>
-        <ForgotPassword />
-      </Route>
-      <Route path={urls.restorePassword.path}>
-        <RestorePassword />
-      </Route>
-      <Redirect from="/" to={{ pathname: urls.clients.path }} exact />
-      <Redirect from="*" to={{ pathname: concatErrorPath(NOT_FOUND) }} />
-    </Switch>
-  </Router>
-);
+        </AuthorizeRoute>
+
+        <UnauthorizeRoute
+          path={urls.login.path}
+          title={t("title", { ns: loginFormName })}
+        >
+          <Login />
+        </UnauthorizeRoute>
+        <UnauthorizeRoute
+          path={urls.forgotPassword.path}
+          title={t("title", { ns: forgotPasswordFormName })}
+          description={t("description", { ns: forgotPasswordFormName })}
+        >
+          <ForgotPassword />
+        </UnauthorizeRoute>
+        <UnauthorizeRoute
+          path={urls.restorePassword.path}
+          title={t("title", { ns: restorePasswordFormName })}
+          description={t("description", { ns: restorePasswordFormName })}
+        >
+          <RestorePassword />
+        </UnauthorizeRoute>
+        <Redirect from="/" to={{ pathname: MAIN_PAGE }} exact />
+        <Redirect from="/crm" to={{ pathname: MAIN_PAGE }} exact />
+        <Route path="*">
+          <NotFoundError />
+        </Route>
+      </Switch>
+    </Router>
+  );
+};
 
 export default Routes;
