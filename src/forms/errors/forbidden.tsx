@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Result, Button } from "antd";
 import { useTranslation } from "react-i18next";
 import { ErrorProps } from "../../constants";
@@ -13,6 +13,13 @@ interface ForbiddenProps {
 }
 
 export const Forbidden = ({ error, setError }: ForbiddenProps) => {
+  useEffect(() => {
+    return () => {
+      // очистка информации об ошибке
+      setError({});
+    };
+  });
+
   const [t] = useTranslation("error");
   const { errorDescription } = error;
 
