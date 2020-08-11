@@ -1,12 +1,25 @@
 export interface PersistState {
   permissions: string[];
-  loading: boolean;
   menuCollapsed: boolean;
   profileInfo: ProfileInfoProps;
+  auth: boolean;
+}
+
+export interface ErrorAppState {
+  statusCode?: number;
+  errorCode?: string;
+  errorDescription?: string;
+  errorMessage?: string;
+}
+
+export interface AppState {
+  loading: boolean;
+  error: ErrorAppState;
 }
 
 export interface State {
   persist: PersistState;
+  app: AppState;
 }
 
 export interface ProfileInfoProps {

@@ -1,18 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Result, Button } from "antd";
 import { useTranslation } from "react-i18next";
-
-import { getError } from "./utils";
-import { useHistory } from "react-router";
+import { ErrorProps } from "../../constants";
+import { setError as setErrorAction } from "../../__data__";
+import { connect } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import { State, ErrorAppState } from "../../__data__/interfaces";
 
 interface ServerErrorProps {
-  description: string;
+  error: ErrorAppState;
+  setError: (error: {}) => void;
 }
 
-export const ServerError = ({ description }: ServerErrorProps) => {
+export const ServerError = ({ error, setError }: ServerErrorProps) => {
+  useEffect(() => {
+    return () => {
+      // очистка информации об ошибке
+      setError({});
+    };
+  });
+
   const [t] = useTranslation("error");
-  const history = useHistory();
-  const { errorDescription } = getError(history, t);
+  const { errorDescription } = error;
 
   return (
     <Result
@@ -28,4 +37,12 @@ export const ServerError = ({ description }: ServerErrorProps) => {
   );
 };
 
-export default Error;
+const mapStateToProps = (state: State) => ({
+  error: state?.app?.error ?? {},
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  setError: (error: {}) => dispatch(setErrorAction(error)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ServerError);

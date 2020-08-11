@@ -1,7 +1,11 @@
-import { State } from "../__data__/interfaces";
+import { PersistState } from "../__data__/interfaces";
 import { logger } from ".";
 
 const STATE_ITEM = "state";
+
+interface LocalStorageState {
+  persist: PersistState;
+}
 
 export const loadState = () => {
   try {
@@ -15,7 +19,7 @@ export const loadState = () => {
   }
 };
 
-export const saveState = (state: State) => {
+export const saveState = (state: LocalStorageState) => {
   try {
     const serializedState = JSON.stringify(state);
     localStorage.setItem(STATE_ITEM, serializedState);

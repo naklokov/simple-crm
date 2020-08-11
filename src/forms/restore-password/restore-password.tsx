@@ -52,7 +52,8 @@ export const RestorePassword = ({ setLoading }: RestorePasswordProps) => {
       });
       message.success(t("message.success"));
       history.push("/");
-    } catch ({ response: { data } }) {
+    } catch (error) {
+      const data = error?.response?.data ?? {};
       logger.error({
         value: data.errorCode,
         message: data.errorDescription,

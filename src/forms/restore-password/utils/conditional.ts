@@ -24,8 +24,9 @@ export const checkToken = async (
       value: token,
     });
   } catch (error) {
+    const data = error?.response?.data ?? {};
     logger.error({
-      message: t("check.error"),
+      message: data.errorDescription || t("check.error"),
       value: token,
     });
   } finally {

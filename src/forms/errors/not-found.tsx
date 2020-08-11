@@ -2,18 +2,14 @@ import React from "react";
 import { Result, Button } from "antd";
 import { useTranslation } from "react-i18next";
 
-interface NotFoundProps {
-  description?: string;
-}
-
-export const NotFound = ({ description }: NotFoundProps) => {
+export const NotFound = () => {
   const [t] = useTranslation("error");
 
   return (
     <Result
       status="404"
       title={t("title.404")}
-      subTitle={description || t("subtitle.default")}
+      subTitle={t("subtitle.default")}
       extra={
         <Button type="primary" href="/">
           {t("button")}
@@ -23,4 +19,4 @@ export const NotFound = ({ description }: NotFoundProps) => {
   );
 };
 
-export default Error;
+export default NotFound;

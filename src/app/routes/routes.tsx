@@ -12,23 +12,23 @@ import {
   Clients,
   RestorePassword,
   Profile,
+  ServerError,
+  ForbiddenError,
+  NotFoundError,
 } from "../../forms";
 import { AuthorizeRoute, UnauthorizeRoute } from ".";
 
-import { concatErrorPath } from "../../utils";
-import { urls, http } from "../../constants";
+import { urls, http, ErrorProps } from "../../constants";
+import { ErrorScreenWrapper } from "../wrappers";
 import { Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { FORM_NAME as loginFormName } from "../../forms/login/constants";
 import { FORM_NAME as forgotPasswordFormName } from "../../forms/forgot-password/constants";
 import { FORM_NAME as restorePasswordFormName } from "../../forms/restore-password/constants";
-import { NotFound } from "../../forms/errors/not-found";
 
-const {
-  HTTP_CODES: { NOT_FOUND },
-} = http;
+const MAIN_PAGE = urls.clients.path;
 
-const Routes = () => {
+const Routes = (error: ErrorProps) => {
   const [t] = useTranslation();
   return (
     <Router basename={http.ROOT_URL}>
@@ -69,20 +69,10 @@ const Routes = () => {
         >
           <RestorePassword />
         </UnauthorizeRoute>
-
-        <Route path={}>
-          <Error />
-        </Route>
-        <Route path={}>
-          <Error />
-        </Route>
-        <Redirect
-          from={http.ROOT_URL}
-          to={{ pathname: urls.clients.path }}
-          exact
-        />
+        <Redirect from="/" to={{ pathname: MAIN_PAGE }} exact />
+        <Redirect from="/crm" to={{ pathname: MAIN_PAGE }} exact />
         <Route path="*">
-          <NotFound />
+          <NotFoundError />
         </Route>
       </Switch>
     </Router>

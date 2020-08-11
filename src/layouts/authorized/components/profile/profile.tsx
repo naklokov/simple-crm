@@ -4,7 +4,7 @@ import { Avatar, Typography, Dropdown, Menu } from "antd";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
-import { logout, logger } from "../../../../utils";
+import { logout as logoutMethod, logger } from "../../../../utils";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setProfileInfo, setLoading } from "../../../../__data__";
 import { connect } from "react-redux";
@@ -18,12 +18,14 @@ interface ProfileProps {
   profileInfo: ProfileInfoProps;
   setProfile: (profileInfo: object) => void;
   setLoading: (loading: boolean) => void;
+  logout: () => void;
 }
 
 export const Profile = ({
   profileInfo,
   setProfile,
   setLoading,
+  logout,
 }: ProfileProps) => {
   const [t] = useTranslation("authorizedLayout");
   const { secondName, firstName, avatar } = profileInfo;
@@ -38,7 +40,8 @@ export const Profile = ({
         message: t("profile.get.success"),
       });
     } catch (error) {
-      logger.error({ message: error.message });
+      const data = error?.response?.data ?? {};
+      logger.error({ message: data.errorDescription || t("profile.error") });
     } finally {
       setLoading(false);
     }
@@ -83,6 +86,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(setProfileInfo(profileInfo));
   },
   setLoading: (loading: boolean) => dispatch(setLoading(loading)),
+  logout: () => logoutMethod(dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

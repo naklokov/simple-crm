@@ -1,24 +1,26 @@
 import React from "react";
 import { Result, Button } from "antd";
 import { useTranslation } from "react-i18next";
-
-import { getError } from "./utils";
-import { useHistory } from "react-router";
+import { ErrorProps } from "../../constants";
+import { State, ErrorAppState } from "../../__data__/interfaces";
+import { Dispatch } from "@reduxjs/toolkit";
+import { connect } from "react-redux";
+import { setError as setErrorAction } from "../../__data__";
 
 interface ForbiddenProps {
-  description: string;
+  error: ErrorAppState;
+  setError: (error: {}) => void;
 }
 
-export const Forbidden = ({ description }: ForbiddenProps) => {
+export const Forbidden = ({ error, setError }: ForbiddenProps) => {
   const [t] = useTranslation("error");
-  const history = useHistory();
-  const { errorDescription } = getError(history, t);
+  const { errorDescription } = error;
 
   return (
     <Result
       status="403"
       title={t("title.forbidden")}
-      subTitle={description || t("subtitle.default")}
+      subTitle={errorDescription || t("subtitle.default")}
       extra={
         <Button type="primary" href="/">
           {t("button")}
@@ -28,4 +30,12 @@ export const Forbidden = ({ description }: ForbiddenProps) => {
   );
 };
 
-export default Error;
+const mapStateToProps = (state: State) => ({
+  error: state?.app?.error ?? {},
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  setError: (error: {}) => dispatch(setErrorAction(error)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Forbidden);

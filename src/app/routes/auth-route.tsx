@@ -2,21 +2,26 @@ import React from "react";
 
 import { Redirect, Route } from "react-router";
 import { urls } from "../../constants";
-import { hasAuthCookie } from "../../utils";
 import { AuthorizedLayout } from "../../layouts";
+import { State } from "../../__data__/interfaces";
+import { connect } from "react-redux";
 
 interface AuthorizeRouteProps {
+  auth: boolean;
   path: string;
   children: JSX.Element;
 }
 
-export const AuthorizeRoute = ({ children, ...rest }: AuthorizeRouteProps) => {
-  const isAuth = hasAuthCookie();
+export const AuthorizeRoute = ({
+  auth,
+  children,
+  ...rest
+}: AuthorizeRouteProps) => {
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        isAuth ? (
+        auth ? (
           <AuthorizedLayout>{children}</AuthorizedLayout>
         ) : (
           <Redirect
@@ -31,4 +36,8 @@ export const AuthorizeRoute = ({ children, ...rest }: AuthorizeRouteProps) => {
   );
 };
 
-export default AuthorizeRoute;
+const mapStateToProps = (state: State) => ({
+  auth: state?.persist?.auth ?? false,
+});
+
+export default connect(mapStateToProps)(AuthorizeRoute);

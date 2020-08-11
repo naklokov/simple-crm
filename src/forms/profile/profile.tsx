@@ -1,14 +1,10 @@
-import React, { Component, useState } from "react";
-import { Layout, Typography, Tabs } from "antd";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { State, ProfileInfoProps } from "../../__data__/interfaces";
 import { Header } from "./components";
 
 import style from "./profile.module.scss";
 import { TABS_CONTENT, TABS_MAP } from "./constansts";
-import { relative } from "path";
-
-const { TabPane } = Tabs;
 
 interface ProfileProps {
   profileInfo: ProfileInfoProps;

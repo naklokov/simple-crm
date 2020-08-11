@@ -46,13 +46,13 @@ export const Main = ({ profileInfo, setProfile }: MainProps) => {
       setSubmitDisabled(true);
       logger.debug(t("message.success"));
       message.success(t("message.success"));
-    } catch ({ response: { data } }) {
+    } catch (error) {
+      const data = error?.response?.data ?? {};
+      message.error(data.errorDescription || t("message.error"));
       logger.error({
         value: data.errorCode,
         message: data.errorDescription,
       });
-
-      message.error(data.errorDescription || t("message.error"));
     } finally {
       setSubmitLoading(false);
     }

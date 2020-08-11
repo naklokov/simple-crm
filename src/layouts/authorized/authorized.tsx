@@ -31,7 +31,7 @@ export const Authorized = ({
 
   return (
     <div>
-      {loading && <Loader />}
+      {/* {loading && <Loader />} */}
       <Layout>
         <Sider
           collapsible
@@ -57,7 +57,7 @@ export const Authorized = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  loading: state?.persist?.loading,
+  loading: state?.app?.loading,
   isMenuCollapsed: state?.persist?.menuCollapsed,
 });
 

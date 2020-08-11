@@ -46,7 +46,8 @@
   "authorizedLayout": {
     "profile.view": "Просмотр профиля",
     "profile.logout": "Выйти",
-    "profile.get.success": "Профиль успешно загружен"
+    "profile.get.success": "Профиль успешно загружен",
+    "profile.error": "Произошла ошибка при загрузке профиля"
   },
   "profileMain": {
     "title": "Информация о профиле",

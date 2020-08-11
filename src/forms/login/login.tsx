@@ -1,5 +1,6 @@
 import React, { SyntheticEvent, useState } from "react";
 import axios from "axios";
+import Cookie from "js-cookie";
 import { Form as FormUI, Input, Button, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
@@ -18,11 +19,20 @@ import {
   getRules,
   getInitialValues,
 } from "./utils";
+import { setAuth as setAuthAction } from "../../__data__";
+import { State } from "../../__data__/interfaces";
+import { Dispatch } from "@reduxjs/toolkit";
+import { connect } from "react-redux";
 
 const { Item } = FormUI;
 
+interface LoginProps {
+  setAuth: (auth: boolean) => void;
+  auth: boolean;
+}
+
 // TODO Добавить обработку rememberMe параметров из localStorage
-export const Login = () => {
+export const Login = ({ setAuth, auth }: LoginProps) => {
   const [form] = FormUI.useForm();
   const [t] = useTranslation(FORM_NAME);
   const history = useHistory();
@@ -30,10 +40,14 @@ export const Login = () => {
   const initialValues = getInitialValues();
   const [submitLoading, setSubmitLoading] = useState(false);
 
+  if (auth) {
+    history.push("/");
+  }
+
   const onFinish = async (values: Store) => {
     try {
       setSubmitLoading(true);
-      await axios.post(urls.login.submit, { ...values });
+      await axios.post(urls.login.submit, values);
       storeRememberMeParams();
 
       logger.debug({
@@ -41,20 +55,18 @@ export const Login = () => {
         username: values[FIELDS.USERNAME],
       });
 
-      const prevUrl = getPrevUrl(history);
-      history.push(prevUrl);
-    } catch (err) {
-      const data = err?.responce?.data;
-      if (data) {
-        logger.error({
-          value: data.errorCode,
-          message: data.errorDescription,
-          username: values[FIELDS.USERNAME],
-        });
-        message.error(data.errorDescription || t("message.error"));
-      }
-    } finally {
       setSubmitLoading(false);
+      setAuth(true);
+      history.push("/");
+    } catch ({ errorCode, errorDescription }) {
+      logger.error({
+        value: errorCode,
+        message: errorDescription || t("message.error"),
+        username: values[FIELDS.USERNAME],
+      });
+      message.error(errorDescription || t("message.error"));
+      setSubmitLoading(false);
+      setAuth(false);
     }
   };
 
@@ -121,4 +133,14 @@ export const Login = () => {
   );
 };
 
-export default Login;
+const mapStateToProps = (state: State) => ({
+  auth: state?.persist?.auth ?? false,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  setAuth: (isAuth: boolean) => {
+    dispatch(setAuthAction(isAuth));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

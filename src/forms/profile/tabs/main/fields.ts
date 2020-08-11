@@ -81,7 +81,7 @@ export const getFields = (t: Function): FormFieldProps[] => [
     description: "Максимум 2000 символов",
     readonly: false,
     disabled: false,
-    rules: [],
+    rules: [{ max: 2000, message: "Превышена максимальная длина строки" }],
     span: 16,
   },
 ];

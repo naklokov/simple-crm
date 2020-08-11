@@ -21,10 +21,10 @@ module.exports = {
     base: "/crm/rest/log",
   },
   profile: {
-    path: "/crm/profile",
+    path: "/profile",
     info: "/crm/rest/user/profile",
     permissions: "/crm/rest/user/permission",
-    entity: "/crm/rest/entity/userProfile",
+    entity: "/crm/rest/entity/userProfiles",
   },
   clients: {
     path: "/clients",

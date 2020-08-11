@@ -35,7 +35,8 @@ export const ForgotPassword = () => {
 
       message.success(messageSuccess);
       history.push("/");
-    } catch ({ response: { data } }) {
+    } catch (error) {
+      const data = error?.response?.data ?? {};
       logger.error({
         value: data.errorCode,
         message: data.errorDescription,

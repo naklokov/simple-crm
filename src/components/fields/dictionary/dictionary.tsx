@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Cookie from "js-cookie";
 import isEmpty from "lodash/isEmpty";
 import { Col, Form, Select } from "antd";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -9,7 +8,6 @@ import {
   DictionaryProps,
   DEFAULT_SPAN,
 } from "../../../constants";
-import { COOKIES } from "../../../constants/http";
 import { logger } from "../../../utils";
 import { setLoading } from "../../../__data__";
 import { connect } from "react-redux";
@@ -42,7 +40,11 @@ export const Dictionary = ({
       const responce = await axios.get(url);
       setDictionary(responce?.data ?? {});
     } catch (error) {
-      logger.error({ message: error.message });
+      const data = error?.response?.data ?? {};
+      logger.error({
+        value: data.errorCode,
+        message: data.errorDescription,
+      });
     } finally {
       setLoading(false);
     }

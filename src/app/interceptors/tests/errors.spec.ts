@@ -1,6 +1,6 @@
 import Cookie from "js-cookie";
 import { errorsInterceptor } from "../errors";
-import { COOKIES } from "../../../constants/http";
+import { COOKIES, ROOT_URL } from "../../../constants/http";
 
 const getError = (status = 401) => ({
   response: {
@@ -22,7 +22,7 @@ test("error interceptors 401", () => {
   expect(Cookie.get(COOKIES.REMEMBER_ME)).toBeUndefined();
   expect(Cookie.get(COOKIES.USERNAME)).toBeUndefined();
 
-  expect(replaceSpy).toHaveBeenLastCalledWith("/");
+  expect(replaceSpy).toHaveBeenLastCalledWith(ROOT_URL);
 });
 
 test("error interceptors 403", () => {
