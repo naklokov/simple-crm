@@ -13,6 +13,7 @@ import { GUTTER_FULL_WIDTH, urls } from "../../../../constants";
 
 import style from "./main.module.scss";
 import { Store } from "antd/lib/form/interface";
+import { FormFooter } from "../../../../components";
 
 interface MainProps {
   profileInfo: ProfileInfoProps;
@@ -71,17 +72,7 @@ export const Main = ({ profileInfo, setProfile }: MainProps) => {
         >
           {getFields(t).map((field) => createFormField(field))}
         </Row>
-        <Form.Item className={style.submitItem}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={style.submitButton}
-            loading={submitLoading}
-            disabled={submitDisabled}
-          >
-            {t("submit.button")}
-          </Button>
-        </Form.Item>
+        <FormFooter loading={submitLoading} disabled={submitDisabled} />
       </Form>
     </div>
   );
