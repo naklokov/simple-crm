@@ -31,7 +31,7 @@ export const Authorized = ({
 
   return (
     <div>
-      {/* {loading && <Loader />} */}
+      {loading && <Loader />}
       <Layout>
         <Sider
           collapsible

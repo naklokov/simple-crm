@@ -6,9 +6,6 @@ import { COOKIES } from "../constants/http";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setAuth } from "../__data__";
 
-import { createBrowserHistory } from "history";
-const history = createBrowserHistory();
-
 export const checkAuthCookie = () =>
   !!Cookies.get(COOKIES.USERNAME) && !!Cookies.get(COOKIES.JSESSIONID);
 

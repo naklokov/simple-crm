@@ -6,8 +6,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { Routes } from "./routes";
 import { reducers } from "../__data__";
 import { errorsInterceptor } from "./interceptors";
-import { storage, checkAuthCookie } from "../utils";
-import { Loader } from "../components";
+import { storage } from "../utils";
 import { ErrorScreenWrapper } from "./wrappers";
 
 const persistedState = storage.loadState();
@@ -28,11 +27,8 @@ axios.interceptors.response.use(
   errorsInterceptor(store.dispatch)
 );
 
-const { loading } = store.getState()?.app ?? {};
-
 const App = () => (
   <Provider store={store}>
-    {loading && <Loader />}
     <ErrorScreenWrapper>
       <Routes />
     </ErrorScreenWrapper>

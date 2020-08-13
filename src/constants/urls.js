@@ -23,8 +23,7 @@ module.exports = {
   profile: {
     path: "/profile",
     info: "/crm/rest/user/profile",
-    permissions: "/crm/rest/user/permission",
-    entity: "/crm/rest/entity/userProfiles",
+    permissions: "/crm/rest/user/permissions",
   },
   clients: {
     path: "/clients",

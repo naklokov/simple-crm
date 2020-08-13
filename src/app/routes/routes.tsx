@@ -12,14 +12,11 @@ import {
   Clients,
   RestorePassword,
   Profile,
-  ServerError,
-  ForbiddenError,
   NotFoundError,
 } from "../../forms";
 import { AuthorizeRoute, UnauthorizeRoute } from ".";
 
 import { urls, http, ErrorProps } from "../../constants";
-import { ErrorScreenWrapper } from "../wrappers";
 import { Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { FORM_NAME as loginFormName } from "../../forms/login/constants";
