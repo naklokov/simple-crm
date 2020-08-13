@@ -34,13 +34,10 @@ export const Main = ({ profileInfo, setProfile }: MainProps) => {
   const onFinish = async (values: Store) => {
     try {
       setSubmitLoading(true);
-      const responce = await axios.put(
-        `${urls.profile.entity}/${profileInfo.businessId}`,
-        {
-          ...profileInfo,
-          ...values,
-        }
-      );
+      const responce = await axios.put(urls.profile.info, {
+        ...profileInfo,
+        ...values,
+      });
 
       setProfile(responce.data);
       setSubmitDisabled(true);

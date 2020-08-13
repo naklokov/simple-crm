@@ -9,8 +9,6 @@ import {
 import { urls } from ".";
 import { logo } from "../assets/img";
 
-export const TITLE = "БИЗНЕС РЕСУРС";
-
 export const LOGO = logo;
 
 export const MENU_ITEMS = [

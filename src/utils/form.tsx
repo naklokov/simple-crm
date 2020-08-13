@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { fields } from "../components";
 import { FormFieldProps, TEXT_FORMATS } from "../constants";
 import isEqual from "lodash/isEqual";

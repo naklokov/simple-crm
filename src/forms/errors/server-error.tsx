@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Result, Button } from "antd";
 import { useTranslation } from "react-i18next";
-import { ErrorProps } from "../../constants";
 import { setError as setErrorAction } from "../../__data__";
 import { connect } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";

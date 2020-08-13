@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { ErrorAppState } from "../../__data__/interfaces";
 import { HTTP_CODES } from "../../constants/http";
 import { ForbiddenError, ServerError } from "../../forms";
-import { useHistory } from "react-router";
 
 interface ErrorHandlerProps {
   error: ErrorAppState;

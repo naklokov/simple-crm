@@ -1,6 +1,5 @@
 import React, { SyntheticEvent, useState } from "react";
 import axios from "axios";
-import Cookie from "js-cookie";
 import { Form as FormUI, Input, Button, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
@@ -13,12 +12,7 @@ import { urls } from "../../constants";
 import { logger } from "../../utils";
 import { FORM_NAME, FIELDS } from "./constants";
 
-import {
-  storeRememberMeParams,
-  getPrevUrl,
-  getRules,
-  getInitialValues,
-} from "./utils";
+import { storeRememberMeParams, getRules, getInitialValues } from "./utils";
 import { setAuth as setAuthAction } from "../../__data__";
 import { State } from "../../__data__/interfaces";
 import { Dispatch } from "@reduxjs/toolkit";
