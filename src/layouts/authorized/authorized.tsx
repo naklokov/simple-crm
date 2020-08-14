@@ -49,7 +49,7 @@ export const Authorized = ({
               <Profile />
             </div>
           </Header>
-          <Content>{children}</Content>
+          <Content className={style.content}>{children}</Content>
         </Layout>
       </Layout>
     </div>

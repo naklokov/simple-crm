@@ -20,10 +20,10 @@ export const Profile = ({ profileInfo }: ProfileProps) => {
   const Form = TABS_MAP[activeTab];
 
   return (
-    <div className={style.container}>
+    <React.Fragment>
       <Header onChangeTab={handleChangeTab} />
       <Form />
-    </div>
+    </React.Fragment>
   );
 };
 
