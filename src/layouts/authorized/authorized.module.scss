@@ -2,13 +2,16 @@
 @import "../../assets/styles/colors";
 @import "../../assets/styles/offsets";
 
+// Из-за использования css констант реализоция стилей через js неудобна, приходится перебивать стили через important
 .sider {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0;
   filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.15)) !important;
   height: 100vh;
   margin-right: 1px;
 }
 
-// Из-за использования css констант реализоция стилей через js неудобна, приходится перебивать стили через important
 .header {
   margin-bottom: 1px;
   padding: 0 var(--offset-md2) !important;
@@ -21,6 +24,10 @@
 .buttonCollapsed {
   position: relative;
   top: var(--offset-xs);
+}
+
+.content {
+  margin: var(--offset-md2);
 }
 
 .profile {
