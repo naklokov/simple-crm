@@ -4,7 +4,11 @@ import { Avatar, Typography, Dropdown, Menu } from "antd";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
-import { logout as logoutMethod, logger } from "../../../../utils";
+import {
+  logout as logoutMethod,
+  logger,
+  defaultErrorHandler,
+} from "../../../../utils";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setProfileInfo, setLoading } from "../../../../__data__";
 import { connect } from "react-redux";
@@ -40,8 +44,7 @@ export const Profile = ({
         message: t("profile.get.success"),
       });
     } catch (error) {
-      const data = error?.response?.data ?? {};
-      logger.error({ message: data.errorDescription || t("profile.error") });
+      defaultErrorHandler({ error, defaultErrorMessage: t("profile.error") });
     } finally {
       setLoading(false);
     }

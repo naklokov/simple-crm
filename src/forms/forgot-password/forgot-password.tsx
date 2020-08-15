@@ -9,7 +9,7 @@ import style from "./forgot-password.module.scss";
 import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
 import { urls } from "../../constants";
-import { logger } from "../../utils";
+import { logger, defaultErrorHandler } from "../../utils";
 import { FORM_NAME, FIELDS } from "./constants";
 
 import { getRules, getInitialValues } from "./utils";
@@ -36,13 +36,7 @@ export const ForgotPassword = () => {
       message.success(messageSuccess);
       history.push("/");
     } catch (error) {
-      const data = error?.response?.data ?? {};
-      logger.error({
-        value: data.errorCode,
-        message: data.errorDescription,
-      });
-
-      message.error(data.errorDescription || t("message.error"));
+      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {
       setSubmitLoading(false);
     }

@@ -2,7 +2,7 @@ import axios from "axios";
 import { FIELDS } from "../constants";
 import { FormInstance } from "antd/lib/form";
 import { urls } from "../../../constants";
-import { logger } from "../../../utils";
+import { logger, defaultErrorHandler } from "../../../utils";
 
 export const checkEqualPasswords = (form: FormInstance) => {
   const password = form.getFieldValue(FIELDS.PASSWORD);
@@ -24,11 +24,7 @@ export const checkToken = async (
       value: token,
     });
   } catch (error) {
-    const data = error?.response?.data ?? {};
-    logger.error({
-      message: data.errorDescription || t("check.error"),
-      value: token,
-    });
+    defaultErrorHandler({ error, defaultErrorMessage: t("check.error") });
   } finally {
     setLoading(false);
   }

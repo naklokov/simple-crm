@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useState } from "react";
 import axios from "axios";
-import { Form as FormUI, Input, Button, Checkbox, message } from "antd";
+import { Form as FormUI, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
 import { useTranslation } from "react-i18next";
@@ -9,7 +9,7 @@ import style from "./login.module.scss";
 import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
 import { urls } from "../../constants";
-import { logger } from "../../utils";
+import { logger, defaultErrorHandler } from "../../utils";
 import { FORM_NAME, FIELDS } from "./constants";
 
 import { storeRememberMeParams, getRules, getInitialValues } from "./utils";
@@ -49,18 +49,17 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
         username: values[FIELDS.USERNAME],
       });
 
-      setSubmitLoading(false);
       setAuth(true);
       history.push("/");
-    } catch ({ errorCode, errorDescription }) {
-      logger.error({
-        value: errorCode,
-        message: errorDescription || t("message.error"),
-        username: values[FIELDS.USERNAME],
+    } catch (error) {
+      defaultErrorHandler({
+        error,
+        defaultErrorMessage: t("message.error"),
+        username: values?.username,
       });
-      message.error(errorDescription || t("message.error"));
-      setSubmitLoading(false);
       setAuth(false);
+    } finally {
+      setSubmitLoading(false);
     }
   };
 
