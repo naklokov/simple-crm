@@ -5,6 +5,7 @@ import { State, ErrorAppState } from "../../__data__/interfaces";
 import { Dispatch } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import { setError as setErrorAction } from "../../__data__";
+import { ROOT_URL } from "../../constants/http";
 
 interface ForbiddenProps {
   error: ErrorAppState;
@@ -28,7 +29,7 @@ export const Forbidden = ({ error, setError }: ForbiddenProps) => {
       title={t("title.forbidden")}
       subTitle={errorDescription || t("subtitle.default")}
       extra={
-        <Button type="primary" href="/">
+        <Button type="primary" href={ROOT_URL}>
           {t("button")}
         </Button>
       }

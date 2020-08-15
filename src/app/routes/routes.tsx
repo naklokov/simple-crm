@@ -16,7 +16,7 @@ import {
 } from "../../forms";
 import { AuthorizeRoute, UnauthorizeRoute } from ".";
 
-import { urls, http, ErrorProps } from "../../constants";
+import { urls, http, ErrorProps, PERMISSIONS } from "../../constants";
 import { Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { FORM_NAME as loginFormName } from "../../forms/login/constants";
@@ -24,22 +24,39 @@ import { FORM_NAME as forgotPasswordFormName } from "../../forms/forgot-password
 import { FORM_NAME as restorePasswordFormName } from "../../forms/restore-password/constants";
 
 const MAIN_PAGE = urls.clients.path;
+const { PROFILE_INFO, CLIENTS, TASKS, DEALS } = PERMISSIONS;
 
 const Routes = (error: ErrorProps) => {
   const [t] = useTranslation();
   return (
     <Router basename={http.ROOT_URL}>
       <Switch>
-        <AuthorizeRoute path={urls.profile.path}>
+        <AuthorizeRoute
+          path={urls.profile.path}
+          permissions={[
+            PROFILE_INFO.ADMIN,
+            PROFILE_INFO.GET,
+            PROFILE_INFO.GET_OWNER,
+          ]}
+        >
           <Profile />
         </AuthorizeRoute>
-        <AuthorizeRoute path={urls.clients.path}>
+        <AuthorizeRoute
+          path={urls.clients.path}
+          permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
+        >
           <Clients />
         </AuthorizeRoute>
-        <AuthorizeRoute path={urls.tasks.path}>
+        <AuthorizeRoute
+          path={urls.tasks.path}
+          permissions={[TASKS.ADMIN, TASKS.GET, TASKS.GET_OWNER]}
+        >
           <Typography.Title>Планы</Typography.Title>
         </AuthorizeRoute>
-        <AuthorizeRoute path={urls.deals.path}>
+        <AuthorizeRoute
+          path={urls.deals.path}
+          permissions={[DEALS.ADMIN, DEALS.GET, DEALS.GET_OWNER]}
+        >
           <Typography.Title>Сделки</Typography.Title>
         </AuthorizeRoute>
         <AuthorizeRoute path={urls.knowledge.path}>

@@ -1,5 +1,14 @@
-import { urls, TEXT_FORMATS, DATE_FORMATS } from "../../../../constants";
+import {
+  urls,
+  TEXT_FORMATS,
+  DATE_FORMATS,
+  PERMISSIONS,
+} from "../../../../constants";
 import { FormFieldProps } from "../../../../constants";
+
+const {
+  PROFILE_INFO: { ADMIN },
+} = PERMISSIONS;
 
 export const getFields = (t: Function): FormFieldProps[] => [
   {
@@ -10,6 +19,7 @@ export const getFields = (t: Function): FormFieldProps[] => [
     disabled: false,
     rules: [{ required: true, message: t("rules.required") }],
     span: 8,
+    permissions: [ADMIN],
   },
   {
     id: "firstName",
@@ -19,6 +29,7 @@ export const getFields = (t: Function): FormFieldProps[] => [
     disabled: false,
     rules: [{ required: true, message: t("rules.required") }],
     span: 8,
+    permissions: [ADMIN],
   },
   {
     id: "lastName",
@@ -28,6 +39,7 @@ export const getFields = (t: Function): FormFieldProps[] => [
     disabled: false,
     rules: [{ required: true, message: t("rules.required") }],
     span: 8,
+    permissions: [ADMIN],
   },
   {
     id: "birthDate",
@@ -38,6 +50,7 @@ export const getFields = (t: Function): FormFieldProps[] => [
     disabled: false,
     rules: [{ required: true, message: t("rules.required") }],
     span: 8,
+    permissions: [ADMIN],
   },
   {
     id: "position",
@@ -48,6 +61,7 @@ export const getFields = (t: Function): FormFieldProps[] => [
     rules: [],
     url: urls.dictionaries.position,
     span: 8,
+    permissions: [ADMIN],
   },
   {
     id: "email",
@@ -62,6 +76,7 @@ export const getFields = (t: Function): FormFieldProps[] => [
       },
     ],
     span: 8,
+    permissions: [ADMIN],
   },
   {
     id: "location",

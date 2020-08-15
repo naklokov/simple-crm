@@ -14,7 +14,7 @@ export const isValuesChanged = (
   return some(keys, (key) => !isEqual(prev[key], next[key]));
 };
 
-export const createFormField = (field: FormFieldProps) => {
+export const createFormField = (field: FormFieldProps): JSX.Element => {
   switch (field.type) {
     case "string":
       if (field.format === TEXT_FORMATS.TEXT_AREA)
@@ -26,6 +26,6 @@ export const createFormField = (field: FormFieldProps) => {
     case "dictionary":
       return <Dictionary {...field} />;
     default:
-      return null;
+      return <div />;
   }
 };

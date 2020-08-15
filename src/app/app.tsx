@@ -7,7 +7,7 @@ import { Routes } from "./routes";
 import { reducers } from "../__data__";
 import { errorsInterceptor } from "./interceptors";
 import { storage } from "../utils";
-import { ErrorScreenWrapper } from "./wrappers";
+import { ErrorScreenWrapper } from "../wrappers";
 
 const persistedState = storage.loadState();
 

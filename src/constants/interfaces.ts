@@ -13,6 +13,7 @@ export interface FormFieldProps {
   rows?: number;
   span?: number;
   offset?: number;
+  permissions?: string[];
 }
 
 export interface DictionaryProps {
