@@ -8,9 +8,10 @@ import {
   DictionaryProps,
   DEFAULT_SPAN,
 } from "../../../constants";
-import { logger } from "../../../utils";
+import { logger, defaultErrorHandler } from "../../../utils";
 import { setLoading } from "../../../__data__";
 import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const { Option } = Select;
 
@@ -40,11 +41,7 @@ export const Dictionary = ({
       const responce = await axios.get(url);
       setDictionary(responce?.data ?? {});
     } catch (error) {
-      const data = error?.response?.data ?? {};
-      logger.error({
-        value: data.errorCode,
-        message: data.errorDescription,
-      });
+      defaultErrorHandler({ error });
     } finally {
       setLoading(false);
     }

@@ -8,7 +8,12 @@ import { setLoading, setProfileInfo } from "../../../../__data__";
 import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
 import { getFields } from "./fields";
 import { useTranslation } from "react-i18next";
-import { createFormField, isValuesChanged, logger } from "../../../../utils";
+import {
+  createFormField,
+  isValuesChanged,
+  logger,
+  defaultErrorHandler,
+} from "../../../../utils";
 import { GUTTER_FULL_WIDTH, urls } from "../../../../constants";
 
 import style from "./main.module.scss";
@@ -45,12 +50,7 @@ export const Main = ({ profileInfo, setProfile }: MainProps) => {
       logger.debug(t("message.success"));
       message.success(t("message.success"));
     } catch (error) {
-      const data = error?.response?.data ?? {};
-      message.error(data.errorDescription || t("message.error"));
-      logger.error({
-        value: data.errorCode,
-        message: data.errorDescription,
-      });
+      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {
       setSubmitLoading(false);
     }

@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
 import { urls } from "../../constants";
 import { FIELDS, FORM_NAME } from "./constants";
-import { logger } from "../../utils";
+import { logger, defaultErrorHandler } from "../../utils";
 
 import { getRules, checkEqualPasswords, checkToken, getToken } from "./utils";
 import { connect } from "react-redux";
@@ -53,13 +53,7 @@ export const RestorePassword = ({ setLoading }: RestorePasswordProps) => {
       message.success(t("message.success"));
       history.push("/");
     } catch (error) {
-      const data = error?.response?.data ?? {};
-      logger.error({
-        value: data.errorCode,
-        message: data.errorDescription,
-      });
-
-      message.error(data.errorDescription || t("message.error"));
+      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {
       setSubmitLoading(false);
     }

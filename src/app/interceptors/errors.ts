@@ -1,5 +1,5 @@
 import { http, ErrorProps } from "../../constants";
-import { logger, logout } from "../../utils";
+import { logger, logout, defaultErrorHandler } from "../../utils";
 import { message } from "antd";
 import { setError } from "../../__data__";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -54,10 +54,7 @@ export const errorsInterceptor = (dispatch: Dispatch) => (
     }
     return Promise.reject(error);
   } catch (error) {
-    logger.error({
-      message: DEFAULT_ERROR_MESSAGE,
-    });
-
+    defaultErrorHandler({ error, defaultErrorMessage: DEFAULT_ERROR_MESSAGE });
     Promise.reject(errorResponse);
   }
 };

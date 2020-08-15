@@ -3,8 +3,10 @@ import { loadState, saveState } from "../local-storage";
 const state = {
   persist: {
     menuCollapsed: false,
-    loading: true,
     permissions: [],
+    profileInfo: {
+      id: 123,
+    },
   },
 };
 
@@ -20,6 +22,6 @@ test("loadState", () => {
 test("saveState", () => {
   expect(localStorage.getItem("state")).toBe("undefined");
 
-  saveState(state);
+  saveState(state.persist);
   expect(localStorage.getItem("state")).toBe(JSON.stringify(state));
 });

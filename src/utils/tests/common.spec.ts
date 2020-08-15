@@ -1,41 +1,47 @@
-import Cookie from "js-cookie";
-import { concatErrorPath, hasAuthCookie, logout } from "..";
+import Cookies from "js-cookie";
+import axios from "axios";
+import {
+  checkAuthCookie,
+  isValuesChanged,
+  logout,
+  defaultErrorHandler,
+} from "..";
 import { COOKIES } from "../../constants/http";
+import { urls } from "../../constants";
 
 beforeEach(() => {
-  Cookie.remove(COOKIES.JSESSIONID);
-  Cookie.remove(COOKIES.REMEMBER_ME);
-  Cookie.remove(COOKIES.USERNAME);
-});
-test("concatErrorPath", () => {
-  expect(concatErrorPath(403)).toBe("/errors/403");
-  expect(concatErrorPath(400)).toBe("/errors/400");
+  Cookies.remove(COOKIES.JSESSIONID);
+  Cookies.remove(COOKIES.REMEMBER_ME);
+  Cookies.remove(COOKIES.USERNAME);
 });
 
-test("hasAuthCookie", () => {
-  expect(hasAuthCookie()).toBe(false);
+test("checkAuthCookie", () => {
+  expect(checkAuthCookie()).toBe(false);
 
-  Cookie.set(COOKIES.USERNAME, "asd");
-  expect(hasAuthCookie()).toBe(false);
+  Cookies.set(COOKIES.USERNAME, "asd");
+  expect(checkAuthCookie()).toBe(false);
 
-  Cookie.set(COOKIES.JSESSIONID, "123");
-  expect(hasAuthCookie()).toBe(true);
+  Cookies.set(COOKIES.JSESSIONID, "123");
+  expect(checkAuthCookie()).toBe(true);
 });
 
 test("logout", () => {
   const replaceSpy = jest.spyOn(location, "replace");
+  const getSpy = jest.spyOn(axios, "get");
+  const dispatchSpy = jest.fn();
 
-  Cookie.set(COOKIES.REMEMBER_ME, "true");
-  Cookie.set(COOKIES.JSESSIONID, "321");
-  Cookie.set(COOKIES.USERNAME, "asd");
-  expect(Cookie.get(COOKIES.USERNAME)).not.toBeUndefined();
-  expect(Cookie.get(COOKIES.REMEMBER_ME)).not.toBeUndefined();
-  expect(Cookie.get(COOKIES.JSESSIONID)).not.toBeUndefined();
+  Cookies.set(COOKIES.REMEMBER_ME, "true");
+  Cookies.set(COOKIES.JSESSIONID, "321");
+  Cookies.set(COOKIES.USERNAME, "asd");
+  expect(Cookies.get(COOKIES.USERNAME)).not.toBeUndefined();
+  expect(Cookies.get(COOKIES.REMEMBER_ME)).not.toBeUndefined();
+  expect(Cookies.get(COOKIES.JSESSIONID)).not.toBeUndefined();
 
-  logout();
+  logout(dispatchSpy);
 
-  expect(Cookie.get(COOKIES.USERNAME)).toBeUndefined();
-  expect(Cookie.get(COOKIES.REMEMBER_ME)).toBeUndefined();
-  expect(Cookie.get(COOKIES.JSESSIONID)).toBeUndefined();
+  expect(Cookies.get(COOKIES.USERNAME)).toBeUndefined();
+  expect(Cookies.get(COOKIES.REMEMBER_ME)).toBeUndefined();
+  expect(Cookies.get(COOKIES.JSESSIONID)).toBeUndefined();
+  expect(getSpy).toHaveBeenCalledWith(urls.login.logout);
   expect(replaceSpy).toHaveBeenCalledWith("/");
 });
