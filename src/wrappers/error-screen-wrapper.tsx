@@ -1,9 +1,9 @@
 import React from "react";
-import { State } from "../../__data__/interfaces";
+import { State } from "../__data__/interfaces";
 import { connect } from "react-redux";
-import { ErrorAppState } from "../../__data__/interfaces";
-import { HTTP_CODES } from "../../constants/http";
-import { ForbiddenError, ServerError } from "../../forms";
+import { ErrorAppState } from "../__data__/interfaces";
+import { HTTP_CODES } from "../constants/http";
+import { ForbiddenError, ServerError } from "../forms";
 
 interface ErrorHandlerProps {
   error: ErrorAppState;

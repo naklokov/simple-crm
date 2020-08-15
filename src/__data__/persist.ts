@@ -10,7 +10,7 @@ const persistSlice = createSlice({
   },
   reducers: {
     setPermissions(state, action) {
-      state.permissions = action.payload.permissions;
+      state.permissions = action.payload;
     },
     setMenuCollapsed(state, action) {
       state.menuCollapsed = action.payload;

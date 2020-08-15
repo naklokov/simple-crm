@@ -1,18 +1,12 @@
-import React, { useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import { Avatar, Typography, Dropdown, Menu } from "antd";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
-import {
-  logout as logoutMethod,
-  logger,
-  defaultErrorHandler,
-} from "../../../../utils";
+import { logout as logoutMethod } from "../../../../utils";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setProfileInfo, setLoading } from "../../../../__data__";
 import { connect } from "react-redux";
-import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
+import { ProfileInfoProps } from "../../../../__data__/interfaces";
 
 import style from "./profile.module.scss";
 import { useTranslation } from "react-i18next";
@@ -20,39 +14,12 @@ import { urls, http } from "../../../../constants";
 
 interface ProfileProps {
   profileInfo: ProfileInfoProps;
-  setProfile: (profileInfo: object) => void;
-  setLoading: (loading: boolean) => void;
   logout: () => void;
 }
 
-export const Profile = ({
-  profileInfo,
-  setProfile,
-  setLoading,
-  logout,
-}: ProfileProps) => {
+export const Profile = ({ profileInfo, logout }: ProfileProps) => {
   const [t] = useTranslation("authorizedLayout");
   const { secondName, firstName, avatar } = profileInfo;
-
-  const fetchProfile = async () => {
-    try {
-      setLoading(true);
-      const responce = await axios.get(urls.profile.info);
-      setProfile(responce?.data ?? {});
-
-      logger.debug({
-        message: t("profile.get.success"),
-      });
-    } catch (error) {
-      defaultErrorHandler({ error, defaultErrorMessage: t("profile.error") });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchProfile();
-  }, []);
 
   const menu = (
     <Menu>
@@ -65,7 +32,7 @@ export const Profile = ({
 
   return (
     <React.Fragment>
-      <Link to="/">
+      <Link to={http.ROOT_URL}>
         <Avatar src={avatar} icon={<UserOutlined />} />
       </Link>
       <Dropdown overlay={menu}>
@@ -80,16 +47,8 @@ export const Profile = ({
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  profileInfo: state?.persist?.profileInfo ?? {},
-});
-
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setProfile: (profileInfo: ProfileInfoProps) => {
-    dispatch(setProfileInfo(profileInfo));
-  },
-  setLoading: (loading: boolean) => dispatch(setLoading(loading)),
   logout: () => logoutMethod(dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(null, mapDispatchToProps)(Profile);

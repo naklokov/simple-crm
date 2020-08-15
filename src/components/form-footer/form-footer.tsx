@@ -4,15 +4,18 @@ import { useTranslation } from "react-i18next";
 
 import style from "./form-footer.module.scss";
 import { useHistory } from "react-router";
+import { ComponentPermissionsChecker } from "../../wrappers";
 
 interface FormFooterProps {
   disabled: boolean;
   loading: boolean;
+  permissions?: string[];
 }
 
 export const FormFooter = ({
   disabled = true,
   loading = false,
+  permissions = [],
 }: FormFooterProps) => {
   const [visible, setVisible] = useState(false);
   const [t] = useTranslation("formFooter");
@@ -48,15 +51,17 @@ export const FormFooter = ({
       >
         <Button className={style.cancel}>{t("cancel")}</Button>
       </Popconfirm>
-      <Button
-        type="primary"
-        htmlType="submit"
-        className={style.submit}
-        loading={loading}
-        disabled={disabled}
-      >
-        {t("submit")}
-      </Button>
+      <ComponentPermissionsChecker availablePermissions={permissions}>
+        <Button
+          type="primary"
+          htmlType="submit"
+          className={style.submit}
+          loading={loading}
+          disabled={disabled}
+        >
+          {t("submit")}
+        </Button>
+      </ComponentPermissionsChecker>
     </Form.Item>
   );
 };

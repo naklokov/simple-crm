@@ -14,17 +14,22 @@ import {
   logger,
   defaultErrorHandler,
 } from "../../../../utils";
-import { GUTTER_FULL_WIDTH, urls } from "../../../../constants";
+import { GUTTER_FULL_WIDTH, urls, PERMISSIONS } from "../../../../constants";
 
 import style from "./main.module.scss";
 import { Store } from "antd/lib/form/interface";
 import { FormFooter } from "../../../../components";
+import { ComponentPermissionsChecker } from "../../../../wrappers";
 
 interface MainProps {
   profileInfo: ProfileInfoProps;
   setProfile: (profileInfo: ProfileInfoProps) => void;
   setLoading: (loading: boolean) => void;
 }
+
+const {
+  PROFILE_INFO: { ADMIN, UPDATE, UPDATE_OWNER },
+} = PERMISSIONS;
 
 export const Main = ({ profileInfo, setProfile }: MainProps) => {
   const [form] = Form.useForm();
@@ -70,9 +75,20 @@ export const Main = ({ profileInfo, setProfile }: MainProps) => {
         <Row
           gutter={[GUTTER_FULL_WIDTH.HORIZONTAL, GUTTER_FULL_WIDTH.VERTICAL]}
         >
-          {getFields(t).map((field) => createFormField(field))}
+          {getFields(t).map((field) => (
+            <ComponentPermissionsChecker
+              availablePermissions={field.permissions}
+              mode="disabled"
+            >
+              {createFormField(field)}
+            </ComponentPermissionsChecker>
+          ))}
         </Row>
-        <FormFooter loading={submitLoading} disabled={submitDisabled} />
+        <FormFooter
+          permissions={[ADMIN, UPDATE, UPDATE_OWNER]}
+          loading={submitLoading}
+          disabled={submitDisabled}
+        />
       </Form>
     </div>
   );

@@ -40,7 +40,7 @@
     "type": "git",
     "url": "http://bitbucket.org/olivje_group/olivje.crm.pl.git"
   },
-  "proxy": "http://localhost:8080",
+  "proxy": "http://176.212.190.167:8080",
   "scripts": {
     "start": "react-scripts start",
     "server": "node stub/server.js",
