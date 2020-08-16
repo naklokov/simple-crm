@@ -16,7 +16,7 @@ import {
 } from "../../forms";
 import { AuthorizeRoute, UnauthorizeRoute } from ".";
 
-import { urls, http, ErrorProps, PERMISSIONS } from "../../constants";
+import { urls, http, PERMISSIONS } from "../../constants";
 import { Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { FORM_NAME as loginFormName } from "../../forms/login/constants";
@@ -26,7 +26,7 @@ import { FORM_NAME as restorePasswordFormName } from "../../forms/restore-passwo
 const MAIN_PAGE = urls.clients.path;
 const { PROFILE_INFO, CLIENTS, TASKS, DEALS } = PERMISSIONS;
 
-const Routes = (error: ErrorProps) => {
+const Routes = () => {
   const [t] = useTranslation();
   return (
     <Router basename={http.ROOT_URL}>

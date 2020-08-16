@@ -2,7 +2,7 @@ import { urls, ErrorProps } from "../constants";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { logger } from ".";
-import { COOKIES } from "../constants/http";
+import http, { COOKIES } from "../constants/http";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setAuth } from "../__data__";
 import { message } from "antd";
@@ -31,7 +31,7 @@ export const logout = async (dispatch: Dispatch) => {
     dispatch(setAuth(false));
     await axios.get(urls.login.logout);
     logger.debug({ message: DEFAULT_SUCCESS_MESSAGE_LOGOUT, username });
-    window.location.replace("/");
+    window.location.replace(http.ROOT_URL);
   } catch (error) {
     defaultErrorHandler({
       error,
@@ -44,7 +44,7 @@ export const logout = async (dispatch: Dispatch) => {
 export const defaultErrorHandler = ({
   error,
   username = Cookies.get(COOKIES.USERNAME),
-  defaultErrorMessage = "System error",
+  defaultErrorMessage = "",
 }: DefaultErrorHandlerProps) => {
   const {
     errorCode,
@@ -52,10 +52,17 @@ export const defaultErrorHandler = ({
     errorMessage = defaultErrorMessage,
   } = error;
 
+  const fullMessage = errorDescription
+    ? `${errorMessage}: ${errorDescription}`
+    : errorMessage;
+
   logger.error({
     value: errorCode,
-    message: `${errorMessage}: ${errorDescription}`,
+    message: fullMessage,
     username,
   });
-  message.error(errorDescription);
+
+  if (errorDescription) {
+    message.error(errorDescription);
+  }
 };

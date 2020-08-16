@@ -14,4 +14,4 @@ export const storeRememberMeParams = () => {
 
 // TODO исправить на корректный тип у history
 export const getPrevUrl = (history: any) =>
-  history?.location?.state?.from?.pathname ?? "/";
+  history?.location?.state?.from?.pathname ?? http.ROOT_URL;

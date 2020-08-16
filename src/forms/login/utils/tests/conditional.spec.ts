@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 
 import { storeRememberMeParams, getPrevUrl } from "../conditional";
 import { http } from "../../../../constants";
+import { ROOT_URL } from "../../../../constants/http";
 
 const { COOKIES } = http;
 
@@ -34,5 +35,5 @@ test("test getPrevUrl", () => {
 
   expect(getPrevUrl(history)).toBe("lolo");
 
-  expect(getPrevUrl("")).toBe("/");
+  expect(getPrevUrl("")).toBe(ROOT_URL);
 });
