@@ -1,7 +1,7 @@
 const jsonServer = require("json-server");
 const server = jsonServer.create();
 
-const { dictionaries, profileInfo } = require("./jsons");
+const { dictionaries, profileInfo, permissions } = require("./jsons");
 
 const {
   login,
@@ -45,6 +45,7 @@ server.post(restorePassword.submit, sendSuccessResponce());
 //getProfileInfo
 server.get(profile.info, sendSuccessResponce(profileInfo));
 server.put(new RegExp(profile.entity), sendPostResponce(profileInfo));
+server.get(profile.permissions, sendPostResponce(permissions));
 
 server.get(
   dictionariesUrls.position,

@@ -1,37 +1,33 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, SyntheticEvent } from "react";
 import { Form, Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
 
 import style from "./form-footer.module.scss";
-import { useHistory } from "react-router";
 import { ComponentPermissionsChecker } from "../../wrappers";
 
 interface FormFooterProps {
   disabled: boolean;
   loading: boolean;
   permissions?: string[];
+  onCancel?: () => void;
 }
 
 export const FormFooter = ({
   disabled = true,
   loading = false,
   permissions = [],
+  onCancel,
 }: FormFooterProps) => {
   const [visible, setVisible] = useState(false);
   const [t] = useTranslation("formFooter");
-  const history = useHistory();
-
-  const handleConfirm = useCallback(() => {
-    history.goBack();
-  }, [history]);
 
   const handleCancel = useCallback(() => {
     setVisible(false);
   }, [visible]);
 
   const handleVisibleChange = useCallback(() => {
-    if (disabled) {
-      handleConfirm();
+    if (disabled && onCancel) {
+      onCancel();
     } else {
       setVisible(!visible);
     }
@@ -42,7 +38,7 @@ export const FormFooter = ({
       <Popconfirm
         placement="topRight"
         title={t("confirm")}
-        onConfirm={handleConfirm}
+        onConfirm={onCancel}
         onCancel={handleCancel}
         onVisibleChange={handleVisibleChange}
         visible={visible}

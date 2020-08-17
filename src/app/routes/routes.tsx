@@ -22,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import { FORM_NAME as loginFormName } from "../../forms/login/constants";
 import { FORM_NAME as forgotPasswordFormName } from "../../forms/forgot-password/constants";
 import { FORM_NAME as restorePasswordFormName } from "../../forms/restore-password/constants";
+import { ClientsHeader } from "../../forms";
 
 const MAIN_PAGE = urls.clients.path;
 const { PROFILE_INFO, CLIENTS, TASKS, DEALS } = PERMISSIONS;
@@ -42,6 +43,7 @@ const Routes = () => {
           <Profile />
         </AuthorizeRoute>
         <AuthorizeRoute
+          subheader={<ClientsHeader />}
           path={urls.clients.path}
           permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
         >

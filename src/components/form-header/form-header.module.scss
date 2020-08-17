@@ -1,0 +1,17 @@
+@import "../../assets/styles/offsets";
+
+.container {
+  margin: var(--offset-sm) var(--offset-md);
+}
+
+.title {
+  display: inline;
+}
+
+.button {
+  float: right;
+}
+
+.breadcrumb {
+  display: block;
+}

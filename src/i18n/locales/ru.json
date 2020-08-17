@@ -65,5 +65,10 @@
     "confirm": "Вы уверены? Все изменения будут утеряны.",
     "confirm.yes": "Да",
     "confirm.no": "Нет"
+  },
+  "clients": {
+    "title": "Клиенты",
+    "add.button.title": "＋ Добавить компанию",
+    "clients.entity.add": "Новая компания"
   }
 }

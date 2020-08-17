@@ -23,6 +23,7 @@ const { Sider, Content, Header } = Layout;
 
 interface AuthorizedProps {
   children: JSX.Element;
+  subheader?: JSX.Element;
   loading: boolean;
   isMenuCollapsed: boolean;
   profileInfo: ProfileInfoProps;
@@ -34,6 +35,7 @@ interface AuthorizedProps {
 
 export const Authorized = ({
   children,
+  subheader,
   loading,
   isMenuCollapsed,
   setCollapsed,
@@ -63,6 +65,7 @@ export const Authorized = ({
   const fetchPermissions = async () => {
     try {
       const responce = await axios.get(urls.profile.permissions);
+      // TODO Выпилить при релизе
       console.log("user permissions", responce?.data?.permissions);
       setPermissions(responce?.data?.permissions ?? []);
       logger.debug({
@@ -93,7 +96,7 @@ export const Authorized = ({
   return (
     <div>
       {loading && <Loader />}
-      <Layout>
+      <Layout className={style.main}>
         <Sider
           collapsible
           collapsed={isMenuCollapsed}
@@ -110,6 +113,7 @@ export const Authorized = ({
               <Profile profileInfo={profileInfo} />
             </div>
           </Header>
+          {subheader && <div className={style.subheader}>{subheader}</div>}
           <Content className={style.content}>{children}</Content>
         </Layout>
       </Layout>
