@@ -48,6 +48,7 @@ export const Authorized = ({
 
   const fetchProfile = async () => {
     try {
+      setLoading(true);
       const responce = await axios.get(urls.profile.info);
       setProfile(responce?.data ?? {});
 
@@ -59,11 +60,14 @@ export const Authorized = ({
         error,
         defaultErrorMessage: t("profile.error"),
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchPermissions = async () => {
     try {
+      setLoading(true);
       const responce = await axios.get(urls.profile.permissions);
       // TODO Выпилить при релизе
       console.log("user permissions", responce?.data?.permissions);
@@ -76,6 +80,8 @@ export const Authorized = ({
         error,
         defaultErrorMessage: t("permissions.error"),
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,13 +90,8 @@ export const Authorized = ({
   };
 
   useEffect(() => {
-    try {
-      setLoading(true);
-      fetchProfile();
-      fetchPermissions();
-    } finally {
-      setLoading(false);
-    }
+    fetchProfile();
+    fetchPermissions();
   }, []);
 
   return (

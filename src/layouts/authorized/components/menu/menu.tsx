@@ -5,18 +5,20 @@ import { MENU_ITEMS } from "../../../../constants/layouts";
 import { getSelectedKeyByUrl } from "./utils";
 import { Link, useHistory } from "react-router-dom";
 import { filterArrayByPermissions } from "../../../../wrappers";
+import { State } from "../../../../__data__/interfaces";
+import { connect } from "react-redux";
 
 const { Item } = MenuUI;
 
-const filteredItems = filterArrayByPermissions(MENU_ITEMS);
-
 interface MenuProps {
   collapsed: boolean;
+  permissions: string[];
 }
 
-export const Menu = ({ collapsed }: MenuProps) => {
+export const Menu = ({ collapsed, permissions }: MenuProps) => {
   const history = useHistory();
   const selectedKey = getSelectedKeyByUrl(history);
+  const filteredItems = filterArrayByPermissions(MENU_ITEMS, permissions);
 
   return (
     <MenuUI
@@ -33,4 +35,8 @@ export const Menu = ({ collapsed }: MenuProps) => {
   );
 };
 
-export default Menu;
+const mapStateToProps = (state: State) => ({
+  permissions: state?.persist?.permissions ?? [],
+});
+
+export default connect(mapStateToProps)(Menu);
