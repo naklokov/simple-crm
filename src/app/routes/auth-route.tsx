@@ -25,6 +25,7 @@ export const AuthorizeRoute = ({
   return (
     <Route
       {...rest}
+      exact
       render={({ location }) =>
         auth ? (
           <PagePermissionsChecker availablePermissions={permissions}>

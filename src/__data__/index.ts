@@ -8,7 +8,7 @@ export {
   setAuth,
 } from "./persist";
 
-export { setError, setLoading } from "./app";
+export { setError, setLoading, setTableLoading } from "./app";
 
 export const reducers = {
   persist: persistReducer,

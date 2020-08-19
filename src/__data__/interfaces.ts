@@ -13,6 +13,7 @@ export interface ErrorAppState {
 }
 
 export interface AppState {
+  tableLoading: boolean;
   loading: boolean;
   error: ErrorAppState;
 }

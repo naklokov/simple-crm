@@ -1,51 +1,80 @@
 import React, { useState, useEffect } from "react";
-import { Table as TableUI } from "antd";
+import axios from "axios";
+import { Table as TableUI, Space } from "antd";
 
-interface ColumnActionsProps {
-  actionName: string;
-  actionDescription: string;
-  actionCode: string;
-  actionType: "href" | "delete" | "call" | "email" | "view" | "delete";
-  href?: string;
-}
-
-interface TableColumnProps {
-  columnName: string;
-  columnDescription?: string;
-  columnCode: "phone";
-  columnType:
-    | "string"
-    | "date"
-    | "number"
-    | "dictionary"
-    | "entity"
-    | "boolean";
-  format?: string;
-  columnActions?: [
-    {
-      actionDescription: string;
-      actionType: ColumnActionsProps;
-      actionCode: string;
-    }
-  ];
-}
+import { TableColumnProps, TableActionProps } from "../../constants/interfaces";
+import { defaultErrorHandler } from "../../utils";
+import { useTranslation } from "react-i18next";
+import { Dispatch } from "@reduxjs/toolkit";
+import {
+  setLoading as setLoadingAction,
+  setTableLoading as setTableLoadingAction,
+} from "../../__data__";
+import { connect } from "react-redux";
+import { mapAction, getActions, getDataColumns } from "./utils";
+import { State } from "../../__data__/interfaces";
 
 interface TableProps {
   url: string;
-  columns: TableColumnProps;
+  columns?: TableColumnProps[];
+  actions?: TableActionProps[];
+  tableLoading: boolean;
+  setTableLoading: (loading: boolean) => void;
 }
 
-export const Table = ({ columns, url }) => {
+export const Table = ({
+  columns,
+  url,
+  actions,
+  tableLoading,
+  setTableLoading,
+}: TableProps) => {
+  const [t] = useTranslation("table");
   const [dataSource, setDataSource] = useState([]);
 
-  const fetchDataSource = async () => {};
+  const fetchDataSource = async () => {
+    try {
+      setTableLoading(true);
+      const response = await axios.get(url);
+      const source = response?.data ?? [];
+      // TODO В метод убрать
+      setDataSource(source.map((item: any) => ({ key: item.id, ...item })));
+    } catch (error) {
+      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
+    } finally {
+      setTableLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchDataSource();
   }, []);
 
-  return <TableUI columns={columns} dataSource={dataSource} />;
+  const mappedColumns = getDataColumns(columns);
+  const mappedActions = getActions(actions, t);
+
+  return (
+    <TableUI
+      size="large"
+      columns={[...mappedColumns, mappedActions]}
+      dataSource={dataSource}
+      pagination={false}
+      loading={tableLoading}
+    />
+  );
 };
+
+const mapStateToProps = (state: State) => ({
+  tableLoading: state?.app?.tableLoading ?? true,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  setLoading: (loading: boolean) => dispatch(setLoadingAction(loading)),
+  setTableLoading: (loading: boolean) =>
+    dispatch(setTableLoadingAction(loading)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table);
 
 /**
  * [{

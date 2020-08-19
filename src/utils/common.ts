@@ -32,9 +32,10 @@ export const logout = async (dispatch: Dispatch) => {
   localStorage.clear();
 
   try {
-    dispatch(setAuth(false));
     await axios.get(urls.login.logout);
     logger.debug({ message: DEFAULT_SUCCESS_MESSAGE_LOGOUT, username });
+
+    dispatch(setAuth(false));
     window.location.replace(http.ROOT_URL);
   } catch (error) {
     defaultErrorHandler({

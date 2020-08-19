@@ -49,7 +49,7 @@ export const Authorized = ({
   const fetchProfile = async () => {
     try {
       setLoading(true);
-      const responce = await axios.get(urls.profile.info);
+      const responce = await axios.get(urls.profile.entity);
       setProfile(responce?.data ?? {});
 
       logger.debug({

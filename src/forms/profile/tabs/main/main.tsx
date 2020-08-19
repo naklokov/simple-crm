@@ -47,7 +47,7 @@ export const Main = ({ profileInfo, setProfile }: MainProps) => {
   const onFinish = async (values: Store) => {
     try {
       setSubmitLoading(true);
-      const responce = await axios.put(urls.profile.info, {
+      const responce = await axios.put(urls.profile.entity, {
         ...profileInfo,
         ...values,
       });

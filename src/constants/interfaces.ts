@@ -38,3 +38,54 @@ export interface ErrorProps {
   errorCode?: string;
   errorMessage?: string;
 }
+
+export type ActionType = "href" | "delete" | "call" | "email" | "view";
+
+export interface TableColumnProps {
+  columnName: string;
+  columnDescription?: string;
+  columnCode?: string;
+  columnType:
+    | "string"
+    | "date"
+    | "number"
+    | "dictionary"
+    | "entity"
+    | "boolean";
+  format?: string;
+  sorter?: boolean;
+  actionType?: ActionType;
+  href?: string;
+}
+
+export interface TableActionProps {
+  actionName: string;
+  actionDescription?: string;
+  actionCode?: string;
+  actionType: ActionType;
+  href?: string;
+}
+
+export interface ClientEntityProps {
+  activityField: string;
+  address: string;
+  businessId: string;
+  checkingAccount: string;
+  city: string;
+  correspondentAccount: string;
+  creationDate: string;
+  email: string;
+  fullName: string;
+  id: string;
+  inn: string;
+  isActive: boolean;
+  isDeleted: boolean;
+  kpp: string;
+  legalAddress: string;
+  managerId: string;
+  parentId: string;
+  phone: string;
+  servicingBank: string;
+  shortName: string;
+  webPage: string;
+}
