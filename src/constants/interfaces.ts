@@ -40,22 +40,23 @@ export interface ErrorProps {
 }
 
 export type ActionType = "href" | "delete" | "call" | "email" | "view";
+export type ColumnType =
+  | "string"
+  | "date"
+  | "number"
+  | "dictionary"
+  | "entity"
+  | "boolean";
 
 export interface TableColumnProps {
   columnName: string;
   columnDescription?: string;
   columnCode?: string;
-  columnType:
-    | "string"
-    | "date"
-    | "number"
-    | "dictionary"
-    | "entity"
-    | "boolean";
+  columnType: ColumnType;
+
   format?: string;
   sorter?: boolean;
-  actionType?: ActionType;
-  href?: string;
+  columnActions?: TableActionProps[];
 }
 
 export interface TableActionProps {
@@ -64,6 +65,12 @@ export interface TableActionProps {
   actionCode?: string;
   actionType: ActionType;
   href?: string;
+  permissions: string[];
+}
+
+export interface EntityProps {
+  id: string;
+  businessId: string;
 }
 
 export interface ClientEntityProps {

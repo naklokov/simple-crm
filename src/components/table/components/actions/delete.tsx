@@ -8,16 +8,22 @@ import { defaultErrorHandler } from "../../../../utils";
 import { connect } from "react-redux";
 import { setTableLoading as setTableLoadingAction } from "../../../../__data__";
 import { Dispatch } from "@reduxjs/toolkit";
-import { getHref } from "../../utils";
 
 interface DeleteProps {
+  id: string;
+  setTableLoading: (loading: boolean) => void;
+  onDelete?: (id: string) => void;
   title?: string;
   href?: string;
-  id?: string;
-  setTableLoading: (loading: boolean) => void;
 }
 
-export const Delete = ({ title, href, setTableLoading }: DeleteProps) => {
+export const Delete = ({
+  id,
+  title,
+  href,
+  setTableLoading,
+  onDelete = noop,
+}: DeleteProps) => {
   const [t] = useTranslation("table");
 
   const fetchDelete = async () => {
@@ -25,6 +31,7 @@ export const Delete = ({ title, href, setTableLoading }: DeleteProps) => {
       try {
         setTableLoading(true);
         await axios.delete(href);
+        onDelete(id);
       } catch (error) {
         defaultErrorHandler({ error });
       } finally {

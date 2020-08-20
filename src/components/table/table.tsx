@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Table as TableUI, Space } from "antd";
 
@@ -11,8 +11,9 @@ import {
   setTableLoading as setTableLoadingAction,
 } from "../../__data__";
 import { connect } from "react-redux";
-import { mapAction, getActions, getDataColumns } from "./utils";
+import { mapAction, getActions, getDataColumns, mapWithKey } from "./utils";
 import { State } from "../../__data__/interfaces";
+import { filter } from "lodash";
 
 interface TableProps {
   url: string;
@@ -36,9 +37,8 @@ export const Table = ({
     try {
       setTableLoading(true);
       const response = await axios.get(url);
-      const source = response?.data ?? [];
-      // TODO В метод убрать
-      setDataSource(source.map((item: any) => ({ key: item.id, ...item })));
+      const source = mapWithKey(response?.data ?? []);
+      setDataSource(source);
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {
@@ -46,12 +46,23 @@ export const Table = ({
     }
   };
 
+  // TODO отладить удаление (при повторном удалении получается фигня)
+  const handleDelete = useCallback(
+    (deletedId) => {
+      const filteredDataSource = dataSource.filter(
+        ({ id }) => id !== deletedId
+      );
+      setDataSource(filteredDataSource);
+    },
+    [dataSource]
+  );
+
   useEffect(() => {
     fetchDataSource();
   }, []);
 
   const mappedColumns = getDataColumns(columns);
-  const mappedActions = getActions(actions, t);
+  const mappedActions = getActions(actions, t, handleDelete);
 
   return (
     <TableUI
@@ -60,6 +71,17 @@ export const Table = ({
       dataSource={dataSource}
       pagination={false}
       loading={tableLoading}
+      locale={{
+        filterTitle: t("filter.title"),
+        filterConfirm: t("filter.confirm"),
+        filterReset: t("filter.reset"),
+        filterEmptyText: t("filter.empty"),
+        sortTitle: t("sort.title"),
+        triggerDesc: t("sort.desc"),
+        triggerAsc: t("sort.asc"),
+        cancelSort: t("sort.cancel"),
+        emptyText: t("empty"),
+      }}
     />
   );
 };

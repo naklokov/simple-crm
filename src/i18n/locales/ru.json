@@ -79,6 +79,16 @@
     "actions.delete.yes": "Да",
     "actions.call.confirm": "Вы хотите набрать номер?",
     "actions.call.no": "Нет",
-    "actions.call.yes": "Да"
+    "actions.call.yes": "Да",
+
+    "filter.title": "Меню фильтра",
+    "filter.confirm": "Ок",
+    "filter.reset": "Отмена",
+    "filter.empty": "Фильтры не заполнены",
+    "sort.title": "Сортировка",
+    "sort.desc": "Сортировка по убыванию",
+    "sort.asc": "Сортировка по возрастанию",
+    "sort.cancel": "Отменить сортировку",
+    "empty": "Нет"
   }
 }
