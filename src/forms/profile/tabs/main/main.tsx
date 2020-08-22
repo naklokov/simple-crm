@@ -20,6 +20,7 @@ import style from "./main.module.scss";
 import { Store } from "antd/lib/form/interface";
 import { FormFooter } from "../../../../components";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
+import { useHistory } from "react-router";
 
 interface MainProps {
   profileInfo: ProfileInfoProps;
@@ -34,6 +35,7 @@ const {
 export const Main = ({ profileInfo, setProfile }: MainProps) => {
   const [form] = Form.useForm();
   const [t] = useTranslation(FORM_NAME);
+  const history = useHistory();
   const [submitLoading, setSubmitLoading] = useState(false);
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
@@ -45,7 +47,7 @@ export const Main = ({ profileInfo, setProfile }: MainProps) => {
   const onFinish = async (values: Store) => {
     try {
       setSubmitLoading(true);
-      const responce = await axios.put(urls.profile.info, {
+      const responce = await axios.put(urls.profile.entity, {
         ...profileInfo,
         ...values,
       });
@@ -88,6 +90,7 @@ export const Main = ({ profileInfo, setProfile }: MainProps) => {
           permissions={[ADMIN, UPDATE, UPDATE_OWNER]}
           loading={submitLoading}
           disabled={submitDisabled}
+          onCancel={history.goBack}
         />
       </Form>
     </div>

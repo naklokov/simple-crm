@@ -16,17 +16,18 @@ import {
 } from "../../forms";
 import { AuthorizeRoute, UnauthorizeRoute } from ".";
 
-import { urls, http, ErrorProps, PERMISSIONS } from "../../constants";
+import { urls, http, PERMISSIONS } from "../../constants";
 import { Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { FORM_NAME as loginFormName } from "../../forms/login/constants";
 import { FORM_NAME as forgotPasswordFormName } from "../../forms/forgot-password/constants";
 import { FORM_NAME as restorePasswordFormName } from "../../forms/restore-password/constants";
+import { ClientsHeader } from "../../forms";
 
 const MAIN_PAGE = urls.clients.path;
 const { PROFILE_INFO, CLIENTS, TASKS, DEALS } = PERMISSIONS;
 
-const Routes = (error: ErrorProps) => {
+const Routes = () => {
   const [t] = useTranslation();
   return (
     <Router basename={http.ROOT_URL}>
@@ -42,6 +43,7 @@ const Routes = (error: ErrorProps) => {
           <Profile />
         </AuthorizeRoute>
         <AuthorizeRoute
+          subheader={<ClientsHeader />}
           path={urls.clients.path}
           permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
         >

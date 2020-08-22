@@ -8,10 +8,9 @@ import {
   DictionaryProps,
   DEFAULT_SPAN,
 } from "../../../constants";
-import { logger, defaultErrorHandler } from "../../../utils";
+import { defaultErrorHandler } from "../../../utils";
 import { setLoading } from "../../../__data__";
 import { connect } from "react-redux";
-import { useTranslation } from "react-i18next";
 
 const { Option } = Select;
 

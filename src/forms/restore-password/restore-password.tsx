@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import style from "./restore-password.module.scss";
 import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
-import { urls } from "../../constants";
+import { urls, http } from "../../constants";
 import { FIELDS, FORM_NAME } from "./constants";
 import { logger, defaultErrorHandler } from "../../utils";
 
@@ -51,7 +51,7 @@ export const RestorePassword = ({ setLoading }: RestorePasswordProps) => {
         message: t("message.success"),
       });
       message.success(t("message.success"));
-      history.push("/");
+      history.push(http.ROOT_URL);
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {

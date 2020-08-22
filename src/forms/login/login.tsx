@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from "react";
+import React, { SyntheticEvent, useState, useEffect } from "react";
 import axios from "axios";
 import { Form as FormUI, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
@@ -8,8 +8,8 @@ import { useTranslation } from "react-i18next";
 import style from "./login.module.scss";
 import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
-import { urls } from "../../constants";
-import { logger, defaultErrorHandler } from "../../utils";
+import { urls, http } from "../../constants";
+import { logger, defaultErrorHandler, clearCookie } from "../../utils";
 import { FORM_NAME, FIELDS } from "./constants";
 
 import { storeRememberMeParams, getRules, getInitialValues } from "./utils";
@@ -34,8 +34,12 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
   const initialValues = getInitialValues();
   const [submitLoading, setSubmitLoading] = useState(false);
 
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
   if (auth) {
-    history.push("/");
+    history.push(http.ROOT_URL);
   }
 
   const onFinish = async (values: Store) => {
@@ -50,7 +54,7 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
       });
 
       setAuth(true);
-      history.push("/");
+      history.push(http.ROOT_URL);
     } catch (error) {
       defaultErrorHandler({
         error,

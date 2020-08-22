@@ -65,5 +65,33 @@
     "confirm": "Вы уверены? Все изменения будут утеряны.",
     "confirm.yes": "Да",
     "confirm.no": "Нет"
+  },
+  "clients": {
+    "title": "Клиенты",
+    "add.button.title": "＋ Добавить компанию",
+    "clients.entity.add": "Новая компания"
+  },
+  "table": {
+    "message.error": "Ошибка загрузки таблицы",
+    "actions.column.title": "Действия",
+    "actions.delete.confirm": "Вы действительно хотите удалить компанию?",
+    "actions.delete.no": "Нет",
+    "actions.delete.yes": "Да",
+    "actions.call.confirm": "Вы хотите набрать номер?",
+    "actions.call.no": "Нет",
+    "actions.call.yes": "Да",
+
+    "filter.title": "Меню фильтра",
+    "filter.confirm": "Ок",
+    "filter.reset": "Отмена",
+    "filter.empty": "Фильтры не заполнены",
+    "sort.title": "Сортировка",
+    "sort.desc": "Сортировка по убыванию",
+    "sort.asc": "Сортировка по возрастанию",
+    "sort.cancel": "Отменить сортировку",
+    "empty": "Нет данных",
+
+    "search.all.placeholder": "Поиск",
+    "search.all.clear": "Очистить фильтр"
   }
 }

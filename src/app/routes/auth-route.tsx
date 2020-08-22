@@ -11,22 +11,27 @@ interface AuthorizeRouteProps {
   auth: boolean;
   permissions?: string[];
   path: string;
+  subheader?: JSX.Element;
   children: JSX.Element;
 }
 
 export const AuthorizeRoute = ({
   auth,
   permissions,
+  subheader,
   children,
   ...rest
 }: AuthorizeRouteProps) => {
   return (
     <Route
       {...rest}
+      exact
       render={({ location }) =>
         auth ? (
           <PagePermissionsChecker availablePermissions={permissions}>
-            <AuthorizedLayout>{children}</AuthorizedLayout>
+            <AuthorizedLayout subheader={subheader}>
+              {children}
+            </AuthorizedLayout>
           </PagePermissionsChecker>
         ) : (
           <Redirect

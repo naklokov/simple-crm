@@ -23,6 +23,7 @@ const { Sider, Content, Header } = Layout;
 
 interface AuthorizedProps {
   children: JSX.Element;
+  subheader?: JSX.Element;
   loading: boolean;
   isMenuCollapsed: boolean;
   profileInfo: ProfileInfoProps;
@@ -34,6 +35,7 @@ interface AuthorizedProps {
 
 export const Authorized = ({
   children,
+  subheader,
   loading,
   isMenuCollapsed,
   setCollapsed,
@@ -46,7 +48,8 @@ export const Authorized = ({
 
   const fetchProfile = async () => {
     try {
-      const responce = await axios.get(urls.profile.info);
+      setLoading(true);
+      const responce = await axios.get(urls.profile.entity);
       setProfile(responce?.data ?? {});
 
       logger.debug({
@@ -57,12 +60,16 @@ export const Authorized = ({
         error,
         defaultErrorMessage: t("profile.error"),
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchPermissions = async () => {
     try {
+      setLoading(true);
       const responce = await axios.get(urls.profile.permissions);
+      // TODO Выпилить при релизе
       console.log("user permissions", responce?.data?.permissions);
       setPermissions(responce?.data?.permissions ?? []);
       logger.debug({
@@ -73,6 +80,8 @@ export const Authorized = ({
         error,
         defaultErrorMessage: t("permissions.error"),
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -81,19 +90,14 @@ export const Authorized = ({
   };
 
   useEffect(() => {
-    try {
-      setLoading(true);
-      fetchProfile();
-      fetchPermissions();
-    } finally {
-      setLoading(false);
-    }
+    fetchProfile();
+    fetchPermissions();
   }, []);
 
   return (
     <div>
       {loading && <Loader />}
-      <Layout>
+      <Layout className={style.main}>
         <Sider
           collapsible
           collapsed={isMenuCollapsed}
@@ -110,6 +114,7 @@ export const Authorized = ({
               <Profile profileInfo={profileInfo} />
             </div>
           </Header>
+          {subheader && <div className={style.subheader}>{subheader}</div>}
           <Content className={style.content}>{children}</Content>
         </Layout>
       </Layout>

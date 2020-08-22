@@ -19,8 +19,6 @@ interface ErrorResponceProps {
   };
 }
 
-// TODO any type
-// рисовать ошибку при 401 вверху экрана
 export const errorsInterceptor = (dispatch: Dispatch) => (
   errorResponse: ErrorResponceProps
 ) => {

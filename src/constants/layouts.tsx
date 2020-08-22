@@ -14,7 +14,6 @@ const { CLIENTS, TASKS, DEALS } = PERMISSIONS;
 
 export const LOGO = logo;
 
-// TODO Добавить проверку пермишенов
 export const MENU_ITEMS = [
   {
     id: "clients",
