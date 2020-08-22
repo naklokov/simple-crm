@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { State, ProfileInfoProps } from "../../__data__/interfaces";
 import { Header } from "./components";
 
+import style from "./profile.module.scss";
+
 import { TABS_CONTENT, TABS_MAP } from "./constansts";
 
 interface ProfileProps {
@@ -19,10 +21,10 @@ export const Profile = ({ profileInfo }: ProfileProps) => {
   const Form = TABS_MAP[activeTab];
 
   return (
-    <React.Fragment>
+    <div className={style.container}>
       <Header onChangeTab={handleChangeTab} />
       <Form />
-    </React.Fragment>
+    </div>
   );
 };
 

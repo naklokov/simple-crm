@@ -1,4 +1,4 @@
-import React, { useCallback, useState, SyntheticEvent } from "react";
+import React, { useCallback } from "react";
 import { FormHeader } from "../../components/form-header";
 import { useTranslation } from "react-i18next";
 import { PERMISSIONS } from "../../constants";

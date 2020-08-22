@@ -28,6 +28,8 @@ export const Menu = ({ collapsed, permissions }: MenuProps) => {
     [permissions, history]
   );
 
+  console.log(selectedKey);
+
   return (
     <MenuUI
       mode="inline"

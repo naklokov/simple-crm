@@ -26,12 +26,12 @@ const getSortFunction = (
   columnCode: string,
   columnType: ColumnType
 ): ((a: any, b: any) => any) => {
-  if (columnType === "string") {
-    return (a: any, b: any) =>
-      gt(a[columnCode].toLowerCase(), b[columnCode].toLowerCase());
+  if (columnType === "number") {
+    return (a: any, b: any) => gt(a[columnCode], b[columnCode]);
   }
 
-  return (a: any, b: any) => gt(a[columnCode], b[columnCode]);
+  return (a: any, b: any) =>
+    gt(a[columnCode].toLowerCase(), b[columnCode].toLowerCase());
 };
 
 const getSorter = (

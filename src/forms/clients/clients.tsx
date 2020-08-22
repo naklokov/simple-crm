@@ -3,6 +3,8 @@ import { Table } from "../../components";
 import { TableColumnProps, urls, TableActionProps } from "../../constants";
 import { PERMISSIONS } from "../../constants";
 
+import style from "./clients.module.scss";
+
 const { CLIENTS } = PERMISSIONS;
 
 const columns: TableColumnProps[] = [
@@ -11,8 +13,7 @@ const columns: TableColumnProps[] = [
     columnCode: "shortName",
     columnType: "string",
     columnDescription: "Наименование",
-    // TODO сделать нормальную сортировку
-    sorter: (a: any, b: any) => a.shortName > b.shortName,
+    sorter: true,
     columnActions: [
       {
         actionName: "",
@@ -41,14 +42,14 @@ const columns: TableColumnProps[] = [
     columnCode: "city",
     columnType: "string",
     columnDescription: "Город",
-    sorter: (a: any, b: any) => a.city > b.city,
+    sorter: true,
   },
   {
     columnName: "Дата регистрации",
     columnCode: "creationDate",
     columnType: "date",
     format: "DD.MM.YYYY",
-    sorter: (a: any, b: any) => a.date > b.date,
+    sorter: true,
     columnDescription: "Дата регистрации",
   },
 ];
@@ -64,14 +65,14 @@ const actions: TableActionProps[] = [
 
 export const Clients = () => {
   return (
-    // <Filter />
-    // <AdditionalActions />
-    <Table
-      columns={columns}
-      actions={actions}
-      url={urls.clients.entity}
-      withSearch
-    />
+    <div className={style.container}>
+      <Table
+        columns={columns}
+        actions={actions}
+        url={urls.clients.entity}
+        withSearch
+      />
+    </div>
   );
 };
 
