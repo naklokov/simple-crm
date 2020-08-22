@@ -1,17 +1,19 @@
 import React, { useCallback } from "react";
 import { Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
+import { HighlightTextWrapper } from "../../../../wrappers";
 
 interface CallProps {
   phone: string;
+  searched: string;
 }
 
-export const Call = ({ phone }: CallProps) => {
+export const Call = ({ phone, searched }: CallProps) => {
   const [t] = useTranslation("table");
 
   const handleCall = useCallback(() => {
-    alert(`Звонок на номер ${phone}`);
-  }, []);
+    window.location.assign(`tel:${phone}`);
+  }, [phone]);
 
   return (
     <Popconfirm
@@ -22,7 +24,7 @@ export const Call = ({ phone }: CallProps) => {
       placement="left"
     >
       <Button style={{ padding: 0 }} type="link">
-        {phone}
+        <HighlightTextWrapper text={phone} searched={searched} />
       </Button>
     </Popconfirm>
   );

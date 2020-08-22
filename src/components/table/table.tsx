@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { Table as TableUI, Space } from "antd";
+import { Table as TableUI, Input } from "antd";
 
 import { TableColumnProps, TableActionProps } from "../../constants/interfaces";
 import { defaultErrorHandler } from "../../utils";
@@ -11,9 +11,14 @@ import {
   setTableLoading as setTableLoadingAction,
 } from "../../__data__";
 import { connect } from "react-redux";
-import { mapAction, getActions, getDataColumns, mapWithKey } from "./utils";
+import {
+  getActions,
+  getDataColumns,
+  mapWithKey,
+  getFilteredDataSource,
+} from "./utils";
 import { State } from "../../__data__/interfaces";
-import { filter } from "lodash";
+import { Header } from "./components";
 
 interface TableProps {
   url: string;
@@ -21,17 +26,29 @@ interface TableProps {
   actions?: TableActionProps[];
   tableLoading: boolean;
   setTableLoading: (loading: boolean) => void;
+  withSearch?: boolean;
 }
 
+/* 
+  TODO Чего не хватает таблице
+  1. Фильтрация по колонкам (кастомный фильтр длинною в жизнь)
+  2. Кнопка |...| доп действий. Что туда писать и надо прикрутить вообще блок кнопок.
+
+  На подумать:
+  1. Утащить всю работу с таблицей в redux (передавать name таблицы и спокойно всё коннектить к компоненту)
+*/
 export const Table = ({
   columns,
   url,
   actions,
   tableLoading,
   setTableLoading,
+  withSearch = false,
 }: TableProps) => {
   const [t] = useTranslation("table");
   const [dataSource, setDataSource] = useState([]);
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
+  const [searched, setSearched] = useState("");
 
   const fetchDataSource = async () => {
     try {
@@ -46,29 +63,46 @@ export const Table = ({
     }
   };
 
-  // TODO отладить удаление (при повторном удалении получается фигня)
-  const handleDelete = useCallback(
-    (deletedId) => {
-      const filteredDataSource = dataSource.filter(
-        ({ id }) => id !== deletedId
-      );
-      setDataSource(filteredDataSource);
-    },
-    [dataSource]
-  );
-
   useEffect(() => {
     fetchDataSource();
   }, []);
 
-  const mappedColumns = getDataColumns(columns);
-  const mappedActions = getActions(actions, t, handleDelete);
+  const handleSearch = useCallback(
+    (inputSearch) => {
+      setSearched(inputSearch);
+
+      if (inputSearch) {
+        const filtered = getFilteredDataSource(
+          inputSearch,
+          dataSource,
+          columns
+        );
+        setFilteredDataSource(filtered as never[]);
+        return;
+      }
+
+      setFilteredDataSource([]);
+    },
+    [dataSource, filteredDataSource, columns]
+  );
+
+  const handleDelete = useCallback(
+    (deletedId) => {
+      const updatedDataSource = dataSource.filter(({ id }) => id !== deletedId);
+      setDataSource(updatedDataSource);
+    },
+    [dataSource]
+  );
 
   return (
     <TableUI
-      size="large"
-      columns={[...mappedColumns, mappedActions]}
-      dataSource={dataSource}
+      size="middle"
+      title={() => <Header onSearch={handleSearch} withSearch={withSearch} />}
+      columns={[
+        ...getDataColumns(columns, searched),
+        getActions(actions, t, searched, handleDelete),
+      ]}
+      dataSource={searched ? filteredDataSource : dataSource}
       pagination={false}
       loading={tableLoading}
       locale={{
@@ -89,7 +123,6 @@ export const Table = ({
 const mapStateToProps = (state: State) => ({
   tableLoading: state?.app?.tableLoading ?? true,
 });
-
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setLoading: (loading: boolean) => dispatch(setLoadingAction(loading)),
   setTableLoading: (loading: boolean) =>
@@ -97,60 +130,3 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);
-
-/**
- * [{
-			"tableName": "Контакты",
-			"tableDescription": "Список контактов компании",
-			"tableCode": "tab1",
-			"columns": [{
-					"columnName": "Телефон",
-					"columnDescription": "Телефон контакта",
-					"columnCode": "phone",
-					"columnType": "string",
-					"columnActions": [{
-							"actionDescription": "Телефон клиента",
-							"actionType": "call", //email,view,delete
-							"actionCode": "contactCall"
-						}
-					]
-				}, {
-					"columnName": "Контакт важный",
-					"columnDescription": "Признак важности контакта",
-					"columnCode": "impotantContact",
-					"columnType": "boolean",
-				}, {
-					"columnName": "Дата добавления",
-					"columnDescription": "Дата добавления контакта",
-					"columnCode": "createdDate",
-					"columnType": "date",
-				}, {
-					"columnName": "Откат",
-					"columnDescription": "Откат с контакта",
-					"columnCode": "rollout",
-					"columnType": "number",
-				}, {
-					"columnName": "Тип контакта",
-					"columnDescription": "Тип контакта",
-					"columnCode": "contactType",
-					"columnType": "dictionary"
-				}, {
-					"columnName": "Куратор",
-					"columnDescription": "Куратор контакта",
-					"columnCode": "curator",
-					"columnType": "entity",
-					"format": "{{firstName}} {{secondName}} {{lastName}}"
-				}, {
-					"columnName": "",
-					"columnDescription": "Куратор контакта",
-					"columnCode": "curator",
-					"columnType": "entity",
-					"format": "{{firstName}} {{secondName}} {{lastName}}",
-					"_links": {
-						"curator": {
-							"href": "http://localhost:8080/user/{{id}}"
-						}
-					}
-				}
-			]
- */

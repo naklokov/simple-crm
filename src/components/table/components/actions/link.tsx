@@ -1,15 +1,19 @@
 import React from "react";
 import { Link as LinkUI } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { getHref } from "../../utils";
+import { HighlightTextWrapper } from "../../../../wrappers";
 
 interface LinkProps {
   title: string;
+  searched: string;
   href?: string;
 }
 
-export const Link = ({ title, href = "" }: LinkProps) => {
-  return <LinkUI to={href}>{title}</LinkUI>;
+export const Link = ({ title, href = "", searched }: LinkProps) => {
+  return (
+    <LinkUI to={href}>
+      <HighlightTextWrapper text={title} searched={searched} />
+    </LinkUI>
+  );
 };
 
 export default Link;

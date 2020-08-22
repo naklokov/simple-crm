@@ -51,11 +51,11 @@ export type ColumnType =
 export interface TableColumnProps {
   columnName: string;
   columnDescription?: string;
-  columnCode?: string;
+  columnCode: string;
   columnType: ColumnType;
 
   format?: string;
-  sorter?: boolean;
+  sorter: any;
   columnActions?: TableActionProps[];
 }
 
@@ -79,7 +79,7 @@ export interface ClientEntityProps {
   businessId: string;
   checkingAccount: string;
   city: string;
-  correspondentAccount: string;
+  corrdespondentAccount: string;
   creationDate: string;
   email: string;
   fullName: string;

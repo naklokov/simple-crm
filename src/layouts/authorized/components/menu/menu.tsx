@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import { Menu as MenuUI } from "antd";
 
 import { MENU_ITEMS } from "../../../../constants/layouts";
@@ -17,8 +17,16 @@ interface MenuProps {
 
 export const Menu = ({ collapsed, permissions }: MenuProps) => {
   const history = useHistory();
-  const selectedKey = getSelectedKeyByUrl(history);
-  const filteredItems = filterArrayByPermissions(MENU_ITEMS, permissions);
+  const [selectedKey, setSelectedKey] = useState(getSelectedKeyByUrl(history));
+
+  const handleClick = useCallback(() => {
+    setSelectedKey(getSelectedKeyByUrl(history));
+  }, [selectedKey, permissions, history]);
+
+  const itemsByPermissions = useMemo(
+    () => filterArrayByPermissions(MENU_ITEMS, permissions),
+    [permissions, history]
+  );
 
   return (
     <MenuUI
@@ -26,8 +34,8 @@ export const Menu = ({ collapsed, permissions }: MenuProps) => {
       selectedKeys={selectedKey ? [selectedKey] : []}
       inlineCollapsed={collapsed}
     >
-      {filteredItems.map(({ id, icon, title, url }) => (
-        <Item key={id} icon={icon}>
+      {itemsByPermissions.map(({ id, icon, title, url }) => (
+        <Item onClick={handleClick} key={id} icon={icon}>
           <Link to={url}>{title}</Link>
         </Item>
       ))}

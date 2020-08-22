@@ -8,6 +8,7 @@ import { defaultErrorHandler } from "../../../../utils";
 import { connect } from "react-redux";
 import { setTableLoading as setTableLoadingAction } from "../../../../__data__";
 import { Dispatch } from "@reduxjs/toolkit";
+import { HighlightTextWrapper } from "../../../../wrappers";
 
 interface DeleteProps {
   id: string;
@@ -15,14 +16,16 @@ interface DeleteProps {
   onDelete?: (id: string) => void;
   title?: string;
   href?: string;
+  searched: string;
 }
 
 export const Delete = ({
   id,
-  title,
+  title = "",
   href,
   setTableLoading,
   onDelete = noop,
+  searched,
 }: DeleteProps) => {
   const [t] = useTranslation("table");
 
@@ -42,7 +45,7 @@ export const Delete = ({
 
   const handleDelete = useCallback(() => {
     fetchDelete();
-  }, [href]);
+  }, [onDelete, id, href]);
 
   return (
     <Popconfirm
@@ -53,7 +56,7 @@ export const Delete = ({
       placement="left"
     >
       <Button style={{ padding: 0 }} type="link">
-        {title}
+        <HighlightTextWrapper text={title} searched={searched} />
       </Button>
     </Popconfirm>
   );

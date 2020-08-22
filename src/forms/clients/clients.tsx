@@ -11,7 +11,8 @@ const columns: TableColumnProps[] = [
     columnCode: "shortName",
     columnType: "string",
     columnDescription: "Наименование",
-    sorter: true,
+    // TODO сделать нормальную сортировку
+    sorter: (a: any, b: any) => a.shortName > b.shortName,
     columnActions: [
       {
         actionName: "",
@@ -33,21 +34,21 @@ const columns: TableColumnProps[] = [
         permissions: [],
       },
     ],
-    sorter: true,
+    sorter: false,
   },
   {
     columnName: "Город",
     columnCode: "city",
     columnType: "string",
     columnDescription: "Город",
-    sorter: true,
+    sorter: (a: any, b: any) => a.city > b.city,
   },
   {
     columnName: "Дата регистрации",
     columnCode: "creationDate",
     columnType: "date",
     format: "DD.MM.YYYY",
-    sorter: true,
+    sorter: (a: any, b: any) => a.date > b.date,
     columnDescription: "Дата регистрации",
   },
 ];
@@ -65,7 +66,12 @@ export const Clients = () => {
   return (
     // <Filter />
     // <AdditionalActions />
-    <Table columns={columns} actions={actions} url={urls.clients.entity} />
+    <Table
+      columns={columns}
+      actions={actions}
+      url={urls.clients.entity}
+      withSearch
+    />
   );
 };
 

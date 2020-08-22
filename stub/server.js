@@ -43,8 +43,8 @@ server.post(restorePassword.check, checkToken);
 server.post(restorePassword.submit, sendSuccessResponce());
 
 //getProfileInfo
-server.get(profile.info, sendSuccessResponce(profileInfo));
-server.put(new RegExp(profile.entity), sendPostResponce(profileInfo));
+// server.get(profile.info, sendSuccessResponce(profileInfo));
+// server.put(profile.entity, sendPostResponce(profileInfo));
 server.get(profile.permissions, sendPostResponce(permissions));
 
 server.get(
