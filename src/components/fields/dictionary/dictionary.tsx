@@ -3,36 +3,33 @@ import axios from "axios";
 import isEmpty from "lodash/isEmpty";
 import { Col, Form, Select } from "antd";
 import { Dispatch } from "@reduxjs/toolkit";
-import {
-  FormFieldProps,
-  DictionaryProps,
-  DEFAULT_SPAN,
-} from "../../../constants";
+import { DictionaryProps, DEFAULT_SPAN, FieldProps } from "../../../constants";
 import { defaultErrorHandler } from "../../../utils";
 import { setLoading } from "../../../__data__";
 import { connect } from "react-redux";
 
 const { Option } = Select;
 
-interface DictionaryComponentProps extends FormFieldProps {
+interface DictionaryComponentProps extends FieldProps {
   setLoading: (loading: boolean) => void;
 }
 
 export const Dictionary = ({
-  id,
+  fieldCode,
   format,
   rules,
-  title,
-  description,
+  fieldName,
+  fieldDescription,
   placeholder = "Выберите значение",
   disabled = false,
   readonly = false,
-  url = "",
+  _links,
   span = DEFAULT_SPAN,
   setLoading,
 }: DictionaryComponentProps) => {
   const [dictionary, setDictionary] = useState<DictionaryProps>({});
   const { dictionaryValueEntities: options } = dictionary;
+  const url = _links?.self.href ?? "";
 
   const fetchDictionary = async () => {
     try {
@@ -55,8 +52,13 @@ export const Dictionary = ({
   }
 
   return (
-    <Col span={span} key={id}>
-      <Form.Item name={id} label={title} extra={description} rules={rules}>
+    <Col span={span} key={fieldCode}>
+      <Form.Item
+        name={fieldCode}
+        label={fieldName}
+        extra={fieldDescription}
+        rules={rules}
+      >
         <Select
           placeholder={placeholder}
           style={{ width: "100%" }}

@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setLoading, setProfileInfo } from "../../../../__data__";
 import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
-import { getFields } from "./fields";
 import { useTranslation } from "react-i18next";
 import {
   createFormField,
@@ -14,13 +13,22 @@ import {
   logger,
   defaultErrorHandler,
 } from "../../../../utils";
-import { GUTTER_FULL_WIDTH, urls, PERMISSIONS } from "../../../../constants";
+import {
+  GUTTER_FULL_WIDTH,
+  formConfig,
+  urls,
+  PERMISSIONS,
+} from "../../../../constants";
 
 import style from "./main.module.scss";
 import { Store } from "antd/lib/form/interface";
 import { FormFooter } from "../../../../components";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import { useHistory } from "react-router";
+
+const {
+  profile: { FIELDS },
+} = formConfig;
 
 interface MainProps {
   profileInfo: ProfileInfoProps;
@@ -77,7 +85,7 @@ export const Main = ({ profileInfo, setProfile }: MainProps) => {
         <Row
           gutter={[GUTTER_FULL_WIDTH.HORIZONTAL, GUTTER_FULL_WIDTH.VERTICAL]}
         >
-          {getFields(t).map((field) => (
+          {FIELDS.map((field) => (
             <ComponentPermissionsChecker
               availablePermissions={field.permissions}
               mode="disabled"

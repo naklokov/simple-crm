@@ -1,9 +1,9 @@
-import { TableActionProps, TableColumnProps, urls } from "../index";
+import { ActionProps, ColumnProps, urls } from "../index";
 import { PERMISSIONS } from "../permissions";
 
 const { CLIENTS } = PERMISSIONS;
 
-export const COLUMNS: TableColumnProps[] = [
+export const COLUMNS: ColumnProps[] = [
   {
     columnName: "Наименование",
     columnCode: "shortName",
@@ -50,7 +50,7 @@ export const COLUMNS: TableColumnProps[] = [
   },
 ];
 
-export const ACTIONS: TableActionProps[] = [
+export const ACTIONS: ActionProps[] = [
   {
     actionName: "Удалить",
     actionType: "delete",
@@ -58,3 +58,15 @@ export const ACTIONS: TableActionProps[] = [
     href: urls.clients.entity,
   },
 ];
+
+export const TABLES = {
+  tables: [
+    {
+      tableName: "Клиенты",
+      tableDescription: "Список клиентов",
+      tableCode: "clientsTable",
+      columns: COLUMNS,
+      tableActions: ACTIONS,
+    },
+  ],
+};

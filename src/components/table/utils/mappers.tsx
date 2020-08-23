@@ -1,8 +1,8 @@
 import React from "react";
 import {
-  TableActionProps,
+  ActionProps,
   EntityProps,
-  TableColumnProps,
+  ColumnProps,
   ColumnType,
 } from "../../../constants/interfaces";
 import { Delete, Call, Link } from "../components";
@@ -52,7 +52,7 @@ export const mapWithKey = (dataSource?: EntityProps[]): any =>
 export const mapAction = (
   id: string,
   text: string,
-  action: TableActionProps,
+  action: ActionProps,
   searched: string,
   onDelete?: (id: string) => void
 ) => {
@@ -78,13 +78,7 @@ export const mapAction = (
 };
 
 export const mapColumn = (
-  {
-    columnDescription,
-    columnCode,
-    sorter,
-    columnType,
-    format,
-  }: TableColumnProps,
+  { columnDescription, columnCode, sorter, columnType, format }: ColumnProps,
   searched: string
 ) => {
   return {

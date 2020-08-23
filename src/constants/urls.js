@@ -44,5 +44,6 @@ module.exports = {
   },
   dictionaries: {
     position: "/crm/rest/dictionary/position",
+    managers: "/crm/rest/dictionary/managers",
   },
 };

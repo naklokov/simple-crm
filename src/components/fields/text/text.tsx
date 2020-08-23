@@ -1,24 +1,24 @@
 import React from "react";
 import { Form, Input, Col } from "antd";
-import { FormFieldProps, DEFAULT_SPAN } from "../../../constants";
+import { DEFAULT_SPAN, FieldProps } from "../../../constants";
 
 export const Text = ({
-  id,
+  fieldCode,
   format,
   rules,
-  title,
-  description,
+  fieldName,
+  fieldDescription,
   placeholder,
   disabled = false,
   readonly = false,
   span = DEFAULT_SPAN,
-}: FormFieldProps) => (
-  <Col span={span} key={id}>
+}: FieldProps) => (
+  <Col span={span} key={fieldCode}>
     <Form.Item
       style={{ width: "100%" }}
-      name={id}
-      label={title}
-      extra={description}
+      name={fieldCode}
+      label={fieldName}
+      extra={fieldDescription}
       rules={rules}
     >
       <Input

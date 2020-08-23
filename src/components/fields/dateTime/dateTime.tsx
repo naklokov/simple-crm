@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { Col, Form, DatePicker } from "antd";
-import { FormFieldProps, DATE_FORMATS, DEFAULT_SPAN } from "../../../constants";
+import { DATE_FORMATS, DEFAULT_SPAN, FieldProps } from "../../../constants";
 
 import "moment/locale/ru";
 import locale from "antd/es/date-picker/locale/ru_RU";
@@ -15,21 +15,21 @@ const handleValueProp = (value: any) => {
 };
 
 export const DateTime = ({
-  id,
+  fieldCode,
   format = DATE_FORMATS.DATE,
   rules,
-  title,
-  description,
+  fieldName,
+  fieldDescription,
   placeholder = "Введите дату",
   disabled = false,
   readonly = false,
   span = DEFAULT_SPAN,
-}: FormFieldProps) => (
-  <Col span={span} key={id}>
+}: FieldProps) => (
+  <Col span={span} key={fieldCode}>
     <Form.Item
-      name={id}
-      label={title}
-      extra={description}
+      name={fieldCode}
+      label={fieldName}
+      extra={fieldDescription}
       rules={rules}
       getValueProps={handleValueProp}
     >

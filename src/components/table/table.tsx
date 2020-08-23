@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Table as TableUI } from "antd";
 
-import { TableColumnProps, TableActionProps } from "../../constants/interfaces";
+import { ColumnProps, ActionProps } from "../../constants/interfaces";
 import { useTranslation } from "react-i18next";
 import {
   getActions,
@@ -14,8 +14,8 @@ import noop from "lodash/noop";
 
 interface TableProps {
   dataSource: any[];
-  columns?: TableColumnProps[];
-  actions?: TableActionProps[];
+  columns?: ColumnProps[];
+  actions?: ActionProps[];
   loading: boolean;
   onDeleteRow?: (id: string) => void;
   withSearch?: boolean;
