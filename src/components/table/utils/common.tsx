@@ -46,14 +46,6 @@ export const getFilteredDataSource = (
   );
 };
 
-export const getHref = (href: string = "", id?: string): string => {
-  if (id) {
-    return `${href}/${id}`;
-  }
-
-  return href;
-};
-
 export const getActions = (
   actions: TableActionProps[] = [],
   t: (value: string) => string,

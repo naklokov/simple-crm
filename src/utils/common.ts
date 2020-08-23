@@ -26,6 +26,32 @@ export const clearCookie = () => {
   Cookies.remove(COOKIES.REMEMBER_ME);
 };
 
+const getTemplateMask = (param: string) => `{{${param}}}`;
+
+export const fillTemplate = (
+  template: string,
+  values?: { [key: string]: string }
+) => {
+  let result = template;
+  if (values) {
+    const keys = Object.keys(values);
+
+    keys.forEach((key) => {
+      result = result.replace(getTemplateMask(key), values[key]);
+    });
+  }
+
+  return result;
+};
+
+export const getFullUrl = (url: string = "", id?: string): string => {
+  if (id) {
+    return `${url}/${id}`;
+  }
+
+  return url;
+};
+
 export const logout = async (dispatch: Dispatch) => {
   const username = Cookies.get(COOKIES.USERNAME);
   clearCookie();

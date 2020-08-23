@@ -6,10 +6,10 @@ import {
   ColumnType,
 } from "../../../constants/interfaces";
 import { Delete, Call, Link } from "../components";
-import { getHref } from "./common";
 import { getFormattedText } from "./parser";
 import gt from "lodash/gt";
 import { HighlightTextWrapper } from "../../../wrappers";
+import { getFullUrl } from "../../../utils";
 
 const getRenderProp = (
   columnType: ColumnType,
@@ -46,8 +46,8 @@ const getSorter = (
   return {};
 };
 
-export const mapWithKey = (dataSource: EntityProps[]): any =>
-  dataSource.map((item: EntityProps) => ({ key: item.id, ...item }));
+export const mapWithKey = (dataSource?: EntityProps[]): any =>
+  dataSource?.map((item: EntityProps) => ({ key: item.id, ...item })) ?? [];
 
 export const mapAction = (
   id: string,
@@ -56,7 +56,7 @@ export const mapAction = (
   searched: string,
   onDelete?: (id: string) => void
 ) => {
-  const fullHref = getHref(action.href, id);
+  const fullHref = getFullUrl(action.href, id);
   switch (action.actionType) {
     case "delete":
       return (

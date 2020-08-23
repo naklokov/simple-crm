@@ -1,7 +1,7 @@
-import React, { useEffect, useCallback, useState } from "react";
-import { Breadcrumb, Typography, Button, Drawer } from "antd";
-import { useHistory } from "react-router";
+import React from "react";
+import { Breadcrumb, Typography, Button, Tag } from "antd";
 import { getBreadcrumbItems } from "./utils";
+import isEmpty from "lodash/isEmpty";
 import noop from "lodash/noop";
 
 import style from "./form-header.module.scss";
@@ -12,6 +12,7 @@ interface FormHeaderProps {
   addButtonTitle?: string;
   onClickAdd?: (event: React.MouseEvent) => void;
   addPermissions?: string[];
+  tags?: string[];
   children?: JSX.Element;
 }
 
@@ -21,6 +22,7 @@ export const FormHeader = ({
   addButtonTitle,
   addPermissions = [],
   children,
+  tags = [],
 }: FormHeaderProps) => {
   return (
     <div className={style.container}>
@@ -30,6 +32,7 @@ export const FormHeader = ({
       <Typography.Title className={style.title} level={3}>
         {title}
       </Typography.Title>
+      {!isEmpty(tags) && tags.map((tag) => <Tag>{tag}</Tag>)}
       {addButtonTitle && (
         <ComponentPermissionsChecker availablePermissions={addPermissions}>
           <Button type="primary" className={style.button} onClick={onClickAdd}>

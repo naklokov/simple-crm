@@ -48,6 +48,10 @@ export const errorsInterceptor = (dispatch: Dispatch) => (
     }
 
     if (ERROR_SCREEN_CODES.includes(statusCode) && !originalRequest._retry) {
+      if (statusCode === HTTP_CODES.NOT_FOUND) {
+        dispatch(setError({ statusCode: HTTP_CODES.SERVER_ERROR }));
+        return;
+      }
       dispatch(setError({ statusCode, ...error }));
     }
     return Promise.reject(error);

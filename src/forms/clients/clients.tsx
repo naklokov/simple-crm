@@ -1,79 +1,74 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
+import { connect } from "react-redux";
 import { Table } from "../../components";
-import { TableColumnProps, urls, TableActionProps } from "../../constants";
-import { PERMISSIONS } from "../../constants";
+import { urls, ClientEntityProps, formConfig } from "../../constants";
 
 import style from "./clients.module.scss";
+import { State } from "../../__data__/interfaces";
+import { setClients } from "../../__data__";
+import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
+import { defaultErrorHandler } from "../../utils";
+import { useTranslation } from "react-i18next";
 
-const { CLIENTS } = PERMISSIONS;
+interface ClientsProps {
+  clients: ClientEntityProps[];
+  setClients: (clients: ClientEntityProps[]) => void;
+}
 
-const columns: TableColumnProps[] = [
-  {
-    columnName: "Наименование",
-    columnCode: "shortName",
-    columnType: "string",
-    columnDescription: "Наименование",
-    sorter: true,
-    columnActions: [
-      {
-        actionName: "",
-        permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
-        actionType: "href",
-        href: urls.clients.path,
-      },
-    ],
-  },
-  {
-    columnName: "Телефон",
-    columnCode: "phone",
-    columnType: "string",
-    columnDescription: "Телефон",
-    columnActions: [
-      {
-        actionType: "call",
-        actionName: "",
-        permissions: [],
-      },
-    ],
-    sorter: false,
-  },
-  {
-    columnName: "Город",
-    columnCode: "city",
-    columnType: "string",
-    columnDescription: "Город",
-    sorter: true,
-  },
-  {
-    columnName: "Дата регистрации",
-    columnCode: "creationDate",
-    columnType: "date",
-    format: "DD.MM.YYYY",
-    sorter: true,
-    columnDescription: "Дата регистрации",
-  },
-];
+export const Clients = ({ setClients, clients }: ClientsProps) => {
+  const [tableLoading, setTableLoading] = useState(false);
+  const [t] = useTranslation("clients");
+  const { ACTIONS, COLUMNS } = formConfig.clients;
 
-const actions: TableActionProps[] = [
-  {
-    actionName: "Удалить",
-    actionType: "delete",
-    permissions: [CLIENTS.ADMIN, CLIENTS.DELETE, CLIENTS.DELETE_OWNER],
-    href: urls.clients.entity,
-  },
-];
+  const fetchDataSource = async () => {
+    try {
+      setTableLoading(true);
+      const response = await axios.get(urls.clients.entity);
+      setClients(response?.data ?? []);
+    } catch (error) {
+      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
+    } finally {
+      setTableLoading(false);
+    }
+  };
 
-export const Clients = () => {
+  useEffect(() => {
+    fetchDataSource();
+  }, []);
+
+  const handleDelete = useCallback(
+    (deletedId) => {
+      try {
+        setTableLoading(true);
+        const removed = clients.filter(({ id }) => id !== deletedId);
+        setClients(removed);
+      } finally {
+        setTableLoading(false);
+      }
+    },
+    [clients]
+  );
+
   return (
     <div className={style.container}>
       <Table
-        columns={columns}
-        actions={actions}
-        url={urls.clients.entity}
+        columns={COLUMNS}
+        actions={ACTIONS}
+        loading={tableLoading}
+        onDeleteRow={handleDelete}
+        dataSource={clients}
         withSearch
       />
     </div>
   );
 };
 
-export default Clients;
+const mapStateToProps = (state: State) => ({
+  clients: state?.clients ?? [],
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators({ setClients }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Clients);

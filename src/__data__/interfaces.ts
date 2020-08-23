@@ -1,3 +1,5 @@
+import { ClientEntityProps } from "../constants";
+
 export interface PersistState {
   permissions: string[];
   menuCollapsed: boolean;
@@ -21,6 +23,7 @@ export interface AppState {
 export interface State {
   persist: PersistState;
   app: AppState;
+  clients?: ClientEntityProps[];
 }
 
 export interface ProfileInfoProps {
