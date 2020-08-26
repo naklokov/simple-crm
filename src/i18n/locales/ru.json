@@ -97,5 +97,10 @@
   "clientCard": {
     "message.error": "Ошибка при получении данных клиента",
     "title.new": "Новая компания"
+  },
+  "clientCardMain": {
+    "message.error": "Ошибка при изменении клиента",
+    "message.success": "Информация о клиенте обновлена",
+    "save": "Сохранить"
   }
 }

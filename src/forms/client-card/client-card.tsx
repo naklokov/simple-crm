@@ -9,8 +9,11 @@ import { State } from "../../__data__/interfaces";
 import { getClient } from "./utils";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { setLoading, setClients } from "../../__data__";
-import template from "lodash/template";
 import { defaultErrorHandler, fillTemplate } from "../../utils";
+import { Upper } from "./upper";
+import { Lower } from "./lower";
+
+import style from "./client-card.module.scss";
 
 interface ClientCardProps {
   clients?: ClientEntityProps[];
@@ -46,7 +49,12 @@ export const ClientCard = ({
     }
   }, [id]);
 
-  return <React.Fragment>{client?.shortName ?? t("title.new")}</React.Fragment>;
+  return (
+    <React.Fragment>
+      <Upper />
+      <Lower />
+    </React.Fragment>
+  );
 };
 
 const mapStateToProps = (state: State) => ({
