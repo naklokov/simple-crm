@@ -13,8 +13,6 @@ import { defaultErrorHandler, fillTemplate } from "../../utils";
 import { Upper } from "./upper";
 import { Lower } from "./lower";
 
-import style from "./client-card.module.scss";
-
 interface ClientCardProps {
   clients?: ClientEntityProps[];
   setLoading: (loading: boolean) => void;

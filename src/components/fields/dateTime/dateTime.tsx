@@ -25,7 +25,7 @@ export const DateTime = ({
   readonly = false,
   span = DEFAULT_SPAN,
 }: FieldProps) => (
-  <Col span={span} key={fieldCode}>
+  <Col {...span} key={fieldCode}>
     <Form.Item
       name={fieldCode}
       label={fieldName}

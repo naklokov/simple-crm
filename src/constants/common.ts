@@ -7,9 +7,9 @@ export const TEXT_FORMATS = {
   TEXT_AREA: "textarea",
 };
 
-export const DEFAULT_SPAN = 24;
+export const DEFAULT_SPAN = { md: 8, lg: 6, xl: 6 };
 export const GUTTER_FULL_WIDTH = {
-  HORIZONTAL: 128,
+  HORIZONTAL: 48,
   VERTICAL: 16,
 };
 

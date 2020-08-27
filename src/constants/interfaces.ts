@@ -17,6 +17,12 @@ export interface RuleProps {
   min?: number;
 }
 
+export interface SpanProps {
+  md?: number;
+  xl?: number;
+  lg?: number;
+}
+
 export interface FieldProps {
   fieldCode: string;
   fieldName: string;
@@ -26,7 +32,7 @@ export interface FieldProps {
   disabled: boolean;
   rules?: Rule[];
   format?: string;
-  span?: number;
+  span?: SpanProps;
   rows?: number;
   permissions: string[];
   placeholder?: string;

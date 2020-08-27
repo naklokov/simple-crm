@@ -15,7 +15,6 @@ export const FIELDS: FieldProps[] = [
     readonly: false,
     disabled: false,
     rules: [{ required: true, message: REQUIRED_MESSAGE }],
-    span: 8,
     permissions: [PROFILE_INFO.ADMIN],
   },
   {
@@ -26,7 +25,6 @@ export const FIELDS: FieldProps[] = [
     readonly: false,
     disabled: false,
     rules: [{ required: true, message: REQUIRED_MESSAGE }],
-    span: 8,
     permissions: [PROFILE_INFO.ADMIN],
   },
   {
@@ -37,7 +35,6 @@ export const FIELDS: FieldProps[] = [
     readonly: false,
     disabled: false,
     rules: [{ required: true, message: REQUIRED_MESSAGE }],
-    span: 8,
     permissions: [PROFILE_INFO.ADMIN],
   },
   {
@@ -49,7 +46,6 @@ export const FIELDS: FieldProps[] = [
     readonly: false,
     disabled: false,
     rules: [{ required: true, message: REQUIRED_MESSAGE }],
-    span: 8,
     permissions: [PROFILE_INFO.ADMIN],
   },
   {
@@ -60,7 +56,6 @@ export const FIELDS: FieldProps[] = [
     readonly: false,
     disabled: false,
     rules: [],
-    span: 8,
     permissions: [PROFILE_INFO.ADMIN],
     _links: {
       self: {
@@ -81,7 +76,6 @@ export const FIELDS: FieldProps[] = [
         message: "Пожалуйста, введите корректный email",
       },
     ],
-    span: 8,
     permissions: [PROFILE_INFO.ADMIN],
   },
   {
@@ -92,7 +86,6 @@ export const FIELDS: FieldProps[] = [
     readonly: false,
     disabled: false,
     rules: [{ required: true, message: REQUIRED_MESSAGE }],
-    span: 8,
     permissions: [PROFILE_INFO.ADMIN],
   },
   {
@@ -106,6 +99,6 @@ export const FIELDS: FieldProps[] = [
     permissions: [],
     disabled: false,
     rules: [{ max: 2000, message: "Превышена максимальная длина строки" }],
-    span: 16,
+    span: { lg: 12, xl: 10 },
   },
 ];

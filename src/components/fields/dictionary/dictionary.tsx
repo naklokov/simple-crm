@@ -52,7 +52,7 @@ export const Dictionary = ({
   }
 
   return (
-    <Col span={span} key={fieldCode}>
+    <Col {...span} key={fieldCode}>
       <Form.Item
         name={fieldCode}
         label={fieldName}

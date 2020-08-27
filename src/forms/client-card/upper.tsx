@@ -25,7 +25,11 @@ export const Upper = () => {
 
   return (
     <React.Fragment>
-      <Tabs className={style.upperTabs} defaultActiveKey={tabs[0].tabCode}>
+      <Tabs
+        className={style.upperTabs}
+        defaultActiveKey={tabs[0].tabCode}
+        onClick={handleChange}
+      >
         {tabs.map(({ tabCode, tabName }) => (
           <TabPane className={style.upperTabPane} tab={tabName} key={tabCode} />
         ))}

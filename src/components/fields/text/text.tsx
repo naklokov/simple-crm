@@ -13,7 +13,7 @@ export const Text = ({
   readonly = false,
   span = DEFAULT_SPAN,
 }: FieldProps) => (
-  <Col span={span} key={fieldCode}>
+  <Col {...span} key={fieldCode}>
     <Form.Item
       style={{ width: "100%" }}
       name={fieldCode}

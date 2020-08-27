@@ -1,13 +1,13 @@
-import React, { useState, useMemo, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import axios, { AxiosResponse } from "axios";
 import {
   FieldProps,
   GUTTER_FULL_WIDTH,
   ClientEntityProps,
   urls,
-  PERMISSIONS,
   CLIENT_NEW_ID,
 } from "../../../../constants";
+import moment from "moment";
 import style from "./main.module.scss";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
@@ -18,10 +18,10 @@ import {
   fillTemplate,
 } from "../../../../utils";
 import isEmpty from "lodash/isEmpty";
-import { Row, message, Button, Form } from "antd";
+import { Row, message, Form } from "antd";
 import { Loader, FormFooter } from "../../../../components";
 import { useParams } from "react-router";
-import { State } from "../../../../__data__/interfaces";
+import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
 import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { setClients } from "../../../../__data__";
@@ -33,19 +33,32 @@ import { getUpdatedClients } from "../../utils";
 interface MainProps {
   fields: FieldProps[];
   clients: ClientEntityProps[];
+  profileInfo: ProfileInfoProps;
   setClients: (clients: ClientEntityProps[]) => void;
 }
 
-const {
-  CLIENTS: { UPDATE, UPDATE_OWNER, ADMIN },
-} = PERMISSIONS;
-
-export const Main = ({ fields, clients, setClients }: MainProps) => {
+// TODO поля сфера деятельности
+export const Main = ({
+  fields,
+  clients,
+  profileInfo,
+  setClients,
+}: MainProps) => {
   const [form] = useForm();
   const [t] = useTranslation("clientCardMain");
   const { id } = useParams();
-  const client =
+  const isAdding = id === CLIENT_NEW_ID;
+  let client =
     clients.find((item) => item.id === id) || ({} as ClientEntityProps);
+
+  // TODO до реализации 1 запроса данные поля заполняеются по умолчанию на фронте
+  if (isAdding) {
+    const initialValues = {
+      managerId: profileInfo.id ?? "",
+      creationDate: moment().toISOString(),
+    };
+    client = { ...client, ...initialValues };
+  }
 
   const [submitLoading, setSubmitLoading] = useState(false);
   const [submitDisabled, setSubmitDisabled] = useState(true);
@@ -55,20 +68,35 @@ export const Main = ({ fields, clients, setClients }: MainProps) => {
     setSubmitDisabled(!isChanged);
   };
 
-  // путь для сохранения новой сущности
-  // что писать в дату создания
-  //
+  const putClient = async (values: Store) => {
+    const url = fillTemplate(urls.clientCard.entity, { id });
+    const data = { ...client, ...values };
+    const response: AxiosResponse<ClientEntityProps> = await axios.put(
+      url,
+      data
+    );
+
+    return response?.data ?? {};
+  };
+
+  const postClient = async (values: Store) => {
+    const url = urls.clients.entity;
+    const data = { ...client, ...values };
+    const response: AxiosResponse<ClientEntityProps> = await axios.post(
+      url,
+      data
+    );
+    return response?.data ?? {};
+  };
+
   const onFinish = async (values: Store) => {
     try {
       setSubmitLoading(true);
-      const method = id === CLIENT_NEW_ID ? axios.post : axios.put;
-      const responce = await method(
-        fillTemplate(urls.clientCard.entity, { id }),
-        { ...client, ...values }
-      );
-      const newClient = responce?.data ?? ({} as ClientEntityProps);
+      const clientData = isAdding
+        ? await postClient(values)
+        : await putClient(values);
 
-      setClients(getUpdatedClients(newClient, clients));
+      setClients(getUpdatedClients(clientData, clients));
       setSubmitDisabled(true);
       logger.debug(t("message.success"));
       message.success(t("message.success"));
@@ -117,6 +145,7 @@ export const Main = ({ fields, clients, setClients }: MainProps) => {
 
 const mapStateToProps = (state: State) => ({
   clients: state?.clients ?? [],
+  profileInfo: state?.persist?.profileInfo ?? {},
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
