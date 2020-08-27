@@ -24,7 +24,7 @@ store.subscribe(() => {
 
 axios.interceptors.response.use(
   (response) => response,
-  errorsInterceptor(store.dispatch)
+  errorsInterceptor(store.dispatch, store.getState())
 );
 
 const App = () => (

@@ -3,16 +3,12 @@ import isEmpty from "lodash/isEmpty";
 import { Space } from "antd";
 import { mapAction, mapColumn } from ".";
 
-import {
-  TableActionProps,
-  TableColumnProps,
-  EntityProps,
-} from "../../../constants";
+import { ActionProps, ColumnProps, EntityProps } from "../../../constants";
 import { ComponentPermissionsChecker } from "../../../wrappers";
 import pick from "lodash/pick";
 
 const renderActions = (
-  actions: TableActionProps[],
+  actions: ActionProps[],
   text: string,
   entity: EntityProps,
   searched: string,
@@ -32,7 +28,7 @@ const renderActions = (
 export const getFilteredDataSource = (
   searched: string,
   dataSource: any[],
-  columns?: TableColumnProps[]
+  columns?: ColumnProps[]
 ) => {
   const visibleColumns = dataSource.map((item) => {
     const pickColumn = columns?.map((col) => col.columnCode) ?? [];
@@ -46,16 +42,8 @@ export const getFilteredDataSource = (
   );
 };
 
-export const getHref = (href: string = "", id?: string): string => {
-  if (id) {
-    return `${href}/${id}`;
-  }
-
-  return href;
-};
-
 export const getActions = (
-  actions: TableActionProps[] = [],
+  actions: ActionProps[] = [],
   t: (value: string) => string,
   searched: string,
   onDelete: (id: string) => void
@@ -72,10 +60,7 @@ export const getActions = (
   };
 };
 
-export const getDataColumns = (
-  columns: TableColumnProps[] = [],
-  searched: string
-) =>
+export const getDataColumns = (columns: ColumnProps[] = [], searched: string) =>
   columns.map(({ columnActions, ...column }) => {
     const columnProps = mapColumn(column, searched);
 

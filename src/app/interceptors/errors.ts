@@ -3,6 +3,7 @@ import { logger, logout, defaultErrorHandler } from "../../utils";
 import { message } from "antd";
 import { setError } from "../../__data__";
 import { Dispatch } from "@reduxjs/toolkit";
+import { State } from "../../__data__/interfaces";
 
 const { ERROR_SCREEN_CODES, HTTP_CODES } = http;
 const DEFAULT_ERROR_MESSAGE = "Произошла ошибка";
@@ -19,7 +20,7 @@ interface ErrorResponceProps {
   };
 }
 
-export const errorsInterceptor = (dispatch: Dispatch) => (
+export const errorsInterceptor = (dispatch: Dispatch, state: State) => (
   errorResponse: ErrorResponceProps
 ) => {
   try {
@@ -47,8 +48,11 @@ export const errorsInterceptor = (dispatch: Dispatch) => (
       return Promise.reject(errorResponse);
     }
 
+    const hasError = state?.app?.error?.statusCode;
     if (ERROR_SCREEN_CODES.includes(statusCode) && !originalRequest._retry) {
-      dispatch(setError({ statusCode, ...error }));
+      if (!hasError) {
+        dispatch(setError({ statusCode, ...error }));
+      }
     }
     return Promise.reject(error);
   } catch (error) {

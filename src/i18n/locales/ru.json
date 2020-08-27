@@ -69,10 +69,10 @@
   "clients": {
     "title": "Клиенты",
     "add.button.title": "＋ Добавить компанию",
-    "clients.entity.add": "Новая компания"
+    "clients.entity.add": "Новая компания",
+    "message.error": "Ошибка при получении клиентов"
   },
   "table": {
-    "message.error": "Ошибка загрузки таблицы",
     "actions.column.title": "Действия",
     "actions.delete.confirm": "Вы действительно хотите удалить компанию?",
     "actions.delete.no": "Нет",
@@ -93,5 +93,14 @@
 
     "search.all.placeholder": "Поиск",
     "search.all.clear": "Очистить фильтр"
+  },
+  "clientCard": {
+    "message.error": "Ошибка при получении данных клиента",
+    "title.new": "Новая компания"
+  },
+  "clientCardMain": {
+    "message.error": "Ошибка при изменении клиента",
+    "message.success": "Информация о клиенте обновлена",
+    "save": "Сохранить"
   }
 }

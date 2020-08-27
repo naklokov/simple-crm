@@ -1,15 +1,15 @@
 import React from "react";
 import {
-  TableActionProps,
+  ActionProps,
   EntityProps,
-  TableColumnProps,
+  ColumnProps,
   ColumnType,
 } from "../../../constants/interfaces";
 import { Delete, Call, Link } from "../components";
-import { getHref } from "./common";
 import { getFormattedText } from "./parser";
 import gt from "lodash/gt";
 import { HighlightTextWrapper } from "../../../wrappers";
+import { getFullUrl } from "../../../utils";
 
 const getRenderProp = (
   columnType: ColumnType,
@@ -26,12 +26,12 @@ const getSortFunction = (
   columnCode: string,
   columnType: ColumnType
 ): ((a: any, b: any) => any) => {
-  if (columnType === "string") {
-    return (a: any, b: any) =>
-      gt(a[columnCode].toLowerCase(), b[columnCode].toLowerCase());
+  if (columnType === "number") {
+    return (a: any, b: any) => gt(a[columnCode], b[columnCode]);
   }
 
-  return (a: any, b: any) => gt(a[columnCode], b[columnCode]);
+  return (a: any, b: any) =>
+    gt(a[columnCode].toLowerCase(), b[columnCode].toLowerCase());
 };
 
 const getSorter = (
@@ -46,17 +46,17 @@ const getSorter = (
   return {};
 };
 
-export const mapWithKey = (dataSource: EntityProps[]): any =>
-  dataSource.map((item: EntityProps) => ({ key: item.id, ...item }));
+export const mapWithKey = (dataSource?: EntityProps[]): any =>
+  dataSource?.map((item: EntityProps) => ({ key: item.id, ...item })) ?? [];
 
 export const mapAction = (
   id: string,
   text: string,
-  action: TableActionProps,
+  action: ActionProps,
   searched: string,
   onDelete?: (id: string) => void
 ) => {
-  const fullHref = getHref(action.href, id);
+  const fullHref = getFullUrl(action.href, id);
   switch (action.actionType) {
     case "delete":
       return (
@@ -78,13 +78,7 @@ export const mapAction = (
 };
 
 export const mapColumn = (
-  {
-    columnDescription,
-    columnCode,
-    sorter,
-    columnType,
-    format,
-  }: TableColumnProps,
+  { columnDescription, columnCode, sorter, columnType, format }: ColumnProps,
   searched: string
 ) => {
   return {

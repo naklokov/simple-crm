@@ -1,24 +1,24 @@
 import React from "react";
 import { Form, Input, Col } from "antd";
-import { FormFieldProps, DEFAULT_SPAN } from "../../../constants";
+import { DEFAULT_SPAN, FieldProps } from "../../../constants";
 
 export const TextArea = ({
-  id,
+  fieldCode,
   rules,
-  title,
-  description,
+  fieldName,
+  fieldDescription,
   placeholder,
   disabled = false,
   readonly = false,
   rows = 4,
   span = DEFAULT_SPAN,
-}: FormFieldProps) => {
+}: FieldProps) => {
   return (
-    <Col span={span} key={id}>
+    <Col span={span} key={fieldCode}>
       <Form.Item
-        name={id}
-        label={title}
-        extra={description}
+        name={fieldCode}
+        label={fieldName}
+        extra={fieldDescription}
         rules={rules}
         style={{ width: "100%" }}
       >

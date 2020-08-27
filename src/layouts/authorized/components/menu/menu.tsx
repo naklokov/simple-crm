@@ -17,16 +17,8 @@ interface MenuProps {
 
 export const Menu = ({ collapsed, permissions }: MenuProps) => {
   const history = useHistory();
-  const [selectedKey, setSelectedKey] = useState(getSelectedKeyByUrl(history));
-
-  const handleClick = useCallback(() => {
-    setSelectedKey(getSelectedKeyByUrl(history));
-  }, [selectedKey, permissions, history]);
-
-  const itemsByPermissions = useMemo(
-    () => filterArrayByPermissions(MENU_ITEMS, permissions),
-    [permissions, history]
-  );
+  const itemsByPermissions = filterArrayByPermissions(MENU_ITEMS, permissions);
+  const selectedKey = getSelectedKeyByUrl(history);
 
   return (
     <MenuUI
@@ -35,7 +27,7 @@ export const Menu = ({ collapsed, permissions }: MenuProps) => {
       inlineCollapsed={collapsed}
     >
       {itemsByPermissions.map(({ id, icon, title, url }) => (
-        <Item onClick={handleClick} key={id} icon={icon}>
+        <Item key={id} icon={icon}>
           <Link to={url}>{title}</Link>
         </Item>
       ))}

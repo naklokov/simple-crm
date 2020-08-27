@@ -115,7 +115,7 @@ export const Authorized = ({
             </div>
           </Header>
           {subheader && <div className={style.subheader}>{subheader}</div>}
-          <Content className={style.content}>{children}</Content>
+          <Content>{children}</Content>
         </Layout>
       </Layout>
     </div>

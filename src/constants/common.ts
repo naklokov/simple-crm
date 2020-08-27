@@ -12,3 +12,5 @@ export const GUTTER_FULL_WIDTH = {
   HORIZONTAL: 128,
   VERTICAL: 16,
 };
+
+export const CLIENT_NEW_ID = "new";

@@ -10,6 +10,9 @@ import {
   Login,
   ForgotPassword,
   Clients,
+  ClientsHeader,
+  ClientCard,
+  ClientCardHeader,
   RestorePassword,
   Profile,
   NotFoundError,
@@ -22,7 +25,6 @@ import { useTranslation } from "react-i18next";
 import { FORM_NAME as loginFormName } from "../../forms/login/constants";
 import { FORM_NAME as forgotPasswordFormName } from "../../forms/forgot-password/constants";
 import { FORM_NAME as restorePasswordFormName } from "../../forms/restore-password/constants";
-import { ClientsHeader } from "../../forms";
 
 const MAIN_PAGE = urls.clients.path;
 const { PROFILE_INFO, CLIENTS, TASKS, DEALS } = PERMISSIONS;
@@ -33,6 +35,8 @@ const Routes = () => {
     <Router basename={http.ROOT_URL}>
       <Switch>
         <AuthorizeRoute
+          key={urls.profile.path}
+          exact
           path={urls.profile.path}
           permissions={[
             PROFILE_INFO.ADMIN,
@@ -43,6 +47,8 @@ const Routes = () => {
           <Profile />
         </AuthorizeRoute>
         <AuthorizeRoute
+          key={urls.clients.path}
+          exact
           subheader={<ClientsHeader />}
           path={urls.clients.path}
           permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
@@ -50,28 +56,42 @@ const Routes = () => {
           <Clients />
         </AuthorizeRoute>
         <AuthorizeRoute
+          key={urls.clientCard.path}
+          subheader={<ClientCardHeader />}
+          path={urls.clientCard.path}
+          permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
+        >
+          <ClientCard />
+        </AuthorizeRoute>
+        <AuthorizeRoute
+          key={urls.tasks.path}
+          exact
           path={urls.tasks.path}
           permissions={[TASKS.ADMIN, TASKS.GET, TASKS.GET_OWNER]}
         >
           <Typography.Title>Планы</Typography.Title>
         </AuthorizeRoute>
         <AuthorizeRoute
+          key={urls.deals.path}
+          exact
           path={urls.deals.path}
           permissions={[DEALS.ADMIN, DEALS.GET, DEALS.GET_OWNER]}
         >
           <Typography.Title>Сделки</Typography.Title>
         </AuthorizeRoute>
-        <AuthorizeRoute path={urls.knowledge.path}>
+        <AuthorizeRoute key={urls.knowledge.path} path={urls.knowledge.path}>
           <Typography.Title>База знаний</Typography.Title>
         </AuthorizeRoute>
 
         <UnauthorizeRoute
+          key={urls.login.path}
           path={urls.login.path}
           title={t("title", { ns: loginFormName })}
         >
           <Login />
         </UnauthorizeRoute>
         <UnauthorizeRoute
+          key={urls.forgotPassword.path}
           path={urls.forgotPassword.path}
           title={t("title", { ns: forgotPasswordFormName })}
           description={t("description", { ns: forgotPasswordFormName })}
@@ -79,6 +99,7 @@ const Routes = () => {
           <ForgotPassword />
         </UnauthorizeRoute>
         <UnauthorizeRoute
+          key={urls.restorePassword.path}
           path={urls.restorePassword.path}
           title={t("title", { ns: restorePasswordFormName })}
           description={t("description", { ns: restorePasswordFormName })}

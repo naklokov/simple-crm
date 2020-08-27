@@ -9,6 +9,7 @@ interface FormFooterProps {
   disabled: boolean;
   loading: boolean;
   permissions?: string[];
+  withCancel?: boolean;
   onCancel?: () => void;
 }
 
@@ -16,6 +17,7 @@ export const FormFooter = ({
   disabled = true,
   loading = false,
   permissions = [],
+  withCancel = true,
   onCancel,
 }: FormFooterProps) => {
   const [visible, setVisible] = useState(false);
@@ -35,18 +37,20 @@ export const FormFooter = ({
 
   return (
     <Form.Item className={style.container}>
-      <Popconfirm
-        placement="topRight"
-        title={t("confirm")}
-        onConfirm={onCancel}
-        onCancel={handleCancel}
-        onVisibleChange={handleVisibleChange}
-        visible={visible}
-        okText={t("confirm.yes")}
-        cancelText={t("confirm.no")}
-      >
-        <Button className={style.cancel}>{t("cancel")}</Button>
-      </Popconfirm>
+      {withCancel && (
+        <Popconfirm
+          placement="topRight"
+          title={t("confirm")}
+          onConfirm={onCancel}
+          onCancel={handleCancel}
+          onVisibleChange={handleVisibleChange}
+          visible={visible}
+          okText={t("confirm.yes")}
+          cancelText={t("confirm.no")}
+        >
+          <Button className={style.cancel}>{t("cancel")}</Button>
+        </Popconfirm>
+      )}
       <ComponentPermissionsChecker availablePermissions={permissions}>
         <Button
           type="primary"

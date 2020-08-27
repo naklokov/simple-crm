@@ -1,19 +1,56 @@
-export interface FormFieldProps {
-  id: string;
-  title?: string;
-  description?: string;
-  type: "string" | "number" | "boolean" | "date" | "dictionary" | "entity";
-  value?: string | number | boolean;
-  placeholder?: string;
+import { Rule } from "antd/lib/form";
+
+export type FieldType =
+  | "string"
+  | "number"
+  | "boolean"
+  | "date"
+  | "dictionary"
+  | "entity";
+
+export interface RuleProps {
+  required?: boolean;
+  type?: string;
+  value?: string | number;
+  message?: string;
+  max?: number;
+  min?: number;
+}
+
+export interface FieldProps {
+  fieldCode: string;
+  fieldName: string;
+  fieldDescription: string;
+  type: FieldType;
   readonly: boolean;
   disabled: boolean;
+  rules?: Rule[];
   format?: string;
-  rules: Object[];
-  url?: string;
-  rows?: number;
   span?: number;
-  offset?: number;
-  permissions?: string[];
+  rows?: number;
+  permissions: string[];
+  placeholder?: string;
+  _links?: {
+    self: {
+      href: string;
+    };
+  };
+}
+
+export interface TabProps {
+  tabCode: string;
+  tabName: string;
+  tabDescription: string;
+  fields: FieldProps[];
+  _links: object;
+}
+
+export interface TableProps {
+  tableName: string;
+  tableDescription: string;
+  tableCode: string;
+  columns: ColumnProps[];
+  tableActions: ActionProps[];
 }
 
 export interface DictionaryProps {
@@ -48,7 +85,7 @@ export type ColumnType =
   | "entity"
   | "boolean";
 
-export interface TableColumnProps {
+export interface ColumnProps {
   columnName: string;
   columnDescription?: string;
   columnCode: string;
@@ -56,10 +93,10 @@ export interface TableColumnProps {
 
   format?: string;
   sorter: any;
-  columnActions?: TableActionProps[];
+  columnActions?: ActionProps[];
 }
 
-export interface TableActionProps {
+export interface ActionProps {
   actionName: string;
   actionDescription?: string;
   actionCode?: string;

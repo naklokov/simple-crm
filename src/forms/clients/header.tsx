@@ -1,15 +1,19 @@
-import React, { useCallback, useState, SyntheticEvent } from "react";
+import React, { useCallback } from "react";
 import { FormHeader } from "../../components/form-header";
 import { useTranslation } from "react-i18next";
-import { PERMISSIONS } from "../../constants";
+import { PERMISSIONS, urls, CLIENT_NEW_ID } from "../../constants";
+import { useHistory } from "react-router";
+import { fillTemplate, getFullUrl } from "../../utils";
 
 const { CLIENTS } = PERMISSIONS;
 
 export const ClientsHeader = () => {
   const [t] = useTranslation("clients");
+  const history = useHistory();
 
   const handleClickAdd = useCallback(() => {
-    alert("Переход на страницу создания клиента");
+    const url = getFullUrl(urls.clients.path, CLIENT_NEW_ID);
+    history.push(url);
   }, []);
 
   return (

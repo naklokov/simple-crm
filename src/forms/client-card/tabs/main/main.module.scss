@@ -1,0 +1,12 @@
+@import "../../../../assets/styles/colors";
+@import "../../../../assets/styles/offsets";
+
+.container {
+  background-color: var(--background-color-base);
+  margin: var(--offset-md);
+  padding: var(--offset-md) var(--offset-md) 1px var(--offset-md);
+}
+
+.button {
+  float: right;
+}
