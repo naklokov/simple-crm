@@ -97,6 +97,17 @@ export const UPPER: UpperProps = {
           permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
         },
         {
+          fieldCode: "activityField",
+          fieldName: "Сфера деятельности",
+          fieldDescription: "",
+          type: "dictionary",
+          readonly: false,
+          disabled: false,
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+        },
+        {
           fieldCode: "creationDate",
           fieldName: "Дата регистрации",
           fieldDescription: "",
@@ -135,10 +146,40 @@ export const UPPER: UpperProps = {
         },],
       columns: [
         {
-          columnName: "ФИО",
-          columnCode: "FIO",
+          columnName: "Фамилия",
+          columnCode: "lastName",
           columnType: "string",
-          columnDescription: "ФИО контакта",
+          columnDescription: "Фамилия контакта",
+          sorter: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        },
+        {
+          columnName: "Имя",
+          columnCode: "firstName",
+          columnType: "string",
+          columnDescription: "Имя контакта",
+          sorter: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        },
+        {
+          columnName: "Отчество",
+          columnCode: "secondName",
+          columnType: "string",
+          columnDescription: "Отчество контакта",
           sorter: true,
           columnActions: [
             {
@@ -184,6 +225,21 @@ export const UPPER: UpperProps = {
           columnCode: "position",
           columnType: "string",
           columnDescription: "Должность контакта компании",
+          sorter: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        },
+        {
+          columnName: "Примечание",
+          columnCode: "note",
+          columnType: "string",
+          columnDescription: "Примечание о контакте",
           sorter: true,
           columnActions: [
             {
@@ -306,8 +362,8 @@ export const UPPER: UpperProps = {
       actions: [],
       columns: [
         {
-          columnName: "Наименование",
-          columnCode: "name",
+          columnName: "Наименование товара",
+          columnCode: "positionName",
           columnType: "string",
           columnDescription: "Наименование товара",
           sorter: true,
@@ -322,8 +378,23 @@ export const UPPER: UpperProps = {
         },
         {
           columnName: "Описание",
-          columnCode: "description",
+          columnCode: "positionDescription",
           columnType: "string",
+          columnDescription: "Описание товара",
+          sorter: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        },
+        {
+          columnName: "Единица измерения",
+          columnCode: "positionDescription",
+          columnType: "dictionary",
           columnDescription: "Описание товара",
           sorter: true,
           columnActions: [
@@ -350,7 +421,37 @@ export const UPPER: UpperProps = {
               href: urls.clients.path,
             },
           ],
-        }
+        },
+        {
+          columnName: "Валюта",
+          columnCode: "currency",
+          columnType: "dictionary",
+          columnDescription: "Описание товара",
+          sorter: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        },
+        {
+          columnName: "Примечание",
+          columnCode: "note",
+          columnType: "string",
+          columnDescription: "Описание товара",
+          sorter: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        },
       ],
       _links: {}
     },
