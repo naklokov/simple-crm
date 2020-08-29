@@ -4,7 +4,7 @@ import { TEXT_FORMATS, FieldProps } from "../constants";
 import isEqual from "lodash/isEqual";
 import some from "lodash/some";
 
-const { Text, TextArea, DateTime, Dictionary } = fields;
+const { Text, TextArea, DateTime, Dictionary, Phone } = fields;
 
 export const isValuesChanged = (
   prev: { [key: string]: any },
@@ -21,6 +21,8 @@ export const createFormField = (field: FieldProps): JSX.Element => {
         return <TextArea {...field} />;
 
       return <Text {...field} />;
+    case "phone":
+      return <Phone {...field} />;
     case "date":
       return <DateTime {...field} />;
     case "dictionary":

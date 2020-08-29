@@ -6,7 +6,8 @@ export type FieldType =
   | "boolean"
   | "date"
   | "dictionary"
-  | "entity";
+  | "entity"
+  | "phone";
 
 export interface RuleProps {
   required?: boolean;

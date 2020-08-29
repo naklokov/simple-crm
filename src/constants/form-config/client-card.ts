@@ -10,6 +10,7 @@ interface UpperProps {
 
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
 const PLACEHOLDER_DEFAULT = "Введите значение";
+const PHONE_PLACEHOLDER = "+7 (___) ___-__-__";
 
 export const UPPER: UpperProps = {
   tabs: [
@@ -44,10 +45,10 @@ export const UPPER: UpperProps = {
           fieldCode: "phone",
           fieldName: "Телефон",
           fieldDescription: "",
-          type: "string",
+          type: "phone",
           readonly: false,
           disabled: false,
-          placeholder: PLACEHOLDER_DEFAULT,
+          placeholder: PHONE_PLACEHOLDER,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
           permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
         },
@@ -105,28 +106,6 @@ export const UPPER: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           disabled: false,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
-        },
-        {
-          fieldCode: "city",
-          fieldName: "Город",
-          fieldDescription: "",
-          type: "string",
-          readonly: false,
-          placeholder: PLACEHOLDER_DEFAULT,
-          disabled: false,
-          rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
-        },
-        {
-          fieldCode: "managerId",
-          fieldName: "Куратор",
-          fieldDescription: "",
-          readonly: false,
-          disabled: true,
-          placeholder: PLACEHOLDER_DEFAULT,
-          type: "dictionary",
-          rules: [],
           permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
         },
       ],
