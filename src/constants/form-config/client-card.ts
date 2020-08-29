@@ -17,6 +17,7 @@ export const UPPER: UpperProps = {
       tabCode: "main",
       tabName: "Главное",
       tabDescription: "Подробная ингформация о клиенте...",
+      type: 'container',
       fields: [
         {
           fieldCode: "fullName",
@@ -115,9 +116,92 @@ export const UPPER: UpperProps = {
       },
     },
     {
+      tabCode: "contacts",
+      tabName: "Контакты",
+      tabDescription: "Контакты клиента",
+      type: "table",
+      actions: [
+        {
+          actionName: "Просмотр",
+          actionType: "view",
+          permissions: [CLIENTS.ADMIN, CLIENTS.DELETE, CLIENTS.DELETE_OWNER],
+          href: urls.contacts.entity,
+        },
+        {
+          actionName: "Удалить",
+          actionType: "delete",
+          permissions: [CLIENTS.ADMIN, CLIENTS.DELETE, CLIENTS.DELETE_OWNER],
+          href: urls.contacts.entity,
+        },],
+      columns: [
+        {
+          columnName: "ФИО",
+          columnCode: "FIO",
+          columnType: "string",
+          columnDescription: "ФИО контакта",
+          sorter: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        },
+        {
+          columnName: "Телефон",
+          columnCode: "phone",
+          columnType: "string",
+          columnDescription: "Телефон контакта компании",
+          sorter: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        },
+        {
+          columnName: "E-mail",
+          columnCode: "email",
+          columnType: "string",
+          columnDescription: "E-mail контакта компании",
+          sorter: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        },
+        {
+          columnName: "Должность",
+          columnCode: "position",
+          columnType: "string",
+          columnDescription: "Должность контакта компании",
+          sorter: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        },
+      ],
+      _links: {}
+    },
+    {
       tabCode: "requisites",
       tabName: "Реквизиты",
       tabDescription: "Реквизиты клиента для оплаты счетов",
+      type: "container",
       fields: [
         {
           fieldCode: "inn",
@@ -214,5 +298,62 @@ export const UPPER: UpperProps = {
         },
       },
     },
+    {
+      tabCode: "priceList",
+      tabName: "Продукты и услуги",
+      tabDescription: "Продукты и услуги доступные в компании",
+      type: "table",
+      actions: [],
+      columns: [
+        {
+          columnName: "Наименование",
+          columnCode: "name",
+          columnType: "string",
+          columnDescription: "Наименование товара",
+          sorter: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        },
+        {
+          columnName: "Описание",
+          columnCode: "description",
+          columnType: "string",
+          columnDescription: "Описание товара",
+          sorter: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        },
+        {
+          columnName: "Цена",
+          columnCode: "price",
+          columnType: "string",
+          columnDescription: "Цена товара",
+          sorter: true,
+          editable: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        }
+      ],
+      _links: {}
+    },
   ],
 };
+
