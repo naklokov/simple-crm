@@ -1,24 +1,31 @@
 import moment from "moment";
-
 import { ColumnType } from "../../../constants";
+import { fillTemplate } from "../../../utils";
 
-const formatDate = (text: string, format: string) =>
+type RecordType = { [key: string]: string };
+
+const formatDate = (text: string, format: string): string =>
   moment(text).format(format);
 
+const formatText = (text: string, format: string, record: RecordType): string =>
+  fillTemplate(format, record);
+
 const FORMAT_MAP: {
-  [key: string]: (text: string, format: string) => string;
+  [key: string]: (text: string, format: string, record: RecordType) => string;
 } = {
   date: formatDate,
+  text: formatText,
 };
 
 export const getFormattedText = (
   text: string,
   format: string = "",
-  columnType: ColumnType
+  columnType: ColumnType,
+  record: RecordType
 ) => {
   const method = FORMAT_MAP[columnType];
-  if (method) {
-    return method(text, format);
+  if (method && format) {
+    return method(text, format, record);
   }
 
   return text;

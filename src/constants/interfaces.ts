@@ -1,5 +1,7 @@
 import { Rule } from "antd/lib/form";
 
+export type TabType = 'container' | 'table'
+
 export type FieldType =
   | "string"
   | "number"
@@ -48,7 +50,10 @@ export interface TabProps {
   tabCode: string;
   tabName: string;
   tabDescription: string;
-  fields: FieldProps[];
+  type: TabType;
+  fields?: FieldProps[];
+  columns?: ColumnProps[];
+  actions?: ActionProps[];
   _links: object;
 }
 
@@ -97,9 +102,9 @@ export interface ColumnProps {
   columnDescription?: string;
   columnCode: string;
   columnType: ColumnType;
-
   format?: string;
   sorter: any;
+  editable?: boolean;
   columnActions?: ActionProps[];
 }
 

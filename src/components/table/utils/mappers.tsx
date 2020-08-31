@@ -5,7 +5,7 @@ import {
   ColumnProps,
   ColumnType,
 } from "../../../constants/interfaces";
-import { Delete, Call, Link } from "../components";
+import { Delete, Call, Link, View } from "../components";
 import { getFormattedText } from "./parser";
 import gt from "lodash/gt";
 import { HighlightTextWrapper } from "../../../wrappers";
@@ -16,8 +16,8 @@ const getRenderProp = (
   searched: string,
   format?: string
 ) => ({
-  render: (text: string) => {
-    const formatted = getFormattedText(text, format, columnType);
+  render: (text: string, record: any) => {
+    const formatted = getFormattedText(text, format, columnType, record);
     return <HighlightTextWrapper text={formatted} searched={searched} />;
   },
 });
@@ -54,7 +54,8 @@ export const mapAction = (
   text: string,
   action: ActionProps,
   searched: string,
-  onDelete?: (id: string) => void
+  onDelete?: (id: string) => void,
+  onView?: (id: string) => void
 ) => {
   const fullHref = getFullUrl(action.href, id);
   switch (action.actionType) {
@@ -66,6 +67,15 @@ export const mapAction = (
           id={id}
           searched={searched}
           onDelete={onDelete}
+        />
+      );
+    case "view":
+      return (
+        <View
+          title={action.actionName}
+          id={id}
+          searched={searched}
+          onView={onView}
         />
       );
     case "call":

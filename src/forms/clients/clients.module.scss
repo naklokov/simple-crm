@@ -1,5 +1,7 @@
 @import "../../assets/styles/offsets";
+@import "../../assets/styles/colors";
 
 .container {
   margin: var(--offset-md2);
+  background-color: var(--background-color-base);
 }

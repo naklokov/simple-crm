@@ -18,6 +18,7 @@ interface TableProps {
   actions?: ActionProps[];
   loading: boolean;
   onDeleteRow?: (id: string) => void;
+  onViewRow?: (id: string) => void;
   withSearch?: boolean;
 }
 
@@ -35,6 +36,7 @@ export const Table = ({
   actions,
   loading,
   onDeleteRow = noop,
+  onViewRow = noop,
   withSearch = false,
 }: TableProps) => {
   const [t] = useTranslation("table");
@@ -68,10 +70,9 @@ export const Table = ({
       title={() => <Header onSearch={handleSearch} withSearch={withSearch} />}
       columns={[
         ...getDataColumns(columns, searched),
-        getActions(actions, t, searched, onDeleteRow),
+        getActions(actions, t, searched, onDeleteRow, onViewRow),
       ]}
       dataSource={mapWithKey(source)}
-      pagination={false}
       loading={loading}
       locale={{
         filterTitle: t("filter.title"),

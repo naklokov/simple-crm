@@ -12,13 +12,14 @@ const renderActions = (
   text: string,
   entity: EntityProps,
   searched: string,
-  onDelete?: (id: string) => void
+  onDelete?: (id: string) => void,
+  onView?: (id: string) => void
 ) => (
   <React.Fragment>
     {actions.map((action) => (
       <ComponentPermissionsChecker availablePermissions={action.permissions}>
         <Space size="middle">
-          {mapAction(entity.id, text, action, searched, onDelete)}
+          {mapAction(entity.id, text, action, searched, onDelete, onView)}
         </Space>
       </ComponentPermissionsChecker>
     ))}
@@ -46,7 +47,8 @@ export const getActions = (
   actions: ActionProps[] = [],
   t: (value: string) => string,
   searched: string,
-  onDelete: (id: string) => void
+  onDelete: (id: string) => void,
+  onView: (id: string) => void
 ) => {
   if (isEmpty(actions)) {
     return {};
@@ -56,7 +58,7 @@ export const getActions = (
     title: t("actions.column.title"),
     key: "actions",
     render: (text: string, entity: EntityProps) =>
-      renderActions(actions, text, entity, searched, onDelete),
+      renderActions(actions, text, entity, searched, onDelete, onView),
   };
 };
 
