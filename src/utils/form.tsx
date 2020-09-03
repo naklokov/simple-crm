@@ -1,6 +1,6 @@
 import React from "react";
 import { fields } from "../components";
-import { TEXT_FORMATS, FieldProps } from "../constants";
+import { FieldProps } from "../constants";
 import isEqual from "lodash/isEqual";
 import some from "lodash/some";
 
@@ -17,8 +17,7 @@ export const isValuesChanged = (
 export const createFormField = (field: FieldProps): JSX.Element => {
   switch (field.type) {
     case "string":
-      if (field.format === TEXT_FORMATS.TEXT_AREA)
-        return <TextArea {...field} />;
+      if (field.format === "textarea") return <TextArea {...field} />;
 
       return <Text {...field} />;
     case "phone":

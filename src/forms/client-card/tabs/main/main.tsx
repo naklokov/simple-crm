@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import {
-  FieldProps,
   GUTTER_FULL_WIDTH,
   ClientEntityProps,
   urls,
   CLIENT_NEW_ID,
+  TabProps,
 } from "../../../../constants";
 import moment from "moment";
 import style from "./main.module.scss";
@@ -31,19 +31,14 @@ import { useForm } from "antd/lib/form/Form";
 import { getUpdatedClients } from "../../utils";
 
 interface MainProps {
-  fields: FieldProps[];
+  tab: TabProps;
   clients: ClientEntityProps[];
   profileInfo: ProfileInfoProps;
   setClients: (clients: ClientEntityProps[]) => void;
 }
 
 // TODO поля сфера деятельности
-export const Main = ({
-  fields,
-  clients,
-  profileInfo,
-  setClients,
-}: MainProps) => {
+export const Main = ({ tab, clients, profileInfo, setClients }: MainProps) => {
   const [form] = useForm();
   const [t] = useTranslation("clientCardMain");
   const { id } = useParams();
@@ -54,7 +49,7 @@ export const Main = ({
   // TODO до реализации 1 запроса данные поля заполняеются по умолчанию на фронте
   if (isAdding) {
     const initialValues = {
-      managerId: profileInfo.id ?? "",
+      userProfileId: profileInfo.id ?? "",
       creationDate: moment().toISOString(),
     };
     client = { ...client, ...initialValues };
@@ -124,7 +119,7 @@ export const Main = ({
         <Row
           gutter={[GUTTER_FULL_WIDTH.HORIZONTAL, GUTTER_FULL_WIDTH.VERTICAL]}
         >
-          {fields.map((field) => (
+          {tab.fields?.map((field) => (
             <ComponentPermissionsChecker
               availablePermissions={field.permissions}
               mode="disabled"

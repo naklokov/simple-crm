@@ -1,6 +1,6 @@
 import { FieldProps, urls } from "..";
 import { PERMISSIONS } from "../permissions";
-import { TEXT_FORMATS, DATE_FORMATS } from "../common";
+import { DATE_FORMATS } from "../common";
 
 const { PROFILE_INFO } = PERMISSIONS;
 
@@ -92,7 +92,7 @@ export const FIELDS: FieldProps[] = [
     fieldCode: "aboutMe",
     fieldName: "О себе",
     type: "string",
-    format: TEXT_FORMATS.TEXT_AREA,
+    format: "textarea",
     placeholder: "Введите информацию о ваших увлечениях, хобби, интересах...",
     fieldDescription: "Максимум 2000 символов",
     readonly: false,

@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import { logger } from ".";
 import http, { COOKIES } from "../constants/http";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setAuth } from "../__data__";
+import { setAuth, setLoading } from "../__data__";
 import { message } from "antd";
 
 interface DefaultErrorHandlerProps {
@@ -58,18 +58,24 @@ export const logout = async (dispatch: Dispatch) => {
   localStorage.clear();
 
   try {
+    dispatch(setLoading(true));
     await axios.get(urls.login.logout);
     logger.debug({ message: DEFAULT_SUCCESS_MESSAGE_LOGOUT, username });
-
-    dispatch(setAuth(false));
-    window.location.replace(http.ROOT_URL);
   } catch (error) {
     defaultErrorHandler({
       error,
       defaultErrorMessage: DEFAULT_ERROR_MESSAGE_LOGOUT,
       username,
     });
+  } finally {
+    dispatch(setAuth(false));
+    dispatch(setLoading(false));
   }
+};
+
+export const defaultSuccessHandler = (messageSuccess: string) => {
+  logger.debug({ message: messageSuccess });
+  message.success(messageSuccess);
 };
 
 export const defaultErrorHandler = ({

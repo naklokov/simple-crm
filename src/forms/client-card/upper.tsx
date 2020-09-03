@@ -21,14 +21,14 @@ export const Upper = () => {
   }, []);
 
   const Form = TABS_MAP[active];
-  const fields = tabs.find(({ tabCode }) => tabCode === active)?.fields;
+  const tab = tabs.find(({ tabCode }) => tabCode === active);
 
   return (
     <React.Fragment>
       <Tabs
         className={style.upperTabs}
         defaultActiveKey={tabs[0].tabCode}
-        onClick={handleChange}
+        onChange={handleChange}
       >
         {tabs.map(({ tabCode, tabName }) => (
           <TabPane className={style.upperTabPane} tab={tabName} key={tabCode} />
@@ -36,7 +36,7 @@ export const Upper = () => {
       </Tabs>
 
       <div className={style.form}>
-        <Form fields={fields} />
+        <Form tab={tab} />
       </div>
     </React.Fragment>
   );

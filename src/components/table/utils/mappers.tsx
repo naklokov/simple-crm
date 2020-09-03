@@ -1,11 +1,10 @@
 import React from "react";
 import {
   ActionProps,
-  EntityProps,
   ColumnProps,
   ColumnType,
 } from "../../../constants/interfaces";
-import { Delete, Call, Link, View } from "../components";
+import { Delete, Call, Link, View, Email } from "../components";
 import { getFormattedText } from "./parser";
 import gt from "lodash/gt";
 import { HighlightTextWrapper } from "../../../wrappers";
@@ -18,7 +17,13 @@ const getRenderProp = (
 ) => ({
   render: (text: string, record: any) => {
     const formatted = getFormattedText(text, format, columnType, record);
-    return <HighlightTextWrapper text={formatted} searched={searched} />;
+    return (
+      <HighlightTextWrapper
+        key={columnType}
+        text={formatted}
+        searched={searched}
+      />
+    );
   },
 });
 
@@ -31,7 +36,7 @@ const getSortFunction = (
   }
 
   return (a: any, b: any) =>
-    gt(a[columnCode].toLowerCase(), b[columnCode].toLowerCase());
+    a[columnCode].toLowerCase().localeCompare(b[columnCode].toLowerCase());
 };
 
 const getSorter = (
@@ -46,9 +51,6 @@ const getSorter = (
   return {};
 };
 
-export const mapWithKey = (dataSource?: EntityProps[]): any =>
-  dataSource?.map((item: EntityProps) => ({ key: item.id, ...item })) ?? [];
-
 export const mapAction = (
   id: string,
   text: string,
@@ -62,6 +64,7 @@ export const mapAction = (
     case "delete":
       return (
         <Delete
+          key={id}
           href={fullHref}
           title={action.actionName}
           id={id}
@@ -72,6 +75,7 @@ export const mapAction = (
     case "view":
       return (
         <View
+          key={id}
           title={action.actionName}
           id={id}
           searched={searched}
@@ -79,22 +83,26 @@ export const mapAction = (
         />
       );
     case "call":
-      return <Call phone={text} searched={searched} />;
+      return <Call key={id} phone={text} searched={searched} />;
+    case "email":
+      return <Email key={id} mail={text} searched={searched} />;
     case "href":
-      return <Link title={text} href={fullHref} searched={searched} />;
+      return <Link key={id} title={text} href={fullHref} searched={searched} />;
     default:
-      return <a href="/">{`Неизвестное событие ${action.actionType}`}</a>;
+      return (
+        <a key={id} href="/">{`Неизвестное событие ${action.actionType}`}</a>
+      );
   }
 };
 
-export const mapColumn = (
-  { columnDescription, columnCode, sorter, columnType, format }: ColumnProps,
+export const getColumn = (
+  { columnName, columnCode, sorter, columnType, format }: ColumnProps,
   searched: string
 ) => {
   return {
     ...getSorter(sorter, columnCode, columnType),
     ...getRenderProp(columnType, searched, format),
-    title: columnDescription,
+    title: columnName,
     key: columnCode,
     dataIndex: columnCode,
   };

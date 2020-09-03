@@ -4,7 +4,6 @@ import { Layout } from "antd";
 import { connect } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 
-import { Loader } from "../../components";
 import { Logo, Menu, Profile } from "./components";
 import { State, ProfileInfoProps } from "../../__data__/interfaces";
 
@@ -94,31 +93,32 @@ export const Authorized = ({
     fetchPermissions();
   }, []);
 
+  // if (loading) {
+  //   return <Loader />;
+  // }
+
   return (
-    <div>
-      {loading && <Loader />}
-      <Layout className={style.main}>
-        <Sider
-          collapsible
-          collapsed={isMenuCollapsed}
-          theme="light"
-          className={style.sider}
-          onCollapse={handleCollapseMenu}
-        >
-          <Logo collapsed={isMenuCollapsed} />
-          <Menu collapsed={isMenuCollapsed} />
-        </Sider>
-        <Layout>
-          <Header className={style.header}>
-            <div className={style.profile}>
-              <Profile profileInfo={profileInfo} />
-            </div>
-          </Header>
-          {subheader && <div className={style.subheader}>{subheader}</div>}
-          <Content>{children}</Content>
-        </Layout>
+    <Layout className={style.main}>
+      <Sider
+        collapsible
+        collapsed={isMenuCollapsed}
+        theme="light"
+        className={style.sider}
+        onCollapse={handleCollapseMenu}
+      >
+        <Logo collapsed={isMenuCollapsed} />
+        <Menu collapsed={isMenuCollapsed} />
+      </Sider>
+      <Layout>
+        <Header className={style.header}>
+          <div className={style.profile}>
+            <Profile profileInfo={profileInfo} />
+          </div>
+        </Header>
+        {subheader && <div className={style.subheader}>{subheader}</div>}
+        <Content>{children}</Content>
       </Layout>
-    </div>
+    </Layout>
   );
 };
 

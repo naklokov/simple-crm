@@ -74,12 +74,15 @@
   },
   "table": {
     "actions.column.title": "Действия",
-    "actions.delete.confirm": "Вы действительно хотите удалить компанию?",
+    "actions.delete.confirm": "Вы действительно хотите удалить запись?",
     "actions.delete.no": "Нет",
     "actions.delete.yes": "Да",
     "actions.call.confirm": "Вы хотите набрать номер?",
     "actions.call.no": "Нет",
     "actions.call.yes": "Да",
+    "actions.email.confirm": "Вы хотите написать письмо?",
+    "actions.email.no": "Нет",
+    "actions.email.yes": "Да",
 
     "filter.title": "Меню фильтра",
     "filter.confirm": "Ок",
@@ -102,5 +105,15 @@
     "message.error": "Ошибка при изменении клиента",
     "message.success": "Информация о клиенте обновлена",
     "save": "Сохранить"
+  },
+  "clientCardContacts": {
+    "title.add": "＋ Добавить контакт"
+  },
+  "contactDrawer": {
+    "title.new": "Новый контакт",
+    "title.view": "Контакт",
+    "message.success.add": "Контакт успешно добавлен!",
+    "message.success.edit": "Контакт успешно отредактирован!",
+    "message.error": "Произошла ошибка при добавлении контакта"
   }
 }

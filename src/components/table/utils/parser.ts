@@ -14,7 +14,7 @@ const FORMAT_MAP: {
   [key: string]: (text: string, format: string, record: RecordType) => string;
 } = {
   date: formatDate,
-  text: formatText,
+  string: formatText,
 };
 
 export const getFormattedText = (

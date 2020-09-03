@@ -18,7 +18,7 @@ export const URL_NAMES = [
     url: profile.path,
   },
   {
-    title: "Планы",
+    title: "Задачи",
     url: tasks.path,
   },
   {

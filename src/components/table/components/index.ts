@@ -1,2 +1,2 @@
-export { Delete, Call, Link, View } from "./actions";
+export { Delete, Call, Link, View, Email } from "./actions";
 export { Header } from "./header";

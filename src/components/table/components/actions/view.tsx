@@ -21,7 +21,7 @@ export const View = ({
   }, [id]);
 
   return (
-    <Button style={{ padding: 0 }} type="link" onClick={handleClick}>
+    <Button style={{ paddingLeft: 0 }} type="link" onClick={handleClick}>
       <HighlightTextWrapper text={title} searched={searched} />
     </Button>
   );

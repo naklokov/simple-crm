@@ -1,2 +1,3 @@
 export { Comments } from "./comments";
-export { Main } from "./main"
+export { Contacts } from "./contacts";
+export { Main } from "./main";

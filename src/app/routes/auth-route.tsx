@@ -1,17 +1,15 @@
 import React from "react";
 
-import { Redirect, Route } from "react-router";
+import { Redirect, Route, RouteProps } from "react-router";
 import { urls } from "../../constants";
 import { AuthorizedLayout } from "../../layouts";
 import { State } from "../../__data__/interfaces";
 import { connect } from "react-redux";
 import { PagePermissionsChecker } from "../../wrappers";
 
-interface AuthorizeRouteProps {
+interface AuthorizeRouteProps extends RouteProps {
   auth: boolean;
-  exact?: boolean;
   permissions?: string[];
-  path: string;
   subheader?: JSX.Element;
   children: JSX.Element;
 }

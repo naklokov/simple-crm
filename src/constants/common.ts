@@ -3,10 +3,6 @@ export const DATE_FORMATS = {
   DATE_TIME: "DD.MM.YYYY HH:mm:ss",
 };
 
-export const TEXT_FORMATS = {
-  TEXT_AREA: "textarea",
-};
-
 export const DEFAULT_SPAN = { md: 8, lg: 6, xl: 6 };
 export const GUTTER_FULL_WIDTH = {
   HORIZONTAL: 48,

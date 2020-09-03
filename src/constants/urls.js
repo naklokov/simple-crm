@@ -34,8 +34,8 @@ module.exports = {
     entity: "/crm/rest/entity/clients/{{id}}",
   },
   contacts: {
-    entity:
-      "/crm/rest/entity/contacts?query=isActive==true;isDeleted==false;clientId=={{id}}",
+    clientContacts: "/crm/rest/entity/contacts?query=clientId=={{id}}",
+    entity: "/crm/rest/entity/contacts",
   },
   tasks: {
     path: "/tasks",

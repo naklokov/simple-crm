@@ -19,6 +19,7 @@ export const Text = ({
       name={fieldCode}
       label={fieldName}
       extra={fieldDescription}
+      validateTrigger="onSubmit"
       rules={rules}
     >
       <Input

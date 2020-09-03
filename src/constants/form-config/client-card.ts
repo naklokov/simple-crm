@@ -1,4 +1,4 @@
-import { TabProps } from "../interfaces";
+import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
 import { PERMISSIONS } from "../permissions";
 
@@ -6,13 +6,115 @@ const { CLIENTS } = PERMISSIONS;
 
 interface UpperProps {
   tabs: TabProps[];
+  drawers: DrawerProps[];
 }
 
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
+const EMAIL_MESSAGE = "Пожалуйста, введите корректный email";
 const PLACEHOLDER_DEFAULT = "Введите значение";
 const PHONE_PLACEHOLDER = "+7 (___) ___-__-__";
 
 export const UPPER: UpperProps = {
+  drawers: [
+    {
+      code: "contact",
+      name: "Контакт",
+      description: "Боковая форма просмотра и добавления контакта",
+      fields: [
+        {
+          fieldCode: "lastName",
+          fieldName: "Фамилия",
+          fieldDescription: "",
+          type: "string",
+          readonly: false,
+          disabled: false,
+          span: { md: 24 },
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+        },
+        {
+          fieldCode: "firstName",
+          fieldName: "Имя",
+          fieldDescription: "",
+          type: "string",
+          readonly: false,
+          disabled: false,
+          span: { md: 24 },
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+        },
+        {
+          fieldCode: "secondName",
+          fieldName: "Отчество",
+          fieldDescription: "",
+          type: "string",
+          readonly: false,
+          disabled: false,
+          span: { md: 24 },
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [],
+          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+        },
+        {
+          fieldCode: "phone",
+          fieldName: "Телефон",
+          fieldDescription: "",
+          type: "phone",
+          readonly: false,
+          disabled: false,
+          span: { md: 24 },
+          placeholder: PHONE_PLACEHOLDER,
+          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+        },
+        {
+          fieldCode: "email",
+          fieldName: "Email",
+          fieldDescription: "",
+          type: "string",
+          readonly: false,
+          disabled: false,
+          span: { md: 24 },
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [
+            {
+              type: "email",
+              message: EMAIL_MESSAGE,
+            },
+          ],
+          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+        },
+        {
+          fieldCode: "position",
+          fieldName: "Должность",
+          fieldDescription: "",
+          type: "string",
+          readonly: false,
+          disabled: false,
+          span: { md: 24 },
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [],
+          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+        },
+        {
+          fieldCode: "note",
+          fieldName: "Примечание",
+          fieldDescription: "",
+          type: "string",
+          format: "textarea",
+          readonly: false,
+          disabled: false,
+          span: { md: 24 },
+          rows: 2,
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [],
+          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+        },
+      ],
+    },
+  ],
   tabs: [
     {
       tabCode: "main",
@@ -122,7 +224,7 @@ export const UPPER: UpperProps = {
         },
       ],
       _links: {
-        managerId: {
+        userProfileId: {
           href: urls.dictionaries.managers,
         },
       },
@@ -137,7 +239,6 @@ export const UPPER: UpperProps = {
           actionName: "Просмотр",
           actionType: "view",
           permissions: [CLIENTS.ADMIN, CLIENTS.DELETE, CLIENTS.DELETE_OWNER],
-          href: urls.contacts.entity,
         },
         {
           actionName: "Удалить",
@@ -152,7 +253,7 @@ export const UPPER: UpperProps = {
           columnCode: "lastName",
           columnType: "string",
           format: "{{lastName}} {{firstName}} {{secondName}}",
-          columnDescription: "Фамилия контакта",
+          columnDescription: "Полное ",
           sorter: true,
           columnActions: [],
         },
@@ -161,7 +262,7 @@ export const UPPER: UpperProps = {
           columnCode: "phone",
           columnType: "string",
           columnDescription: "Телефон контакта компании",
-          sorter: true,
+          sorter: false,
           columnActions: [
             {
               actionType: "call",
@@ -197,7 +298,7 @@ export const UPPER: UpperProps = {
           columnCode: "note",
           columnType: "string",
           columnDescription: "Примечание о контакте",
-          sorter: true,
+          sorter: false,
           columnActions: [],
         },
       ],
@@ -299,7 +400,7 @@ export const UPPER: UpperProps = {
         },
       ],
       _links: {
-        managerId: {
+        userProfileId: {
           href: urls.dictionaries.managers,
         },
       },

@@ -1,6 +1,6 @@
 import { Rule } from "antd/lib/form";
 
-export type TabType = 'container' | 'table'
+export type TabType = "container" | "table";
 
 export type FieldType =
   | "string"
@@ -10,6 +10,8 @@ export type FieldType =
   | "dictionary"
   | "entity"
   | "phone";
+
+export type FieldFormatType = string | "textarea";
 
 export interface RuleProps {
   required?: boolean;
@@ -26,6 +28,13 @@ export interface SpanProps {
   lg?: number;
 }
 
+export interface DrawerProps {
+  code: string;
+  name: string;
+  description: string;
+  fields: FieldProps[];
+}
+
 export interface FieldProps {
   fieldCode: string;
   fieldName: string;
@@ -34,7 +43,7 @@ export interface FieldProps {
   readonly: boolean;
   disabled: boolean;
   rules?: Rule[];
-  format?: string;
+  format?: FieldFormatType;
   span?: SpanProps;
   rows?: number;
   permissions: string[];
@@ -138,7 +147,7 @@ export interface ClientEntityProps {
   isDeleted: boolean;
   kpp: string;
   legalAddress: string;
-  managerId: string;
+  userProfileId: string;
   parentId: string;
   phone: string;
   servicingBank: string;

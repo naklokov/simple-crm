@@ -1,7 +1,7 @@
 import React from "react";
 import isEmpty from "lodash/isEmpty";
 import { Space } from "antd";
-import { mapAction, mapColumn } from ".";
+import { mapAction, getColumn } from ".";
 
 import { ActionProps, ColumnProps, EntityProps } from "../../../constants";
 import { ComponentPermissionsChecker } from "../../../wrappers";
@@ -18,7 +18,7 @@ const renderActions = (
   <React.Fragment>
     {actions.map((action) => (
       <ComponentPermissionsChecker availablePermissions={action.permissions}>
-        <Space size="middle">
+        <Space size="middle" key={action.actionCode}>
           {mapAction(entity.id, text, action, searched, onDelete, onView)}
         </Space>
       </ComponentPermissionsChecker>
@@ -64,9 +64,9 @@ export const getActions = (
 
 export const getDataColumns = (columns: ColumnProps[] = [], searched: string) =>
   columns.map(({ columnActions, ...column }) => {
-    const columnProps = mapColumn(column, searched);
+    const columnProps = getColumn(column, searched);
 
-    if (columnActions) {
+    if (!isEmpty(columnActions)) {
       const actions = columnActions || [];
       return {
         ...columnProps,

@@ -1,0 +1,11 @@
+@import "../../../../assets/styles/offsets";
+
+.container {
+  background-color: var(--background-color-base);
+  margin: var(--offset-md);
+}
+
+.button {
+  margin: 0 0 var(--offset-sm) 0;
+  float: right;
+}
