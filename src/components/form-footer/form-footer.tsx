@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import style from "./form-footer.module.scss";
 import { ComponentPermissionsChecker } from "../../wrappers";
 import { FormInstance } from "antd/lib/form";
+import { Store } from "antd/lib/form/interface";
+import { isValuesChanged } from "../../utils";
 
 interface FormFooterProps {
   form?: FormInstance;
@@ -17,7 +19,7 @@ interface FormFooterProps {
 
 export const FormFooter = ({
   form,
-  disabled = true,
+  disabled,
   loading = false,
   permissions = [],
   withCancel = true,
@@ -30,11 +32,15 @@ export const FormFooter = ({
     setVisible(false);
   }, [visible]);
 
-  const handleClick = useCallback(() => {
-    if (form) {
-      form.submit();
-    }
-  }, [form]);
+  const handleClick = useCallback(
+    (event) => {
+      if (form) {
+        form.submit();
+        event.preventDefault();
+      }
+    },
+    [form]
+  );
 
   const handleVisibleChange = useCallback(() => {
     if (disabled && onCancel) {

@@ -3,15 +3,16 @@ import axios from "axios";
 
 import { useParams } from "react-router";
 import { useTranslation } from "react-i18next";
-import { ClientEntityProps, urls, CLIENT_NEW_ID } from "../../constants";
+import { ClientEntityProps, urls } from "../../constants";
 import { connect } from "react-redux";
 import { State } from "../../__data__/interfaces";
-import { getClient } from "./utils";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { setLoading, setClients } from "../../__data__";
 import { defaultErrorHandler, fillTemplate } from "../../utils";
-import { Upper } from "./upper";
-import { Lower } from "./lower";
+import { getClientCardMode } from "./utils";
+import { Tabs } from "../../components";
+import { UPPER } from "../../constants/form-config/client-card";
+import { TABS_MAP } from "./constants";
 
 interface ClientCardProps {
   clients?: ClientEntityProps[];
@@ -19,14 +20,10 @@ interface ClientCardProps {
   setClients: (clients: ClientEntityProps[]) => void;
 }
 
-export const ClientCard = ({
-  clients,
-  setClients,
-  setLoading,
-}: ClientCardProps) => {
+export const ClientCard = ({ setClients, setLoading }: ClientCardProps) => {
   const [t] = useTranslation("clientCard");
   const { id } = useParams();
-  const client = getClient(id, clients);
+  const mode = getClientCardMode(id);
 
   const fetchClientCard = async () => {
     try {
@@ -42,15 +39,15 @@ export const ClientCard = ({
   };
 
   useEffect(() => {
-    if (!client && id !== CLIENT_NEW_ID) {
+    if (mode === "view") {
       fetchClientCard();
     }
   }, [id]);
 
   return (
     <React.Fragment>
-      <Upper />
-      <Lower />
+      <Tabs mode={mode} tabs={UPPER.tabs} formsMap={TABS_MAP} />
+      {/* <Tabs mode={mode} tabs={[]} formsMap={{}} /> */}
     </React.Fragment>
   );
 };

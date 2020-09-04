@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { Drawer as DrawerUI, Row } from "antd";
 import { FormFooter } from "../form-footer";
 import Form, { useForm } from "antd/lib/form/Form";
@@ -8,24 +8,20 @@ import isEmpty from "lodash/isEmpty";
 import { FieldProps } from "../../constants";
 import { Store } from "antd/lib/form/interface";
 
-type ModeType = "view" | "add";
-
 interface DrawerFormProps {
   name: string;
   fields: FieldProps[];
-  mode?: ModeType;
   initialValues?: object;
-  onFinish: (values: Store) => void;
   submitLoading: boolean;
   title: string | React.ReactNode;
   visible: boolean;
+  onFinish: (values: Store) => void;
   onClose: (entity?: Store) => void;
 }
 
 export const DrawerForm = ({
   fields,
   name,
-  mode,
   initialValues = {},
   onFinish,
   submitLoading,

@@ -13,6 +13,8 @@ export type FieldType =
 
 export type FieldFormatType = string | "textarea";
 
+export type ModeType = "view" | "add";
+
 export interface RuleProps {
   required?: boolean;
   type?: string;

@@ -3,7 +3,7 @@ import { FormHeader } from "../../components/form-header";
 import { useTranslation } from "react-i18next";
 import { PERMISSIONS, urls, CLIENT_NEW_ID } from "../../constants";
 import { useHistory } from "react-router";
-import { fillTemplate, getFullUrl } from "../../utils";
+import { getFullUrl } from "../../utils";
 
 const { CLIENTS } = PERMISSIONS;
 
