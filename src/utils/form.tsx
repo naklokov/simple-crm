@@ -30,3 +30,6 @@ export const createFormField = (field: FieldProps): JSX.Element => {
       return <div />;
   }
 };
+
+export const getUpdatedEntityArray = (entity: any, array: any[]) =>
+  array.map((item) => (item.id === entity.id ? entity : item));

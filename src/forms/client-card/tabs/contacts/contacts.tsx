@@ -3,7 +3,11 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { urls, TabProps, formConfig } from "../../../../constants";
 import { Table } from "../../../../components";
-import { fillTemplate, defaultErrorHandler } from "../../../../utils";
+import {
+  fillTemplate,
+  defaultErrorHandler,
+  getUpdatedEntityArray,
+} from "../../../../utils";
 import { useParams } from "react-router";
 import { Header } from "./header";
 import { AddContactDrawer, ViewContactDrawer } from "../../drawers";
@@ -77,10 +81,8 @@ export const Contacts = ({ tab }: ContactsProps) => {
       setViewDrawerVisible(false);
 
       if (contact) {
-        const updatedContacts = contacts.map((item) =>
-          item.id === contact.id ? contact : item
-        );
-        setContacts(updatedContacts);
+        const updated = getUpdatedEntityArray(contacts, contact);
+        setContacts(updated);
       }
     },
     [contacts]

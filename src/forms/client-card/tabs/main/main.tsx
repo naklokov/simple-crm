@@ -1,24 +1,20 @@
 import React, { useState } from "react";
-import axios, { AxiosResponse } from "axios";
 import {
   GUTTER_FULL_WIDTH,
   ClientEntityProps,
-  urls,
-  CLIENT_NEW_ID,
+  ModeType,
   TabProps,
 } from "../../../../constants";
-import moment from "moment";
-import style from "./main.module.scss";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
   createFormField,
   isValuesChanged,
   defaultErrorHandler,
-  logger,
-  fillTemplate,
+  defaultSuccessHandler,
+  getUpdatedEntityArray,
 } from "../../../../utils";
 import isEmpty from "lodash/isEmpty";
-import { Row, message, Form } from "antd";
+import { Row, Form } from "antd";
 import { Loader, FormFooter } from "../../../../components";
 import { useParams } from "react-router";
 import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
@@ -28,73 +24,61 @@ import { setClients } from "../../../../__data__";
 import { Store } from "antd/lib/form/interface";
 import { useTranslation } from "react-i18next";
 import { useForm } from "antd/lib/form/Form";
-import { getUpdatedClients } from "../../utils";
+import { getAddMetaValues, addClient, editClient, getClient } from "./utils";
+import style from "./main.module.scss";
 
 interface MainProps {
+  mode: ModeType;
   tab: TabProps;
   clients: ClientEntityProps[];
   profileInfo: ProfileInfoProps;
   setClients: (clients: ClientEntityProps[]) => void;
 }
 
-// TODO поля сфера деятельности
-export const Main = ({ tab, clients, profileInfo, setClients }: MainProps) => {
+export const Main = ({
+  tab,
+  clients,
+  profileInfo,
+  setClients,
+  mode,
+}: MainProps) => {
+  const { id } = useParams();
   const [form] = useForm();
   const [t] = useTranslation("clientCardMain");
-  const { id } = useParams();
-  const isAdding = id === CLIENT_NEW_ID;
-  let client =
-    clients.find((item) => item.id === id) || ({} as ClientEntityProps);
-
-  // TODO до реализации 1 запроса данные поля заполняеются по умолчанию на фронте
-  if (isAdding) {
-    const initialValues = {
-      userProfileId: profileInfo.id ?? "",
-      creationDate: moment().toISOString(),
-    };
-    client = { ...client, ...initialValues };
-  }
-
-  const [submitLoading, setSubmitLoading] = useState(false);
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [submitLoading, setSubmitLoading] = useState(false);
+
+  const client = getClient(id, clients);
 
   const handleValuesChange = (changed: Object, allValues: Object) => {
     const isChanged = isValuesChanged(client, allValues);
     setSubmitDisabled(!isChanged);
   };
 
-  const putClient = async (values: Store) => {
-    const url = fillTemplate(urls.clientCard.entity, { id });
-    const data = { ...client, ...values };
-    const response: AxiosResponse<ClientEntityProps> = await axios.put(
-      url,
-      data
-    );
-
-    return response?.data ?? {};
-  };
-
-  const postClient = async (values: Store) => {
-    const url = urls.clients.entity;
-    const data = { ...client, ...values };
-    const response: AxiosResponse<ClientEntityProps> = await axios.post(
-      url,
-      data
-    );
-    return response?.data ?? {};
-  };
-
-  const onFinish = async (values: Store) => {
+  const onFinishAdd = async (values: Store) => {
     try {
       setSubmitLoading(true);
-      const clientData = isAdding
-        ? await postClient(values)
-        : await putClient(values);
+      const metaValues = getAddMetaValues(profileInfo);
+      const entity = await addClient({ ...values, ...metaValues });
+      setClients([...clients, entity]);
+      defaultSuccessHandler(t("message.success"));
+      // setSubmitDisabled(true);
+    } catch (error) {
+      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
+    } finally {
+      setSubmitLoading(false);
+    }
+  };
 
-      setClients(getUpdatedClients(clientData, clients));
-      setSubmitDisabled(true);
-      logger.debug(t("message.success"));
-      message.success(t("message.success"));
+  const onFinishEdit = async (values: Store) => {
+    try {
+      setSubmitLoading(true);
+      const entity = await editClient(id, { ...client, ...values });
+      const updated = getUpdatedEntityArray(entity, clients);
+      setClients(updated);
+
+      defaultSuccessHandler(t("message.success"));
+      // setSubmitDisabled(true);
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {
@@ -110,7 +94,7 @@ export const Main = ({ tab, clients, profileInfo, setClients }: MainProps) => {
     <div className={style.container}>
       <Form
         onValuesChange={handleValuesChange}
-        onFinish={onFinish}
+        onFinish={mode === "add" ? onFinishAdd : onFinishEdit}
         layout="vertical"
         name={"clientCardMain"}
         form={form}
