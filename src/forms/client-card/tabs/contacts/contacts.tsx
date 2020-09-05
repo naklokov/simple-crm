@@ -67,7 +67,7 @@ export const Contacts = ({ tab }: ContactsProps) => {
   }, []);
 
   const handleCloseAddDrawer = useCallback(
-    (contact) => {
+    (event, contact) => {
       setAddDrawerVisible(false);
       if (contact) {
         setContacts([...contacts, contact]);
@@ -77,11 +77,11 @@ export const Contacts = ({ tab }: ContactsProps) => {
   );
 
   const handleCloseViewDrawer = useCallback(
-    (contact) => {
+    (event, contact) => {
       setViewDrawerVisible(false);
 
       if (contact) {
-        const updated = getUpdatedEntityArray(contacts, contact);
+        const updated = getUpdatedEntityArray(contact, contacts);
         setContacts(updated);
       }
     },

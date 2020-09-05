@@ -4,6 +4,10 @@ import { FieldProps } from "../constants";
 import isEqual from "lodash/isEqual";
 import some from "lodash/some";
 
+interface EntityWithId {
+  id: string;
+}
+
 const { Text, TextArea, DateTime, Dictionary, Phone } = fields;
 
 export const isValuesChanged = (
@@ -31,5 +35,7 @@ export const createFormField = (field: FieldProps): JSX.Element => {
   }
 };
 
-export const getUpdatedEntityArray = (entity: any, array: any[]) =>
-  array.map((item) => (item.id === entity.id ? entity : item));
+export const getUpdatedEntityArray = <T extends EntityWithId>(
+  entity: T,
+  array: T[]
+) => array?.map((item) => (item.id === entity.id ? entity : item)) ?? [];

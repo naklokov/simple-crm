@@ -55,7 +55,7 @@ export const Requisites = ({ tab, clients, setClients }: RequisitesProps) => {
       setClients(updated);
 
       defaultSuccessHandler(t("message.success"));
-      // setSubmitDisabled(true);
+      setSubmitDisabled(true);
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {

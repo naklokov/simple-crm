@@ -1,20 +1,23 @@
 import React, { useState, useCallback } from "react";
-import { Tabs as TabsUI } from "antd";
+import { Tabs as TabsUI, Tooltip } from "antd";
 import { ModeType, TabProps } from "../../constants";
 
 import style from "./tabs.module.scss";
+import { useTranslation } from "react-i18next";
 
 const { TabPane } = TabsUI;
 
 interface TabsProps {
   className?: any;
-  mode: ModeType;
+  mainTab?: string;
+  mode?: ModeType;
   tabs: TabProps[];
   formsMap: { [key: string]: (props: any) => JSX.Element };
 }
 
 export const Tabs = ({
-  mode,
+  mode = "view",
+  mainTab = "",
   tabs,
   formsMap,
   className,
@@ -22,16 +25,17 @@ export const Tabs = ({
 }: TabsProps) => {
   const defaultActiveKey = tabs?.[0]?.tabCode ?? "";
   const [activeTab, setActiveTab] = useState(defaultActiveKey);
-  const tab = tabs.find(({ tabCode }) => tabCode === activeTab);
+  const [t] = useTranslation("tabs");
 
+  const tab = tabs.find(({ tabCode }) => tabCode === activeTab);
   const Form = formsMap[activeTab];
 
   const handleChange = useCallback((id) => {
     setActiveTab(id);
   }, []);
 
-  const isTabDisabled = (idx: number, mode: ModeType) =>
-    mode === "add" && idx !== 0;
+  const isTabDisabled = (currentTab: string) =>
+    currentTab !== mainTab && mode === "add";
 
   return (
     <div className={className}>
@@ -40,16 +44,27 @@ export const Tabs = ({
         defaultActiveKey={defaultActiveKey}
         onChange={handleChange}
       >
-        {tabs.map(({ tabCode, tabName }, idx) => (
-          <TabPane
-            className={style.upperTabPane}
-            tab={tabName}
-            key={tabCode}
-            disabled={isTabDisabled(idx, mode)}
-          />
-        ))}
+        {tabs.map(({ tabCode, tabName }) => {
+          const disabled = isTabDisabled(tabCode);
+
+          if (disabled) {
+            return (
+              <TabPane
+                key={tabCode}
+                tab={
+                  <Tooltip title={t("tooltip.disabled")}>
+                    <span>{tabName}</span>
+                  </Tooltip>
+                }
+                disabled
+              />
+            );
+          }
+
+          return <TabPane key={tabCode} tab={tabName} />;
+        })}
       </TabsUI>
-      <Form tab={tab} {...props} />
+      <Form tab={tab} mode={mode} {...props} />
     </div>
   );
 };

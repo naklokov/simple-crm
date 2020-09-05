@@ -4,6 +4,7 @@ import {
   ClientEntityProps,
   ModeType,
   TabProps,
+  urls,
 } from "../../../../constants";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
@@ -12,11 +13,12 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getUpdatedEntityArray,
+  getFullUrl,
 } from "../../../../utils";
 import isEmpty from "lodash/isEmpty";
 import { Row, Form } from "antd";
 import { Loader, FormFooter } from "../../../../components";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
 import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
 import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
@@ -50,25 +52,27 @@ export const Main = ({
 }: MainProps) => {
   const { id } = useParams();
   const [form] = useForm();
+  const history = useHistory();
   const [t] = useTranslation("clientCardMain");
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
 
-  const client = getClient(id, clients);
+  const initialValues =
+    mode === "add" ? getAddMetaValues(profileInfo) : getClient(id, clients);
 
   const handleValuesChange = (changed: Object, allValues: Object) => {
-    const isChanged = isValuesChanged(client, allValues);
+    const isChanged = isValuesChanged(initialValues, allValues);
     setSubmitDisabled(!isChanged);
   };
 
   const onFinishAdd = async (values: Store) => {
     try {
       setSubmitLoading(true);
-      const metaValues = getAddMetaValues(profileInfo);
-      const entity = await addClient({ ...values, ...metaValues });
+      const entity = await addClient({ ...initialValues, ...values });
       setClients([...clients, entity]);
       defaultSuccessHandler(t("message.success"));
-      // setSubmitDisabled(true);
+      history.replace(getFullUrl(urls.clients.path, entity.id));
+      setSubmitDisabled(true);
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {
@@ -79,12 +83,12 @@ export const Main = ({
   const onFinishEdit = async (values: Store) => {
     try {
       setSubmitLoading(true);
-      const entity = await editClient(id, { ...client, ...values });
+      const entity = await editClient(id, { ...initialValues, ...values });
       const updated = getUpdatedEntityArray(entity, clients);
       setClients(updated);
 
       defaultSuccessHandler(t("message.success"));
-      // setSubmitDisabled(true);
+      setSubmitDisabled(true);
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {
@@ -92,7 +96,7 @@ export const Main = ({
     }
   };
 
-  if (isEmpty(clients)) {
+  if (isEmpty(clients) && mode === "view") {
     return <Loader />;
   }
 
@@ -104,7 +108,7 @@ export const Main = ({
         layout="vertical"
         name={"clientCardMain"}
         form={form}
-        initialValues={client}
+        initialValues={initialValues}
       >
         <Row
           gutter={[GUTTER_FULL_WIDTH.HORIZONTAL, GUTTER_FULL_WIDTH.VERTICAL]}

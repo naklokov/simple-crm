@@ -10,7 +10,7 @@ import { useParams } from "react-router";
 interface AddContactProps {
   fields: FieldProps[];
   visible: boolean;
-  onClose: (entity?: Store) => void;
+  onClose: (event: any, entity?: Store) => void;
 }
 
 export const AddContact = ({ fields, visible, onClose }: AddContactProps) => {
@@ -26,7 +26,7 @@ export const AddContact = ({ fields, visible, onClose }: AddContactProps) => {
         clientId,
       });
       defaultSuccessHandler(t("message.success.add"));
-      onClose(responce?.data);
+      onClose(void 0, responce?.data);
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {

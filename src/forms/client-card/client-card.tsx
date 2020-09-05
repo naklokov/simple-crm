@@ -11,7 +11,7 @@ import { setLoading, setClients } from "../../__data__";
 import { getClientCardMode } from "./utils";
 import { Tabs } from "../../components";
 import { UPPER } from "../../constants/form-config/client-card";
-import { TABS_MAP } from "./constants";
+import { Main, Comments, Contacts, Requisites } from "./tabs";
 import { fillTemplate, defaultErrorHandler } from "../../utils";
 
 interface ClientCardProps {
@@ -19,6 +19,15 @@ interface ClientCardProps {
   setLoading: (loading: boolean) => void;
   setClients: (clients: ClientEntityProps[]) => void;
 }
+
+export const TABS_MAP: {
+  [key: string]: any;
+} = {
+  main: Main,
+  contacts: Contacts,
+  requisites: Requisites,
+  comments: Comments,
+};
 
 export const ClientCard = ({ setClients, setLoading }: ClientCardProps) => {
   const [t] = useTranslation("clientCard");
@@ -46,7 +55,7 @@ export const ClientCard = ({ setClients, setLoading }: ClientCardProps) => {
 
   return (
     <React.Fragment>
-      <Tabs mode={mode} tabs={UPPER.tabs} formsMap={TABS_MAP} />
+      <Tabs mainTab="main" mode={mode} tabs={UPPER.tabs} formsMap={TABS_MAP} />
       {/* <Tabs mode={mode} tabs={[]} formsMap={{}} /> */}
     </React.Fragment>
   );

@@ -16,7 +16,7 @@ interface DrawerFormProps {
   title: string | React.ReactNode;
   visible: boolean;
   onFinish: (values: Store) => void;
-  onClose: (entity?: Store) => void;
+  onClose: (event?: any) => void;
 }
 
 export const DrawerForm = ({

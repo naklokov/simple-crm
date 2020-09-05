@@ -10,7 +10,7 @@ interface ViewContactProps {
   initialValues: Store;
   fields: FieldProps[];
   visible: boolean;
-  onClose: (entity?: Store) => void;
+  onClose: (event: any, entity?: Store) => void;
 }
 
 export const ViewContact = ({
@@ -29,7 +29,7 @@ export const ViewContact = ({
       const url = `${urls.contacts.entity}/${id}`;
       const responce = await axios.put(url, data);
       defaultSuccessHandler(t("message.success.edit"));
-      onClose(responce?.data);
+      onClose(void 0, responce?.data);
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {
