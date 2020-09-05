@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { FormHeader } from "../../components/form-header";
 import { useTranslation } from "react-i18next";
 import { ClientEntityProps } from "../../constants";
@@ -20,7 +20,7 @@ export const ClientCardHeader = ({ clients }: ClientCardHeaderProps) => {
 
   return (
     <React.Fragment>
-      <FormHeader title={title || ""} />
+      <FormHeader title={title} />
     </React.Fragment>
   );
 };

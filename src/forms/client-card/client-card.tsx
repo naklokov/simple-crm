@@ -8,11 +8,11 @@ import { connect } from "react-redux";
 import { State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { setLoading, setClients } from "../../__data__";
-import { defaultErrorHandler, fillTemplate } from "../../utils";
 import { getClientCardMode } from "./utils";
 import { Tabs } from "../../components";
 import { UPPER } from "../../constants/form-config/client-card";
 import { TABS_MAP } from "./constants";
+import { fillTemplate, defaultErrorHandler } from "../../utils";
 
 interface ClientCardProps {
   clients?: ClientEntityProps[];

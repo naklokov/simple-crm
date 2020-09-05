@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   GUTTER_FULL_WIDTH,
   ClientEntityProps,
-  ModeType,
   TabProps,
 } from "../../../../constants";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
@@ -17,40 +16,27 @@ import isEmpty from "lodash/isEmpty";
 import { Row, Form } from "antd";
 import { Loader, FormFooter } from "../../../../components";
 import { useParams } from "react-router";
-import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
+import { State } from "../../../../__data__/interfaces";
 import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { setClients } from "../../../../__data__";
 import { Store } from "antd/lib/form/interface";
 import { useTranslation } from "react-i18next";
 import { useForm } from "antd/lib/form/Form";
-import {
-  getAddMetaValues,
-  addClient,
-  editClient,
-  getClient,
-} from "../../utils";
+import { editClient, getClient } from "../../utils";
 
-import style from "./main.module.scss";
+import style from "./requisites.module.scss";
 
-interface MainProps {
-  mode: ModeType;
+interface RequisitesProps {
   tab: TabProps;
   clients: ClientEntityProps[];
-  profileInfo: ProfileInfoProps;
   setClients: (clients: ClientEntityProps[]) => void;
 }
 
-export const Main = ({
-  tab,
-  clients,
-  profileInfo,
-  setClients,
-  mode,
-}: MainProps) => {
+export const Requisites = ({ tab, clients, setClients }: RequisitesProps) => {
   const { id } = useParams();
   const [form] = useForm();
-  const [t] = useTranslation("clientCardMain");
+  const [t] = useTranslation("clientCardRequisites");
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
 
@@ -61,22 +47,7 @@ export const Main = ({
     setSubmitDisabled(!isChanged);
   };
 
-  const onFinishAdd = async (values: Store) => {
-    try {
-      setSubmitLoading(true);
-      const metaValues = getAddMetaValues(profileInfo);
-      const entity = await addClient({ ...values, ...metaValues });
-      setClients([...clients, entity]);
-      defaultSuccessHandler(t("message.success"));
-      // setSubmitDisabled(true);
-    } catch (error) {
-      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
-    } finally {
-      setSubmitLoading(false);
-    }
-  };
-
-  const onFinishEdit = async (values: Store) => {
+  const onFinish = async (values: Store) => {
     try {
       setSubmitLoading(true);
       const entity = await editClient(id, { ...client, ...values });
@@ -100,9 +71,9 @@ export const Main = ({
     <div className={style.container}>
       <Form
         onValuesChange={handleValuesChange}
-        onFinish={mode === "add" ? onFinishAdd : onFinishEdit}
+        onFinish={onFinish}
         layout="vertical"
-        name={"clientCardMain"}
+        name={"clientCardRequisites"}
         form={form}
         initialValues={client}
       >
@@ -130,10 +101,9 @@ export const Main = ({
 
 const mapStateToProps = (state: State) => ({
   clients: state?.clients ?? [],
-  profileInfo: state?.persist?.profileInfo ?? {},
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators({ setClients }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(Requisites);

@@ -109,6 +109,10 @@
   "clientCardContacts": {
     "title.add": "＋ Добавить контакт"
   },
+  "clientCardRequisites": {
+    "message.error": "Ошибка при изменении реквизитов клиента",
+    "message.success": "Информация о реквизитах клиента обновлена"
+  },
   "contactDrawer": {
     "title.new": "Новый контакт",
     "title.view": "Контакт",
