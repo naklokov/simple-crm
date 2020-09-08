@@ -37,6 +37,17 @@ module.exports = {
     clientContacts: "/crm/rest/entity/contacts?query=clientId=={{id}}",
     entity: "/crm/rest/entity/contacts",
   },
+  contacts: {
+    clientContacts: "/crm/rest/entity/contacts?query=clientId=={{id}}",
+    entity: "/crm/rest/entity/contacts",
+  },
+  priceList: {
+    clientPrice:
+      "/crm/rest/priceList/price?userProfileId={{userProfileId}}&clientId={{clientId}}",
+    row:
+      "/crm/rest/priceList/price/{{id}}?userProfileId={{userProfileId}}&clientId={{clientId}}",
+    entity: "/crm/pricelist/price",
+  },
   tasks: {
     path: "/tasks",
   },

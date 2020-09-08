@@ -113,6 +113,11 @@
     "message.error": "Ошибка при изменении реквизитов клиента",
     "message.success": "Информация о реквизитах клиента обновлена"
   },
+  "clientCardPriceList": {
+    "message.error": "Ошибка при получении данных прайс листа",
+    "rules.editable.price": "Введите стоимость",
+    "message.row.save.error": "Ошибка при сохранении данных прайс листа"
+  },
   "contactDrawer": {
     "title.new": "Новый контакт",
     "title.view": "Контакт",

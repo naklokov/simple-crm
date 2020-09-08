@@ -5,6 +5,7 @@ import isEqual from "lodash/isEqual";
 import some from "lodash/some";
 
 interface EntityWithId {
+  [key: string]: any;
   id: string;
 }
 
@@ -37,5 +38,6 @@ export const createFormField = (field: FieldProps): JSX.Element => {
 
 export const getUpdatedEntityArray = <T extends EntityWithId>(
   entity: T,
-  array: T[]
-) => array?.map((item) => (item.id === entity.id ? entity : item)) ?? [];
+  array: T[],
+  key: string = "id"
+) => array?.map((item) => (item[key] === entity[key] ? entity : item)) ?? [];

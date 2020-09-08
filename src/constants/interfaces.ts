@@ -13,6 +13,15 @@ export type FieldType =
 
 export type FieldFormatType = string | "textarea";
 
+export type FIOFormatType = "{{lastName}} {{firstName}} {{secondName}}";
+
+export type FullCalendarDateType = "DD.MM.YYYY";
+
+export type ColumnFormatType =
+  | "currency"
+  | FIOFormatType
+  | FullCalendarDateType;
+
 export type ModeType = "view" | "add";
 
 export interface RuleProps {
@@ -40,10 +49,10 @@ export interface DrawerProps {
 export interface FieldProps {
   fieldCode: string;
   fieldName: string;
-  fieldDescription: string;
+  fieldDescription?: string;
   type: FieldType;
-  readonly: boolean;
-  disabled: boolean;
+  readonly?: boolean;
+  disabled?: boolean;
   rules?: Rule[];
   format?: FieldFormatType;
   span?: SpanProps;
@@ -113,7 +122,7 @@ export interface ColumnProps {
   columnDescription?: string;
   columnCode: string;
   columnType: ColumnType;
-  format?: string;
+  format?: ColumnFormatType;
   sorter: any;
   editable?: boolean;
   columnActions?: ActionProps[];

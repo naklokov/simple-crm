@@ -9,10 +9,11 @@ import { State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { setLoading, setClients } from "../../__data__";
 import { getClientCardMode } from "./utils";
-import { Tabs } from "../../components";
+import { Tabs, Loader } from "../../components";
 import { UPPER } from "../../constants/form-config/client-card";
-import { Main, Comments, Contacts, Requisites } from "./tabs";
+import { Main, Comments, Contacts, Requisites, PriceList } from "./tabs";
 import { fillTemplate, defaultErrorHandler } from "../../utils";
+import { isEmpty } from "lodash";
 
 interface ClientCardProps {
   clients?: ClientEntityProps[];
@@ -27,9 +28,14 @@ export const TABS_MAP: {
   contacts: Contacts,
   requisites: Requisites,
   comments: Comments,
+  priceList: PriceList,
 };
 
-export const ClientCard = ({ setClients, setLoading }: ClientCardProps) => {
+export const ClientCard = ({
+  setClients,
+  setLoading,
+  clients,
+}: ClientCardProps) => {
   const [t] = useTranslation("clientCard");
   const { id } = useParams();
   const mode = getClientCardMode(id);
@@ -52,6 +58,10 @@ export const ClientCard = ({ setClients, setLoading }: ClientCardProps) => {
       fetchClientCard();
     }
   }, [id]);
+
+  if (isEmpty(clients)) {
+    return <Loader />;
+  }
 
   return (
     <React.Fragment>

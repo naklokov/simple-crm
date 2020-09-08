@@ -96,10 +96,6 @@ export const Main = ({
     }
   };
 
-  if (isEmpty(clients) && mode === "view") {
-    return <Loader />;
-  }
-
   return (
     <div className={style.container}>
       <Form

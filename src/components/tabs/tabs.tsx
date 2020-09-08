@@ -64,7 +64,9 @@ export const Tabs = ({
           return <TabPane key={tabCode} tab={tabName} />;
         })}
       </TabsUI>
-      <Form tab={tab} mode={mode} {...props} />
+      <div className={style.form}>
+        <Form tab={tab} mode={mode} {...props} />
+      </div>
     </div>
   );
 };

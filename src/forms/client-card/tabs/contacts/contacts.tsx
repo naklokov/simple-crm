@@ -106,12 +106,12 @@ export const Contacts = ({ tab }: ContactsProps) => {
       <AddContactDrawer
         visible={addDrawerVisible}
         onClose={handleCloseAddDrawer}
-        fields={drawer?.fields || []}
+        fields={drawer?.fields ?? []}
       />
       <ViewContactDrawer
         visible={viewDrawerVisible}
         initialValues={initialValues}
-        fields={drawer?.fields || []}
+        fields={drawer?.fields ?? []}
         onClose={handleCloseViewDrawer}
       />
       <div className={style.container}>

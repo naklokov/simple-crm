@@ -1,30 +1,54 @@
 import React from "react";
 import isEmpty from "lodash/isEmpty";
-import { Space } from "antd";
-import { mapAction, getColumn } from ".";
+import pick from "lodash/pick";
+import noop from "lodash/noop";
 
 import { ActionProps, ColumnProps, EntityProps } from "../../../constants";
-import { ComponentPermissionsChecker } from "../../../wrappers";
-import pick from "lodash/pick";
+import { HighlightTextWrapper } from "../../../wrappers";
+import { getFormattedText } from "./formatters";
+import { getSorterProp } from "./sorter";
+import { getEditableProp } from "./editable";
+import { renderActions } from "./actions";
 
-const renderActions = (
-  actions: ActionProps[],
-  text: string,
-  entity: EntityProps,
+const getRenderProp = (column: ColumnProps, searched: string) => ({
+  render: (text: string, record: any) => {
+    const { format, columnType } = column;
+    let renderText = text;
+
+    // if (columnType === "dictionary") {
+    //   renderText = getDictionaryText(text, column.columnCode, record);
+    // }
+
+    if (format) {
+      renderText = getFormattedText(text, format, columnType, record);
+    }
+
+    return (
+      <HighlightTextWrapper
+        key={columnType}
+        text={renderText}
+        searched={searched}
+      />
+    );
+  },
+});
+
+export const getColumn = (
+  column: ColumnProps,
   searched: string,
-  onDelete?: (id: string) => void,
-  onView?: (id: string) => void
-) => (
-  <React.Fragment>
-    {actions.map((action) => (
-      <ComponentPermissionsChecker availablePermissions={action.permissions}>
-        <Space size="middle" key={action.actionCode}>
-          {mapAction(entity.id, text, action, searched, onDelete, onView)}
-        </Space>
-      </ComponentPermissionsChecker>
-    ))}
-  </React.Fragment>
-);
+  onSaveRow: (record: any) => void
+) => {
+  const { columnCode, columnName } = column;
+
+  return {
+    key: columnCode,
+    title: columnName,
+    dataIndex: columnCode,
+    ...getSorterProp(column),
+    ...getEditableProp(column, onSaveRow),
+    ...getRenderProp(column, searched),
+  };
+};
 
 export const getFilteredDataSource = (
   searched: string,
@@ -62,9 +86,14 @@ export const getActions = (
   };
 };
 
-export const getDataColumns = (columns: ColumnProps[] = [], searched: string) =>
+export const getDataColumns = (
+  columns: ColumnProps[] = [],
+  searched: string,
+  onSaveRow: (record: any) => void = noop
+) =>
   columns.map(({ columnActions, ...column }) => {
-    const columnProps = getColumn(column, searched);
+    // TODO получение всех необходимых словарей перед отрисовкой, т.к. render не поддерживает асинхронщину
+    const columnProps = getColumn(column, searched, onSaveRow);
 
     if (!isEmpty(columnActions)) {
       const actions = columnActions || [];
@@ -77,3 +106,15 @@ export const getDataColumns = (columns: ColumnProps[] = [], searched: string) =>
 
     return columnProps;
   });
+
+export const getTableLocale = (t: Function) => ({
+  filterTitle: t("filter.title"),
+  filterConfirm: t("filter.confirm"),
+  filterReset: t("filter.reset"),
+  filterEmptyText: t("filter.empty"),
+  sortTitle: t("sort.title"),
+  triggerDesc: t("sort.desc"),
+  triggerAsc: t("sort.asc"),
+  cancelSort: t("sort.cancel"),
+  emptyText: t("empty"),
+});

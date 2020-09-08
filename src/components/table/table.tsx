@@ -3,9 +3,19 @@ import { Table as TableUI } from "antd";
 
 import { ColumnProps, ActionProps } from "../../constants/interfaces";
 import { useTranslation } from "react-i18next";
-import { getActions, getDataColumns, getFilteredDataSource } from "./utils";
+import {
+  getActions,
+  getDataColumns,
+  getFilteredDataSource,
+  getEditableTableBody,
+  getTableLocale,
+  getColumn,
+} from "./utils";
 import { Header } from "./components";
 import noop from "lodash/noop";
+
+import style from "./table.module.scss";
+import { getUpdatedEntityArray } from "../../utils";
 
 interface TableProps {
   pageCount?: number;
@@ -15,18 +25,11 @@ interface TableProps {
   loading: boolean;
   onDeleteRow?: (id: string) => void;
   onViewRow?: (id: string) => void;
+  onSaveRow?: (record: any) => void;
   withSearch?: boolean;
   addButton?: JSX.Element;
 }
 
-/* 
-  TODO Чего не хватает таблице
-  1. Фильтрация по колонкам (кастомный фильтр длинною в жизнь)
-  2. Кнопка |...| доп действий. Что туда писать и надо прикрутить вообще блок кнопок.
-
-  На подумать:
-  1. Утащить всю работу с таблицей в redux (передавать name таблицы и спокойно всё коннектить к компоненту)
-*/
 export const Table = ({
   columns,
   pageCount = 10,
@@ -35,6 +38,7 @@ export const Table = ({
   loading,
   onDeleteRow = noop,
   onViewRow = noop,
+  onSaveRow = noop,
   withSearch = false,
   addButton,
 }: TableProps) => {
@@ -71,6 +75,7 @@ export const Table = ({
 
   return (
     <TableUI
+      className={style.table}
       size="middle"
       title={() => (
         <Header
@@ -80,7 +85,7 @@ export const Table = ({
         />
       )}
       columns={[
-        ...getDataColumns(columns, searched),
+        ...getDataColumns(columns, searched, onSaveRow),
         getActions(actions, t, searched, onDeleteRow, onViewRow),
       ]}
       dataSource={source.map((item) => ({ ...item, key: item.id }))}
@@ -89,18 +94,10 @@ export const Table = ({
         onChange: handleChangePage,
         current: pageNumber,
       }}
+      components={getEditableTableBody()}
+      rowClassName={() => style.editableRow}
       loading={loading}
-      locale={{
-        filterTitle: t("filter.title"),
-        filterConfirm: t("filter.confirm"),
-        filterReset: t("filter.reset"),
-        filterEmptyText: t("filter.empty"),
-        sortTitle: t("sort.title"),
-        triggerDesc: t("sort.desc"),
-        triggerAsc: t("sort.asc"),
-        cancelSort: t("sort.cancel"),
-        emptyText: t("empty"),
-      }}
+      locale={getTableLocale(t)}
     />
   );
 };

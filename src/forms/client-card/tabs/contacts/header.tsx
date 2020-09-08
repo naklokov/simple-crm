@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "antd";
+import { Button, Space } from "antd";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import { PERMISSIONS } from "../../../../constants";
 import { useTranslation } from "react-i18next";

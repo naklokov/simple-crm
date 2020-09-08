@@ -2,6 +2,12 @@
 @import "../../assets/styles/common";
 @import "../../assets/styles/offsets";
 
+.form {
+  border-radius: var(--form-border-radius);
+  background-color: var(--background-color-base);
+  margin: var(--offset-md);
+}
+
 .tabs {
   border-radius: var(--form-border-radius);
   padding: 0 var(--offset-md) !important;
