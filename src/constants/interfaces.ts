@@ -1,6 +1,6 @@
 import { Rule } from "antd/lib/form";
 
-export type TabType = "container" | "table";
+export type TabType = "container" | "table" | "custom";
 
 export type FieldType =
   | "string"
@@ -164,4 +164,19 @@ export interface ClientEntityProps {
   servicingBank: string;
   shortName: string;
   webPage: string;
+}
+
+export interface CommentEntityProps {
+  _links: {
+    self: {
+      href: string;
+    };
+  };
+  commentText: string;
+  creationDate: string;
+  entityId: string;
+  entityType: string;
+  userProfileId?: string;
+  id: string;
+  isOwner: boolean;
 }

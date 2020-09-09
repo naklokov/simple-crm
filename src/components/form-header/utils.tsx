@@ -53,7 +53,7 @@ export const getBreadcrumbItems = (detailName: string) => {
     const name = isLast ? detailName : findName(href);
 
     return (
-      <Breadcrumb.Item>
+      <Breadcrumb.Item key={idx}>
         <a href={href}>{name}</a>
       </Breadcrumb.Item>
     );

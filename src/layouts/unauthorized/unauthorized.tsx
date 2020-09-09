@@ -35,7 +35,7 @@ export const Unauthorized = ({
   }, [auth]);
 
   return (
-    <form className={style.form}>
+    <div className={style.form}>
       {loading && <Loader />}
       <div className={style.container}>
         <div className={style.layout}>
@@ -59,7 +59,7 @@ export const Unauthorized = ({
         </div>
         {children}
       </div>
-    </form>
+    </div>
   );
 };
 const mapStateToProps = (state: State) => ({

@@ -75,6 +75,7 @@ export const DrawerForm = ({
       >
         {fields?.map((field) => (
           <ComponentPermissionsChecker
+            key={field.fieldCode}
             availablePermissions={field.permissions}
             mode="disabled"
           >

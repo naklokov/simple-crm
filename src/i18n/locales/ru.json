@@ -127,5 +127,22 @@
   },
   "tabs": {
     "tooltip.disabled": "Заполните основную информацию"
+  },
+  "comments": {
+    "textarea.placeholder": "Введите комментарий...",
+    "button": "Отправить",
+    "message.get.error": "Ошибка при получении списка комментариев",
+    "message.add.error": "Ошибка при добавлении комментария"
+  },
+  "comment": {
+    "message.delete.error": "Ошибка при удалении комментария",
+    "message.put.error": "Ошибка при изменении комментария",
+    "button.delete": "Удалить",
+    "button.edit": "Редактировать",
+    "button.save": "Сохранить",
+    "delete.confirm": "Вы действительно хотите удалить комментарий?",
+    "delete.no": "Нет",
+    "delete.yes": "Да",
+    "rules.required": "Пожалуйста, введите комментарий"
   }
 }

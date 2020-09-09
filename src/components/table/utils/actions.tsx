@@ -59,7 +59,10 @@ export const renderActions = (
 ) => (
   <React.Fragment>
     {actions.map((action) => (
-      <ComponentPermissionsChecker availablePermissions={action.permissions}>
+      <ComponentPermissionsChecker
+        key={action.actionCode}
+        availablePermissions={action.permissions}
+      >
         <Space size="middle" key={action.actionCode}>
           {getActionComponent(
             entity.id,

@@ -41,3 +41,6 @@ export const getUpdatedEntityArray = <T extends EntityWithId>(
   array: T[],
   key: string = "id"
 ) => array?.map((item) => (item[key] === entity[key] ? entity : item)) ?? [];
+
+export const getFiteredEntityIdArray = (id: string, array: any[]) =>
+  array.filter((o) => o.id !== id);

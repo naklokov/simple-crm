@@ -31,7 +31,7 @@ export const Profile = ({ profileInfo, logout }: ProfileProps) => {
   );
 
   return (
-    <React.Fragment>
+    <div className={style.container}>
       <Link to={http.ROOT_URL}>
         <Avatar src={avatar} icon={<UserOutlined />} />
       </Link>
@@ -43,7 +43,7 @@ export const Profile = ({ profileInfo, logout }: ProfileProps) => {
           <DownOutlined />
         </div>
       </Dropdown>
-    </React.Fragment>
+    </div>
   );
 };
 

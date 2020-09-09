@@ -48,6 +48,11 @@ module.exports = {
       "/crm/rest/priceList/price/{{id}}?userProfileId={{userProfileId}}&clientId={{clientId}}",
     entity: "/crm/pricelist/price",
   },
+  comments: {
+    entity: "/crm/rest/entity/comments",
+    client:
+      "/crm/rest/entity/comments?query=entityType==clients;entityId=={{clientId}}",
+  },
   tasks: {
     path: "/tasks",
   },

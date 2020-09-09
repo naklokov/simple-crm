@@ -6,6 +6,7 @@ import http, { COOKIES } from "../constants/http";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setAuth, setLoading } from "../__data__";
 import { message } from "antd";
+import { ProfileInfoProps } from "../__data__/interfaces";
 
 interface DefaultErrorHandlerProps {
   error: ErrorProps;
@@ -43,6 +44,9 @@ export const fillTemplate = (
 
   return result;
 };
+
+export const getFullName = (profileInfo: ProfileInfoProps) =>
+  `${profileInfo.lastName} ${profileInfo.firstName} ${profileInfo.secondName}`;
 
 export const getFullUrl = (url: string = "", id?: string): string => {
   if (id) {

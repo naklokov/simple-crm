@@ -25,13 +25,6 @@ const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
   );
 };
 
-interface EditableCellProps {
-  column: ColumnProps;
-  record: any;
-  children: React.ReactNode;
-  onSaveRow: (record: any) => void;
-}
-
 const EditableCell = ({
   title,
   editable,

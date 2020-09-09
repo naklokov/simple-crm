@@ -82,6 +82,7 @@ export const Requisites = ({ tab, clients, setClients }: RequisitesProps) => {
         >
           {tab.fields?.map((field) => (
             <ComponentPermissionsChecker
+              key={field.fieldCode}
               availablePermissions={field.permissions}
               mode="disabled"
             >

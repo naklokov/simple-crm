@@ -9,10 +9,28 @@ interface UpperProps {
   drawers: DrawerProps[];
 }
 
+interface LowerProps {
+  tabs: TabProps[];
+  drawers: DrawerProps[];
+}
+
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
 const EMAIL_MESSAGE = "Пожалуйста, введите корректный email";
 const PLACEHOLDER_DEFAULT = "Введите значение";
 const PHONE_PLACEHOLDER = "+7 (___) ___-__-__";
+
+export const LOWER: LowerProps = {
+  drawers: [],
+  tabs: [
+    {
+      tabCode: "comments",
+      tabName: "Комментарии",
+      tabDescription: "Комментарии о клиенте",
+      type: "custom",
+      _links: {},
+    },
+  ],
+};
 
 export const UPPER: UpperProps = {
   drawers: [
