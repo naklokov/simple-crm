@@ -2,7 +2,7 @@ import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
 import { PERMISSIONS } from "../permissions";
 
-const { CLIENTS } = PERMISSIONS;
+const { CLIENTS, TASKS } = PERMISSIONS;
 
 interface UpperProps {
   tabs: TabProps[];
@@ -20,13 +20,119 @@ const PLACEHOLDER_DEFAULT = "Введите значение";
 const PHONE_PLACEHOLDER = "+7 (___) ___-__-__";
 
 export const LOWER: LowerProps = {
-  drawers: [],
+  drawers: [
+    {
+      code: "task",
+      name: "Задача",
+      description: "Форма для просмотра и добавления задачи",
+      fields: [
+        {
+          fieldCode: "taskEndDate",
+          fieldName: "Дата и время",
+          fieldDescription: "",
+          type: "string",
+          readonly: false,
+          disabled: false,
+          span: { md: 24 },
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          permissions: [TASKS.GET_OWNER, TASKS.GET, TASKS.ADMIN],
+        },
+        {
+          fieldCode: "taskDescription",
+          fieldName: "Описание",
+          fieldDescription: "",
+          type: "string",
+          format: "textarea",
+          readonly: false,
+          disabled: false,
+          span: { md: 24 },
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [
+            { min: 2, message: "Слишком малая длина строки" },
+            { max: 2000, message: "Превышена максимальная длина строки" },
+          ],
+          permissions: [TASKS.GET_OWNER, TASKS.GET, TASKS.ADMIN],
+        },
+      ],
+    },
+    {
+      code: "completed",
+      name: "Выполнить задачу",
+      description: "Форма для ввода комментария после выполнения задачи",
+      fields: [
+        {
+          fieldCode: "note",
+          fieldName: "Комментарий",
+          fieldDescription: "",
+          type: "string",
+          format: "textarea",
+          readonly: false,
+          disabled: false,
+          span: { md: 24 },
+          placeholder: "Введите комментарий по выполненной задаче",
+          rules: [
+            { min: 2, message: "Слишком малая длина строки" },
+            { max: 2000, message: "Превышена максимальная длина строки" },
+          ],
+          permissions: [TASKS.GET_OWNER, TASKS.GET, TASKS.ADMIN],
+        },
+      ],
+    },
+  ],
   tabs: [
     {
       tabCode: "comments",
       tabName: "Комментарии",
       tabDescription: "Комментарии о клиенте",
       type: "custom",
+      _links: {},
+    },
+    {
+      tabCode: "tasks",
+      tabName: "Задачи",
+      tabDescription: "Задачи связанные с клиентом",
+      type: "table",
+      actions: [
+        {
+          actionName: "Просмотр",
+          actionType: "view",
+          permissions: [CLIENTS.ADMIN, CLIENTS.DELETE, CLIENTS.DELETE_OWNER],
+        },
+        // {
+        //   actionName: "Выполнить",
+        //   actionType: "delete",
+        //   permissions: [CLIENTS.ADMIN, CLIENTS.DELETE, CLIENTS.DELETE_OWNER],
+        //   href: urls.contacts.entity,
+        // },
+      ],
+      columns: [
+        {
+          columnName: "Дата и время",
+          columnCode: "creationDate",
+          columnType: "date",
+          columnDescription: "Запланированная дата для задачи",
+          sorter: true,
+          columnActions: [],
+        },
+        {
+          columnName: "Менеджер",
+          columnCode: "managerId",
+          columnType: "dictionary",
+          format: "{{lastName}} {{firstName}} {{secondName}}",
+          columnDescription: "Менеджер который завёл задачу",
+          sorter: true,
+          columnActions: [],
+        },
+        {
+          columnName: "Описание",
+          columnCode: "description",
+          columnType: "string",
+          columnDescription: "Подробное описание задачи",
+          sorter: false,
+          columnActions: [],
+        },
+      ],
       _links: {},
     },
   ],
@@ -203,6 +309,17 @@ export const UPPER: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           type: "string",
+          rules: [],
+          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+        },
+        {
+          fieldCode: "city",
+          fieldName: "Город",
+          fieldDescription: "",
+          type: "string",
+          readonly: false,
+          disabled: false,
+          placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
           permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
         },

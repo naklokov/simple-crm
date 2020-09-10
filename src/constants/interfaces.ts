@@ -11,7 +11,7 @@ export type FieldType =
   | "entity"
   | "phone";
 
-export type FieldFormatType = string | "textarea";
+export type FieldFormatType = "textarea" | string;
 
 export type FIOFormatType = "{{lastName}} {{firstName}} {{secondName}}";
 

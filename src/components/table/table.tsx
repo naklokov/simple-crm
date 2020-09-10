@@ -27,6 +27,7 @@ interface TableProps {
   onViewRow?: (id: string) => void;
   onSaveRow?: (record: any) => void;
   withSearch?: boolean;
+  withTitle?: boolean;
   addButton?: JSX.Element;
 }
 
@@ -40,6 +41,7 @@ export const Table = ({
   onViewRow = noop,
   onSaveRow = noop,
   withSearch = false,
+  withTitle = true,
   addButton,
 }: TableProps) => {
   const [t] = useTranslation("table");
@@ -71,19 +73,22 @@ export const Table = ({
     [dataSource, filteredDataSource, columns]
   );
 
+  const title = withTitle
+    ? () => (
+        <Header
+          onSearch={handleSearch}
+          withSearch={withSearch}
+          button={addButton}
+        />
+      )
+    : void 0;
   const source = searched ? filteredDataSource : dataSource;
 
   return (
     <TableUI
       className={style.table}
       size="middle"
-      title={() => (
-        <Header
-          onSearch={handleSearch}
-          withSearch={withSearch}
-          button={addButton}
-        />
-      )}
+      title={title}
       columns={[
         ...getDataColumns(columns, searched, onSaveRow),
         getActions(actions, t, searched, onDeleteRow, onViewRow),

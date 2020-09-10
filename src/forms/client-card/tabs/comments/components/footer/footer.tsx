@@ -11,7 +11,7 @@ interface FooterProps {
 }
 
 export const Footer = ({ onSend }: FooterProps) => {
-  const [t] = useTranslation("comments");
+  const [t] = useTranslation("clientCardComments");
   const [comment, setComment] = useState("");
   const [disabled, setDisabled] = useState(true);
 

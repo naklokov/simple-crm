@@ -5,12 +5,12 @@ import { CommentEntityProps, urls } from "../../constants";
 import { Comment as CommentUI, Typography, Input } from "antd";
 import { ProfileInfoProps, State } from "../../__data__/interfaces";
 import { setLoading } from "../../__data__";
-import { defaultErrorHandler, getFullName, getFullUrl } from "../../utils";
+import { defaultErrorHandler, getFullName, fillTemplate } from "../../utils";
 import { useTranslation } from "react-i18next";
 import { Avatar } from "../avatar";
 import { connect } from "react-redux";
 import { Delete, Edit, Editor } from "./components";
-import { noop } from "lodash";
+import { noop, isEmpty } from "lodash";
 import { getActions, getContent } from "./utils";
 
 const { Text } = Typography;
@@ -32,12 +32,21 @@ export const Comment = ({
   const [isEdit, setIsEdit] = useState(false);
   const [t] = useTranslation("comment");
 
-  const { id, isOwner, commentText, creationDate } = comment;
+  const {
+    id,
+    isOwner,
+    commentText,
+    creationDate,
+    userProfileId = "",
+  } = comment;
 
   const fetchProfile = async () => {
     try {
       setLoading(true);
-      const responce = await axios.get(urls.profile.entity);
+      const url = fillTemplate(urls.profile.anotherProfile, {
+        id: userProfileId,
+      });
+      const responce = await axios.get(url);
       setCommentAuthor(responce?.data ?? {});
     } catch (error) {
       defaultErrorHandler({
@@ -50,9 +59,15 @@ export const Comment = ({
   };
 
   useEffect(() => {
-    setCommentAuthor(profileInfo);
-    // fetchProfile();
-  }, [comment, profileInfo]);
+    if (isEmpty(commentAuthor) && userProfileId) {
+      if (userProfileId === profileInfo.id) {
+        setCommentAuthor(profileInfo);
+        return;
+      }
+
+      fetchProfile();
+    }
+  }, [userProfileId, profileInfo]);
 
   const handleDeleteComment = useCallback(() => {
     onDeleteComment(id);

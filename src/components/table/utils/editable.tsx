@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { Input, Form, InputNumber } from "antd";
-import InputMask from "react-input-mask";
-import { noop } from "lodash";
+import { noop, isEqual } from "lodash";
 
 import style from "../table.module.scss";
 import { defaultErrorHandler } from "../../../utils";
@@ -55,7 +54,10 @@ const EditableCell = ({
       const values = await form.validateFields();
 
       toggleEdit();
-      onSaveRow({ ...record, ...values });
+      const updatedRecord = { ...record, ...values };
+      if (!isEqual(updatedRecord, record)) {
+        onSaveRow(updatedRecord);
+      }
     } catch (error) {
       defaultErrorHandler({
         error,

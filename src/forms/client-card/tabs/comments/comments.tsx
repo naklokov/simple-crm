@@ -27,7 +27,7 @@ interface CommentsProps {
 export const Comments = ({ profileInfo, setLoading }: CommentsProps) => {
   const [comments, setComments] = useState([] as CommentEntityProps[]);
   const { id: clientId } = useParams();
-  const [t] = useTranslation("comments");
+  const [t] = useTranslation("clientCardComments");
 
   const fetchComments = async () => {
     try {

@@ -128,11 +128,14 @@
   "tabs": {
     "tooltip.disabled": "Заполните основную информацию"
   },
-  "comments": {
+  "clientCardComments": {
     "textarea.placeholder": "Введите комментарий...",
     "button": "Отправить",
     "message.get.error": "Ошибка при получении списка комментариев",
     "message.add.error": "Ошибка при добавлении комментария"
+  },
+  "clientCardTasks": {
+    "message.get.error": "Ошибка при получении списка задач"
   },
   "comment": {
     "message.delete.error": "Ошибка при удалении комментария",

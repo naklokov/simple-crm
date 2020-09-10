@@ -1,31 +1,34 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { DrawerForm } from "../../../../components";
+import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import { urls, FieldProps } from "../../../../constants";
-import { defaultErrorHandler, defaultSuccessHandler } from "../../../../utils";
-import { useParams } from "react-router";
+import { urls, FieldProps } from "../../constants";
+import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 
-interface AddContactProps {
+interface ViewContactProps {
+  initialValues: Store;
   fields: FieldProps[];
   visible: boolean;
   onClose: (event: any, entity?: Store) => void;
 }
 
-export const AddContact = ({ fields, visible, onClose }: AddContactProps) => {
+export const ViewContact = ({
+  initialValues: { id, ...initialValues },
+  fields,
+  visible,
+  onClose,
+}: ViewContactProps) => {
   const [t] = useTranslation("contactDrawer");
-  const { id: clientId } = useParams();
   const [submitLoading, setSubmitLoading] = useState(false);
 
   const onFinish = async (values: Store) => {
     try {
       setSubmitLoading(true);
-      const responce = await axios.post(urls.contacts.entity, {
-        ...values,
-        clientId,
-      });
-      defaultSuccessHandler(t("message.success.add"));
+      const data = { ...initialValues, ...values };
+      const url = `${urls.contacts.entity}/${id}`;
+      const responce = await axios.put(url, data);
+      defaultSuccessHandler(t("message.success.edit"));
       onClose(void 0, responce?.data);
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
@@ -36,9 +39,10 @@ export const AddContact = ({ fields, visible, onClose }: AddContactProps) => {
 
   return (
     <DrawerForm
-      title={t("title.new")}
+      initialValues={initialValues}
+      title={t("title.view")}
       fields={fields}
-      name="contactAdd"
+      name="contactView"
       onClose={onClose}
       visible={visible}
       submitLoading={submitLoading}
@@ -47,4 +51,4 @@ export const AddContact = ({ fields, visible, onClose }: AddContactProps) => {
   );
 };
 
-export default AddContact;
+export default ViewContact;

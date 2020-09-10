@@ -1,5 +1,3 @@
-import moment from "moment";
-import groupBy from "lodash/groupBy";
 import { CommentEntityProps } from "../../../../constants";
 import sortBy from "lodash/sortBy";
 

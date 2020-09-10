@@ -1,34 +1,31 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { DrawerForm } from "../../../../components";
+import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import { urls, FieldProps } from "../../../../constants";
-import { defaultErrorHandler, defaultSuccessHandler } from "../../../../utils";
+import { urls, FieldProps } from "../../constants";
+import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
+import { useParams } from "react-router";
 
-interface ViewContactProps {
-  initialValues: Store;
+interface AddContactProps {
   fields: FieldProps[];
   visible: boolean;
   onClose: (event: any, entity?: Store) => void;
 }
 
-export const ViewContact = ({
-  initialValues: { id, ...initialValues },
-  fields,
-  visible,
-  onClose,
-}: ViewContactProps) => {
+export const AddContact = ({ fields, visible, onClose }: AddContactProps) => {
   const [t] = useTranslation("contactDrawer");
+  const { id: clientId } = useParams();
   const [submitLoading, setSubmitLoading] = useState(false);
 
   const onFinish = async (values: Store) => {
     try {
       setSubmitLoading(true);
-      const data = { ...initialValues, ...values };
-      const url = `${urls.contacts.entity}/${id}`;
-      const responce = await axios.put(url, data);
-      defaultSuccessHandler(t("message.success.edit"));
+      const responce = await axios.post(urls.contacts.entity, {
+        ...values,
+        clientId,
+      });
+      defaultSuccessHandler(t("message.success.add"));
       onClose(void 0, responce?.data);
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
@@ -39,10 +36,9 @@ export const ViewContact = ({
 
   return (
     <DrawerForm
-      initialValues={initialValues}
-      title={t("title.view")}
+      title={t("title.new")}
       fields={fields}
-      name="contactView"
+      name="contactAdd"
       onClose={onClose}
       visible={visible}
       submitLoading={submitLoading}
@@ -51,4 +47,4 @@ export const ViewContact = ({
   );
 };
 
-export default ViewContact;
+export default AddContact;

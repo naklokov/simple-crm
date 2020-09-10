@@ -8,15 +8,16 @@ import { connect } from "react-redux";
 import { State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { setLoading, setClients } from "../../__data__";
-import { getClientCardMode } from "./utils";
+import { getClientCardMode, getClient } from "./utils";
 import { Tabs, Loader } from "../../components";
 import { UPPER, LOWER } from "../../constants/form-config/client-card";
-import { Main, Comments, Contacts, Requisites, PriceList } from "./tabs";
+import { Main, Comments, Contacts, Requisites, PriceList, Tasks } from "./tabs";
 import { fillTemplate, defaultErrorHandler } from "../../utils";
 import { isEmpty } from "lodash";
 
 interface ClientCardProps {
-  clients?: ClientEntityProps[];
+  clients: ClientEntityProps[];
+  loading: boolean;
   setLoading: (loading: boolean) => void;
   setClients: (clients: ClientEntityProps[]) => void;
 }
@@ -29,16 +30,21 @@ export const TABS_MAP: {
   requisites: Requisites,
   priceList: PriceList,
   comments: Comments,
+  tasks: Tasks,
 };
 
 export const ClientCard = ({
+  clients,
   setClients,
   setLoading,
-  clients,
+  loading,
 }: ClientCardProps) => {
   const [t] = useTranslation("clientCard");
   const { id } = useParams();
   const mode = getClientCardMode(id);
+  const client = getClient(id, clients);
+  console.log(client);
+  const isClientEmpty = mode === "view" && isEmpty(client);
 
   const fetchClientCard = async () => {
     try {
@@ -54,23 +60,31 @@ export const ClientCard = ({
   };
 
   useEffect(() => {
-    if (mode === "view") {
+    if (isClientEmpty) {
+      setLoading(true);
       fetchClientCard();
+    } else {
+      setLoading(false);
     }
-  }, [id]);
+  }, [client]);
+
+  if (isClientEmpty) {
+    return <Loader />;
+  }
 
   return (
-    <React.Fragment>
+    <div>
       <Tabs mainTab="main" mode={mode} tabs={UPPER.tabs} formsMap={TABS_MAP} />
       {mode === "view" && (
         <Tabs mode={mode} tabs={LOWER.tabs} formsMap={TABS_MAP} />
       )}
-    </React.Fragment>
+    </div>
   );
 };
 
 const mapStateToProps = (state: State) => ({
   clients: state?.clients ?? [],
+  loading: state?.app?.loading,
 });
 
 const mapDispathToProps = (dispatch: Dispatch) =>

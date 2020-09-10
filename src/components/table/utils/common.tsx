@@ -62,7 +62,7 @@ export const getFilteredDataSource = (
 
   return visibleColumns.filter((row: Object) =>
     Object.values(row).some((value: string) => {
-      return value.toString().includes(searched);
+      return value.toString().toLowerCase().includes(searched.toLowerCase());
     })
   );
 };

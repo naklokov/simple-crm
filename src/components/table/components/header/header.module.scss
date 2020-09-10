@@ -1,5 +1,9 @@
 @import "../../../../assets/styles/offsets";
 
+.container {
+  margin: 0 calc(-1 * var(--offset-sm));
+}
+
 .filter {
   width: 30% !important;
 }

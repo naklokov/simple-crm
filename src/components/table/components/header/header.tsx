@@ -32,7 +32,7 @@ export const Header = ({
   );
 
   return (
-    <div>
+    <div className={style.container}>
       {withSearch && (
         <React.Fragment>
           <Input.Search

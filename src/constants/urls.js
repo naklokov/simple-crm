@@ -24,6 +24,7 @@ module.exports = {
     path: "/profile",
     entity: "/crm/rest/user/profile",
     permissions: "/crm/rest/user/permissions",
+    anotherProfile: "/crm/rest/entity/userProfiles/{{id}}",
   },
   clients: {
     path: "/clients",
@@ -34,11 +35,7 @@ module.exports = {
     entity: "/crm/rest/entity/clients/{{id}}",
   },
   contacts: {
-    clientContacts: "/crm/rest/entity/contacts?query=clientId=={{id}}",
-    entity: "/crm/rest/entity/contacts",
-  },
-  contacts: {
-    clientContacts: "/crm/rest/entity/contacts?query=clientId=={{id}}",
+    clientContacts: "/crm/rest/entity/contacts?query=clientId=={{clientId}}",
     entity: "/crm/rest/entity/contacts",
   },
   priceList: {
@@ -55,6 +52,8 @@ module.exports = {
   },
   tasks: {
     path: "/tasks",
+    clientTasks: "/crm/rest/entity/tasks?query=clientId=={{clientId}}",
+    entity: "/crm/rest/entity/tasks",
   },
   deals: {
     path: "/deals",

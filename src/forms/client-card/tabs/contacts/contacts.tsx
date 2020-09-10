@@ -10,7 +10,7 @@ import {
 } from "../../../../utils";
 import { useParams } from "react-router";
 import { Header } from "./header";
-import { AddContactDrawer, ViewContactDrawer } from "../../drawers";
+import { AddContactDrawer, ViewContactDrawer } from "../../../../drawers";
 
 import style from "./contacts.module.scss";
 
@@ -34,12 +34,12 @@ export const Contacts = ({ tab }: ContactsProps) => {
 
   const [contacts, setContacts] = useState([] as any[]);
   const [t] = useTranslation("clientCardContacts");
-  const { id } = useParams();
+  const { id: clientId } = useParams();
 
   const fetchDataSource = async () => {
     try {
       setTableLoading(true);
-      const url = fillTemplate(urls.contacts.clientContacts, { id });
+      const url = fillTemplate(urls.contacts.clientContacts, { clientId });
       const response = await axios.get(url);
       setContacts(response?.data ?? []);
     } catch (error) {
@@ -51,7 +51,7 @@ export const Contacts = ({ tab }: ContactsProps) => {
 
   useEffect(() => {
     fetchDataSource();
-  }, [id]);
+  }, [clientId]);
 
   const handleView = useCallback(
     (id) => {
