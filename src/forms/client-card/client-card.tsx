@@ -12,12 +12,11 @@ import { getClientCardMode, getClient } from "./utils";
 import { Tabs, Loader } from "../../components";
 import { UPPER, LOWER } from "../../constants/form-config/client-card";
 import { Main, Comments, Contacts, Requisites, PriceList, Tasks } from "./tabs";
-import { fillTemplate, defaultErrorHandler } from "../../utils";
+import { defaultErrorHandler, getFullUrl } from "../../utils";
 import { isEmpty } from "lodash";
 
 interface ClientCardProps {
   clients: ClientEntityProps[];
-  loading: boolean;
   setLoading: (loading: boolean) => void;
   setClients: (clients: ClientEntityProps[]) => void;
 }
@@ -39,15 +38,16 @@ export const ClientCard = ({
   setLoading,
 }: ClientCardProps) => {
   const [t] = useTranslation("clientCard");
-  const { id } = useParams();
-  const mode = getClientCardMode(id);
-  const client = getClient(id, clients);
+  const { id: clientId } = useParams();
+  const mode = getClientCardMode(clientId);
+  const client = getClient(clientId, clients);
+
   const isClientEmpty = mode === "view" && isEmpty(client);
+  const url = getFullUrl(urls.clientCard.entity, clientId);
 
   const fetchClientCard = async () => {
     try {
       setLoading(true);
-      const url = fillTemplate(urls.clientCard.entity, { id });
       const response = await axios.get(url);
       setClients([response?.data] ?? []);
     } catch (error) {

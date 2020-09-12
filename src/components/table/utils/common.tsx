@@ -56,15 +56,22 @@ export const getFilteredDataSource = (
   columns?: ColumnProps[]
 ) => {
   const visibleColumns = dataSource.map((item) => {
-    const pickColumn = columns?.map((col) => col.columnCode) ?? [];
-    return pick(item, pickColumn);
+    const picked = columns?.map((col) => col.columnCode) ?? [];
+    return pick(item, picked);
   });
 
-  return visibleColumns.filter((row: Object) =>
-    Object.values(row).some((value: string) => {
-      return value.toString().toLowerCase().includes(searched.toLowerCase());
-    })
-  );
+  const filteredIds = visibleColumns
+    .filter((row: Object) =>
+      Object.values(row).some((value: string) => {
+        return value
+          ?.toString()
+          ?.toLowerCase()
+          ?.includes(searched?.toLowerCase());
+      })
+    )
+    .map((o) => o.id);
+
+  return dataSource.filter((o) => filteredIds.includes(o?.id));
 };
 
 export const getActions = (

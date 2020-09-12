@@ -104,7 +104,7 @@ export const Contacts = ({ tab }: ContactsProps) => {
           columns={tab.columns}
           actions={tab.actions}
           loading={loading}
-          pageCount={5}
+          pagination={{ pageSize: 5 }}
           onViewRow={handleView}
           onDeleteRow={handleDelete}
           dataSource={contacts}

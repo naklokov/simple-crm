@@ -2,12 +2,12 @@ import axios, { AxiosResponse } from "axios";
 import moment from "moment";
 import { Store } from "antd/lib/form/interface";
 
-import { fillTemplate } from "../../../utils";
+import { getFullUrl } from "../../../utils";
 import { urls, ClientEntityProps } from "../../../constants";
 import { ProfileInfoProps } from "../../../__data__/interfaces";
 
 export const editClient = async (id: string, data: Store) => {
-  const url = fillTemplate(urls.clientCard.entity, { id });
+  const url = getFullUrl(urls.clientCard.entity, id);
   const response: AxiosResponse<ClientEntityProps> = await axios.put(url, data);
 
   return response?.data ?? {};

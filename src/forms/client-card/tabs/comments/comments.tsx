@@ -5,11 +5,12 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
 import { connect } from "react-redux";
 import {
-  fillTemplate,
   defaultErrorHandler,
   getFullUrl,
   getFiteredEntityArray,
   getUpdatedEntityArray,
+  useFetch,
+  getRsqlQuery,
 } from "../../../../utils";
 import { urls, CommentEntityProps } from "../../../../constants";
 import { getPostData } from "./utils";
@@ -29,8 +30,13 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
   const [comments, setComments] = useState([] as CommentEntityProps[]);
   const listRef = useRef<HTMLDivElement>(null);
 
-  const { id: clientId } = useParams();
+  const { id: entityId } = useParams();
   const [t] = useTranslation("clientCardComments");
+  const params = getRsqlQuery({ entityType: "clients", entityId });
+  const { loading: fetchLoading, response } = useFetch({
+    url: urls.comments.entity,
+    params,
+  });
 
   const scrollToBottom = () => {
     const el = listRef.current;
@@ -39,26 +45,13 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
     }
   };
 
-  const fetchComments = async () => {
-    try {
-      setLoading(true);
-      const url = fillTemplate(urls.comments.client, { clientId });
-      const responce = await axios.get(url);
-      setComments(responce?.data ?? {});
-      scrollToBottom();
-    } catch (error) {
-      defaultErrorHandler({
-        error,
-        defaultErrorMessage: t("message.get.error"),
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    setLoading(fetchLoading);
+  }, [fetchLoading]);
 
   useEffect(() => {
-    fetchComments();
-  }, []);
+    setComments(response?.data ?? []);
+  }, [response]);
 
   const handleEditComment = useCallback(
     async (id: string, value: string) => {
@@ -107,9 +100,8 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
   const handleSendComment = useCallback(
     async (text: string) => {
       try {
-        const url = fillTemplate(urls.comments.entity);
-        const data = getPostData(text, clientId, profileInfo.id);
-        const responce = await axios.post(url, data);
+        const data = getPostData(text, entityId, profileInfo.id);
+        const responce = await axios.post(urls.comments.entity, data);
         const entity = responce?.data ?? {};
         setComments([...comments, entity]);
         scrollToBottom();
@@ -130,6 +122,9 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
           loading={loading}
           itemLayout="horizontal"
           dataSource={sortBy(comments, "creationDate")}
+          locale={{
+            emptyText: t("empty"),
+          }}
           renderItem={(comment) => (
             <List.Item>
               <Comment

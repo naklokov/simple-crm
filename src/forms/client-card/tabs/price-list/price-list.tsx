@@ -20,11 +20,13 @@ interface ContactsProps {
   profileInfo: ProfileInfoProps;
   clients: ClientEntityProps[];
   tab: TabProps;
+  setTableLoading: (loading: boolean) => void;
 }
 
 export const PriceList = ({
   tab,
   profileInfo: { id: userProfileId },
+  setTableLoading,
 }: ContactsProps) => {
   const [t] = useTranslation("clientCardPriceList");
   const [positions, setPositions] = useState([] as any[]);
@@ -66,7 +68,7 @@ export const PriceList = ({
       columns={tab.columns}
       actions={tab.actions}
       loading={loading}
-      pageCount={5}
+      pagination={{ pageSize: 5 }}
       dataSource={positions}
       onSaveRow={handleSaveRow}
       withSearch

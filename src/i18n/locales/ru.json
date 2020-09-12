@@ -70,7 +70,8 @@
     "title": "Клиенты",
     "add.button.title": "＋ Добавить компанию",
     "clients.entity.add": "Новая компания",
-    "message.error": "Ошибка при получении клиентов"
+    "message.error": "Ошибка при получении клиентов",
+    "message.delete.success": "Компания успешно удалена"
   },
   "table": {
     "actions.column.title": "Действия",
@@ -134,7 +135,8 @@
     "textarea.placeholder": "Введите комментарий...",
     "button": "Отправить",
     "message.get.error": "Ошибка при получении списка комментариев",
-    "message.add.error": "Ошибка при добавлении комментария"
+    "message.add.error": "Ошибка при добавлении комментария",
+    "empty": "Нет комментариев"
   },
   "clientCardTasks": {
     "message.get.error": "Ошибка при получении списка задач"

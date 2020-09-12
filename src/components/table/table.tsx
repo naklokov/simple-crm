@@ -18,14 +18,15 @@ import { setTableLoading } from "../../__data__";
 import { State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
+import { TablePaginationConfig } from "antd/lib/table";
 
 interface TableProps {
-  pageCount?: number;
   dataSource: any[];
   columns?: ColumnProps[];
   actions?: ActionProps[];
   loading?: boolean;
   tableLoading: boolean;
+  pagination?: TablePaginationConfig;
   onDeleteRow?: (id: string) => void;
   onViewRow?: (id: string) => void;
   onSaveRow?: (record: any) => void;
@@ -36,11 +37,11 @@ interface TableProps {
 
 export const Table = ({
   columns,
-  pageCount = 10,
   dataSource,
   actions,
   loading,
   tableLoading,
+  pagination = { pageSize: 10 },
   onDeleteRow = noop,
   onViewRow = noop,
   onSaveRow = noop,
@@ -51,11 +52,6 @@ export const Table = ({
   const [t] = useTranslation("table");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [searched, setSearched] = useState("");
-  const [pageNumber, setPageNumber] = useState(1);
-
-  const handleChangePage = useCallback((page) => {
-    setPageNumber(page);
-  }, []);
 
   const handleSearch = useCallback(
     (inputSearch) => {
@@ -71,7 +67,6 @@ export const Table = ({
         return;
       }
 
-      setPageNumber(1);
       setFilteredDataSource([]);
     },
     [dataSource, filteredDataSource, columns]
@@ -86,6 +81,7 @@ export const Table = ({
         />
       )
     : void 0;
+
   const source = searched ? filteredDataSource : dataSource;
 
   return (
@@ -98,11 +94,7 @@ export const Table = ({
         getActions(actions, t, searched, onDeleteRow, onViewRow),
       ]}
       dataSource={source.map((item) => ({ ...item, key: item.id }))}
-      pagination={{
-        defaultPageSize: pageCount,
-        onChange: handleChangePage,
-        current: pageNumber,
-      }}
+      pagination={pagination}
       components={getEditableTableBody()}
       rowClassName={() => style.editableRow}
       loading={loading || tableLoading}

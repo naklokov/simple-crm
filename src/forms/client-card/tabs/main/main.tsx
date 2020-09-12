@@ -15,9 +15,8 @@ import {
   getUpdatedEntityArray,
   getFullUrl,
 } from "../../../../utils";
-import isEmpty from "lodash/isEmpty";
 import { Row, Form } from "antd";
-import { Loader, FormFooter } from "../../../../components";
+import { FormFooter } from "../../../../components";
 import { useParams, useHistory } from "react-router";
 import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
 import { connect } from "react-redux";

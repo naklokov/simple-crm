@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { defaultErrorHandler, fillTemplate } from "../../../../utils";
+import { useFetch, getRsqlQuery } from "../../../../utils";
 import { useTranslation } from "react-i18next";
 import { Tabs, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -20,27 +19,12 @@ export const Tasks = ({ tab }: TasksProps) => {
   const [t] = useTranslation("clientCardTasks");
   const { id: clientId } = useParams();
   const [tasks, setTasks] = useState([]);
-  const [tableLoading, setTableLoading] = useState(false);
-
-  const fetchTasks = async () => {
-    try {
-      setTableLoading(true);
-      const url = fillTemplate(urls.tasks.clientTasks, { clientId });
-      const responce = await axios.get(url);
-      setTasks(responce?.data ?? {});
-    } catch (error) {
-      defaultErrorHandler({
-        error,
-        defaultErrorMessage: t("message.get.error"),
-      });
-    } finally {
-      setTableLoading(false);
-    }
-  };
+  const params = getRsqlQuery({ clientId });
+  const { loading, response } = useFetch({ url: urls.tasks.entity, params });
 
   useEffect(() => {
-    fetchTasks();
-  }, []);
+    setTasks(response?.data ?? []);
+  }, [response]);
 
   return (
     <div className={style.container}>
@@ -53,16 +37,16 @@ export const Tasks = ({ tab }: TasksProps) => {
           <Table
             columns={tab.columns}
             actions={tab.actions}
-            loading={tableLoading}
-            pageCount={5}
+            loading={loading}
+            pagination={{ pageSize: 5 }}
             dataSource={tasks}
           />
         </TabPane>
         <TabPane tab="Выполненные" key="done">
           <Table
             columns={tab.columns}
-            loading={tableLoading}
-            pageCount={5}
+            loading={loading}
+            pagination={{ pageSize: 5 }}
             dataSource={tasks}
           />
         </TabPane>

@@ -2,14 +2,12 @@ import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import moment from "moment";
 import { CommentEntityProps, urls } from "../../constants";
-import { Comment as CommentUI, Typography, Input, Skeleton } from "antd";
+import { Comment as CommentUI, Typography, Skeleton } from "antd";
 import { ProfileInfoProps, State } from "../../__data__/interfaces";
-import { setLoading } from "../../__data__";
-import { defaultErrorHandler, fillTemplate } from "../../utils";
+import { defaultErrorHandler, getFullUrl } from "../../utils";
 import { useTranslation } from "react-i18next";
 import { Avatar } from "../avatar";
 import { connect } from "react-redux";
-import { Delete, Edit, Editor } from "./components";
 import { noop, isEmpty } from "lodash";
 import { getActions, getContent } from "./utils";
 
@@ -44,9 +42,7 @@ export const Comment = ({
   const fetchProfile = async () => {
     try {
       setLoading(true);
-      const url = fillTemplate(urls.profile.anotherProfile, {
-        id: userProfileId,
-      });
+      const url = getFullUrl(urls.userProfiles.entity, userProfileId);
       const responce = await axios.get(url);
       setCommentAuthor(responce?.data ?? {});
     } catch (error) {

@@ -18,6 +18,7 @@ import { urls } from "../../constants";
 import { useTranslation } from "react-i18next";
 import { logger, defaultErrorHandler } from "../../utils";
 import { Loader } from "../../components";
+import { isEmpty } from "lodash";
 
 const { Sider, Content, Header } = Layout;
 
@@ -27,6 +28,7 @@ interface AuthorizedProps {
   loading: boolean;
   isMenuCollapsed: boolean;
   profileInfo: ProfileInfoProps;
+  permissions: string[];
   setCollapsed: (value: boolean) => void;
   setLoading: (loading: boolean) => void;
   setPermissions: (permissions: string[]) => void;
@@ -40,6 +42,7 @@ export const Authorized = ({
   isMenuCollapsed,
   setCollapsed,
   profileInfo,
+  permissions,
   setProfile,
   setPermissions,
   setLoading,
@@ -90,8 +93,13 @@ export const Authorized = ({
   };
 
   useEffect(() => {
-    fetchProfile();
-    fetchPermissions();
+    if (isEmpty(profileInfo)) {
+      fetchProfile();
+    }
+
+    if (isEmpty(permissions)) {
+      fetchPermissions();
+    }
   }, []);
 
   return (
@@ -122,6 +130,7 @@ export const Authorized = ({
 
 const mapStateToProps = (state: State) => ({
   profileInfo: state?.persist?.profileInfo ?? {},
+  permissions: state?.persist?.permissions ?? {},
   loading: state?.app?.loading,
   isMenuCollapsed: state?.persist?.menuCollapsed,
 });
