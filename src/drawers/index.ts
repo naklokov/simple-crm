@@ -1,2 +1,2 @@
 export { AddContactDrawer, ViewContactDrawer } from "./contact";
-export { CompletedDrawer } from "./tasks";
+export { CompletedTaskDrawer, AddTaskDrawer, ViewTaskDrawer } from "./tasks";

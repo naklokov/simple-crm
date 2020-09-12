@@ -10,7 +10,7 @@ import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { setLoading, setClients } from "../../__data__";
 import { getClientCardMode, getClient } from "./utils";
 import { Tabs, Loader } from "../../components";
-import { UPPER, LOWER } from "../../constants/form-config/client-card";
+import { upper, lower } from "../../constants/form-config/client-card";
 import { Main, Comments, Contacts, Requisites, PriceList, Tasks } from "./tabs";
 import { defaultErrorHandler, getFullUrl } from "../../utils";
 import { isEmpty } from "lodash";
@@ -69,9 +69,9 @@ export const ClientCard = ({
 
   return (
     <div>
-      <Tabs mainTab="main" mode={mode} tabs={UPPER.tabs} formsMap={TABS_MAP} />
+      <Tabs mainTab="main" mode={mode} tabs={upper.tabs} formsMap={TABS_MAP} />
       {mode === "view" && (
-        <Tabs mode={mode} tabs={LOWER.tabs} formsMap={TABS_MAP} />
+        <Tabs mode={mode} tabs={lower.tabs} formsMap={TABS_MAP} />
       )}
     </div>
   );

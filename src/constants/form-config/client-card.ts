@@ -1,6 +1,7 @@
 import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
 import { PERMISSIONS } from "../permissions";
+import { DATE_FORMATS } from "../common";
 
 const { CLIENTS, TASKS } = PERMISSIONS;
 
@@ -19,7 +20,7 @@ const EMAIL_MESSAGE = "Пожалуйста, введите корректный
 const PLACEHOLDER_DEFAULT = "Введите значение";
 const PHONE_PLACEHOLDER = "+7 (___) ___-__-__";
 
-export const LOWER: LowerProps = {
+export const lower: LowerProps = {
   drawers: [
     {
       code: "task",
@@ -30,7 +31,8 @@ export const LOWER: LowerProps = {
           fieldCode: "taskEndDate",
           fieldName: "Дата и время",
           fieldDescription: "",
-          type: "string",
+          type: "date",
+          format: DATE_FORMATS.DATE_TIME,
           readonly: false,
           disabled: false,
           span: { md: 24 },
@@ -57,7 +59,7 @@ export const LOWER: LowerProps = {
       ],
     },
     {
-      code: "completed",
+      code: "taskCompleted",
       name: "Выполнить задачу",
       description: "Форма для ввода комментария после выполнения задачи",
       fields: [
@@ -101,9 +103,8 @@ export const LOWER: LowerProps = {
         },
         // {
         //   actionName: "Выполнить",
-        //   actionType: "delete",
+        //   actionType: "completed",
         //   permissions: [CLIENTS.ADMIN, CLIENTS.DELETE, CLIENTS.DELETE_OWNER],
-        //   href: urls.contacts.entity,
         // },
       ],
       columns: [
@@ -111,6 +112,7 @@ export const LOWER: LowerProps = {
           columnName: "Дата и время",
           columnCode: "creationDate",
           columnType: "date",
+          format: "DD.MM.YYYY",
           columnDescription: "Запланированная дата для задачи",
           sorter: true,
           columnActions: [],
@@ -137,7 +139,7 @@ export const LOWER: LowerProps = {
   ],
 };
 
-export const UPPER: UpperProps = {
+export const upper: UpperProps = {
   drawers: [
     {
       code: "contact",

@@ -56,7 +56,7 @@
     "title": "Информация о профиле",
     "rules.required": "Пожалуйста, заполните поле",
     "submit.button": "Сохранить",
-    "message.success": "Профиль успешно отредактирован",
+    "message.success": "Профиль успешно изменён",
     "message.error": "Ошибка при изменении профиля"
   },
   "formFooter": {
@@ -128,6 +128,11 @@
     "message.success.edit": "Контакт успешно отредактирован",
     "message.error": "Произошла ошибка при добавлении контакта"
   },
+  "tasksDrawer": {
+    "title.new": "Новая задача",
+    "message.success.add": "Задача успешно добавлена",
+    "message.success.edit": "Задача успешно отредактирована"
+  },
   "tabs": {
     "tooltip.disabled": "Заполните основную информацию"
   },
@@ -143,7 +148,7 @@
   },
   "comment": {
     "message.delete.error": "Ошибка при удалении комментария",
-    "message.put.error": "Ошибка при изменении комментария",
+    "message.put.error": "Ошибка при редактировании комментария",
     "button.delete": "Удалить",
     "button.edit": "Редактировать",
     "button.save": "Сохранить",

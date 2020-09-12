@@ -1,6 +1,6 @@
 export const DATE_FORMATS = {
   DATE: "DD.MM.YYYY",
-  DATE_TIME: "DD.MM.YYYY HH:mm:ss",
+  DATE_TIME: "DD.MM.YYYY HH:mm",
 };
 
 export const DEFAULT_SPAN = { md: 8, lg: 6, xl: 6 };

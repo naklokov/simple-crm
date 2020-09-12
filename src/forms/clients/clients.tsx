@@ -31,8 +31,8 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
-  const pageSize = DEFAULT_PAGE_SIZE;
   const url = urls.clients.entity;
   const { response: responseMeta } = useFetch({
     url,
@@ -41,7 +41,7 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
 
   useEffect(() => {
     fetchDataSource({ page, pageSize });
-  }, []);
+  }, [url]);
 
   useEffect(() => {
     setTotal(responseMeta?.data?.totalCount ?? 0);
@@ -73,6 +73,7 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
   const handlePageChange = useCallback(
     (page, pageSize) => {
       setPage(page);
+      setPageSize(pageSize);
       fetchDataSource({ page, pageSize });
     },
     [total]

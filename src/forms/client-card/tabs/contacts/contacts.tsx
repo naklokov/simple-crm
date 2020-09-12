@@ -17,7 +17,7 @@ import { useTranslation } from "react-i18next";
 
 const {
   clientCard: {
-    UPPER: { drawers },
+    upper: { drawers },
   },
 } = formConfig;
 
@@ -43,7 +43,11 @@ export const Contacts = ({ tab }: ContactsProps) => {
     setContacts(response?.data ?? []);
   }, [response]);
 
-  const handleView = useCallback(
+  const handleAddContact = useCallback(() => {
+    setAddDrawerVisible(true);
+  }, []);
+
+  const handleViewRow = useCallback(
     (id) => {
       const initialValues = contacts.find((contact) => id === contact.id);
       setInitialValues(initialValues);
@@ -52,9 +56,13 @@ export const Contacts = ({ tab }: ContactsProps) => {
     [contacts]
   );
 
-  const handleAdd = useCallback(() => {
-    setAddDrawerVisible(true);
-  }, []);
+  const handleDeleteRow = useCallback(
+    (id) => {
+      defaultSuccessHandler(t("message.delete.success"));
+      setContacts(getFiteredEntityArray(id, contacts));
+    },
+    [contacts]
+  );
 
   const handleCloseAddDrawer = useCallback(
     (event, contact) => {
@@ -78,14 +86,6 @@ export const Contacts = ({ tab }: ContactsProps) => {
     [contacts]
   );
 
-  const handleDelete = useCallback(
-    (id) => {
-      defaultSuccessHandler(t("message.delete.success"));
-      setContacts(getFiteredEntityArray(id, contacts));
-    },
-    [contacts]
-  );
-
   return (
     <div>
       <AddContactDrawer
@@ -94,6 +94,7 @@ export const Contacts = ({ tab }: ContactsProps) => {
         fields={drawer?.fields ?? []}
       />
       <ViewContactDrawer
+        title={drawer?.name ?? ""}
         visible={viewDrawerVisible}
         initialValues={initialValues}
         fields={drawer?.fields ?? []}
@@ -105,10 +106,10 @@ export const Contacts = ({ tab }: ContactsProps) => {
           actions={tab.actions}
           loading={loading}
           pagination={{ pageSize: 5 }}
-          onViewRow={handleView}
-          onDeleteRow={handleDelete}
+          onViewRow={handleViewRow}
+          onDeleteRow={handleDeleteRow}
           dataSource={contacts}
-          addButton={<Header onClickAdd={handleAdd} />}
+          addButton={<Header onClickAdd={handleAddContact} />}
         />
       </div>
     </div>
