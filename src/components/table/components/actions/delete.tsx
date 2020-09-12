@@ -6,8 +6,8 @@ import noop from "lodash/noop";
 
 import { defaultErrorHandler } from "../../../../utils";
 import { connect } from "react-redux";
-import { setTableLoading as setTableLoadingAction } from "../../../../__data__";
-import { Dispatch } from "@reduxjs/toolkit";
+import { setTableLoading } from "../../../../__data__";
+import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { HighlightTextWrapper } from "../../../../wrappers";
 
 interface DeleteProps {
@@ -62,10 +62,7 @@ export const Delete = ({
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setTableLoading: (loading: boolean) => {
-    dispatch(setTableLoadingAction(loading));
-  },
-});
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators({ setTableLoading }, dispatch);
 
 export default connect(null, mapDispatchToProps)(Delete);

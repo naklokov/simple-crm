@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
-import { useTranslation } from "react-i18next";
 import { urls, TabProps, formConfig } from "../../../../constants";
 import { Table } from "../../../../components";
 import {
-  fillTemplate,
-  defaultErrorHandler,
+  getFiteredEntityArray,
   getUpdatedEntityArray,
+  useFetch,
+  getRsqlQuery,
+  defaultSuccessHandler,
 } from "../../../../utils";
 import { useParams } from "react-router";
 import { Header } from "./header";
 import { AddContactDrawer, ViewContactDrawer } from "../../../../drawers";
 
 import style from "./contacts.module.scss";
+import { useTranslation } from "react-i18next";
 
 const {
   clientCard: {
@@ -27,31 +28,20 @@ interface ContactsProps {
 }
 
 export const Contacts = ({ tab }: ContactsProps) => {
-  const [tableLoading, setTableLoading] = useState(false);
+  const [t] = useTranslation("clientCardContacts");
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
   const [initialValues, setInitialValues] = useState({});
 
   const [contacts, setContacts] = useState([] as any[]);
-  const [t] = useTranslation("clientCardContacts");
   const { id: clientId } = useParams();
 
-  const fetchDataSource = async () => {
-    try {
-      setTableLoading(true);
-      const url = fillTemplate(urls.contacts.clientContacts, { clientId });
-      const response = await axios.get(url);
-      setContacts(response?.data ?? []);
-    } catch (error) {
-      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
-    } finally {
-      setTableLoading(false);
-    }
-  };
+  const params = getRsqlQuery({ clientId });
+  const { response, loading } = useFetch({ url: urls.contacts.entity, params });
 
   useEffect(() => {
-    fetchDataSource();
-  }, [clientId]);
+    setContacts(response?.data ?? []);
+  }, [response]);
 
   const handleView = useCallback(
     (id) => {
@@ -69,6 +59,7 @@ export const Contacts = ({ tab }: ContactsProps) => {
   const handleCloseAddDrawer = useCallback(
     (event, contact) => {
       setAddDrawerVisible(false);
+
       if (contact) {
         setContacts([...contacts, contact]);
       }
@@ -81,22 +72,16 @@ export const Contacts = ({ tab }: ContactsProps) => {
       setViewDrawerVisible(false);
 
       if (contact) {
-        const updated = getUpdatedEntityArray(contact, contacts);
-        setContacts(updated);
+        setContacts(getUpdatedEntityArray(contact, contacts));
       }
     },
     [contacts]
   );
 
   const handleDelete = useCallback(
-    (deletedId) => {
-      try {
-        setTableLoading(true);
-        const removed = contacts.filter(({ id }) => id !== deletedId);
-        setContacts(removed);
-      } finally {
-        setTableLoading(false);
-      }
+    (id) => {
+      defaultSuccessHandler(t("message.delete.success"));
+      setContacts(getFiteredEntityArray(id, contacts));
     },
     [contacts]
   );
@@ -118,7 +103,7 @@ export const Contacts = ({ tab }: ContactsProps) => {
         <Table
           columns={tab.columns}
           actions={tab.actions}
-          loading={tableLoading}
+          loading={loading}
           pageCount={5}
           onViewRow={handleView}
           onDeleteRow={handleDelete}

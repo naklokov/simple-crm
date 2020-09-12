@@ -63,10 +63,6 @@ export const Requisites = ({ tab, clients, setClients }: RequisitesProps) => {
     }
   };
 
-  if (isEmpty(clients)) {
-    return <Loader />;
-  }
-
   return (
     <div className={style.container}>
       <Form

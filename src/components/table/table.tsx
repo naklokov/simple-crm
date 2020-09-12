@@ -9,20 +9,23 @@ import {
   getFilteredDataSource,
   getEditableTableBody,
   getTableLocale,
-  getColumn,
 } from "./utils";
 import { Header } from "./components";
 import noop from "lodash/noop";
 
 import style from "./table.module.scss";
-import { getUpdatedEntityArray } from "../../utils";
+import { setTableLoading } from "../../__data__";
+import { State } from "../../__data__/interfaces";
+import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
+import { connect } from "react-redux";
 
 interface TableProps {
   pageCount?: number;
   dataSource: any[];
   columns?: ColumnProps[];
   actions?: ActionProps[];
-  loading: boolean;
+  loading?: boolean;
+  tableLoading: boolean;
   onDeleteRow?: (id: string) => void;
   onViewRow?: (id: string) => void;
   onSaveRow?: (record: any) => void;
@@ -37,6 +40,7 @@ export const Table = ({
   dataSource,
   actions,
   loading,
+  tableLoading,
   onDeleteRow = noop,
   onViewRow = noop,
   onSaveRow = noop,
@@ -101,10 +105,17 @@ export const Table = ({
       }}
       components={getEditableTableBody()}
       rowClassName={() => style.editableRow}
-      loading={loading}
+      loading={loading || tableLoading}
       locale={getTableLocale(t)}
     />
   );
 };
 
-export default Table;
+const mapStateToProps = (state: State) => ({
+  tableLoading: state?.app?.tableLoading,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators({ setTableLoading }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table);

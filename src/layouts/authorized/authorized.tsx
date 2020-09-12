@@ -17,6 +17,7 @@ import {
 import { urls } from "../../constants";
 import { useTranslation } from "react-i18next";
 import { logger, defaultErrorHandler } from "../../utils";
+import { Loader } from "../../components";
 
 const { Sider, Content, Header } = Layout;
 
@@ -93,10 +94,6 @@ export const Authorized = ({
     fetchPermissions();
   }, []);
 
-  // if (loading) {
-  //   return <Loader />;
-  // }
-
   return (
     <Layout className={style.main}>
       <Sider
@@ -117,6 +114,7 @@ export const Authorized = ({
         </Header>
         {subheader && <div className={style.subheader}>{subheader}</div>}
         <Content>{children}</Content>
+        {loading && <Loader />}
       </Layout>
     </Layout>
   );

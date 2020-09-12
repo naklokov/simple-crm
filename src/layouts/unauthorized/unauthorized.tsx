@@ -36,12 +36,12 @@ export const Unauthorized = ({
 
   return (
     <div className={style.form}>
-      {loading && <Loader />}
       <div className={style.container}>
         <div className={style.layout}>
           <div className={style.imgContainer}>
             <img className={style.img} alt="logo" src={logo} />
           </div>
+          {loading && <Loader />}
           {title && (
             <Typography.Title className={style.title} level={2}>
               {title}

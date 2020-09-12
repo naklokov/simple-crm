@@ -37,13 +37,11 @@ export const ClientCard = ({
   clients,
   setClients,
   setLoading,
-  loading,
 }: ClientCardProps) => {
   const [t] = useTranslation("clientCard");
   const { id } = useParams();
   const mode = getClientCardMode(id);
   const client = getClient(id, clients);
-  console.log(client);
   const isClientEmpty = mode === "view" && isEmpty(client);
 
   const fetchClientCard = async () => {
@@ -61,12 +59,9 @@ export const ClientCard = ({
 
   useEffect(() => {
     if (isClientEmpty) {
-      setLoading(true);
       fetchClientCard();
-    } else {
-      setLoading(false);
     }
-  }, [client]);
+  }, [clients]);
 
   if (isClientEmpty) {
     return <Loader />;
@@ -84,7 +79,6 @@ export const ClientCard = ({
 
 const mapStateToProps = (state: State) => ({
   clients: state?.clients ?? [],
-  loading: state?.app?.loading,
 });
 
 const mapDispathToProps = (dispatch: Dispatch) =>

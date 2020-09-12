@@ -33,9 +33,7 @@ export interface ProfileInfoProps {
   businessId?: string;
   creationDate?: string;
   email?: string;
-  firstName?: string;
-  secondName?: string;
-  lastName?: string;
+  fullName?: string;
   avatar?: string;
   location?: string;
   login?: string;

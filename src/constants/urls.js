@@ -43,7 +43,7 @@ module.exports = {
       "/crm/rest/priceList/price?userProfileId={{userProfileId}}&clientId={{clientId}}",
     row:
       "/crm/rest/priceList/price/{{id}}?userProfileId={{userProfileId}}&clientId={{clientId}}",
-    entity: "/crm/pricelist/price",
+    entity: "/crm/rest/priceList/price",
   },
   comments: {
     entity: "/crm/rest/entity/comments",

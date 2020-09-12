@@ -107,7 +107,8 @@
     "save": "Сохранить"
   },
   "clientCardContacts": {
-    "title.add": "＋ Добавить контакт"
+    "title.add": "＋ Добавить контакт",
+    "message.delete.success": "Контакт успешно удалён"
   },
   "clientCardRequisites": {
     "message.error": "Ошибка при изменении реквизитов клиента",
@@ -116,13 +117,14 @@
   "clientCardPriceList": {
     "message.error": "Ошибка при получении данных прайс листа",
     "rules.editable.price": "Введите стоимость",
-    "message.row.save.error": "Ошибка при сохранении данных прайс листа"
+    "message.row.save.error": "Ошибка при сохранении данных прайс листа",
+    "message.row.save.success": "Позиция прайс листа успешно изменена"
   },
   "contactDrawer": {
     "title.new": "Новый контакт",
     "title.view": "Контакт",
-    "message.success.add": "Контакт успешно добавлен!",
-    "message.success.edit": "Контакт успешно отредактирован!",
+    "message.success.add": "Контакт успешно добавлен",
+    "message.success.edit": "Контакт успешно отредактирован",
     "message.error": "Произошла ошибка при добавлении контакта"
   },
   "tabs": {

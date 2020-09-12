@@ -2,10 +2,10 @@ import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import moment from "moment";
 import { CommentEntityProps, urls } from "../../constants";
-import { Comment as CommentUI, Typography, Input } from "antd";
+import { Comment as CommentUI, Typography, Input, Skeleton } from "antd";
 import { ProfileInfoProps, State } from "../../__data__/interfaces";
 import { setLoading } from "../../__data__";
-import { defaultErrorHandler, getFullName, fillTemplate } from "../../utils";
+import { defaultErrorHandler, fillTemplate } from "../../utils";
 import { useTranslation } from "react-i18next";
 import { Avatar } from "../avatar";
 import { connect } from "react-redux";
@@ -28,6 +28,7 @@ export const Comment = ({
   onDeleteComment = noop,
   onEditComment = noop,
 }: CommentProps) => {
+  const [loading, setLoading] = useState(false);
   const [commentAuthor, setCommentAuthor] = useState({} as ProfileInfoProps);
   const [isEdit, setIsEdit] = useState(false);
   const [t] = useTranslation("comment");
@@ -92,9 +93,13 @@ export const Comment = ({
     handleDeleteComment
   );
 
+  if (loading) {
+    return <Skeleton active avatar paragraph={{ rows: 2 }} />;
+  }
+
   return (
     <CommentUI
-      author={<Text strong>{getFullName(commentAuthor)}</Text>}
+      author={<Text strong>{commentAuthor.fullName}</Text>}
       avatar={<Avatar src={commentAuthor.avatar} />}
       content={content}
       actions={actions}

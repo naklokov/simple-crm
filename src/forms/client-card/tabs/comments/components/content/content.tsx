@@ -8,14 +8,18 @@ import { prepareComments } from "../../utils";
 import style from "./content.module.scss";
 import { Comment } from "../../../../../../components";
 import { CommentEntityProps } from "../../../../../../constants";
+import { List } from "antd";
+import { sortBy } from "lodash";
 
 interface ContentProps {
+  loading?: boolean;
   comments: CommentEntityProps[];
   onDeleteComment: (id: string) => void;
   onEditComment: (id: string, value: string) => void;
 }
 
 export const Content = ({
+  loading = false,
   comments,
   onDeleteComment,
   onEditComment,
@@ -24,14 +28,21 @@ export const Content = ({
 
   return (
     <div className={style.container}>
-      {sortedComments.map((comment) => (
-        <Comment
-          key={comment.id}
-          comment={comment}
-          onDeleteComment={onDeleteComment}
-          onEditComment={onEditComment}
-        />
-      ))}
+      <List
+        loading={loading}
+        itemLayout="horizontal"
+        dataSource={sortBy(comments, "creationDate")}
+        renderItem={(comment) => (
+          <List.Item>
+            <Comment
+              key={comment.id}
+              comment={comment}
+              onDeleteComment={onDeleteComment}
+              onEditComment={onEditComment}
+            />
+          </List.Item>
+        )}
+      />
     </div>
   );
 };

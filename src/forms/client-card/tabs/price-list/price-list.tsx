@@ -1,17 +1,20 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { useTranslation } from "react-i18next";
 import { urls, TabProps, ClientEntityProps } from "../../../../constants";
 import { Table } from "../../../../components";
 import {
-  fillTemplate,
   defaultErrorHandler,
   getUpdatedEntityArray,
+  useFetch,
+  getFullUrl,
+  defaultSuccessHandler,
 } from "../../../../utils";
 import { useParams } from "react-router";
 import { ProfileInfoProps, State } from "../../../../__data__/interfaces";
-import { getClient, editPriceRow } from "../../utils";
+import { setTableLoading } from "../../../../__data__";
+import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 interface ContactsProps {
   profileInfo: ProfileInfoProps;
@@ -19,58 +22,50 @@ interface ContactsProps {
   tab: TabProps;
 }
 
-export const PriceList = ({ tab, clients, profileInfo }: ContactsProps) => {
-  const [tableLoading, setTableLoading] = useState(false);
-
-  const [positions, setPositions] = useState([] as any[]);
+export const PriceList = ({
+  tab,
+  profileInfo: { id: userProfileId },
+}: ContactsProps) => {
   const [t] = useTranslation("clientCardPriceList");
-  const { id } = useParams();
-  const client = getClient(id, clients);
-
-  const fetchDataSource = async () => {
-    try {
-      setTableLoading(true);
-      const url = fillTemplate(urls.priceList.clientPrice, {
-        clientId: client.id,
-        userProfileId: profileInfo?.id ?? "",
-      });
-      const response = await axios.get(url);
-      setPositions(response?.data ?? []);
-    } catch (error) {
-      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
-    } finally {
-      setTableLoading(false);
-    }
+  const [positions, setPositions] = useState([] as any[]);
+  const { id: clientId } = useParams();
+  const params = {
+    clientId,
+    userProfileId,
   };
 
+  const { response, loading } = useFetch({
+    url: urls.priceList.entity,
+    params,
+  });
+
   useEffect(() => {
-    fetchDataSource();
-  }, [id]);
+    setPositions(response?.data ?? []);
+  }, [response]);
 
   const handleSaveRow = useCallback(
-    async (values) => {
+    async (values: any) => {
+      const url = getFullUrl(urls.priceList.entity, values.itemId);
+      setTableLoading(true);
       try {
-        setTableLoading(true);
-        await editPriceRow(values, client, profileInfo);
-        const source = getUpdatedEntityArray(values, positions, "itemId");
-        setPositions(source);
+        await axios({ url, method: "put", data: values, params });
+        defaultSuccessHandler(t("message.row.save.success"));
       } catch (error) {
-        defaultErrorHandler({
-          error,
-          defaultErrorMessage: t("message.row.save.error"),
-        });
+        defaultErrorHandler({ error });
       } finally {
         setTableLoading(false);
       }
+
+      setPositions(getUpdatedEntityArray(values, positions, "itemId"));
     },
-    [positions]
+    [positions, params]
   );
 
   return (
     <Table
       columns={tab.columns}
       actions={tab.actions}
-      loading={tableLoading}
+      loading={loading}
       pageCount={5}
       dataSource={positions}
       onSaveRow={handleSaveRow}
@@ -80,8 +75,10 @@ export const PriceList = ({ tab, clients, profileInfo }: ContactsProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.persist?.profileInfo ?? {},
-  clients: state?.clients ?? [],
+  profileInfo: state?.persist?.profileInfo,
 });
 
-export default connect(mapStateToProps)(PriceList);
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators({ setTableLoading }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(PriceList);

@@ -8,28 +8,8 @@ const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
 
 export const FIELDS: FieldProps[] = [
   {
-    fieldCode: "secondName",
-    fieldName: "Фамилия",
-    fieldDescription: "",
-    type: "string",
-    readonly: false,
-    disabled: false,
-    rules: [{ required: true, message: REQUIRED_MESSAGE }],
-    permissions: [PROFILE_INFO.ADMIN],
-  },
-  {
-    fieldCode: "firstName",
-    fieldName: "Имя",
-    fieldDescription: "",
-    type: "string",
-    readonly: false,
-    disabled: false,
-    rules: [{ required: true, message: REQUIRED_MESSAGE }],
-    permissions: [PROFILE_INFO.ADMIN],
-  },
-  {
-    fieldCode: "lastName",
-    fieldName: "Отчество",
+    fieldCode: "fullName",
+    fieldName: "Ф.И.О.",
     fieldDescription: "",
     type: "string",
     readonly: false,

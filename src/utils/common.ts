@@ -1,4 +1,4 @@
-import { urls, ErrorProps } from "../constants";
+import { urls, ErrorProps, QueryParamsType } from "../constants";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { logger } from ".";
@@ -29,6 +29,17 @@ export const clearCookie = () => {
 
 const getTemplateMask = (param: string) => `{{${param}}}`;
 
+export const getRsqlQuery = (params: QueryParamsType) => {
+  const keys = Object.keys(params);
+  const query = keys.reduce(
+    (prev, key) => prev + `${key}==${params[key]};`,
+    ""
+  );
+
+  // удаляем последнюю точку с запятой
+  return { query: query.substring(0, query.length - 1) };
+};
+
 export const fillTemplate = (
   template: string,
   values?: { [key: string]: string }
@@ -44,9 +55,6 @@ export const fillTemplate = (
 
   return result;
 };
-
-export const getFullName = (profileInfo: ProfileInfoProps) =>
-  `${profileInfo.lastName} ${profileInfo.firstName} ${profileInfo.secondName}`;
 
 export const getFullUrl = (url: string = "", id?: string): string => {
   if (id) {

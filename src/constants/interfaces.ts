@@ -13,14 +13,11 @@ export type FieldType =
 
 export type FieldFormatType = "textarea" | string;
 
-export type FIOFormatType = "{{lastName}} {{firstName}} {{secondName}}";
-
 export type FullCalendarDateType = "DD.MM.YYYY";
 
-export type ColumnFormatType =
-  | "currency"
-  | FIOFormatType
-  | FullCalendarDateType;
+export type QueryParamsType = { [key: string]: string | number | boolean };
+
+export type ColumnFormatType = "currency" | FullCalendarDateType;
 
 export type ModeType = "view" | "add";
 

@@ -6,10 +6,11 @@ import { urls, ClientEntityProps, formConfig } from "../../constants";
 
 import style from "./clients.module.scss";
 import { State } from "../../__data__/interfaces";
-import { setClients } from "../../__data__";
+import { setClients, setTableLoading } from "../../__data__";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
-import { defaultErrorHandler } from "../../utils";
-import { useTranslation } from "react-i18next";
+import { getFiteredEntityArray, useFetch } from "../../utils";
+
+const { ACTIONS, COLUMNS } = formConfig.clients;
 
 interface ClientsProps {
   clients: ClientEntityProps[];
@@ -17,35 +18,15 @@ interface ClientsProps {
 }
 
 export const Clients = ({ setClients, clients }: ClientsProps) => {
-  const [tableLoading, setTableLoading] = useState(false);
-  const [t] = useTranslation("clients");
-  const { ACTIONS, COLUMNS } = formConfig.clients;
-
-  const fetchDataSource = async () => {
-    try {
-      setTableLoading(true);
-      const response = await axios.get(urls.clients.entity);
-      setClients(response?.data ?? []);
-    } catch (error) {
-      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
-    } finally {
-      setTableLoading(false);
-    }
-  };
+  const { loading, response } = useFetch({ url: urls.clients.entity });
 
   useEffect(() => {
-    fetchDataSource();
-  }, []);
+    setClients(response?.data ?? []);
+  }, [response]);
 
   const handleDelete = useCallback(
-    (deletedId) => {
-      try {
-        setTableLoading(true);
-        const removed = clients.filter(({ id }) => id !== deletedId);
-        setClients(removed);
-      } finally {
-        setTableLoading(false);
-      }
+    (id) => {
+      setClients(getFiteredEntityArray(id, clients));
     },
     [clients]
   );
@@ -55,7 +36,7 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
       <Table
         columns={COLUMNS}
         actions={ACTIONS}
-        loading={tableLoading}
+        loading={loading}
         onDeleteRow={handleDelete}
         dataSource={clients}
         withSearch
@@ -69,6 +50,6 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setClients }, dispatch);
+  bindActionCreators({ setClients, setTableLoading }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Clients);

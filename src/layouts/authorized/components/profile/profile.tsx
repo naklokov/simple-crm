@@ -19,7 +19,7 @@ interface ProfileProps {
 
 export const Profile = ({ profileInfo, logout }: ProfileProps) => {
   const [t] = useTranslation("authorizedLayout");
-  const { secondName, firstName, avatar } = profileInfo;
+  const { fullName, avatar } = profileInfo;
 
   const menu = (
     <Menu>
@@ -37,9 +37,7 @@ export const Profile = ({ profileInfo, logout }: ProfileProps) => {
       </Link>
       <Dropdown overlay={menu}>
         <div className={style.dropdownContainer}>
-          <Typography.Text
-            strong
-          >{`${secondName} ${firstName}`}</Typography.Text>
+          <Typography.Text strong>{fullName}</Typography.Text>
           <DownOutlined />
         </div>
       </Dropdown>

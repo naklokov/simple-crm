@@ -1,33 +1,43 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
-import { Footer, Content } from "./components";
+import { Footer } from "./components";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
-import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import {
   fillTemplate,
   defaultErrorHandler,
   getFullUrl,
-  getFiteredEntityIdArray,
+  getFiteredEntityArray,
   getUpdatedEntityArray,
 } from "../../../../utils";
-import { setLoading } from "../../../../__data__";
 import { urls, CommentEntityProps } from "../../../../constants";
 import { getPostData } from "./utils";
 import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
 
 import style from "./comments.module.scss";
+import { List } from "antd";
+import { sortBy } from "lodash";
+import { Comment } from "../../../../components";
 
 interface CommentsProps {
   profileInfo: ProfileInfoProps;
-  setLoading: (loading: boolean) => void;
 }
 
-export const Comments = ({ profileInfo, setLoading }: CommentsProps) => {
+export const Comments = ({ profileInfo }: CommentsProps) => {
+  const [loading, setLoading] = useState(false);
   const [comments, setComments] = useState([] as CommentEntityProps[]);
+  const listRef = useRef<HTMLDivElement>(null);
+
   const { id: clientId } = useParams();
   const [t] = useTranslation("clientCardComments");
+
+  const scrollToBottom = () => {
+    const el = listRef.current;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
+    }
+  };
 
   const fetchComments = async () => {
     try {
@@ -35,6 +45,7 @@ export const Comments = ({ profileInfo, setLoading }: CommentsProps) => {
       const url = fillTemplate(urls.comments.client, { clientId });
       const responce = await axios.get(url);
       setComments(responce?.data ?? {});
+      scrollToBottom();
     } catch (error) {
       defaultErrorHandler({
         error,
@@ -52,6 +63,7 @@ export const Comments = ({ profileInfo, setLoading }: CommentsProps) => {
   const handleEditComment = useCallback(
     async (id: string, value: string) => {
       try {
+        setLoading(true);
         const url = getFullUrl(urls.comments.entity, id);
         const comment: CommentEntityProps =
           comments.find((o) => o.id === id) || ({} as CommentEntityProps);
@@ -65,6 +77,8 @@ export const Comments = ({ profileInfo, setLoading }: CommentsProps) => {
           error,
           defaultErrorMessage: t("message.put.error"),
         });
+      } finally {
+        setLoading(false);
       }
     },
     [comments]
@@ -73,33 +87,15 @@ export const Comments = ({ profileInfo, setLoading }: CommentsProps) => {
   const handleDeleteComment = useCallback(
     async (id: string) => {
       try {
+        setLoading(true);
         const url = getFullUrl(urls.comments.entity, id);
         await axios.delete(url);
-        const filtered = getFiteredEntityIdArray(id, comments);
+        const filtered = getFiteredEntityArray(id, comments);
         setComments(filtered);
       } catch (error) {
         defaultErrorHandler({
           error,
           defaultErrorMessage: t("message.delete.error"),
-        });
-      }
-    },
-    [comments]
-  );
-
-  const handleSendComment = useCallback(
-    async (text: string) => {
-      try {
-        setLoading(true);
-        const url = fillTemplate(urls.comments.entity);
-        const data = getPostData(text, clientId, profileInfo.id);
-        const responce = await axios.post(url, data);
-        const entity = responce?.data ?? {};
-        setComments([...comments, entity]);
-      } catch (error) {
-        defaultErrorHandler({
-          error,
-          defaultErrorMessage: t("message.add.error"),
         });
       } finally {
         setLoading(false);
@@ -108,13 +104,44 @@ export const Comments = ({ profileInfo, setLoading }: CommentsProps) => {
     [comments]
   );
 
+  const handleSendComment = useCallback(
+    async (text: string) => {
+      try {
+        const url = fillTemplate(urls.comments.entity);
+        const data = getPostData(text, clientId, profileInfo.id);
+        const responce = await axios.post(url, data);
+        const entity = responce?.data ?? {};
+        setComments([...comments, entity]);
+        scrollToBottom();
+      } catch (error) {
+        defaultErrorHandler({
+          error,
+          defaultErrorMessage: t("message.add.error"),
+        });
+      }
+    },
+    [comments]
+  );
+
   return (
     <div className={style.container}>
-      <Content
-        comments={comments}
-        onDeleteComment={handleDeleteComment}
-        onEditComment={handleEditComment}
-      />
+      <div ref={listRef} className={style.list}>
+        <List
+          loading={loading}
+          itemLayout="horizontal"
+          dataSource={sortBy(comments, "creationDate")}
+          renderItem={(comment) => (
+            <List.Item>
+              <Comment
+                key={comment.id}
+                comment={comment}
+                onDeleteComment={handleDeleteComment}
+                onEditComment={handleEditComment}
+              />
+            </List.Item>
+          )}
+        />
+      </div>
       <Footer onSend={handleSendComment} />
     </div>
   );
@@ -124,7 +151,4 @@ const mapStateToProps = (state: State) => ({
   profileInfo: state?.persist?.profileInfo ?? {},
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setLoading }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Comments);
+export default connect(mapStateToProps)(Comments);
