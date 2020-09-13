@@ -1,14 +1,15 @@
 import moment from "moment";
 import axios from "axios";
 import { ColumnType } from "../../../constants";
-import { fillTemplate, defaultErrorHandler } from "../../../utils";
+import {
+  fillTemplate,
+  defaultErrorHandler,
+  getFormattedDate,
+} from "../../../utils";
 
 type RecordType = { [key: string]: string };
 
 type FormatType = "currency" | string;
-
-const formatDate = (text: string, format: FormatType): string =>
-  moment(text).format(format);
 
 const formatText = (
   text: string,
@@ -33,7 +34,7 @@ export const formatNumber = (
 const FORMAT_MAP: {
   [key: string]: (text: string, format: string, record: RecordType) => string;
 } = {
-  date: formatDate,
+  date: getFormattedDate,
   string: formatText,
   number: formatNumber,
 };

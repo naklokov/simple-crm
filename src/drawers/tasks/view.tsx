@@ -32,7 +32,7 @@ export const ViewTask = ({
     try {
       setLoading(true);
       const data = { ...initialValues, ...values };
-      const url = getFullUrl(urls.contacts.entity, id);
+      const url = getFullUrl(urls.tasks.entity, id);
       const responce = await axios.put(url, data);
       defaultSuccessHandler(t("message.success.edit"));
       onClose(void 0, responce?.data);
@@ -45,6 +45,7 @@ export const ViewTask = ({
 
   return (
     <DrawerForm
+      initialValues={initialValues}
       title={title}
       fields={fields}
       name="taskView"

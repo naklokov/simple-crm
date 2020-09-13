@@ -93,13 +93,8 @@ export const Authorized = ({
   };
 
   useEffect(() => {
-    if (isEmpty(profileInfo)) {
-      fetchProfile();
-    }
-
-    if (isEmpty(permissions)) {
-      fetchPermissions();
-    }
+    fetchProfile();
+    fetchPermissions();
   }, []);
 
   return (

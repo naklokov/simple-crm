@@ -79,7 +79,8 @@ export const getActions = (
   t: (value: string) => string,
   searched: string,
   onDelete: (id: string) => void,
-  onView: (id: string) => void
+  onView: (id: string) => void,
+  onDone: (id: string) => void
 ) => {
   if (isEmpty(actions)) {
     return {};
@@ -89,7 +90,7 @@ export const getActions = (
     title: t("actions.column.title"),
     key: "actions",
     render: (text: string, entity: EntityProps) =>
-      renderActions(actions, text, entity, searched, onDelete, onView),
+      renderActions(actions, text, entity, searched, onDelete, onView, onDone),
   };
 };
 
@@ -113,15 +114,3 @@ export const getDataColumns = (
 
     return columnProps;
   });
-
-export const getTableLocale = (t: Function) => ({
-  filterTitle: t("filter.title"),
-  filterConfirm: t("filter.confirm"),
-  filterReset: t("filter.reset"),
-  filterEmptyText: t("filter.empty"),
-  sortTitle: t("sort.title"),
-  triggerDesc: t("sort.desc"),
-  triggerAsc: t("sort.asc"),
-  cancelSort: t("sort.cancel"),
-  emptyText: t("empty"),
-});

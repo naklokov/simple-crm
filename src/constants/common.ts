@@ -1,3 +1,5 @@
+import { TaskStatusType } from "./interfaces";
+
 export const DATE_FORMATS = {
   DATE: "DD.MM.YYYY",
   DATE_TIME: "DD.MM.YYYY HH:mm",
@@ -10,3 +12,17 @@ export const GUTTER_FULL_WIDTH = {
 };
 
 export const CLIENT_NEW_ID = "new";
+
+export const RSQL_OPERATORS_MAP = {
+  LIKE: "=JLIKE=",
+  EQUAL: "==",
+};
+
+export const TASK_STATUSES = {
+  COMPLETED: "COMPLETED",
+  NOT_COMPLETED: "NOT_COMPLETED",
+};
+
+export const TASK_TYPES = {
+  CALL: "CALL",
+};

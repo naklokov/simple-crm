@@ -2,7 +2,12 @@ import React, { useEffect, useCallback, useState } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { Table } from "../../components";
-import { urls, ClientEntityProps, formConfig } from "../../constants";
+import {
+  urls,
+  ClientEntityProps,
+  formConfig,
+  RSQL_OPERATORS_MAP,
+} from "../../constants";
 
 import style from "./clients.module.scss";
 import { State } from "../../__data__/interfaces";
@@ -13,9 +18,9 @@ import {
   useFetch,
   defaultErrorHandler,
   defaultSuccessHandler,
+  getRsqlQuery,
 } from "../../utils";
 import { TablePaginationConfig } from "antd/lib/table";
-import { fetchData } from "../../components/table/utils";
 import { useTranslation } from "react-i18next";
 
 const { ACTIONS, COLUMNS } = formConfig.clients;
@@ -47,10 +52,7 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
     setTotal(responseMeta?.data?.totalCount ?? 0);
   }, [responseMeta]);
 
-  const fetchDataSource = async (params: {
-    page: number;
-    pageSize: number;
-  }) => {
+  const fetchDataSource = async (params: object) => {
     setLoading(true);
     try {
       const response = await axios.get(url, { params });
@@ -61,6 +63,21 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
       setLoading(false);
     }
   };
+
+  const handleSearch = useCallback(
+    (searched: string) => {
+      const params = getRsqlQuery([
+        {
+          key: "entityData",
+          operator: RSQL_OPERATORS_MAP.LIKE,
+          value: `(phone, shortName, city, ${searched})`,
+        },
+      ]);
+
+      fetchDataSource(params);
+    },
+    [clients]
+  );
 
   const handleDelete = useCallback(
     (id) => {
@@ -95,6 +112,7 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
         pagination={serverPagination}
         onDeleteRow={handleDelete}
         dataSource={clients}
+        onSearch={handleSearch}
         withSearch
       />
     </div>

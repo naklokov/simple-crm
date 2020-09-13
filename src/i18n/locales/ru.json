@@ -85,16 +85,6 @@
     "actions.email.no": "Нет",
     "actions.email.yes": "Да",
 
-    "filter.title": "Меню фильтра",
-    "filter.confirm": "Ок",
-    "filter.reset": "Отмена",
-    "filter.empty": "Фильтры не заполнены",
-    "sort.title": "Сортировка",
-    "sort.desc": "Сортировка по убыванию",
-    "sort.asc": "Сортировка по возрастанию",
-    "sort.cancel": "Отменить сортировку",
-    "empty": "Нет данных",
-
     "search.all.placeholder": "Поиск",
     "search.all.clear": "Очистить фильтр"
   },
@@ -130,8 +120,10 @@
   },
   "tasksDrawer": {
     "title.new": "Новая задача",
+    "title.completed": "Выполнить задачу",
     "message.success.add": "Задача успешно добавлена",
-    "message.success.edit": "Задача успешно отредактирована"
+    "message.success.edit": "Задача успешно отредактирована",
+    "message.success.completed": "Задача выполнена"
   },
   "tabs": {
     "tooltip.disabled": "Заполните основную информацию"

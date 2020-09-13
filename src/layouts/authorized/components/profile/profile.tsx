@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Typography, Dropdown, Menu } from "antd";
+import { Avatar, Typography, Dropdown, Menu, Skeleton } from "antd";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
@@ -10,7 +10,8 @@ import { ProfileInfoProps } from "../../../../__data__/interfaces";
 
 import style from "./profile.module.scss";
 import { useTranslation } from "react-i18next";
-import { urls, http } from "../../../../constants";
+import { urls } from "../../../../constants";
+import { isEmpty } from "lodash";
 
 interface ProfileProps {
   profileInfo: ProfileInfoProps;
@@ -32,7 +33,7 @@ export const Profile = ({ profileInfo, logout }: ProfileProps) => {
 
   return (
     <div className={style.container}>
-      <Link to={http.ROOT_URL}>
+      <Link to={urls.profile.path}>
         <Avatar src={avatar} icon={<UserOutlined />} />
       </Link>
       <Dropdown overlay={menu}>

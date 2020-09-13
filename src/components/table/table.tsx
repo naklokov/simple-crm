@@ -8,7 +8,6 @@ import {
   getDataColumns,
   getFilteredDataSource,
   getEditableTableBody,
-  getTableLocale,
 } from "./utils";
 import { Header } from "./components";
 import noop from "lodash/noop";
@@ -30,13 +29,17 @@ interface TableProps {
   onDeleteRow?: (id: string) => void;
   onViewRow?: (id: string) => void;
   onSaveRow?: (record: any) => void;
+  onDoneRow?: (record: any) => void;
+  onSearch?: (inputSearch: string) => void;
   withSearch?: boolean;
   withTitle?: boolean;
   addButton?: JSX.Element;
+  className?: string;
 }
 
 export const Table = ({
   columns,
+  className = style.table,
   dataSource,
   actions,
   loading,
@@ -45,6 +48,8 @@ export const Table = ({
   onDeleteRow = noop,
   onViewRow = noop,
   onSaveRow = noop,
+  onDoneRow = noop,
+  onSearch,
   withSearch = false,
   withTitle = true,
   addButton,
@@ -75,7 +80,7 @@ export const Table = ({
   const title = withTitle
     ? () => (
         <Header
-          onSearch={handleSearch}
+          onSearch={onSearch || handleSearch}
           withSearch={withSearch}
           button={addButton}
         />
@@ -86,19 +91,18 @@ export const Table = ({
 
   return (
     <TableUI
-      className={style.table}
+      className={className}
       size="middle"
       title={title}
       columns={[
         ...getDataColumns(columns, searched, onSaveRow),
-        getActions(actions, t, searched, onDeleteRow, onViewRow),
+        getActions(actions, t, searched, onDeleteRow, onViewRow, onDoneRow),
       ]}
       dataSource={source.map((item) => ({ ...item, key: item.id }))}
-      pagination={pagination}
+      pagination={{ ...pagination, locale: "ru-RU" }}
       components={getEditableTableBody()}
       rowClassName={() => style.editableRow}
       loading={loading || tableLoading}
-      locale={getTableLocale(t)}
     />
   );
 };

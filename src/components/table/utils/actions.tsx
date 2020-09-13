@@ -4,6 +4,7 @@ import { getFullUrl } from "../../../utils";
 import { Delete, View, Call, Email, Link } from "../components";
 import { ComponentPermissionsChecker } from "../../../wrappers";
 import { Space } from "antd";
+import { Done } from "../components/actions";
 
 const getActionComponent = (
   id: string,
@@ -11,7 +12,8 @@ const getActionComponent = (
   action: ActionProps,
   searched: string,
   onDelete?: (id: string) => void,
-  onView?: (id: string) => void
+  onView?: (id: string) => void,
+  onDone?: (id: string) => void
 ) => {
   const fullHref = getFullUrl(action.href, id);
   switch (action.actionType) {
@@ -24,6 +26,16 @@ const getActionComponent = (
           id={id}
           searched={searched}
           onDelete={onDelete}
+        />
+      );
+    case "done":
+      return (
+        <Done
+          key={id}
+          title={action.actionName}
+          id={id}
+          searched={searched}
+          onDone={onDone}
         />
       );
     case "view":
@@ -55,7 +67,8 @@ export const renderActions = (
   entity: EntityProps,
   searched: string,
   onDelete?: (id: string) => void,
-  onView?: (id: string) => void
+  onView?: (id: string) => void,
+  onDone?: (id: string) => void
 ) => (
   <React.Fragment>
     {actions.map((action) => (
@@ -70,7 +83,8 @@ export const renderActions = (
             action,
             searched,
             onDelete,
-            onView
+            onView,
+            onDone
           )}
         </Space>
       </ComponentPermissionsChecker>

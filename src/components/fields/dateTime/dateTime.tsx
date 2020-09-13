@@ -1,14 +1,14 @@
+import "moment/locale/ru";
+
 import React from "react";
 import moment from "moment";
 import { Col, Form, DatePicker } from "antd";
 import { DATE_FORMATS, DEFAULT_SPAN, FieldProps } from "../../../constants";
 
-import "moment/locale/ru";
-import locale from "antd/es/date-picker/locale/ru_RU";
-
 const handleValueProp = (value: any) => {
   if (typeof value === "string") {
-    return { value: moment(value) };
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return { value: moment(value).tz(tz) };
   }
 
   return { value };
@@ -38,7 +38,6 @@ export const DateTime = ({
         <DatePicker
           style={{ width: "100%" }}
           format={format}
-          locale={locale}
           placeholder={placeholder}
           disabled={disabled}
           showTime={showTime}

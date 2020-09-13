@@ -14,12 +14,18 @@ export type FieldType =
 export type FieldFormatType = "textarea" | string;
 
 export type FullCalendarDateType = "DD.MM.YYYY";
+export type FullCalendarDateTimeType = "DD.MM.YYYY HH:mm";
 
-export type QueryParamsType = { [key: string]: string | number | boolean };
-
-export type ColumnFormatType = "currency" | FullCalendarDateType;
+export type ColumnFormatType =
+  | "currency"
+  | FullCalendarDateType
+  | FullCalendarDateTimeType;
 
 export type ModeType = "view" | "add";
+
+export type TaskStatusType = "COMPLETED" | "NOT_COMPLETED" | "ACTIVE";
+
+export type TaskTypeType = "CALL";
 
 export interface RuleProps {
   required?: boolean;
@@ -105,7 +111,7 @@ export interface ErrorProps {
   errorMessage?: string;
 }
 
-export type ActionType = "href" | "delete" | "call" | "email" | "view";
+export type ActionType = "href" | "delete" | "call" | "email" | "view" | "done";
 export type ColumnType =
   | "string"
   | "date"
@@ -176,4 +182,18 @@ export interface CommentEntityProps {
   userProfileId?: string;
   id: string;
   isOwner: boolean;
+}
+
+export interface TaskEntityProps {
+  clientId: string;
+  creationDate: string;
+  historyId: string;
+  id: string;
+  isActive: boolean;
+  isDeleted: boolean;
+  isOwner: boolean;
+  profileId: string;
+  taskDescription: string;
+  taskStatus: TaskStatusType;
+  taskType: TaskTypeType;
 }

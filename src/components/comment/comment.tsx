@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import moment from "moment";
-import { CommentEntityProps, urls } from "../../constants";
+import { CommentEntityProps, urls, DATE_FORMATS } from "../../constants";
 import { Comment as CommentUI, Typography, Skeleton } from "antd";
 import { ProfileInfoProps, State } from "../../__data__/interfaces";
-import { defaultErrorHandler, getFullUrl } from "../../utils";
+import { defaultErrorHandler, getFullUrl, getFormattedDate } from "../../utils";
 import { useTranslation } from "react-i18next";
 import { Avatar } from "../avatar";
 import { connect } from "react-redux";
@@ -101,7 +101,7 @@ export const Comment = ({
       actions={actions}
       datetime={
         <Text type="secondary">
-          {moment(creationDate).format("hh:mm DD.MM.YYYY")}
+          {getFormattedDate(creationDate, DATE_FORMATS.DATE_TIME)}
         </Text>
       }
     />

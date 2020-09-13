@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import { Footer } from "./components";
+import { List } from "antd";
+import { sortBy } from "lodash";
+import { Comment } from "../../../../components";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
 import { connect } from "react-redux";
@@ -17,9 +20,6 @@ import { getPostData } from "./utils";
 import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
 
 import style from "./comments.module.scss";
-import { List } from "antd";
-import { sortBy } from "lodash";
-import { Comment } from "../../../../components";
 
 interface CommentsProps {
   profileInfo: ProfileInfoProps;
@@ -32,7 +32,12 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
 
   const { id: entityId } = useParams();
   const [t] = useTranslation("clientCardComments");
-  const params = getRsqlQuery({ entityType: "clients", entityId });
+  // const params = getRsqlQuery({ entityType: "clients", entityId });
+  const params = getRsqlQuery([
+    { key: "entityType", value: "clients" },
+    { key: "entityId", value: entityId },
+  ]);
+  console.log(params);
   const { loading: fetchLoading, response } = useFetch({
     url: urls.comments.entity,
     params,
@@ -50,7 +55,10 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
   }, [fetchLoading]);
 
   useEffect(() => {
-    setComments(response?.data ?? []);
+    if (response) {
+      setComments(response?.data ?? []);
+      setTimeout(scrollToBottom, 0);
+    }
   }, [response]);
 
   const handleEditComment = useCallback(
@@ -122,9 +130,6 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
           loading={loading}
           itemLayout="horizontal"
           dataSource={sortBy(comments, "creationDate")}
-          locale={{
-            emptyText: t("empty"),
-          }}
           renderItem={(comment) => (
             <List.Item>
               <Comment

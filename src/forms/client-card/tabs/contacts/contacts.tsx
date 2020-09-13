@@ -36,7 +36,7 @@ export const Contacts = ({ tab }: ContactsProps) => {
   const [contacts, setContacts] = useState([] as any[]);
   const { id: clientId } = useParams();
 
-  const params = getRsqlQuery({ clientId });
+  const params = getRsqlQuery([{ key: "clientId", value: clientId }]);
   const { response, loading } = useFetch({ url: urls.contacts.entity, params });
 
   useEffect(() => {

@@ -10,9 +10,18 @@ import { PlusOutlined } from "@ant-design/icons";
 
 import style from "./tasks.module.scss";
 import { Table, DrawerForm } from "../../../../components";
-import { TabProps, urls, formConfig } from "../../../../constants";
+import {
+  TabProps,
+  urls,
+  formConfig,
+  TaskEntityProps,
+} from "../../../../constants";
 import { useParams } from "react-router";
-import { AddTaskDrawer, ViewTaskDrawer } from "../../../../drawers";
+import {
+  AddTaskDrawer,
+  ViewTaskDrawer,
+  CompletedTaskDrawer,
+} from "../../../../drawers";
 
 const { TabPane } = Tabs;
 
@@ -34,11 +43,12 @@ interface TasksProps {
 export const Tasks = ({ tab }: TasksProps) => {
   const [t] = useTranslation("clientCardTasks");
   const { id: clientId } = useParams();
-  const [tasks, setTasks] = useState([] as any[]);
+  const [tasks, setTasks] = useState([] as TaskEntityProps[]);
   const [initialValues, setInitialValues] = useState({});
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
-  const params = getRsqlQuery({ clientId });
+  const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
+  const params = getRsqlQuery([{ key: "clientId", value: clientId }]);
   const { loading, response } = useFetch({ url: urls.tasks.entity, params });
 
   useEffect(() => {
@@ -49,10 +59,19 @@ export const Tasks = ({ tab }: TasksProps) => {
     setAddDrawerVisible(true);
   }, []);
 
+  const handleDoneRow = useCallback(
+    (id) => {
+      const initialValues = tasks.find((task) => id === task.id);
+      setInitialValues(initialValues as TaskEntityProps);
+      setCompletedDrawerVisible(true);
+    },
+    [tasks]
+  );
+
   const handleViewRow = useCallback(
     (id) => {
       const initialValues = tasks.find((task) => id === task.id);
-      setInitialValues(initialValues);
+      setInitialValues(initialValues as TaskEntityProps);
       setViewDrawerVisible(true);
     },
     [tasks]
@@ -80,6 +99,17 @@ export const Tasks = ({ tab }: TasksProps) => {
     [tasks]
   );
 
+  const handleCloseCompletedDrawer = useCallback(
+    (event, task) => {
+      setCompletedDrawerVisible(false);
+
+      if (task) {
+        setTasks(getUpdatedEntityArray(task, tasks));
+      }
+    },
+    [tasks]
+  );
+
   return (
     <div>
       <AddTaskDrawer
@@ -93,6 +123,12 @@ export const Tasks = ({ tab }: TasksProps) => {
         fields={taskDrawer?.fields ?? []}
         onClose={handleCloseViewDrawer}
         visible={viewDrawerVisible}
+      />
+      <CompletedTaskDrawer
+        initialValues={initialValues}
+        fields={completedDrawer?.fields ?? []}
+        visible={completedDrawerVisible}
+        onClose={handleCloseCompletedDrawer}
       />
       <div className={style.container}>
         <Tabs
@@ -108,21 +144,28 @@ export const Tasks = ({ tab }: TasksProps) => {
         >
           <TabPane tab="Активные" key="active">
             <Table
+              className={style.table}
               columns={tab.columns}
               actions={tab.actions}
               loading={loading}
               pagination={{ pageSize: 3 }}
-              dataSource={tasks}
+              dataSource={tasks.filter(
+                ({ taskStatus }) => taskStatus === "NOT_COMPLETED"
+              )}
               onViewRow={handleViewRow}
+              onDoneRow={handleDoneRow}
               withTitle={false}
             />
           </TabPane>
           <TabPane tab="Выполненные" key="done">
             <Table
+              className={style.table}
               columns={tab.columns}
               loading={loading}
               pagination={{ pageSize: 3 }}
-              dataSource={tasks}
+              dataSource={tasks.filter(
+                ({ taskStatus }) => taskStatus === "COMPLETED"
+              )}
               withTitle={false}
             />
           </TabPane>

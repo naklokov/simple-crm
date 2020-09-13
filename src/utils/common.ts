@@ -1,12 +1,23 @@
-import { urls, ErrorProps, QueryParamsType } from "../constants";
+import {
+  urls,
+  ErrorProps,
+  RSQL_OPERATORS_MAP,
+  DATE_FORMATS,
+} from "../constants";
 import axios from "axios";
+import moment from "moment-timezone";
 import Cookies from "js-cookie";
 import { logger } from ".";
 import http, { COOKIES } from "../constants/http";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setAuth, setLoading } from "../__data__";
 import { message } from "antd";
-import { ProfileInfoProps } from "../__data__/interfaces";
+
+interface RsqlParamProps {
+  key: string;
+  operator?: string;
+  value: string | number | boolean;
+}
 
 interface DefaultErrorHandlerProps {
   error: ErrorProps;
@@ -29,15 +40,24 @@ export const clearCookie = () => {
 
 const getTemplateMask = (param: string) => `{{${param}}}`;
 
-export const getRsqlQuery = (params: QueryParamsType) => {
-  const keys = Object.keys(params);
-  const query = keys.reduce(
-    (prev, key) => prev + `${key}==${params[key]};`,
-    ""
+// export const getRsqlQuery = (params: QueryParamsType) => {
+//   const keys = Object.keys(params);
+//   const query = keys.reduce(
+//     (prev, key) => prev + `${key}==${params[key]};`,
+//     ""
+//   );
+
+//   // удаляем последнюю точку с запятой
+//   return { query: query.substring(0, query.length - 1) };
+// };
+
+export const getRsqlQuery = (params: RsqlParamProps[]) => {
+  const queries = params.map(
+    ({ key, value, operator = RSQL_OPERATORS_MAP.EQUAL }) =>
+      `${key}${operator}${value}`
   );
 
-  // удаляем последнюю точку с запятой
-  return { query: query.substring(0, query.length - 1) };
+  return { query: queries.join(";") };
 };
 
 export const fillTemplate = (
@@ -114,4 +134,9 @@ export const defaultErrorHandler = ({
   if (errorDescription) {
     message.error(errorDescription);
   }
+};
+
+export const getFormattedDate = (date: string, format = DATE_FORMATS.DATE) => {
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  return date ? moment(date).tz(tz).format(format) : "";
 };
