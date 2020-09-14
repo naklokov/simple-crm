@@ -43,8 +43,6 @@ export const Comment = ({
     userProfileId = "",
   } = comment;
   const date = getDateWithTimezone(creationDate).format(DATE_FORMATS.DATE_TIME);
-  console.log(date);
-  console.log(getDateWithTimezone(creationDate).toISOString());
 
   const fetchProfile = async () => {
     try {

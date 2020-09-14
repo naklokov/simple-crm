@@ -56,7 +56,6 @@ export const ViewTask = ({
 
   const handleCompleted = useCallback(
     (event: React.MouseEvent) => {
-      debugger;
       onCompleted(id);
       event.preventDefault();
     },
@@ -89,7 +88,7 @@ export const ViewTask = ({
   const DropdownMenu = () => {
     return (
       <Dropdown key="more" overlay={menu}>
-        <Button style={{ padding: "0 8px" }}>
+        <Button style={{ padding: "0 8px", border: "none" }}>
           <EllipsisOutlined />
         </Button>
       </Dropdown>

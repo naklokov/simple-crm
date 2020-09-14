@@ -37,7 +37,6 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
     { key: "entityType", value: "clients" },
     { key: "entityId", value: entityId },
   ]);
-  console.log(params);
   const { loading: fetchLoading, response } = useFetch({
     url: urls.comments.entity,
     params,

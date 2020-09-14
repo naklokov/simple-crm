@@ -46,7 +46,6 @@ export const useQuery = (
 ): [string, (item: string) => void] => {
   const searchParams = new URLSearchParams(window.location.search);
   let initialState = "";
-  debugger;
   if (!searchParams.has(name)) {
     searchParams.append(name, initial);
     initialState = initial;
