@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Typography, Dropdown, Menu } from "antd";
+import { Avatar, Typography, Dropdown, Menu, Skeleton } from "antd";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
@@ -10,7 +10,8 @@ import { ProfileInfoProps } from "../../../../__data__/interfaces";
 
 import style from "./profile.module.scss";
 import { useTranslation } from "react-i18next";
-import { urls, http } from "../../../../constants";
+import { urls } from "../../../../constants";
+import { isEmpty } from "lodash";
 
 interface ProfileProps {
   profileInfo: ProfileInfoProps;
@@ -19,7 +20,7 @@ interface ProfileProps {
 
 export const Profile = ({ profileInfo, logout }: ProfileProps) => {
   const [t] = useTranslation("authorizedLayout");
-  const { secondName, firstName, avatar } = profileInfo;
+  const { fullName, avatar } = profileInfo;
 
   const menu = (
     <Menu>
@@ -31,19 +32,17 @@ export const Profile = ({ profileInfo, logout }: ProfileProps) => {
   );
 
   return (
-    <React.Fragment>
-      <Link to={http.ROOT_URL}>
+    <div className={style.container}>
+      <Link to={urls.profile.path}>
         <Avatar src={avatar} icon={<UserOutlined />} />
       </Link>
       <Dropdown overlay={menu}>
         <div className={style.dropdownContainer}>
-          <Typography.Text
-            strong
-          >{`${secondName} ${firstName}`}</Typography.Text>
+          <Typography.Text strong>{fullName}</Typography.Text>
           <DownOutlined />
         </div>
       </Dropdown>
-    </React.Fragment>
+    </div>
   );
 };
 

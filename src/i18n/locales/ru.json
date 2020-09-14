@@ -56,7 +56,7 @@
     "title": "Информация о профиле",
     "rules.required": "Пожалуйста, заполните поле",
     "submit.button": "Сохранить",
-    "message.success": "Профиль успешно отредактирован",
+    "message.success": "Профиль успешно изменён",
     "message.error": "Ошибка при изменении профиля"
   },
   "formFooter": {
@@ -70,28 +70,22 @@
     "title": "Клиенты",
     "add.button.title": "＋ Добавить компанию",
     "clients.entity.add": "Новая компания",
-    "message.error": "Ошибка при получении клиентов"
+    "message.error": "Ошибка при получении клиентов",
+    "message.delete.success": "Компания успешно удалена"
   },
   "table": {
     "actions.column.title": "Действия",
-    "actions.delete.confirm": "Вы действительно хотите удалить компанию?",
+    "actions.delete.confirm": "Вы действительно хотите удалить запись?",
     "actions.delete.no": "Нет",
     "actions.delete.yes": "Да",
     "actions.call.confirm": "Вы хотите набрать номер?",
     "actions.call.no": "Нет",
     "actions.call.yes": "Да",
+    "actions.email.confirm": "Вы хотите написать письмо?",
+    "actions.email.no": "Нет",
+    "actions.email.yes": "Да",
 
-    "filter.title": "Меню фильтра",
-    "filter.confirm": "Ок",
-    "filter.reset": "Отмена",
-    "filter.empty": "Фильтры не заполнены",
-    "sort.title": "Сортировка",
-    "sort.desc": "Сортировка по убыванию",
-    "sort.asc": "Сортировка по возрастанию",
-    "sort.cancel": "Отменить сортировку",
-    "empty": "Нет данных",
-
-    "search.all.placeholder": "Поиск",
+    "search.all.placeholder": "Поиск по наименованию, городу и телефону",
     "search.all.clear": "Очистить фильтр"
   },
   "clientCard": {
@@ -102,5 +96,60 @@
     "message.error": "Ошибка при изменении клиента",
     "message.success": "Информация о клиенте обновлена",
     "save": "Сохранить"
+  },
+  "clientCardContacts": {
+    "title.add": "＋ Добавить контакт",
+    "message.delete.success": "Контакт успешно удалён"
+  },
+  "clientCardRequisites": {
+    "message.error": "Ошибка при изменении реквизитов клиента",
+    "message.success": "Информация о реквизитах клиента обновлена"
+  },
+  "clientCardPriceList": {
+    "message.error": "Ошибка при получении данных прайс листа",
+    "rules.editable.price": "Введите стоимость",
+    "message.row.save.error": "Ошибка при сохранении данных прайс листа",
+    "message.row.save.success": "Позиция прайс листа успешно изменена"
+  },
+  "contactDrawer": {
+    "title.new": "Новый контакт",
+    "title.view": "Контакт",
+    "message.success.add": "Контакт успешно добавлен",
+    "message.success.edit": "Контакт успешно отредактирован",
+    "message.error": "Произошла ошибка при добавлении контакта"
+  },
+  "tasksDrawer": {
+    "title.new": "Новая задача",
+    "title.completed": "Выполнить задачу",
+    "additional.action.complete.title": "Выполнить",
+    "additional.action.remove.title": "Удалить",
+    "message.success.add": "Задача успешно добавлена",
+    "message.success.edit": "Задача успешно отредактирована",
+    "message.success.completed": "Задача выполнена",
+    "message.success.delete": "Задача удалена"
+  },
+  "tabs": {
+    "tooltip.disabled": "Заполните основную информацию"
+  },
+  "clientCardComments": {
+    "textarea.placeholder": "Введите комментарий...",
+    "button": "Отправить",
+    "message.get.error": "Ошибка при получении списка комментариев",
+    "message.add.error": "Ошибка при добавлении комментария",
+    "empty": "Нет комментариев"
+  },
+  "clientCardTasks": {
+    "message.get.error": "Ошибка при получении списка задач"
+  },
+  "comment": {
+    "message.delete.error": "Ошибка при удалении комментария",
+    "message.put.error": "Ошибка при редактировании комментария",
+    "button.delete": "Удалить",
+    "button.edit": "Редактировать",
+    "button.save": "Сохранить",
+    "delete.confirm": "Вы действительно хотите удалить комментарий?",
+    "delete.no": "Нет",
+    "delete.yes": "Да",
+    "rules.required": "Пожалуйста, введите комментарий"
   }
 }

@@ -1,15 +1,32 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { Table } from "../../components";
 import { urls, ClientEntityProps, formConfig } from "../../constants";
+import { getSearchQuery } from "./utils";
 
 import style from "./clients.module.scss";
 import { State } from "../../__data__/interfaces";
-import { setClients } from "../../__data__";
+import { setClients, setTableLoading } from "../../__data__";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
-import { defaultErrorHandler } from "../../utils";
+import {
+  getFiteredEntityArray,
+  defaultErrorHandler,
+  defaultSuccessHandler,
+  getSortedParams,
+  useQuery,
+} from "../../utils";
+import { TablePaginationConfig } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
+
+const { ACTIONS, COLUMNS } = formConfig.clients;
+
+const defaultPagination = {
+  page: 1,
+  pageSize: 10,
+  query: "",
+  sortBy: "",
+};
 
 interface ClientsProps {
   clients: ClientEntityProps[];
@@ -17,47 +34,96 @@ interface ClientsProps {
 }
 
 export const Clients = ({ setClients, clients }: ClientsProps) => {
-  const [tableLoading, setTableLoading] = useState(false);
   const [t] = useTranslation("clients");
-  const { ACTIONS, COLUMNS } = formConfig.clients;
-
-  const fetchDataSource = async () => {
-    try {
-      setTableLoading(true);
-      const response = await axios.get(urls.clients.entity);
-      setClients(response?.data ?? []);
-    } catch (error) {
-      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
-    } finally {
-      setTableLoading(false);
-    }
-  };
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [sortBy, setSortBy] = useState("");
+  const [query, setQuery] = useState("");
+  const [total, setTotal] = useState(0);
+  const url = urls.clients.paging;
 
   useEffect(() => {
     fetchDataSource();
-  }, []);
+  }, [url]);
 
-  const handleDelete = useCallback(
-    (deletedId) => {
-      try {
-        setTableLoading(true);
-        const removed = clients.filter(({ id }) => id !== deletedId);
-        setClients(removed);
-      } finally {
-        setTableLoading(false);
-      }
+  const fetchDataSource = async (params: object = {}) => {
+    setLoading(true);
+    const prev = {
+      page,
+      pageSize,
+      sortBy,
+      query,
+    };
+
+    try {
+      const response = await axios.get(url, {
+        params: {
+          ...prev,
+          ...params,
+        },
+      });
+
+      const { totalCount, rows } = response?.data ?? {};
+      setClients(rows);
+      setTotal(totalCount);
+    } catch (error) {
+      defaultErrorHandler({ error });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = useCallback(
+    (searched: string) => {
+      const page = 1;
+      const query = getSearchQuery(searched);
+      setQuery(query);
+      setPage(page);
+      fetchDataSource({ query, page });
     },
     [clients]
   );
+
+  const handleDelete = useCallback(
+    (id) => {
+      defaultSuccessHandler(t("message.delete.success"));
+      setClients(getFiteredEntityArray(id, clients));
+    },
+    [clients]
+  );
+
+  const handleChangeTable = useCallback(
+    (pagination, filters, sorter) => {
+      const { current: page, pageSize } = pagination;
+      setPage(page);
+      setPageSize(pageSize);
+
+      const sortBy = getSortedParams(sorter);
+      setSortBy(sortBy);
+
+      fetchDataSource({ sortBy, page, pageSize });
+    },
+    [clients]
+  );
+
+  const serverPagination: TablePaginationConfig = {
+    pageSize: +pageSize,
+    total,
+    current: +page,
+  };
 
   return (
     <div className={style.container}>
       <Table
         columns={COLUMNS}
         actions={ACTIONS}
-        loading={tableLoading}
+        loading={loading}
+        pagination={serverPagination}
         onDeleteRow={handleDelete}
         dataSource={clients}
+        onSearch={handleSearch}
+        onChangeTable={handleChangeTable}
         withSearch
       />
     </div>
@@ -69,6 +135,6 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setClients }, dispatch);
+  bindActionCreators({ setClients, setTableLoading }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Clients);

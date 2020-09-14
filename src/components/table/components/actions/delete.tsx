@@ -6,8 +6,8 @@ import noop from "lodash/noop";
 
 import { defaultErrorHandler } from "../../../../utils";
 import { connect } from "react-redux";
-import { setTableLoading as setTableLoadingAction } from "../../../../__data__";
-import { Dispatch } from "@reduxjs/toolkit";
+import { setTableLoading } from "../../../../__data__";
+import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { HighlightTextWrapper } from "../../../../wrappers";
 
 interface DeleteProps {
@@ -17,6 +17,7 @@ interface DeleteProps {
   title?: string;
   href?: string;
   searched: string;
+  isOwner?: boolean;
 }
 
 export const Delete = ({
@@ -26,6 +27,7 @@ export const Delete = ({
   setTableLoading,
   onDelete = noop,
   searched,
+  isOwner = true,
 }: DeleteProps) => {
   const [t] = useTranslation("table");
 
@@ -47,6 +49,10 @@ export const Delete = ({
     fetchDelete();
   }, [onDelete, id, href]);
 
+  if (!isOwner) {
+    return null;
+  }
+
   return (
     <Popconfirm
       title={t("actions.delete.confirm")}
@@ -62,10 +68,7 @@ export const Delete = ({
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setTableLoading: (loading: boolean) => {
-    dispatch(setTableLoadingAction(loading));
-  },
-});
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators({ setTableLoading }, dispatch);
 
 export default connect(null, mapDispatchToProps)(Delete);

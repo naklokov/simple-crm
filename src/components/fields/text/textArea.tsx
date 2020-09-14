@@ -14,7 +14,7 @@ export const TextArea = ({
   span = DEFAULT_SPAN,
 }: FieldProps) => {
   return (
-    <Col span={span} key={fieldCode}>
+    <Col {...span} key={fieldCode}>
       <Form.Item
         name={fieldCode}
         label={fieldName}

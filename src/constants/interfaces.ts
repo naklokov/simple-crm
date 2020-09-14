@@ -1,12 +1,31 @@
 import { Rule } from "antd/lib/form";
 
+export type TabType = "container" | "table" | "custom";
+
 export type FieldType =
   | "string"
   | "number"
   | "boolean"
   | "date"
   | "dictionary"
-  | "entity";
+  | "entity"
+  | "phone";
+
+export type FieldFormatType = "textarea" | string;
+
+export type FullCalendarDateType = "DD.MM.YYYY";
+export type FullCalendarDateTimeType = "DD.MM.YYYY HH:mm";
+
+export type ColumnFormatType =
+  | "currency"
+  | FullCalendarDateType
+  | FullCalendarDateTimeType;
+
+export type ModeType = "view" | "add";
+
+export type TaskStatusType = "COMPLETED" | "NOT_COMPLETED" | "ACTIVE";
+
+export type TaskTypeType = "CALL";
 
 export interface RuleProps {
   required?: boolean;
@@ -17,16 +36,29 @@ export interface RuleProps {
   min?: number;
 }
 
+export interface SpanProps {
+  md?: number;
+  xl?: number;
+  lg?: number;
+}
+
+export interface DrawerProps {
+  code: string;
+  name: string;
+  description: string;
+  fields: FieldProps[];
+}
+
 export interface FieldProps {
   fieldCode: string;
   fieldName: string;
-  fieldDescription: string;
+  fieldDescription?: string;
   type: FieldType;
-  readonly: boolean;
-  disabled: boolean;
+  readonly?: boolean;
+  disabled?: boolean;
   rules?: Rule[];
-  format?: string;
-  span?: number;
+  format?: FieldFormatType;
+  span?: SpanProps;
   rows?: number;
   permissions: string[];
   placeholder?: string;
@@ -41,7 +73,10 @@ export interface TabProps {
   tabCode: string;
   tabName: string;
   tabDescription: string;
-  fields: FieldProps[];
+  type: TabType;
+  fields?: FieldProps[];
+  columns?: ColumnProps[];
+  actions?: ActionProps[];
   _links: object;
 }
 
@@ -76,7 +111,7 @@ export interface ErrorProps {
   errorMessage?: string;
 }
 
-export type ActionType = "href" | "delete" | "call" | "email" | "view";
+export type ActionType = "href" | "delete" | "call" | "email" | "view" | "done";
 export type ColumnType =
   | "string"
   | "date"
@@ -90,9 +125,9 @@ export interface ColumnProps {
   columnDescription?: string;
   columnCode: string;
   columnType: ColumnType;
-
-  format?: string;
+  format?: ColumnFormatType;
   sorter: any;
+  editable?: boolean;
   columnActions?: ActionProps[];
 }
 
@@ -108,6 +143,7 @@ export interface ActionProps {
 export interface EntityProps {
   id: string;
   businessId: string;
+  isOwner?: boolean;
 }
 
 export interface ClientEntityProps {
@@ -126,10 +162,39 @@ export interface ClientEntityProps {
   isDeleted: boolean;
   kpp: string;
   legalAddress: string;
-  managerId: string;
+  userProfileId: string;
   parentId: string;
   phone: string;
   servicingBank: string;
   shortName: string;
   webPage: string;
+}
+
+export interface CommentEntityProps {
+  _links: {
+    self: {
+      href: string;
+    };
+  };
+  commentText: string;
+  creationDate: string;
+  entityId: string;
+  entityType: string;
+  userProfileId?: string;
+  id: string;
+  isOwner: boolean;
+}
+
+export interface TaskEntityProps {
+  clientId: string;
+  creationDate: string;
+  historyId: string;
+  id: string;
+  isActive: boolean;
+  isDeleted: boolean;
+  isOwner: boolean;
+  profileId: string;
+  taskDescription: string;
+  taskStatus: TaskStatusType;
+  taskType: TaskTypeType;
 }

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { FormHeader } from "../../components/form-header";
 import { useTranslation } from "react-i18next";
 import { ClientEntityProps } from "../../constants";
@@ -18,11 +18,7 @@ export const ClientCardHeader = ({ clients }: ClientCardHeaderProps) => {
   const client = getClient(id, clients);
   const title = client?.shortName ?? t("title.new");
 
-  return (
-    <React.Fragment>
-      <FormHeader title={title || ""} />
-    </React.Fragment>
-  );
+  return <FormHeader title={title} />;
 };
 
 const mapStateToProps = (state: State) => ({

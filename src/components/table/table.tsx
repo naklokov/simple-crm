@@ -1,41 +1,70 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, Key } from "react";
 import { Table as TableUI } from "antd";
 
-import { ColumnProps, ActionProps } from "../../constants/interfaces";
+import {
+  ColumnProps,
+  ActionProps,
+  EntityProps,
+} from "../../constants/interfaces";
 import { useTranslation } from "react-i18next";
 import {
   getActions,
   getDataColumns,
-  mapWithKey,
   getFilteredDataSource,
+  getEditableTableBody,
 } from "./utils";
 import { Header } from "./components";
 import noop from "lodash/noop";
+
+import style from "./table.module.scss";
+import { setTableLoading } from "../../__data__";
+import { State } from "../../__data__/interfaces";
+import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
+import { connect } from "react-redux";
+import { TablePaginationConfig } from "antd/lib/table";
+import { SorterResult, TableCurrentDataSource } from "antd/lib/table/interface";
 
 interface TableProps {
   dataSource: any[];
   columns?: ColumnProps[];
   actions?: ActionProps[];
-  loading: boolean;
+  loading?: boolean;
+  tableLoading: boolean;
+  pagination?: TablePaginationConfig;
   onDeleteRow?: (id: string) => void;
+  onViewRow?: (id: string) => void;
+  onSaveRow?: (record: any) => void;
+  onDoneRow?: (record: any) => void;
+  onSearch?: (inputSearch: string) => void;
   withSearch?: boolean;
+  withTitle?: boolean;
+  addButton?: JSX.Element;
+  className?: string;
+  onChangeTable?: (
+    pagination: any,
+    filters: any,
+    sorter: any,
+    extra: any
+  ) => void;
 }
 
-/* 
-  TODO Чего не хватает таблице
-  1. Фильтрация по колонкам (кастомный фильтр длинною в жизнь)
-  2. Кнопка |...| доп действий. Что туда писать и надо прикрутить вообще блок кнопок.
-
-  На подумать:
-  1. Утащить всю работу с таблицей в redux (передавать name таблицы и спокойно всё коннектить к компоненту)
-*/
 export const Table = ({
   columns,
+  className = style.table,
   dataSource,
   actions,
   loading,
+  tableLoading,
+  pagination = { pageSize: 10 },
   onDeleteRow = noop,
+  onViewRow = noop,
+  onSaveRow = noop,
+  onDoneRow = noop,
+  onSearch,
   withSearch = false,
+  withTitle = true,
+  addButton,
+  onChangeTable = noop,
 }: TableProps) => {
   const [t] = useTranslation("table");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
@@ -60,32 +89,42 @@ export const Table = ({
     [dataSource, filteredDataSource, columns]
   );
 
+  const title = withTitle
+    ? () => (
+        <Header
+          onSearch={onSearch || handleSearch}
+          withSearch={withSearch}
+          button={addButton}
+        />
+      )
+    : void 0;
+
   const source = searched ? filteredDataSource : dataSource;
 
   return (
     <TableUI
+      className={className}
+      onChange={onChangeTable}
       size="middle"
-      title={() => <Header onSearch={handleSearch} withSearch={withSearch} />}
+      title={title}
       columns={[
-        ...getDataColumns(columns, searched),
-        getActions(actions, t, searched, onDeleteRow),
+        ...getDataColumns(columns, searched, onSaveRow),
+        getActions(actions, t, searched, onDeleteRow, onViewRow, onDoneRow),
       ]}
-      dataSource={mapWithKey(source)}
-      pagination={false}
-      loading={loading}
-      locale={{
-        filterTitle: t("filter.title"),
-        filterConfirm: t("filter.confirm"),
-        filterReset: t("filter.reset"),
-        filterEmptyText: t("filter.empty"),
-        sortTitle: t("sort.title"),
-        triggerDesc: t("sort.desc"),
-        triggerAsc: t("sort.asc"),
-        cancelSort: t("sort.cancel"),
-        emptyText: t("empty"),
-      }}
+      dataSource={source.map((item) => ({ ...item, key: item.id }))}
+      pagination={{ ...pagination, locale: "ru-RU" }}
+      components={getEditableTableBody()}
+      rowClassName={() => style.editableRow}
+      loading={loading || tableLoading}
     />
   );
 };
 
-export default Table;
+const mapStateToProps = (state: State) => ({
+  tableLoading: state?.app?.tableLoading,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators({ setTableLoading }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table);

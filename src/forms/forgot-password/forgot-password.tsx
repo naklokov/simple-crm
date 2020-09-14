@@ -9,7 +9,11 @@ import style from "./forgot-password.module.scss";
 import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
 import { urls, http } from "../../constants";
-import { logger, defaultErrorHandler } from "../../utils";
+import {
+  logger,
+  defaultErrorHandler,
+  defaultSuccessHandler,
+} from "../../utils";
 import { FORM_NAME, FIELDS } from "./constants";
 
 import { getRules, getInitialValues } from "./utils";
@@ -26,14 +30,9 @@ export const ForgotPassword = () => {
   const onFinish = async ({ username }: Store) => {
     try {
       setSubmitLoading(true);
-      const messageSuccess = t("message.success", { username });
       await axios.post(urls.forgotPassword.submit, { username });
+      defaultSuccessHandler(t("message.success", { username }));
 
-      logger.debug({
-        message: messageSuccess,
-      });
-
-      message.success(messageSuccess);
       history.push(http.ROOT_URL);
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });

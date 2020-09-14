@@ -1,0 +1,23 @@
+@import "../../assets/styles/offsets";
+@import "../../assets/styles/common";
+
+.table {
+  margin: 0 var(--offset-sm) var(--offset-sm) var(--offset-sm);
+}
+
+.editable {
+  &Cell {
+    position: relative;
+
+    &ValueWrap {
+      padding: 5px 12px;
+      cursor: pointer;
+    }
+  }
+
+  &Row:hover &CellValueWrap {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    padding: 4px 11px;
+  }
+}

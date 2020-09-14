@@ -12,6 +12,7 @@ import {
   isValuesChanged,
   logger,
   defaultErrorHandler,
+  defaultSuccessHandler,
 } from "../../../../utils";
 import {
   GUTTER_FULL_WIDTH,
@@ -62,8 +63,8 @@ export const Main = ({ profileInfo, setProfile }: MainProps) => {
 
       setProfile(responce.data);
       setSubmitDisabled(true);
-      logger.debug(t("message.success"));
-      message.success(t("message.success"));
+
+      defaultSuccessHandler(t("message.success"));
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {

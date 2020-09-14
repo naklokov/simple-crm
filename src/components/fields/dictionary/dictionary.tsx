@@ -4,7 +4,7 @@ import isEmpty from "lodash/isEmpty";
 import { Col, Form, Select } from "antd";
 import { Dispatch } from "@reduxjs/toolkit";
 import { DictionaryProps, DEFAULT_SPAN, FieldProps } from "../../../constants";
-import { defaultErrorHandler } from "../../../utils";
+import { defaultErrorHandler, useFetch } from "../../../utils";
 import { setLoading } from "../../../__data__";
 import { connect } from "react-redux";
 
@@ -30,29 +30,22 @@ export const Dictionary = ({
   const [dictionary, setDictionary] = useState<DictionaryProps>({});
   const { dictionaryValueEntities: options } = dictionary;
   const url = _links?.self.href ?? "";
-
-  const fetchDictionary = async () => {
-    try {
-      setLoading(true);
-      const responce = await axios.get(url);
-      setDictionary(responce?.data ?? {});
-    } catch (error) {
-      defaultErrorHandler({ error });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { loading, response } = useFetch({ url });
 
   useEffect(() => {
-    fetchDictionary();
-  }, [url]);
+    setLoading(loading);
+  }, [loading]);
+
+  useEffect(() => {
+    setDictionary(response?.data ?? []);
+  }, [response]);
 
   if (!options || isEmpty(options)) {
     return null;
   }
 
   return (
-    <Col span={span} key={fieldCode}>
+    <Col {...span} key={fieldCode}>
       <Form.Item
         name={fieldCode}
         label={fieldName}

@@ -1,10 +1,15 @@
 import React from "react";
 import { fields } from "../components";
-import { TEXT_FORMATS, FieldProps } from "../constants";
+import { FieldProps } from "../constants";
 import isEqual from "lodash/isEqual";
 import some from "lodash/some";
 
-const { Text, TextArea, DateTime, Dictionary } = fields;
+interface EntityWithId {
+  [key: string]: any;
+  id: string;
+}
+
+const { Text, TextArea, DateTime, Dictionary, Phone } = fields;
 
 export const isValuesChanged = (
   prev: { [key: string]: any },
@@ -17,10 +22,11 @@ export const isValuesChanged = (
 export const createFormField = (field: FieldProps): JSX.Element => {
   switch (field.type) {
     case "string":
-      if (field.format === TEXT_FORMATS.TEXT_AREA)
-        return <TextArea {...field} />;
+      if (field.format === "textarea") return <TextArea {...field} />;
 
       return <Text {...field} />;
+    case "phone":
+      return <Phone {...field} />;
     case "date":
       return <DateTime {...field} />;
     case "dictionary":
@@ -29,3 +35,12 @@ export const createFormField = (field: FieldProps): JSX.Element => {
       return <div />;
   }
 };
+
+export const getUpdatedEntityArray = <T extends EntityWithId>(
+  entity: T,
+  array: T[],
+  key: string = "id"
+) => array?.map((item) => (item[key] === entity[key] ? entity : item)) ?? [];
+
+export const getFiteredEntityArray = (id: string, array: any[]) =>
+  array.filter((o) => o.id !== id);

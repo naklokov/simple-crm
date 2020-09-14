@@ -54,7 +54,8 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
       });
 
       setAuth(true);
-      history.push(http.ROOT_URL);
+      // дублирует переход на вкладку Клиенты, один переход тут, другой после выставления isAuth = true
+      // history.push(http.ROOT_URL);
     } catch (error) {
       defaultErrorHandler({
         error,

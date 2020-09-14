@@ -1,0 +1,11 @@
+@import "../../../../../../assets/styles/offsets";
+
+.container {
+  display: flex;
+  margin-top: var(--offset-md);
+  margin-bottom: var(--offset-md) !important;
+}
+
+.button {
+  margin-left: var(--offset-sm);
+}

@@ -24,7 +24,7 @@ export const MENU_ITEMS = [
   },
   {
     id: "tasks",
-    title: "Планы",
+    title: "Задачи",
     url: urls.tasks.path,
     permissions: [TASKS.ADMIN, TASKS.GET, TASKS.GET_OWNER],
     icon: <CalendarOutlined />,

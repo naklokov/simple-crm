@@ -4,7 +4,6 @@ import { Layout } from "antd";
 import { connect } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 
-import { Loader } from "../../components";
 import { Logo, Menu, Profile } from "./components";
 import { State, ProfileInfoProps } from "../../__data__/interfaces";
 
@@ -18,6 +17,8 @@ import {
 import { urls } from "../../constants";
 import { useTranslation } from "react-i18next";
 import { logger, defaultErrorHandler } from "../../utils";
+import { Loader } from "../../components";
+import { isEmpty } from "lodash";
 
 const { Sider, Content, Header } = Layout;
 
@@ -27,6 +28,7 @@ interface AuthorizedProps {
   loading: boolean;
   isMenuCollapsed: boolean;
   profileInfo: ProfileInfoProps;
+  permissions: string[];
   setCollapsed: (value: boolean) => void;
   setLoading: (loading: boolean) => void;
   setPermissions: (permissions: string[]) => void;
@@ -40,6 +42,7 @@ export const Authorized = ({
   isMenuCollapsed,
   setCollapsed,
   profileInfo,
+  permissions,
   setProfile,
   setPermissions,
   setLoading,
@@ -95,35 +98,34 @@ export const Authorized = ({
   }, []);
 
   return (
-    <div>
-      {loading && <Loader />}
-      <Layout className={style.main}>
-        <Sider
-          collapsible
-          collapsed={isMenuCollapsed}
-          theme="light"
-          className={style.sider}
-          onCollapse={handleCollapseMenu}
-        >
-          <Logo collapsed={isMenuCollapsed} />
-          <Menu collapsed={isMenuCollapsed} />
-        </Sider>
-        <Layout>
-          <Header className={style.header}>
-            <div className={style.profile}>
-              <Profile profileInfo={profileInfo} />
-            </div>
-          </Header>
-          {subheader && <div className={style.subheader}>{subheader}</div>}
-          <Content>{children}</Content>
-        </Layout>
+    <Layout className={style.main}>
+      <Sider
+        collapsible
+        collapsed={isMenuCollapsed}
+        theme="light"
+        className={style.sider}
+        onCollapse={handleCollapseMenu}
+      >
+        <Logo collapsed={isMenuCollapsed} />
+        <Menu collapsed={isMenuCollapsed} />
+      </Sider>
+      <Layout>
+        <Header className={style.header}>
+          <div className={style.profile}>
+            <Profile profileInfo={profileInfo} />
+          </div>
+        </Header>
+        {subheader && <div className={style.subheader}>{subheader}</div>}
+        <Content>{children}</Content>
+        {loading && <Loader />}
       </Layout>
-    </div>
+    </Layout>
   );
 };
 
 const mapStateToProps = (state: State) => ({
   profileInfo: state?.persist?.profileInfo ?? {},
+  permissions: state?.persist?.permissions ?? {},
   loading: state?.app?.loading,
   isMenuCollapsed: state?.persist?.menuCollapsed,
 });

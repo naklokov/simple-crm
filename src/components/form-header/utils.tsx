@@ -18,7 +18,7 @@ export const URL_NAMES = [
     url: profile.path,
   },
   {
-    title: "Планы",
+    title: "Задачи",
     url: tasks.path,
   },
   {
@@ -53,7 +53,7 @@ export const getBreadcrumbItems = (detailName: string) => {
     const name = isLast ? detailName : findName(href);
 
     return (
-      <Breadcrumb.Item>
+      <Breadcrumb.Item key={idx}>
         <a href={href}>{name}</a>
       </Breadcrumb.Item>
     );

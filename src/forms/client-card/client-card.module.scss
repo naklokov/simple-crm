@@ -1,7 +1,9 @@
 @import "../../assets/styles/colors";
+@import "../../assets/styles/common";
 @import "../../assets/styles/offsets";
 
 .upperTabs {
+  border-radius: var(--form-border-radius);
   padding: 0 var(--offset-md) !important;
   background-color: var(--background-color-base);
 

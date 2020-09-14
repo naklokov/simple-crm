@@ -8,6 +8,9 @@ import { reducers } from "../__data__";
 import { errorsInterceptor } from "./interceptors";
 import { storage } from "../utils";
 import { ErrorScreenWrapper } from "../wrappers";
+import { ConfigProvider } from "antd";
+
+import ruRu from "antd/es/locale/ru_RU";
 
 const persistedState = storage.loadState();
 
@@ -28,11 +31,13 @@ axios.interceptors.response.use(
 );
 
 const App = () => (
-  <Provider store={store}>
-    <ErrorScreenWrapper>
-      <Routes />
-    </ErrorScreenWrapper>
-  </Provider>
+  <ConfigProvider locale={ruRu}>
+    <Provider store={store}>
+      <ErrorScreenWrapper>
+        <Routes />
+      </ErrorScreenWrapper>
+    </Provider>
+  </ConfigProvider>
 );
 
 export default App;

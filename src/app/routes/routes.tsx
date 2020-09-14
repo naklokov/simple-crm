@@ -36,7 +36,6 @@ const Routes = () => {
       <Switch>
         <AuthorizeRoute
           key={urls.profile.path}
-          exact
           path={urls.profile.path}
           permissions={[
             PROFILE_INFO.ADMIN,
@@ -47,33 +46,32 @@ const Routes = () => {
           <Profile />
         </AuthorizeRoute>
         <AuthorizeRoute
-          key={urls.clients.path}
+          key={urls.clientCard.path}
+          subheader={<ClientCardHeader />}
+          path={urls.clientCard.path}
+          permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
           exact
+        >
+          <ClientCard />
+        </AuthorizeRoute>
+        <AuthorizeRoute
+          key={urls.clients.path}
           subheader={<ClientsHeader />}
           path={urls.clients.path}
           permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
         >
           <Clients />
         </AuthorizeRoute>
-        <AuthorizeRoute
-          key={urls.clientCard.path}
-          subheader={<ClientCardHeader />}
-          path={urls.clientCard.path}
-          permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
-        >
-          <ClientCard />
-        </AuthorizeRoute>
+
         <AuthorizeRoute
           key={urls.tasks.path}
-          exact
           path={urls.tasks.path}
           permissions={[TASKS.ADMIN, TASKS.GET, TASKS.GET_OWNER]}
         >
-          <Typography.Title>Планы</Typography.Title>
+          <Typography.Title>Задачи</Typography.Title>
         </AuthorizeRoute>
         <AuthorizeRoute
           key={urls.deals.path}
-          exact
           path={urls.deals.path}
           permissions={[DEALS.ADMIN, DEALS.GET, DEALS.GET_OWNER]}
         >

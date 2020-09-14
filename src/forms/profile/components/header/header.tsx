@@ -22,10 +22,9 @@ export const Header = ({ profileInfo, onChangeTab }: HeaderProps) => (
       </div>
     </div>
     <div className={style.header}>
-      <Typography.Title
-        className={style.fio}
-        level={2}
-      >{`${profileInfo.secondName} ${profileInfo.firstName}`}</Typography.Title>
+      <Typography.Title className={style.fio} level={2}>
+        {profileInfo.fullName}
+      </Typography.Title>
 
       <Tabs defaultActiveKey="1" className={style.tabs} onChange={onChangeTab}>
         {TABS_CONTENT.map(({ id, title }) => (
