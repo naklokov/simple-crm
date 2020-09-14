@@ -85,7 +85,7 @@
     "actions.email.no": "Нет",
     "actions.email.yes": "Да",
 
-    "search.all.placeholder": "Поиск",
+    "search.all.placeholder": "Поиск по наименованию, городу и телефону",
     "search.all.clear": "Очистить фильтр"
   },
   "clientCard": {
@@ -121,9 +121,12 @@
   "tasksDrawer": {
     "title.new": "Новая задача",
     "title.completed": "Выполнить задачу",
+    "additional.action.complete.title": "Выполнить",
+    "additional.action.remove.title": "Удалить",
     "message.success.add": "Задача успешно добавлена",
     "message.success.edit": "Задача успешно отредактирована",
-    "message.success.completed": "Задача выполнена"
+    "message.success.completed": "Задача выполнена",
+    "message.success.delete": "Задача удалена"
   },
   "tabs": {
     "tooltip.disabled": "Заполните основную информацию"

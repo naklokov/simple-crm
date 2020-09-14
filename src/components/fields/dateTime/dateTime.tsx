@@ -4,11 +4,12 @@ import React from "react";
 import moment from "moment";
 import { Col, Form, DatePicker } from "antd";
 import { DATE_FORMATS, DEFAULT_SPAN, FieldProps } from "../../../constants";
+import { getDateWithTimezone } from "../../../utils";
 
 const handleValueProp = (value: any) => {
   if (typeof value === "string") {
-    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    return { value: moment(value).tz(tz) };
+    const date = getDateWithTimezone(value);
+    return { value: date };
   }
 
   return { value };

@@ -143,6 +143,7 @@ export interface ActionProps {
 export interface EntityProps {
   id: string;
   businessId: string;
+  isOwner?: boolean;
 }
 
 export interface ClientEntityProps {

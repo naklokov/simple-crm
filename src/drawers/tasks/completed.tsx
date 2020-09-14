@@ -62,6 +62,7 @@ export const CompleteTask = ({
       visible={visible}
       submitLoading={loading}
       onFinish={onFinish}
+      defaultSubmitDisabled={false}
     />
   );
 };

@@ -2,12 +2,8 @@ import React, { useEffect, useCallback, useState } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { Table } from "../../components";
-import {
-  urls,
-  ClientEntityProps,
-  formConfig,
-  RSQL_OPERATORS_MAP,
-} from "../../constants";
+import { urls, ClientEntityProps, formConfig } from "../../constants";
+import { getSearchQuery } from "./utils";
 
 import style from "./clients.module.scss";
 import { State } from "../../__data__/interfaces";
@@ -15,16 +11,22 @@ import { setClients, setTableLoading } from "../../__data__";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import {
   getFiteredEntityArray,
-  useFetch,
   defaultErrorHandler,
   defaultSuccessHandler,
-  getRsqlQuery,
+  getSortedParams,
+  useQuery,
 } from "../../utils";
 import { TablePaginationConfig } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
 
 const { ACTIONS, COLUMNS } = formConfig.clients;
-const DEFAULT_PAGE_SIZE = 10;
+
+const defaultPagination = {
+  page: 1,
+  pageSize: 10,
+  query: "",
+  sortBy: "",
+};
 
 interface ClientsProps {
   clients: ClientEntityProps[];
@@ -34,29 +36,37 @@ interface ClientsProps {
 export const Clients = ({ setClients, clients }: ClientsProps) => {
   const [t] = useTranslation("clients");
   const [loading, setLoading] = useState(false);
-  const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-
-  const url = urls.clients.entity;
-  const { response: responseMeta } = useFetch({
-    url,
-    params: { tableMeta: true },
-  });
+  const [sortBy, setSortBy] = useState("");
+  const [query, setQuery] = useState("");
+  const [total, setTotal] = useState(0);
+  const url = urls.clients.paging;
 
   useEffect(() => {
-    fetchDataSource({ page, pageSize });
+    fetchDataSource();
   }, [url]);
 
-  useEffect(() => {
-    setTotal(responseMeta?.data?.totalCount ?? 0);
-  }, [responseMeta]);
-
-  const fetchDataSource = async (params: object) => {
+  const fetchDataSource = async (params: object = {}) => {
     setLoading(true);
+    const prev = {
+      page,
+      pageSize,
+      sortBy,
+      query,
+    };
+
     try {
-      const response = await axios.get(url, { params });
-      setClients(response?.data ?? []);
+      const response = await axios.get(url, {
+        params: {
+          ...prev,
+          ...params,
+        },
+      });
+
+      const { totalCount, rows } = response?.data ?? {};
+      setClients(rows);
+      setTotal(totalCount);
     } catch (error) {
       defaultErrorHandler({ error });
     } finally {
@@ -66,15 +76,11 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
 
   const handleSearch = useCallback(
     (searched: string) => {
-      const params = getRsqlQuery([
-        {
-          key: "entityData",
-          operator: RSQL_OPERATORS_MAP.LIKE,
-          value: `(phone, shortName, city, ${searched})`,
-        },
-      ]);
-
-      fetchDataSource(params);
+      const page = 1;
+      const query = getSearchQuery(searched);
+      setQuery(query);
+      setPage(page);
+      fetchDataSource({ query, page });
     },
     [clients]
   );
@@ -87,20 +93,24 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
     [clients]
   );
 
-  const handlePageChange = useCallback(
-    (page, pageSize) => {
+  const handleChangeTable = useCallback(
+    (pagination, filters, sorter) => {
+      const { current: page, pageSize } = pagination;
       setPage(page);
       setPageSize(pageSize);
-      fetchDataSource({ page, pageSize });
+
+      const sortBy = getSortedParams(sorter);
+      setSortBy(sortBy);
+
+      fetchDataSource({ sortBy, page, pageSize });
     },
-    [total]
+    [clients]
   );
 
   const serverPagination: TablePaginationConfig = {
-    pageSize,
+    pageSize: +pageSize,
     total,
-    onChange: handlePageChange,
-    current: page,
+    current: +page,
   };
 
   return (
@@ -113,6 +123,7 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
         onDeleteRow={handleDelete}
         dataSource={clients}
         onSearch={handleSearch}
+        onChangeTable={handleChangeTable}
         withSearch
       />
     </div>

@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, Key } from "react";
 import { Table as TableUI } from "antd";
 
-import { ColumnProps, ActionProps } from "../../constants/interfaces";
+import {
+  ColumnProps,
+  ActionProps,
+  EntityProps,
+} from "../../constants/interfaces";
 import { useTranslation } from "react-i18next";
 import {
   getActions,
@@ -18,6 +22,7 @@ import { State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import { TablePaginationConfig } from "antd/lib/table";
+import { SorterResult, TableCurrentDataSource } from "antd/lib/table/interface";
 
 interface TableProps {
   dataSource: any[];
@@ -35,6 +40,12 @@ interface TableProps {
   withTitle?: boolean;
   addButton?: JSX.Element;
   className?: string;
+  onChangeTable?: (
+    pagination: any,
+    filters: any,
+    sorter: any,
+    extra: any
+  ) => void;
 }
 
 export const Table = ({
@@ -53,6 +64,7 @@ export const Table = ({
   withSearch = false,
   withTitle = true,
   addButton,
+  onChangeTable = noop,
 }: TableProps) => {
   const [t] = useTranslation("table");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
@@ -92,6 +104,7 @@ export const Table = ({
   return (
     <TableUI
       className={className}
+      onChange={onChangeTable}
       size="middle"
       title={title}
       columns={[

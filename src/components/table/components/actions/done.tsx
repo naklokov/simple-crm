@@ -8,6 +8,7 @@ interface DoneProps {
   title?: string;
   onDone?: (id: string) => void;
   searched: string;
+  isOwner?: boolean;
 }
 
 export const Done = ({
@@ -15,10 +16,15 @@ export const Done = ({
   title = "",
   onDone = noop,
   searched,
+  isOwner = true,
 }: DoneProps) => {
   const handleClick = useCallback(() => {
     onDone(id);
   }, [id]);
+
+  if (!isOwner) {
+    return null;
+  }
 
   return (
     <Button style={{ paddingLeft: 0 }} type="link" onClick={handleClick}>

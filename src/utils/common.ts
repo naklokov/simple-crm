@@ -12,6 +12,7 @@ import http, { COOKIES } from "../constants/http";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setAuth, setLoading } from "../__data__";
 import { message } from "antd";
+import { SortOrder } from "antd/lib/table/interface";
 
 interface RsqlParamProps {
   key: string;
@@ -24,6 +25,11 @@ interface DefaultErrorHandlerProps {
   username?: string;
   defaultErrorMessage?: string;
 }
+
+const ORDER_MAP = {
+  ascend: "asc",
+  descend: "desc",
+};
 
 const DEFAULT_SUCCESS_MESSAGE_LOGOUT = "Пользователь вышел из системы";
 const DEFAULT_ERROR_MESSAGE_LOGOUT =
@@ -136,7 +142,21 @@ export const defaultErrorHandler = ({
   }
 };
 
-export const getFormattedDate = (date: string, format = DATE_FORMATS.DATE) => {
+export const getDateWithTimezone = (date: string) => {
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  return date ? moment(date).tz(tz).format(format) : "";
+  return moment.utc(date).tz(tz);
+};
+
+export const getSortedParams = ({
+  field,
+  order,
+}: {
+  field: string;
+  order: SortOrder;
+}) => {
+  if (order) {
+    return `${field}:${ORDER_MAP[order]}`;
+  }
+
+  return "";
 };

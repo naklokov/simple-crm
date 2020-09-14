@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import axios, { AxiosResponse } from "axios";
 import { defaultErrorHandler } from "./common";
+import { Dispatch } from "@reduxjs/toolkit";
 
 type MethodType = "get" | "post" | "put" | "delete";
 
@@ -37,4 +38,29 @@ export const useFetch = ({
   }, []);
 
   return { response, loading, error };
+};
+
+export const useQuery = (
+  name: string,
+  initial: string = ""
+): [string, (item: string) => void] => {
+  const searchParams = new URLSearchParams(window.location.search);
+  let initialState = "";
+  debugger;
+  if (!searchParams.has(name)) {
+    searchParams.append(name, initial);
+    initialState = initial;
+  } else {
+    initialState = searchParams.get(name) || "";
+  }
+  const [value, setValue] = useState(initialState || "");
+
+  const setQueryValue = (value: string) => {
+    const searchParams = new URLSearchParams(window.location.search);
+
+    searchParams.set(name, value);
+    setValue(value);
+  };
+
+  return [value, setQueryValue];
 };

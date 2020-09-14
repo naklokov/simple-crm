@@ -31,6 +31,7 @@ module.exports = {
   clients: {
     path: "/clients",
     entity: "/crm/rest/entity/clients",
+    paging: "/crm/rest/entity/clients/paging",
   },
   clientCard: {
     path: "/clients/:id",

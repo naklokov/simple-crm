@@ -12,7 +12,7 @@ export const Call = ({ phone, searched }: CallProps) => {
   const [t] = useTranslation("table");
 
   const handleCall = useCallback(() => {
-    window.location.assign(`tel:${phone}`);
+    window.location.assign(`tel:${phone.replaceAll(/(\s|\(|\)|\-)/gi, "")}`);
   }, [phone]);
 
   return (

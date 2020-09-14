@@ -13,7 +13,8 @@ const getActionComponent = (
   searched: string,
   onDelete?: (id: string) => void,
   onView?: (id: string) => void,
-  onDone?: (id: string) => void
+  onDone?: (id: string) => void,
+  isOwner?: boolean
 ) => {
   const fullHref = getFullUrl(action.href, id);
   switch (action.actionType) {
@@ -26,6 +27,7 @@ const getActionComponent = (
           id={id}
           searched={searched}
           onDelete={onDelete}
+          isOwner={isOwner}
         />
       );
     case "done":
@@ -36,6 +38,7 @@ const getActionComponent = (
           id={id}
           searched={searched}
           onDone={onDone}
+          isOwner={isOwner}
         />
       );
     case "view":
@@ -84,7 +87,8 @@ export const renderActions = (
             searched,
             onDelete,
             onView,
-            onDone
+            onDone,
+            entity.isOwner
           )}
         </Space>
       </ComponentPermissionsChecker>

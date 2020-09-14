@@ -4,7 +4,7 @@ import { ColumnType } from "../../../constants";
 import {
   fillTemplate,
   defaultErrorHandler,
-  getFormattedDate,
+  getDateWithTimezone,
 } from "../../../utils";
 
 type RecordType = { [key: string]: string };
@@ -31,10 +31,13 @@ export const formatNumber = (
   return formatter.format(+number);
 };
 
+const formatDate = (text: string, format: FormatType, record: RecordType) =>
+  getDateWithTimezone(text).format(format);
+
 const FORMAT_MAP: {
   [key: string]: (text: string, format: string, record: RecordType) => string;
 } = {
-  date: getFormattedDate,
+  date: formatDate,
   string: formatText,
   number: formatNumber,
 };

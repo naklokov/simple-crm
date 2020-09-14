@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from "react";
-import { Drawer as DrawerUI, Row } from "antd";
+import { Drawer as DrawerUI, Row, PageHeader, Typography } from "antd";
 import { FormFooter } from "../form-footer";
 import Form, { useForm } from "antd/lib/form/Form";
 import { ComponentPermissionsChecker } from "../../wrappers";
@@ -15,8 +15,10 @@ interface DrawerFormProps {
   submitLoading: boolean;
   title: string | React.ReactNode;
   visible: boolean;
+  defaultSubmitDisabled?: boolean;
   onFinish: (values: Store) => void;
   onClose: (event?: any) => void;
+  headerButtons?: React.ReactNode[];
 }
 
 export const DrawerForm = ({
@@ -28,9 +30,11 @@ export const DrawerForm = ({
   title,
   onClose,
   visible,
+  headerButtons,
+  defaultSubmitDisabled = true,
 }: DrawerFormProps) => {
   const [form] = useForm();
-  const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [submitDisabled, setSubmitDisabled] = useState(defaultSubmitDisabled);
 
   const handleValuesChange = useCallback(
     (changed: Object, allValues: Object) => {
@@ -52,8 +56,15 @@ export const DrawerForm = ({
 
   return (
     <DrawerUI
-      title={title}
+      title={
+        <PageHeader
+          style={{ padding: 0 }}
+          title={title}
+          extra={headerButtons}
+        />
+      }
       destroyOnClose={true}
+      closeIcon={false}
       onClose={onClose}
       visible={visible}
       footer={

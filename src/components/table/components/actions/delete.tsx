@@ -17,6 +17,7 @@ interface DeleteProps {
   title?: string;
   href?: string;
   searched: string;
+  isOwner?: boolean;
 }
 
 export const Delete = ({
@@ -26,6 +27,7 @@ export const Delete = ({
   setTableLoading,
   onDelete = noop,
   searched,
+  isOwner = true,
 }: DeleteProps) => {
   const [t] = useTranslation("table");
 
@@ -46,6 +48,10 @@ export const Delete = ({
   const handleDelete = useCallback(() => {
     fetchDelete();
   }, [onDelete, id, href]);
+
+  if (!isOwner) {
+    return null;
+  }
 
   return (
     <Popconfirm

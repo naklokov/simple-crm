@@ -44,7 +44,7 @@ export const Tasks = ({ tab }: TasksProps) => {
   const [t] = useTranslation("clientCardTasks");
   const { id: clientId } = useParams();
   const [tasks, setTasks] = useState([] as TaskEntityProps[]);
-  const [initialValues, setInitialValues] = useState({});
+  const [initialValues, setInitialValues] = useState({} as TaskEntityProps);
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
   const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
@@ -99,6 +99,24 @@ export const Tasks = ({ tab }: TasksProps) => {
     [tasks]
   );
 
+  const handleTaskDelete = useCallback(
+    (id) => {
+      setViewDrawerVisible(false);
+      setTasks(tasks.filter((task) => task.id !== id));
+    },
+    [tasks]
+  );
+
+  const handleTaskCompleted = useCallback(
+    (id) => {
+      setViewDrawerVisible(false);
+      const initialValues = tasks.find((task) => id === task.id);
+      setInitialValues(initialValues as TaskEntityProps);
+      setCompletedDrawerVisible(true);
+    },
+    [tasks]
+  );
+
   const handleCloseCompletedDrawer = useCallback(
     (event, task) => {
       setCompletedDrawerVisible(false);
@@ -123,6 +141,8 @@ export const Tasks = ({ tab }: TasksProps) => {
         fields={taskDrawer?.fields ?? []}
         onClose={handleCloseViewDrawer}
         visible={viewDrawerVisible}
+        onDelete={handleTaskDelete}
+        onCompleted={handleTaskCompleted}
       />
       <CompletedTaskDrawer
         initialValues={initialValues}
