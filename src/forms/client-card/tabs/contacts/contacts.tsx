@@ -31,7 +31,7 @@ export const Contacts = ({ tab }: ContactsProps) => {
   const [t] = useTranslation("clientCardContacts");
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
-  const [initialValues, setInitialValues] = useState({});
+  const [activeDrawerId, setActiveDrawerId] = useState("");
 
   const [contacts, setContacts] = useState([] as any[]);
   const { id: clientId } = useParams();
@@ -49,8 +49,7 @@ export const Contacts = ({ tab }: ContactsProps) => {
 
   const handleViewRow = useCallback(
     (id) => {
-      const initialValues = contacts.find((contact) => id === contact.id);
-      setInitialValues(initialValues);
+      setActiveDrawerId(id);
       setViewDrawerVisible(true);
     },
     [contacts]
@@ -96,7 +95,9 @@ export const Contacts = ({ tab }: ContactsProps) => {
       <ViewContactDrawer
         title={drawer?.name ?? ""}
         visible={viewDrawerVisible}
-        initialValues={initialValues}
+        initialValues={
+          contacts?.find((contact) => activeDrawerId === contact.id) ?? {}
+        }
         fields={drawer?.fields ?? []}
         onClose={handleCloseViewDrawer}
       />

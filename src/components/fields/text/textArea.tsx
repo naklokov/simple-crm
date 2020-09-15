@@ -26,6 +26,7 @@ export const TextArea = ({
           placeholder={placeholder}
           disabled={disabled}
           readOnly={readonly}
+          autoSize={{ minRows: 1, maxRows: 6 }}
           rows={rows}
         />
       </Form.Item>

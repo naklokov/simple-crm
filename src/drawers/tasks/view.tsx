@@ -17,7 +17,7 @@ import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { setTableLoading } from "../../__data__";
 
 interface ViewTaskProps {
-  initialValues: TaskEntityProps;
+  initialValues: Store;
   fields: FieldProps[];
   visible: boolean;
   title: string;

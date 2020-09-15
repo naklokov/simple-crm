@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback, useState } from "react";
-import { Drawer as DrawerUI, Row, PageHeader, Typography } from "antd";
+import { Drawer as DrawerUI, Form, PageHeader, Typography } from "antd";
 import { FormFooter } from "../form-footer";
-import Form, { useForm } from "antd/lib/form/Form";
 import { ComponentPermissionsChecker } from "../../wrappers";
 import { createFormField, isValuesChanged } from "../../utils";
 import isEmpty from "lodash/isEmpty";
@@ -33,7 +32,7 @@ export const DrawerForm = ({
   headerButtons,
   defaultSubmitDisabled = true,
 }: DrawerFormProps) => {
-  const [form] = useForm();
+  const [form] = Form.useForm();
   const [submitDisabled, setSubmitDisabled] = useState(defaultSubmitDisabled);
 
   const handleValuesChange = useCallback(
@@ -43,6 +42,19 @@ export const DrawerForm = ({
     },
     [setSubmitDisabled, initialValues]
   );
+
+  const handleClose = useCallback((event) => {
+    setSubmitDisabled(true);
+    onClose(event);
+  }, []);
+
+  useEffect(() => {
+    console.log("mount");
+
+    return () => {
+      console.log("unmount");
+    };
+  }, []);
 
   useEffect(() => {
     if (visible) {
@@ -65,7 +77,7 @@ export const DrawerForm = ({
       }
       destroyOnClose={true}
       closeIcon={false}
-      onClose={onClose}
+      onClose={handleClose}
       visible={visible}
       footer={
         <FormFooter
