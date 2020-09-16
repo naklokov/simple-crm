@@ -9,8 +9,6 @@ export const Delete = ({ onDelete }: { onDelete: () => void }) => {
     <Popconfirm
       title={t("delete.confirm")}
       onConfirm={onDelete}
-      okText={t("delete.yes")}
-      cancelText={t("delete.no")}
       placement="topLeft"
     >
       <span>{t("button.delete")}</span>

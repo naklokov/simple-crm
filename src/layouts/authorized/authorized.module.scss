@@ -20,13 +20,17 @@
   margin-bottom: 1px;
   padding: 0 var(--offset-md2) !important;
   height: var(--authorize-header-height) !important;
-  background-color: var(--background-color-base) !important;
+  background-color: var(--background-color-form) !important;
   width: 100%;
 }
 
 .subheader {
   margin-top: 1px;
-  background-color: var(--background-color-base) !important;
+  background-color: var(--background-color-form) !important;
+}
+
+.content {
+  background-color: var(--background-color-base);
 }
 
 .buttonCollapsed {

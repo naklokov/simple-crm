@@ -4,14 +4,14 @@
 
 .form {
   border-radius: var(--form-border-radius);
-  background-color: var(--background-color-base);
+  background-color: var(--background-color-form);
   margin: var(--offset-md);
 }
 
 .tabs {
   border-radius: var(--form-border-radius);
   padding: 0 var(--offset-md) !important;
-  background-color: var(--background-color-base);
+  background-color: var(--background-color-form);
 
   & > div {
     margin-bottom: 0 !important;

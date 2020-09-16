@@ -27,6 +27,10 @@ export type TaskStatusType = "COMPLETED" | "NOT_COMPLETED" | "ACTIVE";
 
 export type TaskTypeType = "CALL";
 
+export interface QueryProps {
+  id: string;
+}
+
 export interface RuleProps {
   required?: boolean;
   type?: string;

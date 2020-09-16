@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { useParams } from "react-router";
 import { useTranslation } from "react-i18next";
-import { ClientEntityProps, urls } from "../../constants";
+import { ClientEntityProps, QueryProps, urls } from "../../constants";
 import { connect } from "react-redux";
 import { State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
@@ -14,6 +14,9 @@ import { upper, lower } from "../../constants/form-config/client-card";
 import { Main, Comments, Contacts, Requisites, PriceList, Tasks } from "./tabs";
 import { defaultErrorHandler, getFullUrl } from "../../utils";
 import { isEmpty } from "lodash";
+import { ClientCardHeader } from ".";
+
+import style from "./client-card.module.scss";
 
 interface ClientCardProps {
   clients: ClientEntityProps[];
@@ -38,7 +41,7 @@ export const ClientCard = ({
   setLoading,
 }: ClientCardProps) => {
   const [t] = useTranslation("clientCard");
-  const { id: clientId } = useParams();
+  const { id: clientId } = useParams<QueryProps>();
   const mode = getClientCardMode(clientId);
   const client = getClient(clientId, clients);
 
@@ -69,6 +72,9 @@ export const ClientCard = ({
 
   return (
     <div>
+      <div className={style.header}>
+        <ClientCardHeader />
+      </div>
       <Tabs mainTab="main" mode={mode} tabs={upper.tabs} formsMap={TABS_MAP} />
       {mode === "view" && (
         <Tabs mode={mode} tabs={lower.tabs} formsMap={TABS_MAP} />

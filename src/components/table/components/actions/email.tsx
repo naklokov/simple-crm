@@ -19,8 +19,6 @@ export const Email = ({ mail, searched }: EmailProps) => {
     <Popconfirm
       title={t("actions.email.confirm")}
       onConfirm={handleCall}
-      okText={t("actions.email.yes")}
-      cancelText={t("actions.email.no")}
       placement="left"
     >
       <Button style={{ padding: 0 }} type="link">

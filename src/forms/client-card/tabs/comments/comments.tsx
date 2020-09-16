@@ -15,7 +15,7 @@ import {
   useFetch,
   getRsqlQuery,
 } from "../../../../utils";
-import { urls, CommentEntityProps } from "../../../../constants";
+import { urls, CommentEntityProps, QueryProps } from "../../../../constants";
 import { getPostData } from "./utils";
 import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
 
@@ -30,7 +30,7 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
   const [comments, setComments] = useState([] as CommentEntityProps[]);
   const listRef = useRef<HTMLDivElement>(null);
 
-  const { id: entityId } = useParams();
+  const { id: entityId } = useParams<QueryProps>();
   const [t] = useTranslation("clientCardComments");
   // const params = getRsqlQuery({ entityType: "clients", entityId });
   const params = getRsqlQuery([
