@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import { State } from "../../__data__/interfaces";
 import { useHistory, useParams } from "react-router";
 import { getClient } from "./utils";
-import { Button, PageHeader, Popconfirm } from "antd";
+import { PageHeader } from "antd";
 import {
   callTel,
   defaultErrorHandler,
@@ -19,9 +19,9 @@ import {
   getFullUrl,
   getItemRender,
 } from "../../utils";
-import { PhoneTwoTone, DeleteTwoTone } from "@ant-design/icons";
-import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { setLoading } from "../../__data__";
+import { Call, Delete } from "./components";
+import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 
 interface ClientCardHeaderProps {
   clients?: ClientEntityProps[];
@@ -32,7 +32,7 @@ export const ClientCardHeader = ({ clients }: ClientCardHeaderProps) => {
   const history = useHistory();
   const { id } = useParams<QueryProps>();
 
-  const { shortName, phone } = getClient(id, clients);
+  const { shortName, phone, isOwner } = getClient(id, clients);
   const title = shortName || t("title.new");
 
   const fetchDelete = async () => {
@@ -60,24 +60,8 @@ export const ClientCardHeader = ({ clients }: ClientCardHeaderProps) => {
   }, [id]);
 
   const extra = [
-    <Popconfirm
-      title={t("confirm.call")}
-      onConfirm={handleCall}
-      placement="left"
-    >
-      <Button icon={<PhoneTwoTone twoToneColor="#52c41a" />}>
-        {t("button.call")}
-      </Button>
-    </Popconfirm>,
-    <Popconfirm
-      title={t("confirm.delete")}
-      onConfirm={handleDelete}
-      placement="left"
-    >
-      <Button icon={<DeleteTwoTone twoToneColor="#f5222d" />}>
-        {t("button.delete")}
-      </Button>
-    </Popconfirm>,
+    <Call onClick={handleCall} />,
+    <Delete onClick={handleDelete} isOwner={isOwner} />,
   ];
 
   const breadcrumb = {

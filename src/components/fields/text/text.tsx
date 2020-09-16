@@ -23,6 +23,7 @@ export const Text = ({
       rules={rules}
     >
       <Input
+        autoComplete="off"
         placeholder={placeholder}
         disabled={disabled}
         readOnly={readonly}

@@ -44,6 +44,7 @@ export const Phone = ({
       rules={rules}
     >
       <MaskedInput
+        autoComplete="off"
         className="ant-input"
         mask={PHONE_MASK}
         placeholder={placeholder}

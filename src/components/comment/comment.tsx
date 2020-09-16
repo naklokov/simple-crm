@@ -100,6 +100,7 @@ export const Comment = ({
 
   return (
     <CommentUI
+      style={{ width: "100%" }}
       author={<Text strong>{commentAuthor.fullName}</Text>}
       avatar={<Avatar src={commentAuthor.avatar} />}
       content={content}

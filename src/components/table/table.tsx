@@ -12,6 +12,8 @@ import {
   getDataColumns,
   getFilteredDataSource,
   getEditableTableBody,
+  fetchDictionaries,
+  getLinks,
 } from "./utils";
 import { Header } from "./components";
 import noop from "lodash/noop";
@@ -20,7 +22,7 @@ import style from "./table.module.scss";
 import { setTableLoading } from "../../__data__";
 import { State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { TablePaginationConfig } from "antd/lib/table";
 import { SorterResult, TableCurrentDataSource } from "antd/lib/table/interface";
 
@@ -67,8 +69,14 @@ export const Table = ({
   onChangeTable = noop,
 }: TableProps) => {
   const [t] = useTranslation("table");
+  const dispatch = useDispatch();
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [searched, setSearched] = useState("");
+
+  // useEffect(() => {
+  //   const links = getLinks(dataSource);
+  //   fetchDictionaries(links, dispatch);
+  // }, [dataSource]);
 
   const handleSearch = useCallback(
     (inputSearch) => {

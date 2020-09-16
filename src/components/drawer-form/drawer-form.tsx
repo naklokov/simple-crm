@@ -49,14 +49,6 @@ export const DrawerForm = ({
   }, []);
 
   useEffect(() => {
-    console.log("mount");
-
-    return () => {
-      console.log("unmount");
-    };
-  }, []);
-
-  useEffect(() => {
     if (visible) {
       form.resetFields();
     }

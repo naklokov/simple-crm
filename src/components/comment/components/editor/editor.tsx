@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { Input, Form } from "antd";
+import { Input, Form, Button } from "antd";
 import TextAreaLib from "antd/lib/input/TextArea";
 import { useTranslation } from "react-i18next";
+import { handlePressEnter } from "../../../../utils";
 
 const { TextArea } = Input;
 
@@ -19,19 +20,22 @@ export const Editor = ({ initialValue, onFinish }: EditableTextProps) => {
     inputRef?.current?.focus?.();
   }, []);
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      handlePressEnter(e, handleFinish);
+    },
+    [form]
+  );
+
   const handleFinish = useCallback(async () => {
     const { comment } = await form.validateFields();
     onFinish(comment);
   }, [form]);
 
   return (
-    <Form
-      form={form}
-      component={false}
-      initialValues={{ comment: initialValue }}
-    >
+    <Form form={form} layout="inline" initialValues={{ comment: initialValue }}>
       <Form.Item
-        style={{ margin: 0 }}
+        style={{ margin: 0, width: "50%" }}
         name="comment"
         rules={[
           {
@@ -42,10 +46,15 @@ export const Editor = ({ initialValue, onFinish }: EditableTextProps) => {
       >
         <TextArea
           ref={inputRef}
-          onPressEnter={handleFinish}
+          onKeyDown={handleKeyDown}
           onBlur={handleFinish}
           autoSize={{ minRows: 1, maxRows: 6 }}
         />
+      </Form.Item>
+      <Form.Item style={{ width: "10px", marginLeft: "8px" }}>
+        <Button type="primary" onClick={handleFinish}>
+          {t("comment.save")}
+        </Button>
       </Form.Item>
     </Form>
   );

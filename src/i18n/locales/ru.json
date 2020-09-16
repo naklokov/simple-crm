@@ -85,7 +85,7 @@
     "actions.email.no": "Нет",
     "actions.email.yes": "Да",
 
-    "search.all.placeholder": "Поиск по наименованию, городу и телефону",
+    "search.all.placeholder": "Поиск",
     "search.all.clear": "Очистить фильтр"
   },
   "clientCard": {
@@ -147,6 +147,7 @@
     "message.get.error": "Ошибка при получении списка задач"
   },
   "comment": {
+    "comment.save": "Сохранить",
     "message.delete.error": "Ошибка при удалении комментария",
     "message.put.error": "Ошибка при редактировании комментария",
     "button.delete": "Удалить",

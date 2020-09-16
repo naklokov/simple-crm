@@ -6,6 +6,7 @@ const appSlide = createSlice({
     error: {},
     loading: false,
     tableLoading: false,
+    dictionaries: {},
   },
   reducers: {
     setError(state, action) {
@@ -17,9 +18,17 @@ const appSlide = createSlice({
     setTableLoading(state, action) {
       state.tableLoading = action.payload;
     },
+    setDictionaries(state, action) {
+      state.dictionaries = Object.assign(state.dictionaries, action.payload);
+    },
   },
 });
 
-export const { setLoading, setError, setTableLoading } = appSlide.actions;
+export const {
+  setLoading,
+  setError,
+  setTableLoading,
+  setDictionaries,
+} = appSlide.actions;
 
 export default appSlide.reducer;

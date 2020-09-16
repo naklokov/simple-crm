@@ -37,6 +37,7 @@ export const DateTime = ({
         getValueProps={handleValueProp}
       >
         <DatePicker
+          autoComplete="off"
           style={{ width: "100%" }}
           format={format}
           placeholder={placeholder}

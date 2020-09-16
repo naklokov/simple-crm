@@ -89,45 +89,7 @@ export const lower: LowerProps = {
       _links: {},
     },
     {
-      tabCode: "activeTasks",
-      tabName: "Задачи",
-      tabDescription: "Задачи связанные с клиентом",
-      type: "table",
-      actions: [
-        {
-          actionName: "Просмотр",
-          actionType: "view",
-          permissions: [CLIENTS.ADMIN, CLIENTS.DELETE, CLIENTS.DELETE_OWNER],
-        },
-        {
-          actionName: "Выполнить",
-          actionType: "done",
-          permissions: [CLIENTS.ADMIN, CLIENTS.DELETE, CLIENTS.DELETE_OWNER],
-        },
-      ],
-      columns: [
-        {
-          columnName: "Дата и время",
-          columnCode: "taskEndDate",
-          columnType: "date",
-          format: "DD.MM.YYYY HH:mm",
-          columnDescription: "Запланированная дата для задачи",
-          sorter: true,
-          columnActions: [],
-        },
-        {
-          columnName: "Описание",
-          columnCode: "taskDescription",
-          columnType: "string",
-          columnDescription: "Подробное описание задачи",
-          sorter: false,
-          columnActions: [],
-        },
-      ],
-      _links: {},
-    },
-    {
-      tabCode: "completedTasks",
+      tabCode: "tasks",
       tabName: "Задачи",
       tabDescription: "Задачи связанные с клиентом",
       type: "table",
