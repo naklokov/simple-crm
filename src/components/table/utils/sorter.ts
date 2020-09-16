@@ -5,11 +5,15 @@ const getSorterFunction = (
   columnType: ColumnType
 ): ((a: any, b: any) => any) => {
   if (columnType === "number") {
-    return (a: any, b: any) => a[columnCode] - b[columnCode];
+    return (a: any, b: any) => a?.[columnCode] - b?.[columnCode];
   }
 
-  return (a: any, b: any) =>
-    a[columnCode].toLowerCase().localeCompare(b[columnCode].toLowerCase());
+  return (a: any, b: any) => {
+    const first = a?.[columnCode]?.toLowerCase() ?? "";
+    const second = b?.[columnCode]?.toLowerCase() ?? "";
+
+    return first.localeCompare(second);
+  };
 };
 
 export const getSorterProp = (column: ColumnProps) => {

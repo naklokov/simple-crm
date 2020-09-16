@@ -172,6 +172,7 @@ export interface ClientEntityProps {
   servicingBank: string;
   shortName: string;
   webPage: string;
+  isOwner: boolean;
 }
 
 export interface CommentEntityProps {

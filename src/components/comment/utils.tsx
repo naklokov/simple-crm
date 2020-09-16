@@ -1,6 +1,5 @@
 import React from "react";
 import { Delete, Edit, Editor } from "./components";
-import { Typography } from "antd";
 
 export const getActions = (
   isOwner: boolean,
@@ -23,5 +22,5 @@ export const getContent = (
   isEdit ? (
     <Editor initialValue={text} onFinish={onFinishEdit} />
   ) : (
-    <Typography.Text>{text}</Typography.Text>
+    <p>{text}</p>
   );

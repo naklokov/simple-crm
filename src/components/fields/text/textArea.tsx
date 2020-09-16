@@ -23,6 +23,7 @@ export const TextArea = ({
         style={{ width: "100%" }}
       >
         <Input.TextArea
+          autoComplete="off"
           placeholder={placeholder}
           disabled={disabled}
           readOnly={readonly}

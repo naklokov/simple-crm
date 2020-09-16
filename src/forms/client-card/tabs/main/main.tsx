@@ -5,6 +5,7 @@ import {
   ModeType,
   TabProps,
   urls,
+  QueryProps,
 } from "../../../../constants";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
@@ -49,7 +50,7 @@ export const Main = ({
   setClients,
   mode,
 }: MainProps) => {
-  const { id } = useParams();
+  const { id } = useParams<QueryProps>();
   const [form] = useForm();
   const history = useHistory();
   const [t] = useTranslation("clientCardMain");
@@ -121,7 +122,8 @@ export const Main = ({
         <FormFooter
           loading={submitLoading}
           disabled={submitDisabled}
-          withCancel={false}
+          withCancel={mode === "add"}
+          onCancel={history.goBack}
         />
       </Form>
     </div>

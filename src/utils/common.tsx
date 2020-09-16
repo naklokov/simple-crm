@@ -176,3 +176,13 @@ export const getItemRender = (
     <Link to={`/${paths.join("/")}`}>{route.breadcrumbName}</Link>
   );
 };
+
+export const handlePressEnter = (
+  e: React.KeyboardEvent,
+  callback: () => void
+) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    callback();
+    e.preventDefault();
+  }
+};

@@ -14,20 +14,12 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getSortedParams,
-  useQuery,
 } from "../../utils";
 import { TablePaginationConfig } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
 import ClientsHeader from "./header";
 
 const { ACTIONS, COLUMNS } = formConfig.clients;
-
-const defaultPagination = {
-  page: 1,
-  pageSize: 10,
-  query: "",
-  sortBy: "",
-};
 
 interface ClientsProps {
   clients: ClientEntityProps[];

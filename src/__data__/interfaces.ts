@@ -18,6 +18,7 @@ export interface AppState {
   tableLoading: boolean;
   loading: boolean;
   error: ErrorAppState;
+  dictionaries: object;
 }
 
 export interface State {

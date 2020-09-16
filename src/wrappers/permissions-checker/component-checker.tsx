@@ -5,9 +5,10 @@ import { hasPermission } from "./utils";
 
 interface ComponentCheckerProps {
   children: JSX.Element;
-  availablePermissions?: string[];
+  availablePermissions: string[];
   allPermissions: string[];
   mode?: "hide" | "disabled";
+  isOwner?: boolean;
 }
 
 export const ComponentChecker = ({
@@ -15,6 +16,7 @@ export const ComponentChecker = ({
   allPermissions,
   children,
   availablePermissions = [],
+  isOwner = true,
 }: ComponentCheckerProps) => {
   const [allowed, setAllowed] = useState(true);
 
@@ -23,7 +25,7 @@ export const ComponentChecker = ({
     setAllowed(isAllow);
   }, [availablePermissions, allPermissions]);
 
-  if (!allowed) {
+  if (!allowed || !isOwner) {
     if (mode === "hide") {
       return null;
     }

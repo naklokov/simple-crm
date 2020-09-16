@@ -1,5 +1,9 @@
+import { Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
+import { isEmpty, values } from "lodash";
+import { useDispatch } from "react-redux";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../../utils";
+import { setDictionaries, setTableLoading } from "../../../__data__";
 
 export const fetchTotalCount = async (
   url: string,
@@ -32,5 +36,28 @@ export const fetchData = async (
     defaultErrorHandler({ error });
   } finally {
     setLoadingCallback(false);
+  }
+};
+
+export const fetchDictionaries = async (
+  links: {
+    [key: string]: { href: string };
+  },
+  dispatch: Dispatch
+) => {
+  if (!isEmpty(links)) {
+    const keys = Object.keys(links);
+
+    keys.forEach(async (key) => {
+      dispatch(setTableLoading(true));
+      try {
+        const response = await axios.get(links[key].href);
+        const dictionary = { [key]: response?.data ?? [] };
+        dispatch(setDictionaries(dictionary));
+      } catch (error) {
+        defaultErrorHandler({ error });
+      }
+      dispatch(setTableLoading(true));
+    });
   }
 };

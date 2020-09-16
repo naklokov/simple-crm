@@ -9,7 +9,7 @@ export {
   setAuth,
 } from "./persist";
 
-export { setError, setLoading, setTableLoading } from "./app";
+export { setError, setLoading, setTableLoading, setDictionaries } from "./app";
 
 export { setClients } from "./clients";
 

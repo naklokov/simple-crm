@@ -114,3 +114,8 @@ export const getDataColumns = (
 
     return columnProps;
   });
+
+export const getLinks = (dataSource: any[]) => {
+  const { self, ...links } = dataSource[0]?._links ?? {};
+  return links;
+};
