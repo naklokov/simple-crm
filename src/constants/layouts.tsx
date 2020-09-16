@@ -9,6 +9,7 @@ import {
 import { urls } from ".";
 import { logo } from "../assets/img";
 import { PERMISSIONS } from "./permissions";
+import { Route } from "antd/lib/breadcrumb/Breadcrumb";
 
 const { CLIENTS, TASKS, DEALS } = PERMISSIONS;
 
@@ -44,3 +45,16 @@ export const MENU_ITEMS = [
     icon: <ReadOutlined />,
   },
 ];
+
+export const BREADCRUMB_ROUTES: { [key: string]: Route[] } = {
+  CLIENTS: [
+    {
+      path: "/",
+      breadcrumbName: "Главная",
+    },
+    {
+      path: "/clients",
+      breadcrumbName: "Клиенты",
+    },
+  ],
+};

@@ -18,6 +18,7 @@ import {
 } from "../../utils";
 import { TablePaginationConfig } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
+import ClientsHeader from "./header";
 
 const { ACTIONS, COLUMNS } = formConfig.clients;
 
@@ -114,18 +115,23 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
   };
 
   return (
-    <div className={style.container}>
-      <Table
-        columns={COLUMNS}
-        actions={ACTIONS}
-        loading={loading}
-        pagination={serverPagination}
-        onDeleteRow={handleDelete}
-        dataSource={clients}
-        onSearch={handleSearch}
-        onChangeTable={handleChangeTable}
-        withSearch
-      />
+    <div>
+      <div className={style.header}>
+        <ClientsHeader />
+      </div>
+      <div className={style.container}>
+        <Table
+          columns={COLUMNS}
+          // actions={ACTIONS}
+          loading={loading}
+          pagination={serverPagination}
+          onDeleteRow={handleDelete}
+          dataSource={clients}
+          onSearch={handleSearch}
+          onChangeTable={handleChangeTable}
+          withSearch
+        />
+      </div>
     </div>
   );
 };

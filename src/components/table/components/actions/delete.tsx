@@ -57,8 +57,6 @@ export const Delete = ({
     <Popconfirm
       title={t("actions.delete.confirm")}
       onConfirm={handleDelete}
-      okText={t("actions.delete.yes")}
-      cancelText={t("actions.delete.no")}
       placement="left"
     >
       <Button style={{ padding: 0 }} type="link">

@@ -10,7 +10,6 @@ import { PagePermissionsChecker } from "../../wrappers";
 interface AuthorizeRouteProps extends RouteProps {
   auth: boolean;
   permissions?: string[];
-  subheader?: JSX.Element;
   children: JSX.Element;
 }
 
@@ -18,7 +17,6 @@ export const AuthorizeRoute = ({
   auth,
   exact = false,
   permissions,
-  subheader,
   children,
   ...rest
 }: AuthorizeRouteProps) => {
@@ -29,9 +27,7 @@ export const AuthorizeRoute = ({
       render={({ location }) =>
         auth ? (
           <PagePermissionsChecker availablePermissions={permissions}>
-            <AuthorizedLayout subheader={subheader}>
-              {children}
-            </AuthorizedLayout>
+            <AuthorizedLayout>{children}</AuthorizedLayout>
           </PagePermissionsChecker>
         ) : (
           <Redirect

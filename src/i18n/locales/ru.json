@@ -68,14 +68,14 @@
   },
   "clients": {
     "title": "Клиенты",
-    "add.button.title": "＋ Добавить компанию",
+    "button.add.title": "＋ Добавить компанию",
     "clients.entity.add": "Новая компания",
     "message.error": "Ошибка при получении клиентов",
     "message.delete.success": "Компания успешно удалена"
   },
   "table": {
     "actions.column.title": "Действия",
-    "actions.delete.confirm": "Вы действительно хотите удалить запись?",
+    "actions.delete.confirm": "Вы хотите удалить запись?",
     "actions.delete.no": "Нет",
     "actions.delete.yes": "Да",
     "actions.call.confirm": "Вы хотите набрать номер?",
@@ -89,7 +89,12 @@
     "search.all.clear": "Очистить фильтр"
   },
   "clientCard": {
+    "button.call": "Звонок",
+    "button.delete": "Удалить",
+    "message.success.delete": "Компания успешно удалена",
     "message.error": "Ошибка при получении данных клиента",
+    "confirm.delete": "Вы действительно хотите удалить компанию?",
+    "confirm.call": "Вы действительно хотите позвонить в компанию?",
     "title.new": "Новая компания"
   },
   "clientCardMain": {
@@ -147,7 +152,7 @@
     "button.delete": "Удалить",
     "button.edit": "Редактировать",
     "button.save": "Сохранить",
-    "delete.confirm": "Вы действительно хотите удалить комментарий?",
+    "delete.confirm": "Вы хотите удалить комментарий?",
     "delete.no": "Нет",
     "delete.yes": "Да",
     "rules.required": "Пожалуйста, введите комментарий"

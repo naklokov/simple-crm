@@ -60,8 +60,6 @@ export const FormFooter = ({
           onCancel={handleCancel}
           onVisibleChange={handleVisibleChange}
           visible={visible}
-          okText={t("confirm.yes")}
-          cancelText={t("confirm.no")}
         >
           <Button className={style.cancel}>{t("cancel")}</Button>
         </Popconfirm>

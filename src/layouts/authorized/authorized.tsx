@@ -18,17 +18,14 @@ import { urls } from "../../constants";
 import { useTranslation } from "react-i18next";
 import { logger, defaultErrorHandler } from "../../utils";
 import { Loader } from "../../components";
-import { isEmpty } from "lodash";
 
 const { Sider, Content, Header } = Layout;
 
 interface AuthorizedProps {
   children: JSX.Element;
-  subheader?: JSX.Element;
   loading: boolean;
   isMenuCollapsed: boolean;
   profileInfo: ProfileInfoProps;
-  permissions: string[];
   setCollapsed: (value: boolean) => void;
   setLoading: (loading: boolean) => void;
   setPermissions: (permissions: string[]) => void;
@@ -37,12 +34,10 @@ interface AuthorizedProps {
 
 export const Authorized = ({
   children,
-  subheader,
   loading,
   isMenuCollapsed,
   setCollapsed,
   profileInfo,
-  permissions,
   setProfile,
   setPermissions,
   setLoading,
@@ -115,8 +110,7 @@ export const Authorized = ({
             <Profile profileInfo={profileInfo} />
           </div>
         </Header>
-        {subheader && <div className={style.subheader}>{subheader}</div>}
-        <Content>{children}</Content>
+        <Content className={style.content}>{children}</Content>
         {loading && <Loader />}
       </Layout>
     </Layout>
@@ -125,7 +119,6 @@ export const Authorized = ({
 
 const mapStateToProps = (state: State) => ({
   profileInfo: state?.persist?.profileInfo ?? {},
-  permissions: state?.persist?.permissions ?? {},
   loading: state?.app?.loading,
   isMenuCollapsed: state?.persist?.menuCollapsed,
 });

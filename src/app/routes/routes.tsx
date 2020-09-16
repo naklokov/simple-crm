@@ -47,7 +47,6 @@ const Routes = () => {
         </AuthorizeRoute>
         <AuthorizeRoute
           key={urls.clientCard.path}
-          subheader={<ClientCardHeader />}
           path={urls.clientCard.path}
           permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
           exact
@@ -56,7 +55,6 @@ const Routes = () => {
         </AuthorizeRoute>
         <AuthorizeRoute
           key={urls.clients.path}
-          subheader={<ClientsHeader />}
           path={urls.clients.path}
           permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
         >
