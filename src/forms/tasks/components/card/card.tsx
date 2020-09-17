@@ -1,30 +1,41 @@
-import React from "react";
-import moment from "moment";
+import React, { useEffect, useState } from "react";
 import { ClockCircleTwoTone } from "@ant-design/icons";
-import { Card as CardUI, Typography } from "antd";
-import { getDateWithTimezone, getFullUrl } from "../../../../utils";
+import { Card as CardUI, Skeleton, Space, Typography } from "antd";
+import { getDateWithTimezone, getFullUrl, useFetch } from "../../../../utils";
 import {
   DATE_FORMATS,
   TASK_TYPES_MAP,
   TaskTypeType,
   urls,
+  ClientEntityProps,
 } from "../../../../constants";
+import { useTranslation } from "react-i18next";
 
 interface CardProps {
-  id: string;
-  title: string;
+  clientId: string;
+  title?: string;
   taskType: TaskTypeType;
   taskDescription?: string;
   date?: string;
 }
 
 export const Card = ({
-  id,
-  title,
+  clientId,
   date,
   taskType,
   taskDescription,
+  title = "",
 }: CardProps) => {
+  const [client, setClient] = useState({} as ClientEntityProps);
+  const { response, loading } = useFetch({
+    url: getFullUrl(urls.clients.entity, clientId),
+  });
+
+  useEffect(() => {
+    const client = response?.data ?? {};
+    setClient(client);
+  }, [response]);
+
   const extra = date ? (
     <div>
       <ClockCircleTwoTone />
@@ -34,10 +45,22 @@ export const Card = ({
     </div>
   ) : null;
 
-  const titleContent = <a href={getFullUrl(urls.clients.path, id)}>{title}</a>;
+  const titleContent = (
+    <a href={getFullUrl(urls.clients.path, clientId)}>
+      {client?.shortName ?? title}
+    </a>
+  );
+
+  const titleSkeleton = (
+    <Skeleton.Input style={{ width: "200px" }} active={true} size={"small"} />
+  );
 
   return (
-    <CardUI title={titleContent} extra={extra} size="small">
+    <CardUI
+      title={loading ? titleSkeleton : titleContent}
+      extra={extra}
+      size="small"
+    >
       <strong>{TASK_TYPES_MAP[taskType]}</strong>
       {taskDescription && (
         <Typography.Paragraph ellipsis={{ rows: 2, expandable: true }}>

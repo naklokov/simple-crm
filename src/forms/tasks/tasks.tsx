@@ -4,33 +4,24 @@ import { Calendar, Col, List, Row } from "antd";
 import { TasksHeader } from ".";
 import { Column } from "./components";
 
-import { getDateWithTimezone, getRsqlQuery, useFetch } from "../../utils";
+import { getRsqlQuery, useFetch } from "../../utils";
 import { getTasksColumns } from "./utils";
-import { TaskEntityProps, TASK_STATUSES, urls } from "../../constants";
+import { TaskEntityProps, urls } from "../../constants";
 import { ProfileInfoProps, State } from "../../__data__/interfaces";
 import { connect } from "react-redux";
 
 import style from "./tasks.module.scss";
+import { useTranslation } from "react-i18next";
 
 interface TaskProps {
   profileInfo: ProfileInfoProps;
 }
 
 export const Tasks = ({ profileInfo }: TaskProps) => {
+  const [t] = useTranslation("tasks");
   const [tasks, setTasks] = useState([] as TaskEntityProps[]);
   const [listLoading, setListLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(moment().toISOString());
-
-  const layout = {
-    calendar: {
-      xs: { span: 24 },
-      xl: { span: 9 },
-    },
-    columns: {
-      xs: { span: 24 },
-      xl: { span: 15 },
-    },
-  };
 
   const params = getRsqlQuery([
     { key: "userProfileId", value: profileInfo.id || "" },
@@ -58,15 +49,15 @@ export const Tasks = ({ profileInfo }: TaskProps) => {
         <TasksHeader />
       </div>
       <Row className={style.container}>
-        <Col {...layout.columns}>
+        <Col flex="auto">
           <List
             loading={listLoading}
             grid={{ column: 3 }}
-            dataSource={getTasksColumns(selectedDate, tasks)}
+            dataSource={getTasksColumns(selectedDate, tasks, t)}
             renderItem={(column) => <Column {...column} />}
           />
         </Col>
-        <Col {...layout.calendar}>
+        <Col flex="310px">
           <Calendar
             fullscreen={false}
             className={style.calendar}

@@ -160,6 +160,10 @@
   },
   "tasks": {
     "button.add.title": "＋ Добавить задачу",
-    "title": "Задачи"
+    "title": "Задачи",
+    "today": "Сегодня",
+    "tommorow": "Завтра",
+    "without.date": "Бессрочно",
+    "card.title": "Задача"
   }
 }

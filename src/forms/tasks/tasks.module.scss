@@ -1,5 +1,6 @@
 @import "../../assets/styles/colors";
 @import "../../assets/styles/offsets";
+@import "../../assets/styles/media";
 
 .header {
   margin-top: 1px;
@@ -13,4 +14,10 @@
 
 .calendar {
   margin: 0 var(--offset-md) !important;
+}
+
+@media screen and (max-width: var(--media-xs)) {
+  .containerCol {
+    display: none !important;
+  }
 }

@@ -353,7 +353,7 @@ export const upper: UpperProps = {
       ],
       _links: {
         userProfileId: {
-          href: urls.dictionaries.managers,
+          href: urls.dictionaries.userProfiles,
         },
       },
     },
@@ -528,7 +528,7 @@ export const upper: UpperProps = {
       ],
       _links: {
         userProfileId: {
-          href: urls.dictionaries.managers,
+          href: urls.dictionaries.userProfiles,
         },
       },
     },

@@ -19,7 +19,7 @@ import { TablePaginationConfig } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
 import ClientsHeader from "./header";
 
-const { ACTIONS, COLUMNS } = formConfig.clients;
+const { ACTIONS, COLUMNS, TABLES } = formConfig.clients;
 
 interface ClientsProps {
   clients: ClientEntityProps[];
@@ -113,6 +113,7 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
       </div>
       <div className={style.container}>
         <Table
+          _links={TABLES[0]._links}
           columns={COLUMNS}
           // actions={ACTIONS}
           loading={loading}

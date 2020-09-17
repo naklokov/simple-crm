@@ -48,6 +48,13 @@ export const COLUMNS: ColumnProps[] = [
     sorter: true,
     columnDescription: "Дата регистрации",
   },
+  {
+    columnName: "Куратор",
+    columnCode: "userProfileId",
+    columnType: "dictionary",
+    sorter: true,
+    columnDescription: "Куратор компании",
+  },
 ];
 
 export const ACTIONS: ActionProps[] = [
@@ -59,14 +66,15 @@ export const ACTIONS: ActionProps[] = [
   },
 ];
 
-export const TABLES = {
-  tables: [
-    {
-      tableName: "Клиенты",
-      tableDescription: "Список клиентов",
-      tableCode: "clientsTable",
-      columns: COLUMNS,
-      tableActions: ACTIONS,
+export const TABLES = [
+  {
+    tableName: "Клиенты",
+    tableDescription: "Список клиентов",
+    tableCode: "clientsTable",
+    columns: COLUMNS,
+    _links: {
+      userProfileId: urls.dictionaries.userProfiles,
     },
-  ],
-};
+    tableActions: ACTIONS,
+  },
+];

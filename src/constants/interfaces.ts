@@ -198,7 +198,7 @@ export interface TaskEntityProps {
   isActive: boolean;
   isDeleted: boolean;
   isOwner: boolean;
-  profileId: string;
+  userProfileId: string;
   taskDescription: string;
   taskStatus: TaskStatusType;
   taskType: TaskTypeType;
