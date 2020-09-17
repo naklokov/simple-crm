@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import moment from "moment";
 import { CommentEntityProps, urls, DATE_FORMATS } from "../../constants";
 import { Comment as CommentUI, Typography, Skeleton } from "antd";
 import { ProfileInfoProps, State } from "../../__data__/interfaces";

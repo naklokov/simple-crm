@@ -1,7 +1,6 @@
 import "moment/locale/ru";
 
 import React from "react";
-import moment from "moment";
 import { Col, Form, DatePicker } from "antd";
 import { DATE_FORMATS, DEFAULT_SPAN, FieldProps } from "../../../constants";
 import { getDateWithTimezone } from "../../../utils";

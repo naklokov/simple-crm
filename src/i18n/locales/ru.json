@@ -157,5 +157,9 @@
     "delete.no": "Нет",
     "delete.yes": "Да",
     "rules.required": "Пожалуйста, введите комментарий"
+  },
+  "tasks": {
+    "button.add.title": "＋ Добавить задачу",
+    "title": "Задачи"
   }
 }

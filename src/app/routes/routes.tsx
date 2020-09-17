@@ -10,12 +10,11 @@ import {
   Login,
   ForgotPassword,
   Clients,
-  ClientsHeader,
   ClientCard,
-  ClientCardHeader,
   RestorePassword,
   Profile,
   NotFoundError,
+  Tasks,
 } from "../../forms";
 import { AuthorizeRoute, UnauthorizeRoute } from ".";
 
@@ -66,7 +65,7 @@ const Routes = () => {
           path={urls.tasks.path}
           permissions={[TASKS.ADMIN, TASKS.GET, TASKS.GET_OWNER]}
         >
-          <Typography.Title>Задачи</Typography.Title>
+          <Tasks />
         </AuthorizeRoute>
         <AuthorizeRoute
           key={urls.deals.path}

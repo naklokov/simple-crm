@@ -1,0 +1,16 @@
+@import "../../assets/styles/colors";
+@import "../../assets/styles/offsets";
+
+.header {
+  margin-top: 1px;
+}
+
+.container {
+  display: flex;
+  margin: var(--offset-md2);
+  background-color: var(--background-color-form);
+}
+
+.calendar {
+  margin: 0 var(--offset-md) !important;
+}

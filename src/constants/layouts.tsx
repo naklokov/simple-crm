@@ -46,15 +46,25 @@ export const MENU_ITEMS = [
   },
 ];
 
-export const BREADCRUMB_ROUTES: { [key: string]: Route[] } = {
+export const BREADCRUMB_ROUTES = {
   CLIENTS: [
     {
       path: "/",
       breadcrumbName: "Главная",
     },
     {
-      path: "/clients",
+      path: urls.clients.path,
       breadcrumbName: "Клиенты",
+    },
+  ],
+  TASKS: [
+    {
+      path: "/",
+      breadcrumbName: "Главная",
+    },
+    {
+      path: urls.tasks.path,
+      breadcrumbName: "Задачи",
     },
   ],
 };
