@@ -38,7 +38,7 @@ export const ServerError = ({ error, setError }: ServerErrorProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  error: state?.app?.error ?? {},
+  error: state?.persist?.error ?? {},
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

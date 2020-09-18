@@ -52,6 +52,8 @@ export const COLUMNS: ColumnProps[] = [
     columnName: "Куратор",
     columnCode: "userProfileId",
     columnType: "dictionary",
+    titleField: "fullName",
+    valueField: "id",
     sorter: true,
     columnDescription: "Куратор компании",
   },
@@ -73,7 +75,9 @@ export const TABLES = [
     tableCode: "clientsTable",
     columns: COLUMNS,
     _links: {
-      userProfileId: urls.dictionaries.userProfiles,
+      userProfileId: {
+        href: urls.userProfiles.entity,
+      },
     },
     tableActions: ACTIONS,
   },

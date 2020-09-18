@@ -56,6 +56,8 @@ export interface DrawerProps {
 export interface FieldProps {
   fieldCode: string;
   fieldName: string;
+  titleField?: string;
+  codeField?: string;
   fieldDescription?: string;
   type: FieldType;
   readonly?: boolean;
@@ -129,6 +131,8 @@ export interface ColumnProps {
   columnDescription?: string;
   columnCode: string;
   columnType: ColumnType;
+  titleField?: string;
+  valueField?: string;
   format?: ColumnFormatType;
   sorter: any;
   editable?: boolean;

@@ -7,9 +7,10 @@ export {
   setMenuCollapsed,
   setProfileInfo,
   setAuth,
+  setError,
 } from "./persist";
 
-export { setError, setLoading, setTableLoading, setDictionaries } from "./app";
+export { setLoading, setTableLoading, setDictionaries } from "./app";
 
 export { setClients } from "./clients";
 

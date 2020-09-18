@@ -48,6 +48,7 @@ export const Dictionary = ({
     <Col {...span} key={fieldCode}>
       <Form.Item
         name={fieldCode}
+        style={{ width: "100%" }}
         label={fieldName}
         extra={fieldDescription}
         rules={rules}

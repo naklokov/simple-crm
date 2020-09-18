@@ -41,15 +41,11 @@ export const errorsInterceptor = (dispatch: Dispatch, state: State) => (
     }
 
     if (statusCode === HTTP_CODES.UNAUTHORIZED) {
-      // TODO очень много ошибок при нескольких подряд ошибках
-      // if (errorDescription) {
-      //   message.error(errorDescription);
-      // }
       logout(dispatch);
       return Promise.reject(errorResponse);
     }
 
-    const hasError = state?.app?.error?.statusCode;
+    const hasError = state?.persist?.error?.statusCode;
     if (ERROR_SCREEN_CODES.includes(statusCode) && !originalRequest._retry) {
       if (!hasError) {
         dispatch(setError({ statusCode, ...error }));

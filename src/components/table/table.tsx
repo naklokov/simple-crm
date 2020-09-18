@@ -69,12 +69,12 @@ export const Table = ({
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [searched, setSearched] = useState("");
 
-  // useEffect(() => {
-  //   if (_links) {
-  //     const { self, ...links } = _links;
-  //     fetchDictionaries(links, dispatch);
-  //   }
-  // }, [_links]);
+  useEffect(() => {
+    if (_links) {
+      const { self, ...links } = _links;
+      fetchDictionaries(links, dispatch);
+    }
+  }, [_links]);
 
   const handleSearch = useCallback(
     (inputSearch) => {

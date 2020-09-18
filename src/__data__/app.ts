@@ -3,15 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const appSlide = createSlice({
   name: "app",
   initialState: {
-    error: {},
     loading: false,
     tableLoading: false,
     dictionaries: {},
   },
   reducers: {
-    setError(state, action) {
-      state.error = action.payload;
-    },
     setLoading(state, action) {
       state.loading = action.payload;
     },
@@ -26,7 +22,6 @@ const appSlide = createSlice({
 
 export const {
   setLoading,
-  setError,
   setTableLoading,
   setDictionaries,
 } = appSlide.actions;

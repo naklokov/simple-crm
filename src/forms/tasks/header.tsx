@@ -7,12 +7,12 @@ import { ComponentPermissionsChecker } from "../../wrappers";
 
 const { TASKS } = PERMISSIONS;
 
-export const TasksHeader = () => {
-  const [t] = useTranslation("tasks");
+interface TasksHeaderProps {
+  onAddClick: () => void;
+}
 
-  const handleClickAdd = useCallback(() => {
-    alert("open drawer");
-  }, []);
+export const TasksHeader = ({ onAddClick }: TasksHeaderProps) => {
+  const [t] = useTranslation("tasks");
 
   const breadcrumb = {
     routes: BREADCRUMB_ROUTES.TASKS,
@@ -23,7 +23,7 @@ export const TasksHeader = () => {
     <ComponentPermissionsChecker
       availablePermissions={[TASKS.ADMIN, TASKS.ADD]}
     >
-      <Button type="primary" onClick={handleClickAdd}>
+      <Button type="primary" onClick={onAddClick}>
         {t("button.add.title")}
       </Button>
     </ComponentPermissionsChecker>

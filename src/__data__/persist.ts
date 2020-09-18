@@ -3,12 +3,16 @@ import { createSlice } from "@reduxjs/toolkit";
 const persistSlice = createSlice({
   name: "persist",
   initialState: {
+    error: {},
     permissions: [],
     menuCollapsed: false,
     profileInfo: {},
     auth: false,
   },
   reducers: {
+    setError(state, action) {
+      state.error = action.payload;
+    },
     setPermissions(state, action) {
       state.permissions = action.payload;
     },
@@ -29,6 +33,7 @@ export const {
   setMenuCollapsed,
   setProfileInfo,
   setAuth,
+  setError,
 } = persistSlice.actions;
 
 export default persistSlice.reducer;

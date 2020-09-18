@@ -6,12 +6,19 @@ import { Column } from "./components";
 
 import { getRsqlQuery, useFetch } from "../../utils";
 import { getTasksColumns } from "./utils";
-import { TaskEntityProps, urls } from "../../constants";
+import { TaskEntityProps, urls, formConfig } from "../../constants";
 import { ProfileInfoProps, State } from "../../__data__/interfaces";
 import { connect } from "react-redux";
 
 import style from "./tasks.module.scss";
 import { useTranslation } from "react-i18next";
+import { AddTaskDrawer } from "../../drawers";
+
+const {
+  TASKS: { drawers },
+} = formConfig.tasks;
+
+const taskDrawer = drawers.find((o) => o.code === "task");
 
 interface TaskProps {
   profileInfo: ProfileInfoProps;
@@ -19,6 +26,7 @@ interface TaskProps {
 
 export const Tasks = ({ profileInfo }: TaskProps) => {
   const [t] = useTranslation("tasks");
+  const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [tasks, setTasks] = useState([] as TaskEntityProps[]);
   const [listLoading, setListLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(moment().toISOString());
@@ -43,11 +51,31 @@ export const Tasks = ({ profileInfo }: TaskProps) => {
     [selectedDate]
   );
 
+  const handleCloseAddDrawer = useCallback(
+    (event, task) => {
+      setAddDrawerVisible(false);
+
+      if (task) {
+        setTasks([...tasks, task]);
+      }
+    },
+    [tasks]
+  );
+
+  const handleAddClick = useCallback(() => {
+    setAddDrawerVisible(true);
+  }, [addDrawerVisible]);
+
   return (
     <div>
       <div className={style.header}>
-        <TasksHeader />
+        <TasksHeader onAddClick={handleAddClick} />
       </div>
+      <AddTaskDrawer
+        fields={taskDrawer?.fields ?? []}
+        onClose={handleCloseAddDrawer}
+        visible={addDrawerVisible}
+      />
       <Row className={style.container}>
         <Col flex="auto">
           <List
@@ -57,7 +85,7 @@ export const Tasks = ({ profileInfo }: TaskProps) => {
             renderItem={(column) => <Column {...column} />}
           />
         </Col>
-        <Col flex="310px">
+        <Col flex="320px">
           <Calendar
             fullscreen={false}
             className={style.calendar}

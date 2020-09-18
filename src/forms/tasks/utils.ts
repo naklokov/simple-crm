@@ -2,6 +2,7 @@ import moment, { Moment } from "moment-timezone";
 import { TaskEntityProps } from "../../constants/interfaces";
 import { DATE_FORMATS } from "../../constants";
 import { isEmpty } from "lodash";
+import { getDateWithTimezone } from "../../utils";
 
 const DIVIDER_COLORS = ["#FAAD14", "#1890FF", "#B6232C"];
 
@@ -11,13 +12,20 @@ const getColumnTitles = (t: Function) => [
   t("without.date"),
 ];
 
-export const getSortedTasksByDate = (tasks: TaskEntityProps[], date: Moment) =>
-  tasks
-    .filter(({ taskEndDate }) => date.isSame(taskEndDate, "day"))
+export const getSortedTasksByDate = (
+  tasks: TaskEntityProps[],
+  date: Moment
+) => {
+  return tasks
+    .filter(({ taskEndDate }) => {
+      const endDate = getDateWithTimezone(taskEndDate).toISOString();
+      return date.isSame(endDate, "day");
+    })
     .sort(
       (a: TaskEntityProps, b: TaskEntityProps) =>
         moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
     );
+};
 
 export const getTasksWithoutDate = (tasks: TaskEntityProps[]) =>
   tasks.filter(({ taskEndDate }) => !taskEndDate);

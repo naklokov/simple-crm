@@ -15,9 +15,3 @@
 .calendar {
   margin: 0 var(--offset-md) !important;
 }
-
-@media screen and (max-width: var(--media-xs)) {
-  .containerCol {
-    display: none !important;
-  }
-}

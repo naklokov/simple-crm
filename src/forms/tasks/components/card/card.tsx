@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { ClockCircleTwoTone } from "@ant-design/icons";
 import { Card as CardUI, Skeleton, Space, Typography } from "antd";
-import { getDateWithTimezone, getFullUrl, useFetch } from "../../../../utils";
+import {
+  defaultErrorHandler,
+  getDateWithTimezone,
+  getFullUrl,
+  useFetch,
+} from "../../../../utils";
 import {
   DATE_FORMATS,
   TASK_TYPES_MAP,
@@ -10,12 +16,20 @@ import {
   ClientEntityProps,
 } from "../../../../constants";
 import { useTranslation } from "react-i18next";
+import { State } from "../../../../__data__/interfaces";
+import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
+import { setClients } from "../../../../__data__";
+import { getClient } from "../../../client-card/utils";
+import { isEmpty } from "lodash";
+import { connect } from "react-redux";
 
 interface CardProps {
   clientId: string;
   title?: string;
   taskType: TaskTypeType;
   taskDescription?: string;
+  clients: ClientEntityProps[];
+  setClients: (clients: ClientEntityProps[]) => void;
   date?: string;
 }
 
@@ -24,17 +38,33 @@ export const Card = ({
   date,
   taskType,
   taskDescription,
+  clients,
+  setClients,
   title = "",
 }: CardProps) => {
-  const [client, setClient] = useState({} as ClientEntityProps);
-  const { response, loading } = useFetch({
-    url: getFullUrl(urls.clients.entity, clientId),
-  });
+  const client = getClient(clientId, clients);
+  const [loading, setLoading] = useState(false);
+
+  const fetchClient = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        getFullUrl(urls.clients.entity, clientId)
+      );
+      const client = response?.data ?? {};
+      setClients([...clients, client]);
+    } catch (error) {
+      defaultErrorHandler({ error });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const client = response?.data ?? {};
-    setClient(client);
-  }, [response]);
+    if (isEmpty(client)) {
+      fetchClient();
+    }
+  }, [clients]);
 
   const extra = date ? (
     <div>
@@ -71,4 +101,11 @@ export const Card = ({
   );
 };
 
-export default Card;
+const mapStateToProps = (state: State) => ({
+  clients: state?.clients ?? [],
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators({ setClients }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Card);
