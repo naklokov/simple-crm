@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Result, Button } from "antd";
 import { useTranslation } from "react-i18next";
 import { setError as setErrorAction } from "../../__data__";
@@ -20,6 +20,10 @@ export const ServerError = ({ error, setError }: ServerErrorProps) => {
     };
   });
 
+  const handleClick = useCallback(() => {
+    setError({});
+  }, [error]);
+
   const [t] = useTranslation("error");
   const { errorDescription } = error;
 
@@ -29,7 +33,7 @@ export const ServerError = ({ error, setError }: ServerErrorProps) => {
       title={t("title.server")}
       subTitle={errorDescription || t("subtitle.default")}
       extra={
-        <Button type="primary" href={ROOT_URL}>
+        <Button type="primary" onClick={handleClick}>
           {t("button")}
         </Button>
       }

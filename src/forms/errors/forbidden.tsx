@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Result, Button } from "antd";
 import { useTranslation } from "react-i18next";
 import { State, ErrorAppState } from "../../__data__/interfaces";
@@ -20,6 +20,10 @@ export const Forbidden = ({ error, setError }: ForbiddenProps) => {
     };
   });
 
+  const handleClick = useCallback(() => {
+    setError({});
+  }, [error]);
+
   const [t] = useTranslation("error");
   const { errorDescription } = error;
 
@@ -29,7 +33,7 @@ export const Forbidden = ({ error, setError }: ForbiddenProps) => {
       title={t("title.forbidden")}
       subTitle={errorDescription || t("subtitle.default")}
       extra={
-        <Button type="primary" href={ROOT_URL}>
+        <Button type="primary" onClick={handleClick}>
           {t("button")}
         </Button>
       }
