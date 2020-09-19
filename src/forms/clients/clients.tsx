@@ -7,8 +7,9 @@ import {
   ClientEntityProps,
   formConfig,
   RsqlParamProps,
+  FetchParamsProps,
 } from "../../constants";
-import { getSearchRsqlParams } from "./utils";
+import { getClientsRsqlQuery, getSearchRsqlParams } from "./utils";
 
 import style from "./clients.module.scss";
 import { State } from "../../__data__/interfaces";
@@ -28,15 +29,17 @@ import ClientsHeader from "./header";
 const { ACTIONS, COLUMNS, TABLES } = formConfig.clients;
 
 interface ClientsProps {
+  title?: string;
   clients: ClientEntityProps[];
   setClients: (clients: ClientEntityProps[]) => void;
-  fetchParams?: {
-    rsqlParams?: RsqlParamProps[];
-    searchParams?: { [key: string]: string | boolean | number };
-  };
+  fetchParams?: FetchParamsProps;
 }
 
-export const Clients = ({ setClients, clients, fetchParams }: ClientsProps) => {
+export const Clients = ({
+  setClients,
+  clients,
+  fetchParams = {},
+}: ClientsProps) => {
   const [t] = useTranslation("clients");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -44,6 +47,7 @@ export const Clients = ({ setClients, clients, fetchParams }: ClientsProps) => {
   const [sortBy, setSortBy] = useState("");
   const [rsqlParams, setRsqlParams] = useState([] as RsqlParamProps[]);
   const [total, setTotal] = useState(0);
+
   const url = urls.clients.paging;
 
   useEffect(() => {
@@ -51,7 +55,7 @@ export const Clients = ({ setClients, clients, fetchParams }: ClientsProps) => {
   }, [url]);
 
   const fetchDataSource = async (params: any = {}) => {
-    setLoading(true);
+    const query = getClientsRsqlQuery(rsqlParams, fetchParams);
     const prev = {
       page,
       pageSize,
@@ -59,18 +63,11 @@ export const Clients = ({ setClients, clients, fetchParams }: ClientsProps) => {
       rsqlParams,
     };
 
-    let query = "";
-
-    if (fetchParams?.rsqlParams) {
-      query = getRsqlParams([...rsqlParams, ...fetchParams.rsqlParams]);
-    } else {
-      query = getRsqlParams(rsqlParams);
-    }
-
+    setLoading(true);
     try {
       const response = await axios.get(url, {
         params: {
-          ...(fetchParams?.searchParams || {}),
+          ...fetchParams.queryString,
           ...prev,
           ...params,
           query,
@@ -137,7 +134,6 @@ export const Clients = ({ setClients, clients, fetchParams }: ClientsProps) => {
         <Table
           _links={TABLES[0]._links}
           columns={COLUMNS}
-          // actions={ACTIONS}
           loading={loading}
           pagination={serverPagination}
           onDeleteRow={handleDelete}
@@ -150,6 +146,10 @@ export const Clients = ({ setClients, clients, fetchParams }: ClientsProps) => {
     </div>
   );
 };
+
+const mapStateToProps = (state: State) => ({
+  clients: state?.clients ?? [],
+});
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators({ setClients, setTableLoading }, dispatch);

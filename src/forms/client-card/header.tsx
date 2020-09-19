@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { ReactNode, useCallback } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import {
@@ -59,10 +59,15 @@ export const ClientCardHeader = ({ clients }: ClientCardHeaderProps) => {
     fetchDelete();
   }, [id]);
 
-  const extra = [
-    <Call onClick={handleCall} />,
-    <Delete onClick={handleDelete} isOwner={isOwner} />,
-  ];
+  let extra: ReactNode[] = [];
+
+  if (phone) {
+    extra = [...extra, <Call onClick={handleCall} />];
+  }
+
+  if (id) {
+    extra = [...extra, <Delete onClick={handleDelete} isOwner={isOwner} />];
+  }
 
   const breadcrumb = {
     routes: [

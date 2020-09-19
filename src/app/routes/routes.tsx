@@ -28,7 +28,7 @@ import { ProfileInfoProps, State } from "../../__data__/interfaces";
 import { connect } from "react-redux";
 
 const MAIN_PAGE = urls.clients.path;
-const { PROFILE_INFO, CLIENTS, TASKS, DEALS } = PERMISSIONS;
+const { PROFILE_INFO, CLIENTS, TASKS } = PERMISSIONS;
 
 interface RoutesProps {
   profileInfo: ProfileInfoProps;
@@ -37,12 +37,12 @@ interface RoutesProps {
 const Routes = ({ profileInfo }: RoutesProps) => {
   const [t] = useTranslation();
 
-  const myClientsParams: RsqlParamProps = profileInfo.id
-    ? {
-        key: "userProfileId",
-        value: profileInfo.id,
-      }
-    : {};
+  const userProfileRsql: RsqlParamProps[] = [
+    {
+      key: "userProfileId",
+      value: profileInfo?.id ?? "",
+    },
+  ];
 
   return (
     <Router basename={http.ROOT_URL}>
@@ -70,6 +70,7 @@ const Routes = ({ profileInfo }: RoutesProps) => {
           key={urls.clients.path}
           path={urls.clients.path}
           permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
+          exact
         >
           <Clients />
         </AuthorizeRoute>
@@ -78,7 +79,10 @@ const Routes = ({ profileInfo }: RoutesProps) => {
           path={urls.clients.pathMy}
           permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
         >
-          <Clients fetchParams={} />
+          <Clients
+            title={t("title.my", { ns: "clients" })}
+            fetchParams={{ rsql: userProfileRsql }}
+          />
         </AuthorizeRoute>
         <AuthorizeRoute
           key={urls.tasks.path}
@@ -90,7 +94,7 @@ const Routes = ({ profileInfo }: RoutesProps) => {
         <AuthorizeRoute
           key={urls.deals.path}
           path={urls.deals.path}
-          permissions={[DEALS.ADMIN, DEALS.GET, DEALS.GET_OWNER]}
+          permissions={[]}
         >
           <Typography.Title>Сделки</Typography.Title>
         </AuthorizeRoute>

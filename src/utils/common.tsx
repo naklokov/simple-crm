@@ -28,6 +28,8 @@ const ORDER_MAP = {
   descend: "desc",
 };
 
+const FULL_ERROR_MESSAGE_CODES = ["OLVE-7"];
+
 const DEFAULT_SUCCESS_MESSAGE_LOGOUT = "Пользователь вышел из системы";
 const DEFAULT_ERROR_MESSAGE_LOGOUT =
   "Произошла ошибка в процессе выхода из системы";
@@ -77,7 +79,7 @@ export const getFullUrl = (url: string = "", id?: string): string => {
 };
 
 export const callTel = (phone: string) => {
-  window.location.assign(`tel:${phone.replaceAll(/(\s|\(|\)|\-)/gi, "")}`);
+  window.location.assign(`tel:${phone.replace(/(\s|\(|\)|-)/gi, "")}`);
 };
 
 export const logout = async (dispatch: Dispatch) => {
@@ -112,7 +114,7 @@ export const defaultErrorHandler = ({
   defaultErrorMessage = "",
 }: DefaultErrorHandlerProps) => {
   const {
-    errorCode,
+    errorCode = "",
     errorDescription,
     errorMessage = defaultErrorMessage,
   } = error;
@@ -128,6 +130,10 @@ export const defaultErrorHandler = ({
   });
 
   if (errorDescription) {
+    if (FULL_ERROR_MESSAGE_CODES.includes(errorCode)) {
+      message.error(fullMessage);
+      return;
+    }
     message.error(errorDescription);
   }
 };

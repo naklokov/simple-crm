@@ -1,4 +1,9 @@
-import { RSQL_OPERATORS_MAP } from "../../constants";
+import {
+  FetchParamsProps,
+  RsqlParamProps,
+  RSQL_OPERATORS_MAP,
+} from "../../constants";
+import { getRsqlParams } from "../../utils";
 
 export const getSearchRsqlParams = (searched: string) => {
   if (searched) {
@@ -10,4 +15,17 @@ export const getSearchRsqlParams = (searched: string) => {
   } else {
     return null;
   }
+};
+
+export const getClientsRsqlQuery = (
+  defaultRsql: RsqlParamProps[],
+  fetchParams: FetchParamsProps = {}
+) => {
+  const { rsql } = fetchParams;
+
+  if (rsql) {
+    return getRsqlParams([...defaultRsql, ...rsql]);
+  }
+
+  return getRsqlParams(defaultRsql);
 };

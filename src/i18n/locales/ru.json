@@ -68,6 +68,7 @@
   },
   "clients": {
     "title": "Клиенты",
+    "title.my": "Мои клиенты",
     "button.add.title": "＋ Добавить компанию",
     "clients.entity.add": "Новая компания",
     "message.error": "Ошибка при получении клиентов",

@@ -14,7 +14,7 @@ const {
   CLIENTS: { ADMIN, GET, GET_OWNER },
 } = PERMISSIONS;
 
-export const Delete = ({ onClick, isOwner }: DeleteProps) => {
+export const Delete = ({ onClick, isOwner = false }: DeleteProps) => {
   const [t] = useTranslation("clientCard");
   return (
     <ComponentPermissionsChecker
