@@ -19,10 +19,6 @@ import {
 
 import { ProtectedRoute } from ".";
 import { urls } from "../../constants";
-import { useTranslation } from "react-i18next";
-import { FORM_NAME as loginFormName } from "../../forms/login/constants";
-import { FORM_NAME as forgotPasswordFormName } from "../../forms/forgot-password/constants";
-import { FORM_NAME as restorePasswordFormName } from "../../forms/restore-password/constants";
 import { AuthorizedLayout, UnauthorizedLayout } from "../../layouts";
 import { ROOT_URL } from "../../constants/http";
 

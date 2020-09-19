@@ -8,8 +8,9 @@ import {
   formConfig,
   RsqlParamProps,
   PERMISSIONS,
+  FetchParamsProps,
 } from "../../constants";
-import { getSearchRsqlParams } from "./utils";
+import { getClientsRsqlQuery, getSearchRsqlParams } from "./utils";
 
 import style from "./clients.module.scss";
 import { State } from "../../__data__/interfaces";
@@ -20,7 +21,6 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getSortedParams,
-  getRsqlParams,
 } from "../../utils";
 import { TablePaginationConfig } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
@@ -34,15 +34,17 @@ const {
 } = PERMISSIONS;
 
 interface ClientsProps {
+  title?: string;
   clients: ClientEntityProps[];
   setClients: (clients: ClientEntityProps[]) => void;
-  fetchParams?: {
-    rsqlParams?: RsqlParamProps[];
-    searchParams?: { [key: string]: string | boolean | number };
-  };
+  fetchParams?: FetchParamsProps;
 }
 
-export const Clients = ({ setClients, clients, fetchParams }: ClientsProps) => {
+export const Clients = ({
+  setClients,
+  clients,
+  fetchParams = {},
+}: ClientsProps) => {
   const [t] = useTranslation("clients");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -50,6 +52,7 @@ export const Clients = ({ setClients, clients, fetchParams }: ClientsProps) => {
   const [sortBy, setSortBy] = useState("");
   const [rsqlParams, setRsqlParams] = useState([] as RsqlParamProps[]);
   const [total, setTotal] = useState(0);
+
   const url = urls.clients.paging;
 
   useEffect(() => {
@@ -57,7 +60,7 @@ export const Clients = ({ setClients, clients, fetchParams }: ClientsProps) => {
   }, [url]);
 
   const fetchDataSource = async (params: any = {}) => {
-    setLoading(true);
+    const query = getClientsRsqlQuery(rsqlParams, fetchParams);
     const prev = {
       page,
       pageSize,
@@ -65,18 +68,11 @@ export const Clients = ({ setClients, clients, fetchParams }: ClientsProps) => {
       rsqlParams,
     };
 
-    let query = "";
-
-    if (fetchParams?.rsqlParams) {
-      query = getRsqlParams([...rsqlParams, ...fetchParams.rsqlParams]);
-    } else {
-      query = getRsqlParams(rsqlParams);
-    }
-
+    setLoading(true);
     try {
       const response = await axios.get(url, {
         params: {
-          ...(fetchParams?.searchParams || {}),
+          ...fetchParams.queryString,
           ...prev,
           ...params,
           query,

@@ -1,17 +1,11 @@
 import React from "react";
-import {
-  UserOutlined,
-  CalendarOutlined,
-  DollarOutlined,
-  ReadOutlined,
-} from "@ant-design/icons";
+import { UserOutlined, CalendarOutlined } from "@ant-design/icons";
 
 import { urls } from ".";
 import { logo } from "../assets/img";
 import { PERMISSIONS } from "./permissions";
-import { Route } from "antd/lib/breadcrumb/Breadcrumb";
 
-const { CLIENTS, TASKS, DEALS } = PERMISSIONS;
+const { CLIENTS, TASKS } = PERMISSIONS;
 
 export const LOGO = logo;
 

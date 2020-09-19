@@ -13,7 +13,7 @@ import { ComponentPermissionsChecker } from "../../wrappers";
 
 const { CLIENTS } = PERMISSIONS;
 
-export const ClientsHeader = () => {
+export const ClientsHeader = ({ title }: { title?: string }) => {
   const [t] = useTranslation("clients");
   const history = useHistory();
 
@@ -32,7 +32,7 @@ export const ClientsHeader = () => {
       availablePermissions={[CLIENTS.ADMIN, CLIENTS.ADD]}
     >
       <Button type="primary" onClick={handleClickAdd}>
-        {t("button.add.title")}
+        {title || t("button.add.title")}
       </Button>
     </ComponentPermissionsChecker>
   );
