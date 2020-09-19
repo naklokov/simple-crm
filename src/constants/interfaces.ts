@@ -94,6 +94,12 @@ export interface TableProps {
   tableActions: ActionProps[];
 }
 
+export interface RsqlParamProps {
+  key: string;
+  operator?: string;
+  value: string | number | boolean;
+}
+
 export interface DictionaryProps {
   id?: string;
   dictionaryCode?: string;

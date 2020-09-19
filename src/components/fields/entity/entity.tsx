@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Col, Form, Select, Spin } from "antd";
 import { Dispatch } from "@reduxjs/toolkit";
 import { DEFAULT_SPAN, FieldProps, urls } from "../../../constants";
-import { getRsqlQuery, useFetch } from "../../../utils";
+import { getRsqlParams, useFetch } from "../../../utils";
 import { setLoading } from "../../../__data__";
 import { connect } from "react-redux";
 import { ProfileInfoProps, State } from "../../../__data__/interfaces";
@@ -31,11 +31,11 @@ export const Entity = ({
 }: DictionaryComponentProps) => {
   const [options, setOptions] = useState([]);
   const url = _links?.self.href ?? "";
-  const params = getRsqlQuery([
+  const query = getRsqlParams([
     { key: "userProfileId", value: profileInfo.id || "" },
   ]);
 
-  const { response, loading } = useFetch({ url, params });
+  const { response, loading } = useFetch({ url, params: { query } });
 
   useEffect(() => {
     if (response) {

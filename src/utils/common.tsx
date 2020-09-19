@@ -1,5 +1,10 @@
 import React from "react";
-import { urls, ErrorProps, RSQL_OPERATORS_MAP } from "../constants";
+import {
+  urls,
+  ErrorProps,
+  RSQL_OPERATORS_MAP,
+  RsqlParamProps,
+} from "../constants";
 import axios from "axios";
 import moment from "moment-timezone";
 import Cookies from "js-cookie";
@@ -11,12 +16,6 @@ import { message } from "antd";
 import { SortOrder } from "antd/lib/table/interface";
 import { Link } from "react-router-dom";
 import { Route } from "antd/lib/breadcrumb/Breadcrumb";
-
-interface RsqlParamProps {
-  key: string;
-  operator?: string;
-  value: string | number | boolean;
-}
 
 interface DefaultErrorHandlerProps {
   error: ErrorProps;
@@ -44,24 +43,13 @@ export const clearCookie = () => {
 
 const getTemplateMask = (param: string) => `{{${param}}}`;
 
-// export const getRsqlQuery = (params: QueryParamsType) => {
-//   const keys = Object.keys(params);
-//   const query = keys.reduce(
-//     (prev, key) => prev + `${key}==${params[key]};`,
-//     ""
-//   );
-
-//   // удаляем последнюю точку с запятой
-//   return { query: query.substring(0, query.length - 1) };
-// };
-
-export const getRsqlQuery = (params: RsqlParamProps[]) => {
+export const getRsqlParams = (params: RsqlParamProps[]) => {
   const queries = params.map(
     ({ key, value, operator = RSQL_OPERATORS_MAP.EQUAL }) =>
       `${key}${operator}${value}`
   );
 
-  return { query: queries.join(";") };
+  return queries.join(";");
 };
 
 export const fillTemplate = (

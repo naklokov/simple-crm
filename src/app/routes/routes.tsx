@@ -18,18 +18,32 @@ import {
 } from "../../forms";
 import { AuthorizeRoute, UnauthorizeRoute } from ".";
 
-import { urls, http, PERMISSIONS } from "../../constants";
+import { urls, http, PERMISSIONS, RsqlParamProps } from "../../constants";
 import { Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { FORM_NAME as loginFormName } from "../../forms/login/constants";
 import { FORM_NAME as forgotPasswordFormName } from "../../forms/forgot-password/constants";
 import { FORM_NAME as restorePasswordFormName } from "../../forms/restore-password/constants";
+import { ProfileInfoProps, State } from "../../__data__/interfaces";
+import { connect } from "react-redux";
 
 const MAIN_PAGE = urls.clients.path;
 const { PROFILE_INFO, CLIENTS, TASKS, DEALS } = PERMISSIONS;
 
-const Routes = () => {
+interface RoutesProps {
+  profileInfo: ProfileInfoProps;
+}
+
+const Routes = ({ profileInfo }: RoutesProps) => {
   const [t] = useTranslation();
+
+  const myClientsParams: RsqlParamProps = profileInfo.id
+    ? {
+        key: "userProfileId",
+        value: profileInfo.id,
+      }
+    : {};
+
   return (
     <Router basename={http.ROOT_URL}>
       <Switch>
@@ -59,7 +73,13 @@ const Routes = () => {
         >
           <Clients />
         </AuthorizeRoute>
-
+        <AuthorizeRoute
+          key={urls.clients.pathMy}
+          path={urls.clients.pathMy}
+          permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
+        >
+          <Clients fetchParams={} />
+        </AuthorizeRoute>
         <AuthorizeRoute
           key={urls.tasks.path}
           path={urls.tasks.path}
@@ -111,4 +131,8 @@ const Routes = () => {
   );
 };
 
-export default Routes;
+const mapStateToProps = (state: State) => ({
+  profileInfo: state?.persist?.profileInfo ?? {},
+});
+
+export default connect(mapStateToProps)(Routes);

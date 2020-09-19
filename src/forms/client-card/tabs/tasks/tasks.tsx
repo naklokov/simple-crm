@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import moment from "moment-timezone";
 import {
   useFetch,
-  getRsqlQuery,
+  getRsqlParams,
   getUpdatedEntityArray,
 } from "../../../../utils";
 import { useTranslation } from "react-i18next";
@@ -50,8 +50,11 @@ export const Tasks = ({ tab }: TasksProps) => {
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
   const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
-  const params = getRsqlQuery([{ key: "clientId", value: clientId }]);
-  const { loading, response } = useFetch({ url: urls.tasks.entity, params });
+  const query = getRsqlParams([{ key: "clientId", value: clientId }]);
+  const { loading, response } = useFetch({
+    url: urls.tasks.entity,
+    params: { query },
+  });
 
   useEffect(() => {
     setTasks(response?.data ?? []);

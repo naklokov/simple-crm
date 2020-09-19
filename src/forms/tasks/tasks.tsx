@@ -4,7 +4,7 @@ import { Calendar, Col, List, Row } from "antd";
 import { TasksHeader } from ".";
 import { Column } from "./components";
 
-import { getRsqlQuery, useFetch } from "../../utils";
+import { getRsqlParams, useFetch } from "../../utils";
 import { getTasksColumns } from "./utils";
 import { TaskEntityProps, urls, formConfig } from "../../constants";
 import { ProfileInfoProps, State } from "../../__data__/interfaces";
@@ -31,10 +31,13 @@ export const Tasks = ({ profileInfo }: TaskProps) => {
   const [listLoading, setListLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(moment().toISOString());
 
-  const params = getRsqlQuery([
+  const query = getRsqlParams([
     { key: "userProfileId", value: profileInfo.id || "" },
   ]);
-  const { response, loading } = useFetch({ url: urls.tasks.entity, params });
+  const { response, loading } = useFetch({
+    url: urls.tasks.entity,
+    params: { query },
+  });
 
   useEffect(() => {
     setTasks(response?.data ?? []);

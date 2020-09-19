@@ -13,7 +13,7 @@ import {
   getFiteredEntityArray,
   getUpdatedEntityArray,
   useFetch,
-  getRsqlQuery,
+  getRsqlParams,
 } from "../../../../utils";
 import { urls, CommentEntityProps, QueryProps } from "../../../../constants";
 import { getPostData } from "./utils";
@@ -32,14 +32,13 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
 
   const { id: entityId } = useParams<QueryProps>();
   const [t] = useTranslation("clientCardComments");
-  // const params = getRsqlQuery({ entityType: "clients", entityId });
-  const params = getRsqlQuery([
+  const query = getRsqlParams([
     { key: "entityType", value: "clients" },
     { key: "entityId", value: entityId },
   ]);
   const { loading: fetchLoading, response } = useFetch({
     url: urls.comments.entity,
-    params,
+    params: { query },
   });
 
   const scrollToBottom = () => {

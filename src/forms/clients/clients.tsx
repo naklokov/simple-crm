@@ -2,8 +2,13 @@ import React, { useEffect, useCallback, useState } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { Table } from "../../components";
-import { urls, ClientEntityProps, formConfig } from "../../constants";
-import { getSearchQuery } from "./utils";
+import {
+  urls,
+  ClientEntityProps,
+  formConfig,
+  RsqlParamProps,
+} from "../../constants";
+import { getSearchRsqlParams } from "./utils";
 
 import style from "./clients.module.scss";
 import { State } from "../../__data__/interfaces";
@@ -14,6 +19,7 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getSortedParams,
+  getRsqlParams,
 } from "../../utils";
 import { TablePaginationConfig } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
@@ -24,15 +30,19 @@ const { ACTIONS, COLUMNS, TABLES } = formConfig.clients;
 interface ClientsProps {
   clients: ClientEntityProps[];
   setClients: (clients: ClientEntityProps[]) => void;
+  fetchParams?: {
+    rsqlParams?: RsqlParamProps[];
+    searchParams?: { [key: string]: string | boolean | number };
+  };
 }
 
-export const Clients = ({ setClients, clients }: ClientsProps) => {
+export const Clients = ({ setClients, clients, fetchParams }: ClientsProps) => {
   const [t] = useTranslation("clients");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [sortBy, setSortBy] = useState("");
-  const [query, setQuery] = useState("");
+  const [rsqlParams, setRsqlParams] = useState([] as RsqlParamProps[]);
   const [total, setTotal] = useState(0);
   const url = urls.clients.paging;
 
@@ -40,20 +50,30 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
     fetchDataSource();
   }, [url]);
 
-  const fetchDataSource = async (params: object = {}) => {
+  const fetchDataSource = async (params: any = {}) => {
     setLoading(true);
     const prev = {
       page,
       pageSize,
       sortBy,
-      query,
+      rsqlParams,
     };
+
+    let query = "";
+
+    if (fetchParams?.rsqlParams) {
+      query = getRsqlParams([...rsqlParams, ...fetchParams.rsqlParams]);
+    } else {
+      query = getRsqlParams(rsqlParams);
+    }
 
     try {
       const response = await axios.get(url, {
         params: {
+          ...(fetchParams?.searchParams || {}),
           ...prev,
           ...params,
+          query,
         },
       });
 
@@ -70,10 +90,12 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
   const handleSearch = useCallback(
     (searched: string) => {
       const page = 1;
-      const query = getSearchQuery(searched);
-      setQuery(query);
-      setPage(page);
-      fetchDataSource({ query, page });
+      const searchParams = getSearchRsqlParams(searched);
+      if (searchParams) {
+        setRsqlParams([searchParams]);
+        setPage(page);
+        fetchDataSource({ rsqlParams, page });
+      }
     },
     [clients]
   );
@@ -128,10 +150,6 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
     </div>
   );
 };
-
-const mapStateToProps = (state: State) => ({
-  clients: state?.clients ?? [],
-});
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators({ setClients, setTableLoading }, dispatch);
