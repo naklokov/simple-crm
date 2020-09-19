@@ -21,6 +21,7 @@ export const useFetch = ({
   const [response, setResponse] = useState<AxiosResponse<any>>();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);

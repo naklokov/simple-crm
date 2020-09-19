@@ -17,6 +17,7 @@ import { setAuth as setAuthAction } from "../../__data__";
 import { State } from "../../__data__/interfaces";
 import { Dispatch } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
+import { LoginHeader } from "../../components";
 
 const { Item } = FormUI;
 
@@ -75,59 +76,62 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
   };
 
   return (
-    <FormUI
-      form={form}
-      name={FORM_NAME}
-      className={style.loginForm}
-      initialValues={initialValues}
-      onFinish={onFinish}
-    >
-      <Item
-        name={FIELDS.USERNAME}
-        rules={rules.username}
-        validateTrigger="onBlur"
+    <div>
+      <LoginHeader title={t("title")} />
+      <FormUI
+        form={form}
+        name={FORM_NAME}
+        className={style.loginForm}
+        initialValues={initialValues}
+        onFinish={onFinish}
       >
-        <Input
-          className={style.username}
-          prefix={<UserOutlined />}
-          placeholder={t("placeholder.username")}
-        />
-      </Item>
-      <Item name={FIELDS.PASSWORD} rules={rules.password}>
-        <Input.Password
-          className={style.password}
-          prefix={<LockOutlined />}
-          type="password"
-          placeholder={t("placeholder.password")}
-        />
-      </Item>
-      <Item>
         <Item
-          name={FIELDS.REMEMBER_ME}
-          valuePropName="checked"
-          className={style.rememberMeCheckbox}
+          name={FIELDS.USERNAME}
+          rules={rules.username}
+          validateTrigger="onBlur"
         >
-          <Checkbox>{t("password.remember")}</Checkbox>
+          <Input
+            className={style.username}
+            prefix={<UserOutlined />}
+            placeholder={t("placeholder.username")}
+          />
         </Item>
-        <a
-          className={style.forgotPassword}
-          onClick={handleClickForgotPassword}
-          href={urls.forgotPassword.path}
-        >
-          {t("password.forgot")}
-        </a>
-      </Item>
-      <Item>
-        <Button
-          type="primary"
-          htmlType="submit"
-          className={style.submitButton}
-          loading={submitLoading}
-        >
-          {t("submit.button")}
-        </Button>
-      </Item>
-    </FormUI>
+        <Item name={FIELDS.PASSWORD} rules={rules.password}>
+          <Input.Password
+            className={style.password}
+            prefix={<LockOutlined />}
+            type="password"
+            placeholder={t("placeholder.password")}
+          />
+        </Item>
+        <Item>
+          <Item
+            name={FIELDS.REMEMBER_ME}
+            valuePropName="checked"
+            className={style.rememberMeCheckbox}
+          >
+            <Checkbox>{t("password.remember")}</Checkbox>
+          </Item>
+          <a
+            className={style.forgotPassword}
+            onClick={handleClickForgotPassword}
+            href={urls.forgotPassword.path}
+          >
+            {t("password.forgot")}
+          </a>
+        </Item>
+        <Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className={style.submitButton}
+            loading={submitLoading}
+          >
+            {t("submit.button")}
+          </Button>
+        </Item>
+      </FormUI>
+    </div>
   );
 };
 

@@ -2,15 +2,15 @@ import persistReducer from "./persist";
 import appReducer from "./app";
 import clientsReducer from "./clients";
 
-export {
-  setPermissions,
-  setMenuCollapsed,
-  setProfileInfo,
-  setAuth,
-  setError,
-} from "./persist";
+export { setPermissions, setProfileInfo, setAuth } from "./persist";
 
-export { setLoading, setTableLoading, setDictionaries } from "./app";
+export {
+  setLoading,
+  setTableLoading,
+  setDictionaries,
+  setError,
+  setMenuCollapsed,
+} from "./app";
 
 export { setClients } from "./clients";
 

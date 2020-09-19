@@ -7,6 +7,7 @@ import {
   ClientEntityProps,
   formConfig,
   RsqlParamProps,
+  PERMISSIONS,
 } from "../../constants";
 import { getSearchRsqlParams } from "./utils";
 
@@ -24,8 +25,13 @@ import {
 import { TablePaginationConfig } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
 import ClientsHeader from "./header";
+import { PagePermissionsChecker } from "../../wrappers";
 
-const { ACTIONS, COLUMNS, TABLES } = formConfig.clients;
+const { COLUMNS, TABLES } = formConfig.clients;
+// TODO проверить пермишены
+const {
+  CLIENTS: { GET, GET_OWNER, ADMIN },
+} = PERMISSIONS;
 
 interface ClientsProps {
   clients: ClientEntityProps[];
@@ -129,27 +135,33 @@ export const Clients = ({ setClients, clients, fetchParams }: ClientsProps) => {
   };
 
   return (
-    <div>
-      <div className={style.header}>
-        <ClientsHeader />
+    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER, ADMIN]}>
+      <div>
+        <div className={style.header}>
+          <ClientsHeader />
+        </div>
+        <div className={style.container}>
+          <Table
+            _links={TABLES[0]._links}
+            columns={COLUMNS}
+            // actions={ACTIONS}
+            loading={loading}
+            pagination={serverPagination}
+            onDeleteRow={handleDelete}
+            dataSource={clients}
+            onSearch={handleSearch}
+            onChangeTable={handleChangeTable}
+            withSearch
+          />
+        </div>
       </div>
-      <div className={style.container}>
-        <Table
-          _links={TABLES[0]._links}
-          columns={COLUMNS}
-          // actions={ACTIONS}
-          loading={loading}
-          pagination={serverPagination}
-          onDeleteRow={handleDelete}
-          dataSource={clients}
-          onSearch={handleSearch}
-          onChangeTable={handleChangeTable}
-          withSearch
-        />
-      </div>
-    </div>
+    </PagePermissionsChecker>
   );
 };
+
+const mapStateToProps = (state: State) => ({
+  clients: state?.clients ?? [],
+});
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators({ setClients, setTableLoading }, dispatch);

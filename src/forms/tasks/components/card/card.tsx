@@ -22,6 +22,7 @@ import { setClients } from "../../../../__data__";
 import { getClient } from "../../../client-card/utils";
 import { isEmpty } from "lodash";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 interface CardProps {
   clientId: string;
@@ -76,9 +77,9 @@ export const Card = ({
   ) : null;
 
   const titleContent = (
-    <a href={getFullUrl(urls.clients.path, clientId)}>
+    <Link to={getFullUrl(urls.clients.path, clientId)}>
       {client?.shortName ?? title}
-    </a>
+    </Link>
   );
 
   const titleSkeleton = (

@@ -3,7 +3,12 @@ import axios from "axios";
 
 import { useParams } from "react-router";
 import { useTranslation } from "react-i18next";
-import { ClientEntityProps, QueryProps, urls } from "../../constants";
+import {
+  ClientEntityProps,
+  PERMISSIONS,
+  QueryProps,
+  urls,
+} from "../../constants";
 import { connect } from "react-redux";
 import { State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
@@ -15,8 +20,15 @@ import { Main, Comments, Contacts, Requisites, PriceList, Tasks } from "./tabs";
 import { defaultErrorHandler, getFullUrl } from "../../utils";
 import { isEmpty } from "lodash";
 import { ClientCardHeader } from ".";
+import { PagePermissionsChecker } from "../../wrappers";
 
 import style from "./client-card.module.scss";
+import { DeliveredProcedureOutlined } from "@ant-design/icons";
+
+//TODO проверить пермишены
+const {
+  CLIENTS: { GET, GET_OWNER },
+} = PERMISSIONS;
 
 interface ClientCardProps {
   clients: ClientEntityProps[];
@@ -71,15 +83,22 @@ export const ClientCard = ({
   }
 
   return (
-    <div>
-      <div className={style.header}>
-        <ClientCardHeader />
+    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER]}>
+      <div>
+        <div className={style.header}>
+          <ClientCardHeader />
+        </div>
+        <Tabs
+          mainTab="main"
+          mode={mode}
+          tabs={upper.tabs}
+          formsMap={TABS_MAP}
+        />
+        {mode === "view" && (
+          <Tabs mode={mode} tabs={lower.tabs} formsMap={TABS_MAP} />
+        )}
       </div>
-      <Tabs mainTab="main" mode={mode} tabs={upper.tabs} formsMap={TABS_MAP} />
-      {mode === "view" && (
-        <Tabs mode={mode} tabs={lower.tabs} formsMap={TABS_MAP} />
-      )}
-    </div>
+    </PagePermissionsChecker>
   );
 };
 

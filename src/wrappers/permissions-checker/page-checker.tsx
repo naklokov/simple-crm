@@ -19,7 +19,7 @@ export const PermissionChecker = ({
     return <ForbiddenError />;
   }
 
-  return <React.Fragment>{children}</React.Fragment>;
+  return children;
 };
 
 const mapStateToProps = (state: State) => ({

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import axios from "axios";
 import { Layout } from "antd";
 import { connect } from "react-redux";
@@ -22,7 +22,7 @@ import { Loader } from "../../components";
 const { Sider, Content, Header } = Layout;
 
 interface AuthorizedProps {
-  children: JSX.Element;
+  children: ReactNode;
   loading: boolean;
   isMenuCollapsed: boolean;
   profileInfo: ProfileInfoProps;
@@ -120,7 +120,7 @@ export const Authorized = ({
 const mapStateToProps = (state: State) => ({
   profileInfo: state?.persist?.profileInfo ?? {},
   loading: state?.app?.loading,
-  isMenuCollapsed: state?.persist?.menuCollapsed,
+  isMenuCollapsed: state?.app?.menuCollapsed,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

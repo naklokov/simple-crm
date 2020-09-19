@@ -28,7 +28,7 @@ export const ErrorScreenWrapper = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  error: state?.persist?.error ?? {},
+  error: state?.app?.error ?? {},
 });
 
 export default connect(mapStateToProps)(ErrorScreenWrapper);

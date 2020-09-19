@@ -1,9 +1,7 @@
 import { ClientEntityProps } from "../constants";
 
 export interface PersistState {
-  error: ErrorAppState;
   permissions: string[];
-  menuCollapsed: boolean;
   profileInfo: ProfileInfoProps;
   auth: boolean;
 }
@@ -16,6 +14,8 @@ export interface ErrorAppState {
 }
 
 export interface AppState {
+  menuCollapsed: boolean;
+  error: ErrorAppState;
   tableLoading: boolean;
   loading: boolean;
   dictionaries: object;

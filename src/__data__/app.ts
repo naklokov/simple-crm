@@ -6,8 +6,16 @@ const appSlide = createSlice({
     loading: false,
     tableLoading: false,
     dictionaries: {},
+    error: {},
+    menuCollapsed: false,
   },
   reducers: {
+    setError(state, action) {
+      state.error = action.payload;
+    },
+    setMenuCollapsed(state, action) {
+      state.menuCollapsed = action.payload;
+    },
     setLoading(state, action) {
       state.loading = action.payload;
     },
@@ -24,6 +32,8 @@ export const {
   setLoading,
   setTableLoading,
   setDictionaries,
+  setMenuCollapsed,
+  setError,
 } = appSlide.actions;
 
 export default appSlide.reducer;

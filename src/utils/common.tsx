@@ -9,7 +9,7 @@ import axios from "axios";
 import moment from "moment-timezone";
 import Cookies from "js-cookie";
 import { logger } from ".";
-import { COOKIES } from "../constants/http";
+import { COOKIES, ROOT_URL } from "../constants/http";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setAuth, setLoading } from "../__data__";
 import { message } from "antd";

@@ -1,9 +1,9 @@
-import React, { useMemo, useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu as MenuUI } from "antd";
 
 import { MENU_ITEMS } from "../../../../constants/layouts";
 import { getSelectedKeyByUrl } from "./utils";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { filterArrayByPermissions } from "../../../../wrappers";
 import { State } from "../../../../__data__/interfaces";
 import { connect } from "react-redux";
@@ -16,14 +16,19 @@ interface MenuProps {
 }
 
 export const Menu = ({ collapsed, permissions }: MenuProps) => {
-  const history = useHistory();
+  const location = useLocation();
+  const [selectedKey, setSelectedKey] = useState("");
   const itemsByPermissions = filterArrayByPermissions(MENU_ITEMS, permissions);
-  const selectedKey = getSelectedKeyByUrl(history);
+
+  useEffect(() => {
+    const selectedKey = getSelectedKeyByUrl(location);
+    setSelectedKey(selectedKey);
+  }, [location]);
 
   return (
     <MenuUI
       mode="inline"
-      selectedKeys={selectedKey ? [selectedKey] : []}
+      selectedKeys={[selectedKey]}
       inlineCollapsed={collapsed}
     >
       {itemsByPermissions.map(({ id, icon, title, url }) => (

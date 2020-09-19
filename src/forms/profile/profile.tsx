@@ -6,6 +6,8 @@ import { Header } from "./components";
 import style from "./profile.module.scss";
 
 import { TABS_CONTENT, TABS_MAP } from "./constansts";
+import { PagePermissionsChecker } from "../../wrappers";
+import { PERMISSIONS } from "../../constants";
 
 interface ProfileProps {
   profileInfo: ProfileInfoProps;
@@ -19,12 +21,17 @@ export const Profile = ({ profileInfo }: ProfileProps) => {
   };
 
   const Form = TABS_MAP[activeTab];
+  const {
+    PROFILE_INFO: { ADMIN, GET, GET_OWNER },
+  } = PERMISSIONS;
 
   return (
-    <div className={style.container}>
-      <Header onChangeTab={handleChangeTab} />
-      <Form />
-    </div>
+    <PagePermissionsChecker availablePermissions={[ADMIN, GET, GET_OWNER]}>
+      <div className={style.container}>
+        <Header onChangeTab={handleChangeTab} />
+        <Form />
+      </div>
+    </PagePermissionsChecker>
   );
 };
 

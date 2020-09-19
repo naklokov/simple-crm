@@ -20,6 +20,7 @@ import { getRules, checkEqualPasswords, checkToken, getToken } from "./utils";
 import { connect } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import * as actions from "../../__data__";
+import { LoginHeader } from "../../components";
 
 const { Item } = FormUI;
 const token = getToken();
@@ -60,40 +61,43 @@ export const RestorePassword = ({ setLoading }: RestorePasswordProps) => {
   };
 
   return (
-    <FormUI
-      form={form}
-      name={FORM_NAME}
-      className={style.restorePassword}
-      onFinish={onFinish}
-    >
-      <Item name={FIELDS.PASSWORD} rules={rules.password}>
-        <Input.Password
-          className={style.password}
-          prefix={<LockOutlined />}
-          type="password"
-          placeholder={t("placeholder.password")}
-        />
-      </Item>
-      <Item name={FIELDS.PASSWORD_CONFIRM} rules={rules.password}>
-        <Input.Password
-          className={style.passwordConfirm}
-          prefix={<LockOutlined />}
-          type="password"
-          placeholder={t("placeholder.password.confirm")}
-        />
-      </Item>
-      <Item>
-        <Button
-          onClick={handleClick}
-          type="primary"
-          htmlType="submit"
-          className={style.submitButton}
-          loading={submitLoading}
-        >
-          {t("submit.button")}
-        </Button>
-      </Item>
-    </FormUI>
+    <div>
+      <LoginHeader title={t("title")} description={t("description")} />
+      <FormUI
+        form={form}
+        name={FORM_NAME}
+        className={style.restorePassword}
+        onFinish={onFinish}
+      >
+        <Item name={FIELDS.PASSWORD} rules={rules.password}>
+          <Input.Password
+            className={style.password}
+            prefix={<LockOutlined />}
+            type="password"
+            placeholder={t("placeholder.password")}
+          />
+        </Item>
+        <Item name={FIELDS.PASSWORD_CONFIRM} rules={rules.password}>
+          <Input.Password
+            className={style.passwordConfirm}
+            prefix={<LockOutlined />}
+            type="password"
+            placeholder={t("placeholder.password.confirm")}
+          />
+        </Item>
+        <Item>
+          <Button
+            onClick={handleClick}
+            type="primary"
+            htmlType="submit"
+            className={style.submitButton}
+            loading={submitLoading}
+          >
+            {t("submit.button")}
+          </Button>
+        </Item>
+      </FormUI>
+    </div>
   );
 };
 

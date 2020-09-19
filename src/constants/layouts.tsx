@@ -30,20 +30,6 @@ export const MENU_ITEMS = [
     permissions: [TASKS.ADMIN, TASKS.GET, TASKS.GET_OWNER],
     icon: <CalendarOutlined />,
   },
-  // {
-  //   id: "deals",
-  //   title: "Сделки",
-  //   url: urls.deals.path,
-  //   permissions: [DEALS.ADMIN, DEALS.GET, DEALS.GET_OWNER],
-  //   icon: <DollarOutlined />,
-  // },
-  // {
-  //   id: "knowledge",
-  //   title: "База знаний",
-  //   url: urls.knowledge.path,
-  //   permissions: [],
-  //   icon: <ReadOutlined />,
-  // },
 ];
 
 export const BREADCRUMB_ROUTES = {

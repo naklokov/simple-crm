@@ -42,7 +42,7 @@ export const Forbidden = ({ error, setError }: ForbiddenProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  error: state?.persist?.error ?? {},
+  error: state?.app?.error ?? {},
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

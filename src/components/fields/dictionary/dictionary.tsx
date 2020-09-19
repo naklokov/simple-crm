@@ -28,8 +28,8 @@ export const Dictionary = ({
   setLoading,
 }: DictionaryComponentProps) => {
   const [dictionary, setDictionary] = useState<DictionaryProps>({});
-  const { dictionaryValueEntities: options } = dictionary;
   const url = _links?.self.href ?? "";
+  const { dictionaryValueEntities: options } = dictionary;
   const { loading, response } = useFetch({ url });
 
   useEffect(() => {
