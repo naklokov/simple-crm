@@ -1,5 +1,5 @@
-export { default as ErrorScreenWrapper } from "./error-screen-wrapper";
 export { default as HighlightTextWrapper } from "./highlight-text-wrapper";
+export { default as ErrorBoundary } from "./error-boundary-wrapper";
 export {
   ComponentPermissionsChecker,
   PagePermissionsChecker,

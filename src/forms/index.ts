@@ -1,4 +1,4 @@
-export { ServerError, ForbiddenError, NotFoundError } from "./errors";
+export { ErrorScreen, NotFoundScreen } from "./error-screens";
 export { Login } from "./login";
 export { ForgotPassword } from "./forgot-password";
 export { RestorePassword } from "./restore-password";

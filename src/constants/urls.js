@@ -1,8 +1,4 @@
 module.exports = {
-  errors: {
-    forbidden: "/forbidden",
-    serverError: "/serverError",
-  },
   login: {
     path: "/login",
     submit: "/crm/login",
@@ -16,6 +12,9 @@ module.exports = {
     path: "/restorePassword",
     check: "/crm/rest/password/checkToken",
     submit: "/crm/rest/password/change",
+  },
+  error: {
+    path: "/error",
   },
   log: {
     base: "/crm/rest/log",

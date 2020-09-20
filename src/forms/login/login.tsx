@@ -6,7 +6,7 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 
 import style from "./login.module.scss";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
 import { urls, http } from "../../constants";
 import { logger, defaultErrorHandler, clearCookie } from "../../utils";
@@ -34,6 +34,7 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
   const rules = getRules(t);
   const initialValues = getInitialValues();
   const [submitLoading, setSubmitLoading] = useState(false);
+  const location = useLocation<{ from: string }>();
 
   useEffect(() => {
     localStorage.clear();
@@ -55,8 +56,10 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
       });
 
       setAuth(true);
-      // дублирует переход на вкладку Клиенты, один переход тут, другой после выставления isAuth = true
-      // history.push(http.ROOT_URL);
+      const from = location?.state?.from;
+      if (from) {
+        history.push(from);
+      }
     } catch (error) {
       defaultErrorHandler({
         error,

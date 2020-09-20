@@ -13,7 +13,8 @@ import {
   ClientCard,
   RestorePassword,
   Profile,
-  NotFoundError,
+  ErrorScreen,
+  NotFoundScreen,
   Tasks,
 } from "../../forms";
 
@@ -21,6 +22,7 @@ import { ProtectedRoute } from ".";
 import { urls } from "../../constants";
 import { AuthorizedLayout, UnauthorizedLayout } from "../../layouts";
 import { ROOT_URL } from "../../constants/http";
+import { ErrorBoundary } from "../../wrappers";
 
 const MAIN_PAGE = urls.clients.path;
 
@@ -82,10 +84,15 @@ const Routes = () => (
           </Switch>
         </UnauthorizedLayout>
       </Route>
+      <Route
+        key={urls.error.path}
+        path={urls.error.path}
+        component={ErrorScreen}
+      />
       <Redirect from="/" to={{ pathname: MAIN_PAGE }} exact />
       <Redirect from="/crm" to={{ pathname: MAIN_PAGE }} exact />
       <Route path="*">
-        <NotFoundError />
+        <NotFoundScreen />
       </Route>
     </Switch>
   </Router>

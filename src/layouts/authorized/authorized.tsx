@@ -5,7 +5,11 @@ import { connect } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 
 import { Logo, Menu, Profile } from "./components";
-import { State, ProfileInfoProps } from "../../__data__/interfaces";
+import {
+  State,
+  ProfileInfoProps,
+  ErrorAppState,
+} from "../../__data__/interfaces";
 
 import style from "./authorized.module.scss";
 import {
@@ -18,6 +22,8 @@ import { urls } from "../../constants";
 import { useTranslation } from "react-i18next";
 import { logger, defaultErrorHandler } from "../../utils";
 import { Loader } from "../../components";
+import { Redirect } from "react-router";
+import { isEmpty } from "lodash";
 
 const { Sider, Content, Header } = Layout;
 
@@ -26,6 +32,7 @@ interface AuthorizedProps {
   loading: boolean;
   isMenuCollapsed: boolean;
   profileInfo: ProfileInfoProps;
+  error: ErrorAppState;
   setCollapsed: (value: boolean) => void;
   setLoading: (loading: boolean) => void;
   setPermissions: (permissions: string[]) => void;
@@ -41,6 +48,7 @@ export const Authorized = ({
   setProfile,
   setPermissions,
   setLoading,
+  error,
 }: AuthorizedProps) => {
   const [t] = useTranslation("authorizedLayout");
 
@@ -92,6 +100,17 @@ export const Authorized = ({
     fetchPermissions();
   }, []);
 
+  if (!isEmpty(error)) {
+    return (
+      <Redirect
+        to={{
+          pathname: urls.error.path,
+          state: { error },
+        }}
+      />
+    );
+  }
+
   return (
     <Layout className={style.main}>
       <Sider
@@ -121,6 +140,7 @@ const mapStateToProps = (state: State) => ({
   profileInfo: state?.persist?.profileInfo ?? {},
   loading: state?.app?.loading,
   isMenuCollapsed: state?.app?.menuCollapsed,
+  error: state?.app?.error ?? {},
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

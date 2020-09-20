@@ -7,10 +7,10 @@ import { Routes } from "./routes";
 import { reducers } from "../__data__";
 import { errorsInterceptor } from "./interceptors";
 import { storage } from "../utils";
-import { ErrorScreenWrapper } from "../wrappers";
 import { ConfigProvider, message } from "antd";
 
 import ruRu from "antd/es/locale/ru_RU";
+import { ErrorBoundary } from "../wrappers";
 
 message.config({
   maxCount: 1,
@@ -37,9 +37,9 @@ axios.interceptors.response.use(
 const App = () => (
   <ConfigProvider locale={ruRu}>
     <Provider store={store}>
-      <ErrorScreenWrapper>
+      <ErrorBoundary>
         <Routes />
-      </ErrorScreenWrapper>
+      </ErrorBoundary>
     </Provider>
   </ConfigProvider>
 );

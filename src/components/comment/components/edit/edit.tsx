@@ -6,7 +6,7 @@ export const Edit = ({ onEdit }: { onEdit: (value?: string) => void }) => {
 
   const handleClick = useCallback(() => {
     onEdit();
-  }, []);
+  }, [onEdit]);
 
   return <span onClick={handleClick}>{t("button.edit")}</span>;
 };
