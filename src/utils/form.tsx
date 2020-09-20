@@ -9,7 +9,7 @@ interface EntityWithId {
   id: string;
 }
 
-const { Text, TextArea, DateTime, Dictionary, Phone } = fields;
+const { Text, TextArea, DateTime, Dictionary, Phone, Entity } = fields;
 
 export const isValuesChanged = (
   prev: { [key: string]: any },
@@ -31,6 +31,8 @@ export const createFormField = (field: FieldProps): JSX.Element => {
       return <DateTime {...field} />;
     case "dictionary":
       return <Dictionary {...field} />;
+    case "entity":
+      return <Entity {...field} />;
     default:
       return <div />;
   }

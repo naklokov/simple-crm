@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import isEmpty from "lodash/isEmpty";
 import pick from "lodash/pick";
 import noop from "lodash/noop";
+import { columns } from "../components";
 
 import { ActionProps, ColumnProps, EntityProps } from "../../../constants";
 import { HighlightTextWrapper } from "../../../wrappers";
@@ -10,14 +11,16 @@ import { getSorterProp } from "./sorter";
 import { getEditableProp } from "./editable";
 import { renderActions } from "./actions";
 
+const { Dictionary } = columns;
+
 const getRenderProp = (column: ColumnProps, searched: string) => ({
   render: (text: string, record: any) => {
-    const { format, columnType } = column;
+    const { format, columnType, columnCode } = column;
     let renderText = text;
 
-    // if (columnType === "dictionary") {
-    //   renderText = getDictionaryText(text, column.columnCode, record);
-    // }
+    if (columnType === "dictionary") {
+      return <Dictionary value={text} column={column} />;
+    }
 
     if (format) {
       renderText = getFormattedText(text, format, columnType, record);

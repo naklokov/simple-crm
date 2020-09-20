@@ -17,6 +17,7 @@ import {
 import { FORM_NAME, FIELDS } from "./constants";
 
 import { getRules, getInitialValues } from "./utils";
+import { LoginHeader } from "../../components";
 
 const { Item } = FormUI;
 
@@ -42,34 +43,37 @@ export const ForgotPassword = () => {
   };
 
   return (
-    <FormUI
-      name={FORM_NAME}
-      className={style.forgotPasswordForm}
-      initialValues={initialValues}
-      onFinish={onFinish}
-    >
-      <Item
-        name={FIELDS.USERNAME}
-        rules={rules.username}
-        validateTrigger="onBlur"
+    <div>
+      <LoginHeader title={t("title")} description={t("description")} />
+      <FormUI
+        name={FORM_NAME}
+        className={style.forgotPasswordForm}
+        initialValues={initialValues}
+        onFinish={onFinish}
       >
-        <Input
-          className={style.username}
-          prefix={<UserOutlined />}
-          placeholder={t("placeholder.username")}
-        />
-      </Item>
-      <Item>
-        <Button
-          type="primary"
-          htmlType="submit"
-          className={style.submitButton}
-          loading={submitLoading}
+        <Item
+          name={FIELDS.USERNAME}
+          rules={rules.username}
+          validateTrigger="onBlur"
         >
-          {t("submit.button")}
-        </Button>
-      </Item>
-    </FormUI>
+          <Input
+            className={style.username}
+            prefix={<UserOutlined />}
+            placeholder={t("placeholder.username")}
+          />
+        </Item>
+        <Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className={style.submitButton}
+            loading={submitLoading}
+          >
+            {t("submit.button")}
+          </Button>
+        </Item>
+      </FormUI>
+    </div>
   );
 };
 

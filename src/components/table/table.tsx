@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useCallback, Key } from "react";
 import { Table as TableUI } from "antd";
 
-import {
-  ColumnProps,
-  ActionProps,
-  EntityProps,
-} from "../../constants/interfaces";
+import { ColumnProps, ActionProps } from "../../constants/interfaces";
 import { useTranslation } from "react-i18next";
 import {
   getActions,
@@ -13,7 +9,6 @@ import {
   getFilteredDataSource,
   getEditableTableBody,
   fetchDictionaries,
-  getLinks,
 } from "./utils";
 import { Header } from "./components";
 import noop from "lodash/noop";
@@ -24,7 +19,6 @@ import { State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect, useDispatch } from "react-redux";
 import { TablePaginationConfig } from "antd/lib/table";
-import { SorterResult, TableCurrentDataSource } from "antd/lib/table/interface";
 
 interface TableProps {
   dataSource: any[];
@@ -33,6 +27,7 @@ interface TableProps {
   loading?: boolean;
   tableLoading: boolean;
   pagination?: TablePaginationConfig;
+  _links?: any;
   onDeleteRow?: (id: string) => void;
   onViewRow?: (id: string) => void;
   onSaveRow?: (record: any) => void;
@@ -40,7 +35,7 @@ interface TableProps {
   onSearch?: (inputSearch: string) => void;
   withSearch?: boolean;
   withTitle?: boolean;
-  addButton?: JSX.Element;
+  extraHeader?: JSX.Element;
   className?: string;
   onChangeTable?: (
     pagination: any,
@@ -51,6 +46,7 @@ interface TableProps {
 }
 
 export const Table = ({
+  _links,
   columns,
   className = style.table,
   dataSource,
@@ -65,7 +61,7 @@ export const Table = ({
   onSearch,
   withSearch = false,
   withTitle = true,
-  addButton,
+  extraHeader,
   onChangeTable = noop,
 }: TableProps) => {
   const [t] = useTranslation("table");
@@ -73,10 +69,12 @@ export const Table = ({
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [searched, setSearched] = useState("");
 
-  // useEffect(() => {
-  //   const links = getLinks(dataSource);
-  //   fetchDictionaries(links, dispatch);
-  // }, [dataSource]);
+  useEffect(() => {
+    if (_links) {
+      const { self, ...links } = _links;
+      fetchDictionaries(links, dispatch);
+    }
+  }, [_links]);
 
   const handleSearch = useCallback(
     (inputSearch) => {
@@ -102,7 +100,7 @@ export const Table = ({
         <Header
           onSearch={onSearch || handleSearch}
           withSearch={withSearch}
-          button={addButton}
+          extra={extraHeader}
         />
       )
     : void 0;

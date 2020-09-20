@@ -10,106 +10,92 @@ import {
   Login,
   ForgotPassword,
   Clients,
-  ClientsHeader,
   ClientCard,
-  ClientCardHeader,
   RestorePassword,
   Profile,
-  NotFoundError,
+  ErrorScreen,
+  NotFoundScreen,
+  Tasks,
 } from "../../forms";
-import { AuthorizeRoute, UnauthorizeRoute } from ".";
 
-import { urls, http, PERMISSIONS } from "../../constants";
-import { Typography } from "antd";
-import { useTranslation } from "react-i18next";
-import { FORM_NAME as loginFormName } from "../../forms/login/constants";
-import { FORM_NAME as forgotPasswordFormName } from "../../forms/forgot-password/constants";
-import { FORM_NAME as restorePasswordFormName } from "../../forms/restore-password/constants";
+import { ProtectedRoute } from ".";
+import { urls } from "../../constants";
+import { AuthorizedLayout, UnauthorizedLayout } from "../../layouts";
+import { ROOT_URL } from "../../constants/http";
+import { ErrorBoundary } from "../../wrappers";
 
 const MAIN_PAGE = urls.clients.path;
-const { PROFILE_INFO, CLIENTS, TASKS, DEALS } = PERMISSIONS;
 
-const Routes = () => {
-  const [t] = useTranslation();
-  return (
-    <Router basename={http.ROOT_URL}>
-      <Switch>
-        <AuthorizeRoute
-          key={urls.profile.path}
-          path={urls.profile.path}
-          permissions={[
-            PROFILE_INFO.ADMIN,
-            PROFILE_INFO.GET,
-            PROFILE_INFO.GET_OWNER,
-          ]}
-        >
-          <Profile />
-        </AuthorizeRoute>
-        <AuthorizeRoute
-          key={urls.clientCard.path}
-          path={urls.clientCard.path}
-          permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
-          exact
-        >
-          <ClientCard />
-        </AuthorizeRoute>
-        <AuthorizeRoute
-          key={urls.clients.path}
-          path={urls.clients.path}
-          permissions={[CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER]}
-        >
-          <Clients />
-        </AuthorizeRoute>
+const {
+  clientCard,
+  clients,
+  profile,
+  tasks,
+  login,
+  restorePassword,
+  forgotPassword,
+} = urls;
 
-        <AuthorizeRoute
-          key={urls.tasks.path}
-          path={urls.tasks.path}
-          permissions={[TASKS.ADMIN, TASKS.GET, TASKS.GET_OWNER]}
-        >
-          <Typography.Title>Задачи</Typography.Title>
-        </AuthorizeRoute>
-        <AuthorizeRoute
-          key={urls.deals.path}
-          path={urls.deals.path}
-          permissions={[DEALS.ADMIN, DEALS.GET, DEALS.GET_OWNER]}
-        >
-          <Typography.Title>Сделки</Typography.Title>
-        </AuthorizeRoute>
-        <AuthorizeRoute key={urls.knowledge.path} path={urls.knowledge.path}>
-          <Typography.Title>База знаний</Typography.Title>
-        </AuthorizeRoute>
+const Routes = () => (
+  <Router basename={ROOT_URL}>
+    <Switch>
+      <Route path={[clients.path, clientCard.path, profile.path, tasks.path]}>
+        <AuthorizedLayout>
+          <Switch>
+            <ProtectedRoute
+              key={profile.path}
+              path={profile.path}
+              component={Profile}
+            />
+            <ProtectedRoute
+              exact
+              key={clients.path}
+              path={clients.path}
+              component={Clients}
+            />
+            <ProtectedRoute
+              key={clientCard.path}
+              path={clientCard.path}
+              component={ClientCard}
+            />
+            <ProtectedRoute
+              key={tasks.path}
+              path={tasks.path}
+              component={Tasks}
+            />
+          </Switch>
+        </AuthorizedLayout>
+      </Route>
 
-        <UnauthorizeRoute
-          key={urls.login.path}
-          path={urls.login.path}
-          title={t("title", { ns: loginFormName })}
-        >
-          <Login />
-        </UnauthorizeRoute>
-        <UnauthorizeRoute
-          key={urls.forgotPassword.path}
-          path={urls.forgotPassword.path}
-          title={t("title", { ns: forgotPasswordFormName })}
-          description={t("description", { ns: forgotPasswordFormName })}
-        >
-          <ForgotPassword />
-        </UnauthorizeRoute>
-        <UnauthorizeRoute
-          key={urls.restorePassword.path}
-          path={urls.restorePassword.path}
-          title={t("title", { ns: restorePasswordFormName })}
-          description={t("description", { ns: restorePasswordFormName })}
-        >
-          <RestorePassword />
-        </UnauthorizeRoute>
-        <Redirect from="/" to={{ pathname: MAIN_PAGE }} exact />
-        <Redirect from="/crm" to={{ pathname: MAIN_PAGE }} exact />
-        <Route path="*">
-          <NotFoundError />
-        </Route>
-      </Switch>
-    </Router>
-  );
-};
+      <Route path={[login.path, forgotPassword.path, restorePassword.path]}>
+        <UnauthorizedLayout>
+          <Switch>
+            <Route key={login.path} path={login.path} component={Login} />
+            <Route
+              key={forgotPassword.path}
+              path={forgotPassword.path}
+              component={ForgotPassword}
+            />
+            <Route
+              key={restorePassword.path}
+              path={restorePassword.path}
+              component={RestorePassword}
+            />
+          </Switch>
+        </UnauthorizedLayout>
+      </Route>
+      <Route
+        key={urls.error.path}
+        path={urls.error.path}
+        component={ErrorScreen}
+      />
+      <Redirect from="/" to={{ pathname: MAIN_PAGE }} exact />
+      <Redirect from="/crm" to={{ pathname: MAIN_PAGE }} exact />
+      <Route path="*">
+        <NotFoundScreen />
+      </Route>
+    </Switch>
+  </Router>
+);
 
 export default Routes;

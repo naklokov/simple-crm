@@ -5,7 +5,12 @@
     "title.server": "Произошла техническая ошибка",
     "title.404": "Страница не найдена",
     "subtitle.default": "Обратитесь к системному администратору",
-    "button": "Вернуться на главную"
+    "button": "Вернуться на главную",
+    "button.go.back": "Вернуться назад",
+    "front.following.error": "Приложение содержит следующие ошибки: ",
+    "front.title": "Произошла ошибка",
+    "front.subtitle": "В процессе выполнения произошла ошибка приложения.",
+    "expand.title": "Подробное описание ошибки"
   },
   "login": {
     "title": "Проф - Ресурс CRM",
@@ -68,10 +73,12 @@
   },
   "clients": {
     "title": "Клиенты",
+    "title.my": "Мои клиенты",
     "button.add.title": "＋ Добавить компанию",
     "clients.entity.add": "Новая компания",
     "message.error": "Ошибка при получении клиентов",
-    "message.delete.success": "Компания успешно удалена"
+    "message.delete.success": "Компания успешно удалена",
+    "checkbox.my.clients": "Мои клиенты"
   },
   "table": {
     "actions.column.title": "Действия",
@@ -157,5 +164,13 @@
     "delete.no": "Нет",
     "delete.yes": "Да",
     "rules.required": "Пожалуйста, введите комментарий"
+  },
+  "tasks": {
+    "button.add.title": "＋ Добавить задачу",
+    "title": "Задачи",
+    "today": "Сегодня",
+    "tommorow": "Завтра",
+    "without.date": "Бессрочно",
+    "card.title": "Задача"
   }
 }

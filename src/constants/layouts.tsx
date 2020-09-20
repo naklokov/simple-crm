@@ -1,17 +1,11 @@
 import React from "react";
-import {
-  UserOutlined,
-  CalendarOutlined,
-  DollarOutlined,
-  ReadOutlined,
-} from "@ant-design/icons";
+import { UserOutlined, CalendarOutlined } from "@ant-design/icons";
 
 import { urls } from ".";
 import { logo } from "../assets/img";
 import { PERMISSIONS } from "./permissions";
-import { Route } from "antd/lib/breadcrumb/Breadcrumb";
 
-const { CLIENTS, TASKS, DEALS } = PERMISSIONS;
+const { CLIENTS, TASKS } = PERMISSIONS;
 
 export const LOGO = logo;
 
@@ -30,31 +24,27 @@ export const MENU_ITEMS = [
     permissions: [TASKS.ADMIN, TASKS.GET, TASKS.GET_OWNER],
     icon: <CalendarOutlined />,
   },
-  {
-    id: "deals",
-    title: "Сделки",
-    url: urls.deals.path,
-    permissions: [DEALS.ADMIN, DEALS.GET, DEALS.GET_OWNER],
-    icon: <DollarOutlined />,
-  },
-  {
-    id: "knowledge",
-    title: "База знаний",
-    url: urls.knowledge.path,
-    permissions: [],
-    icon: <ReadOutlined />,
-  },
 ];
 
-export const BREADCRUMB_ROUTES: { [key: string]: Route[] } = {
+export const BREADCRUMB_ROUTES = {
   CLIENTS: [
     {
       path: "/",
       breadcrumbName: "Главная",
     },
     {
-      path: "/clients",
+      path: urls.clients.path,
       breadcrumbName: "Клиенты",
+    },
+  ],
+  TASKS: [
+    {
+      path: "/",
+      breadcrumbName: "Главная",
+    },
+    {
+      path: urls.tasks.path,
+      breadcrumbName: "Задачи",
     },
   ],
 };

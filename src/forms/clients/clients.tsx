@@ -2,11 +2,16 @@ import React, { useEffect, useCallback, useState } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { Table } from "../../components";
-import { urls, ClientEntityProps, formConfig } from "../../constants";
-import { getSearchQuery } from "./utils";
+import {
+  urls,
+  ClientEntityProps,
+  formConfig,
+  PERMISSIONS,
+} from "../../constants";
+import { getQueryString } from "./utils";
 
 import style from "./clients.module.scss";
-import { State } from "../../__data__/interfaces";
+import { ProfileInfoProps, State } from "../../__data__/interfaces";
 import { setClients, setTableLoading } from "../../__data__";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import {
@@ -18,42 +23,62 @@ import {
 import { TablePaginationConfig } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
 import ClientsHeader from "./header";
+import { PagePermissionsChecker } from "../../wrappers";
+import { Checkbox } from "antd";
 
-const { ACTIONS, COLUMNS } = formConfig.clients;
+const { COLUMNS, TABLES } = formConfig.clients;
+// TODO проверить пермишены
+const {
+  CLIENTS: { GET, GET_OWNER, ADMIN },
+} = PERMISSIONS;
+
+interface PaginationsProps {
+  page: number;
+  pageSize: number;
+  sortBy: string;
+  searched: string;
+  myClientsChecked: boolean;
+}
 
 interface ClientsProps {
+  title?: string;
   clients: ClientEntityProps[];
+  profileInfo: ProfileInfoProps;
   setClients: (clients: ClientEntityProps[]) => void;
 }
 
-export const Clients = ({ setClients, clients }: ClientsProps) => {
+export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
   const [t] = useTranslation("clients");
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [sortBy, setSortBy] = useState("");
-  const [query, setQuery] = useState("");
+  const [pagination, setPagination] = useState({
+    page: 1,
+    pageSize: 10,
+    sortBy: "",
+    searched: "",
+    myClientsChecked: true,
+  });
   const [total, setTotal] = useState(0);
+
   const url = urls.clients.paging;
 
   useEffect(() => {
-    fetchDataSource();
+    fetchDataSource(pagination);
   }, [url]);
 
-  const fetchDataSource = async (params: object = {}) => {
-    setLoading(true);
-    const prev = {
-      page,
-      pageSize,
-      sortBy,
-      query,
-    };
+  const fetchDataSource = async ({
+    searched,
+    myClientsChecked,
+    ...params
+  }: PaginationsProps) => {
+    const userProfileId = myClientsChecked ? profileInfo.id : "";
+    const query = getQueryString(searched, userProfileId);
 
+    setLoading(true);
     try {
       const response = await axios.get(url, {
         params: {
-          ...prev,
           ...params,
+          query,
         },
       });
 
@@ -70,10 +95,9 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
   const handleSearch = useCallback(
     (searched: string) => {
       const page = 1;
-      const query = getSearchQuery(searched);
-      setQuery(query);
-      setPage(page);
-      fetchDataSource({ query, page });
+      const updated = { ...pagination, page, searched };
+      setPagination(updated);
+      fetchDataSource(updated);
     },
     [clients]
   );
@@ -89,47 +113,67 @@ export const Clients = ({ setClients, clients }: ClientsProps) => {
   const handleChangeTable = useCallback(
     (pagination, filters, sorter) => {
       const { current: page, pageSize } = pagination;
-      setPage(page);
-      setPageSize(pageSize);
-
       const sortBy = getSortedParams(sorter);
-      setSortBy(sortBy);
 
-      fetchDataSource({ sortBy, page, pageSize });
+      const updated = { ...pagination, page, pageSize, sortBy };
+      setPagination(updated);
+      fetchDataSource(updated);
     },
     [clients]
   );
 
+  const handleCheckMyClients = useCallback(() => {
+    const updated = {
+      ...pagination,
+      myClientsChecked: !pagination.myClientsChecked,
+    };
+
+    setPagination(updated);
+    fetchDataSource(updated);
+  }, [pagination]);
+
   const serverPagination: TablePaginationConfig = {
-    pageSize: +pageSize,
+    pageSize: pagination.pageSize,
+    current: pagination.page,
     total,
-    current: +page,
   };
 
   return (
-    <div>
-      <div className={style.header}>
-        <ClientsHeader />
+    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER, ADMIN]}>
+      <div>
+        <div className={style.header}>
+          <ClientsHeader />
+        </div>
+        <div className={style.container}>
+          <Table
+            _links={TABLES[0]._links}
+            columns={COLUMNS}
+            extraHeader={
+              <Checkbox
+                style={{ float: "right", marginTop: "6px" }}
+                onChange={handleCheckMyClients}
+                checked={pagination.myClientsChecked}
+              >
+                {t("checkbox.my.clients")}
+              </Checkbox>
+            }
+            loading={loading}
+            pagination={serverPagination}
+            onDeleteRow={handleDelete}
+            dataSource={clients}
+            onSearch={handleSearch}
+            onChangeTable={handleChangeTable}
+            withSearch
+          />
+        </div>
       </div>
-      <div className={style.container}>
-        <Table
-          columns={COLUMNS}
-          // actions={ACTIONS}
-          loading={loading}
-          pagination={serverPagination}
-          onDeleteRow={handleDelete}
-          dataSource={clients}
-          onSearch={handleSearch}
-          onChangeTable={handleChangeTable}
-          withSearch
-        />
-      </div>
-    </div>
+    </PagePermissionsChecker>
   );
 };
 
 const mapStateToProps = (state: State) => ({
   clients: state?.clients ?? [],
+  profileInfo: state?.persist?.profileInfo ?? {},
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

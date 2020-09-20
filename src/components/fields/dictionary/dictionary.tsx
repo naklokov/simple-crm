@@ -28,8 +28,8 @@ export const Dictionary = ({
   setLoading,
 }: DictionaryComponentProps) => {
   const [dictionary, setDictionary] = useState<DictionaryProps>({});
-  const { dictionaryValueEntities: options } = dictionary;
   const url = _links?.self.href ?? "";
+  const { dictionaryValueEntities: options } = dictionary;
   const { loading, response } = useFetch({ url });
 
   useEffect(() => {
@@ -48,6 +48,7 @@ export const Dictionary = ({
     <Col {...span} key={fieldCode}>
       <Form.Item
         name={fieldCode}
+        style={{ width: "100%" }}
         label={fieldName}
         extra={fieldDescription}
         rules={rules}

@@ -315,17 +315,6 @@ export const upper: UpperProps = {
           permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
         },
         {
-          fieldCode: "activityField",
-          fieldName: "Сфера деятельности",
-          fieldDescription: "",
-          type: "dictionary",
-          readonly: false,
-          disabled: false,
-          placeholder: PLACEHOLDER_DEFAULT,
-          rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
-        },
-        {
           fieldCode: "creationDate",
           fieldName: "Дата регистрации",
           fieldDescription: "",
@@ -353,7 +342,7 @@ export const upper: UpperProps = {
       ],
       _links: {
         userProfileId: {
-          href: urls.dictionaries.managers,
+          href: urls.dictionaries.userProfiles,
         },
       },
     },
@@ -528,7 +517,7 @@ export const upper: UpperProps = {
       ],
       _links: {
         userProfileId: {
-          href: urls.dictionaries.managers,
+          href: urls.dictionaries.userProfiles,
         },
       },
     },

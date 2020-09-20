@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { urls, TabProps, formConfig } from "../../../../constants";
+import { urls, TabProps, formConfig, QueryProps } from "../../../../constants";
 import { Table } from "../../../../components";
 import {
   getFiteredEntityArray,
   getUpdatedEntityArray,
   useFetch,
-  getRsqlQuery,
+  getRsqlParams,
   defaultSuccessHandler,
 } from "../../../../utils";
 import { useParams } from "react-router";
@@ -34,10 +34,13 @@ export const Contacts = ({ tab }: ContactsProps) => {
   const [activeDrawerId, setActiveDrawerId] = useState("");
 
   const [contacts, setContacts] = useState([] as any[]);
-  const { id: clientId } = useParams();
+  const { id: clientId } = useParams<QueryProps>();
 
-  const params = getRsqlQuery([{ key: "clientId", value: clientId }]);
-  const { response, loading } = useFetch({ url: urls.contacts.entity, params });
+  const query = getRsqlParams([{ key: "clientId", value: clientId }]);
+  const { response, loading } = useFetch({
+    url: urls.contacts.entity,
+    params: { query },
+  });
 
   useEffect(() => {
     setContacts(response?.data ?? []);
@@ -110,7 +113,7 @@ export const Contacts = ({ tab }: ContactsProps) => {
           onViewRow={handleViewRow}
           onDeleteRow={handleDeleteRow}
           dataSource={contacts}
-          addButton={<Header onClickAdd={handleAddContact} />}
+          extraHeader={<Header onClickAdd={handleAddContact} />}
         />
       </div>
     </div>

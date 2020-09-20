@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from "react";
-import { Drawer as DrawerUI, Form, PageHeader, Typography } from "antd";
+import { Drawer as DrawerUI, Form, PageHeader } from "antd";
 import { FormFooter } from "../form-footer";
 import { ComponentPermissionsChecker } from "../../wrappers";
 import { createFormField, isValuesChanged } from "../../utils";

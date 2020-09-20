@@ -1,0 +1,18 @@
+@import "../../../../assets/styles/offsets";
+
+.container {
+  margin: var(--offset-md) var(--offset-md);
+}
+
+.card {
+  margin-bottom: var(--offset-md) !important;
+}
+
+.title {
+  margin-bottom: 0 !important;
+  text-align: center;
+}
+
+.divider {
+  margin: var(--offset-sm) 0 !important;
+}

@@ -3,11 +3,17 @@ import axios from "axios";
 import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import { urls, FieldProps, TASK_STATUSES, TASK_TYPES } from "../../constants";
+import {
+  urls,
+  FieldProps,
+  TASK_STATUSES,
+  TASK_TYPES,
+  QueryProps,
+} from "../../constants";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 import { useParams } from "react-router";
 import { ProfileInfoProps, State } from "../../__data__/interfaces";
-import { useStore, connect } from "react-redux";
+import { connect } from "react-redux";
 
 interface AddTaskProps {
   fields: FieldProps[];
@@ -23,7 +29,7 @@ export const AddTask = ({
   profileInfo: { id: userProfileId },
 }: AddTaskProps) => {
   const [t] = useTranslation("tasksDrawer");
-  const { id: clientId } = useParams();
+  const { id: clientId } = useParams<QueryProps>();
   const [loading, setLoading] = useState(false);
   const metaAddingInfo = {
     taskStatus: TASK_STATUSES.NOT_COMPLETED,
@@ -36,8 +42,8 @@ export const AddTask = ({
     setLoading(true);
     try {
       const responce = await axios.post(urls.tasks.entity, {
-        ...values,
         ...metaAddingInfo,
+        ...values,
       });
       defaultSuccessHandler(t("message.success.add"));
       onClose(void 0, responce?.data);

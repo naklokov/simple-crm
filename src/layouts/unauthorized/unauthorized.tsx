@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 
 import style from "./unauthorized.module.scss";
 import { logo } from "../../assets/img";
-import { Typography } from "antd";
 import { State } from "../../__data__/interfaces";
 import { connect } from "react-redux";
 import { Loader } from "../../components";
@@ -20,16 +19,14 @@ interface LoginProps {
 }
 
 export const Unauthorized = ({
-  title,
-  description,
   auth,
   setAuth,
   loading,
   children,
 }: LoginProps) => {
   useEffect(() => {
-    const isAuth = checkAuthCookie();
-    if (isAuth && !auth) {
+    const isCheckSuccessfull = checkAuthCookie();
+    if (isCheckSuccessfull && !auth) {
       setAuth(true);
     }
   }, [auth]);
@@ -42,20 +39,6 @@ export const Unauthorized = ({
             <img className={style.img} alt="logo" src={logo} />
           </div>
           {loading && <Loader />}
-          {title && (
-            <Typography.Title className={style.title} level={2}>
-              {title}
-            </Typography.Title>
-          )}
-          {description && (
-            <Typography.Title
-              className={style.description}
-              level={4}
-              type="secondary"
-            >
-              {description}
-            </Typography.Title>
-          )}
         </div>
         {children}
       </div>

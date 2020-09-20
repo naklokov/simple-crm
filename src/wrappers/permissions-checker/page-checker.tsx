@@ -1,8 +1,10 @@
 import React from "react";
-import { ForbiddenError } from "../../forms";
 import { connect } from "react-redux";
-import { State } from "../../__data__/interfaces";
+import { ErrorAppState, State } from "../../__data__/interfaces";
 import { hasPermission } from "./utils";
+import { Redirect } from "react-router";
+import { urls } from "../../constants";
+import { HTTP_CODES } from "../../constants/http";
 
 interface PageCheckerProps {
   children: JSX.Element;
@@ -16,10 +18,13 @@ export const PermissionChecker = ({
   availablePermissions = [],
 }: PageCheckerProps) => {
   if (!hasPermission(availablePermissions, allPermissions)) {
-    return <ForbiddenError />;
+    const error: ErrorAppState = {
+      errorCode: HTTP_CODES.FORBIDDEN.toString(),
+    };
+    return <Redirect to={{ pathname: urls.error.path, state: { error } }} />;
   }
 
-  return <React.Fragment>{children}</React.Fragment>;
+  return children;
 };
 
 const mapStateToProps = (state: State) => ({

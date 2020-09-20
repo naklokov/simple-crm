@@ -51,13 +51,14 @@ export const fetchDictionaries = async (
     keys.forEach(async (key) => {
       dispatch(setTableLoading(true));
       try {
-        const response = await axios.get(links[key].href);
+        const response = await axios.get(links?.[key]?.href ?? "");
         const dictionary = { [key]: response?.data ?? [] };
         dispatch(setDictionaries(dictionary));
       } catch (error) {
         defaultErrorHandler({ error });
+      } finally {
+        dispatch(setTableLoading(false));
       }
-      dispatch(setTableLoading(true));
     });
   }
 };

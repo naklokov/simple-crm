@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
+import moment from "moment-timezone";
 import {
   useFetch,
-  getRsqlQuery,
+  getRsqlParams,
   getUpdatedEntityArray,
 } from "../../../../utils";
 import { useTranslation } from "react-i18next";
@@ -15,6 +16,7 @@ import {
   urls,
   formConfig,
   TaskEntityProps,
+  QueryProps,
 } from "../../../../constants";
 import { useParams } from "react-router";
 import {
@@ -42,14 +44,17 @@ interface TasksProps {
 
 export const Tasks = ({ tab }: TasksProps) => {
   const [t] = useTranslation("clientCardTasks");
-  const { id: clientId } = useParams();
+  const { id: clientId } = useParams<QueryProps>();
   const [tasks, setTasks] = useState([] as TaskEntityProps[]);
   const [activeDrawerId, setActiveDrawerId] = useState("");
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
   const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
-  const params = getRsqlQuery([{ key: "clientId", value: clientId }]);
-  const { loading, response } = useFetch({ url: urls.tasks.entity, params });
+  const query = getRsqlParams([{ key: "clientId", value: clientId }]);
+  const { loading, response } = useFetch({
+    url: urls.tasks.entity,
+    params: { query },
+  });
 
   useEffect(() => {
     setTasks(response?.data ?? []);
@@ -126,6 +131,13 @@ export const Tasks = ({ tab }: TasksProps) => {
     [tasks]
   );
 
+  const notCompletedSortedTasks = tasks
+    .filter(({ taskStatus }) => taskStatus === "NOT_COMPLETED")
+    .sort(
+      (a: TaskEntityProps, b: TaskEntityProps) =>
+        moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
+    );
+
   return (
     <div>
       <AddTaskDrawer
@@ -167,9 +179,7 @@ export const Tasks = ({ tab }: TasksProps) => {
               actions={tab.actions}
               loading={loading}
               pagination={{ pageSize: 3 }}
-              dataSource={tasks.filter(
-                ({ taskStatus }) => taskStatus === "NOT_COMPLETED"
-              )}
+              dataSource={notCompletedSortedTasks}
               onViewRow={handleViewRow}
               onDoneRow={handleDoneRow}
               withTitle={false}

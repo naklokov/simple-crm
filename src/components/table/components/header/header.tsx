@@ -8,13 +8,13 @@ import style from "./header.module.scss";
 interface HeaderProps {
   withSearch?: boolean;
   onSearch?: (value: string) => void;
-  button?: JSX.Element;
+  extra?: JSX.Element;
 }
 
 export const Header = ({
   withSearch = false,
   onSearch = noop,
-  button,
+  extra,
 }: HeaderProps) => {
   const [t] = useTranslation("table");
   const [value, setValue] = useState("");
@@ -48,7 +48,7 @@ export const Header = ({
           </Button>
         </React.Fragment>
       )}
-      {button}
+      {extra}
     </div>
   );
 };

@@ -4,16 +4,12 @@ const persistSlice = createSlice({
   name: "persist",
   initialState: {
     permissions: [],
-    menuCollapsed: false,
     profileInfo: {},
     auth: false,
   },
   reducers: {
     setPermissions(state, action) {
       state.permissions = action.payload;
-    },
-    setMenuCollapsed(state, action) {
-      state.menuCollapsed = action.payload;
     },
     setProfileInfo(state, action) {
       state.profileInfo = action.payload;
@@ -24,11 +20,6 @@ const persistSlice = createSlice({
   },
 });
 
-export const {
-  setPermissions,
-  setMenuCollapsed,
-  setProfileInfo,
-  setAuth,
-} = persistSlice.actions;
+export const { setPermissions, setProfileInfo, setAuth } = persistSlice.actions;
 
 export default persistSlice.reducer;

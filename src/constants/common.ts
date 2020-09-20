@@ -3,6 +3,7 @@ import { TaskStatusType } from "./interfaces";
 export const DATE_FORMATS = {
   DATE: "DD.MM.YYYY",
   DATE_TIME: "DD.MM.YYYY HH:mm",
+  TIME: "HH:mm",
 };
 
 export const DEFAULT_SPAN = { md: 8, lg: 6, xl: 6 };
@@ -25,4 +26,8 @@ export const TASK_STATUSES = {
 
 export const TASK_TYPES = {
   CALL: "CALL",
+};
+
+export const TASK_TYPES_MAP = {
+  CALL: "Звонок",
 };

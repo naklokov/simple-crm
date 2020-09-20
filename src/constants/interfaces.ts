@@ -56,6 +56,8 @@ export interface DrawerProps {
 export interface FieldProps {
   fieldCode: string;
   fieldName: string;
+  titleField?: string;
+  codeField?: string;
   fieldDescription?: string;
   type: FieldType;
   readonly?: boolean;
@@ -90,6 +92,12 @@ export interface TableProps {
   tableCode: string;
   columns: ColumnProps[];
   tableActions: ActionProps[];
+}
+
+export interface RsqlParamProps {
+  key: string;
+  operator?: string;
+  value: string | number | boolean;
 }
 
 export interface DictionaryProps {
@@ -129,6 +137,8 @@ export interface ColumnProps {
   columnDescription?: string;
   columnCode: string;
   columnType: ColumnType;
+  titleField?: string;
+  valueField?: string;
   format?: ColumnFormatType;
   sorter: any;
   editable?: boolean;
@@ -198,8 +208,9 @@ export interface TaskEntityProps {
   isActive: boolean;
   isDeleted: boolean;
   isOwner: boolean;
-  profileId: string;
+  userProfileId: string;
   taskDescription: string;
   taskStatus: TaskStatusType;
   taskType: TaskTypeType;
+  taskEndDate: string;
 }
