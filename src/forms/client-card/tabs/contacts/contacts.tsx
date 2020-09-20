@@ -113,7 +113,7 @@ export const Contacts = ({ tab }: ContactsProps) => {
           onViewRow={handleViewRow}
           onDeleteRow={handleDeleteRow}
           dataSource={contacts}
-          addButton={<Header onClickAdd={handleAddContact} />}
+          extraHeader={<Header onClickAdd={handleAddContact} />}
         />
       </div>
     </div>

@@ -51,7 +51,7 @@ export const getRsqlParams = (params: RsqlParamProps[]) => {
       `${key}${operator}${value}`
   );
 
-  return queries.join(";");
+  return queries.filter((o) => !!o).join(";");
 };
 
 export const fillTemplate = (

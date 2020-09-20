@@ -77,7 +77,8 @@
     "button.add.title": "＋ Добавить компанию",
     "clients.entity.add": "Новая компания",
     "message.error": "Ошибка при получении клиентов",
-    "message.delete.success": "Компания успешно удалена"
+    "message.delete.success": "Компания успешно удалена",
+    "checkbox.my.clients": "Мои клиенты"
   },
   "table": {
     "actions.column.title": "Действия",

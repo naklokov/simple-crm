@@ -35,7 +35,7 @@ interface TableProps {
   onSearch?: (inputSearch: string) => void;
   withSearch?: boolean;
   withTitle?: boolean;
-  addButton?: JSX.Element;
+  extraHeader?: JSX.Element;
   className?: string;
   onChangeTable?: (
     pagination: any,
@@ -61,7 +61,7 @@ export const Table = ({
   onSearch,
   withSearch = false,
   withTitle = true,
-  addButton,
+  extraHeader,
   onChangeTable = noop,
 }: TableProps) => {
   const [t] = useTranslation("table");
@@ -100,7 +100,7 @@ export const Table = ({
         <Header
           onSearch={onSearch || handleSearch}
           withSearch={withSearch}
-          button={addButton}
+          extra={extraHeader}
         />
       )
     : void 0;

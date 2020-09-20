@@ -123,11 +123,6 @@ export interface ErrorProps {
   errorMessage?: string;
 }
 
-export interface FetchParamsProps {
-  rsql?: RsqlParamProps[];
-  queryString?: { [key: string]: string | number | boolean };
-}
-
 export type ActionType = "href" | "delete" | "call" | "email" | "view" | "done";
 export type ColumnType =
   | "string"
