@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Drawer as DrawerUI, Form, PageHeader } from "antd";
 import { FormFooter } from "../form-footer";
 import { ComponentPermissionsChecker } from "../../wrappers";
@@ -44,15 +44,19 @@ export const DrawerForm = ({
   );
 
   const handleClose = useCallback((event) => {
-    setSubmitDisabled(true);
     onClose(event);
   }, []);
 
-  useEffect(() => {
-    if (visible) {
-      form.resetFields();
-    }
-  }, [visible]);
+  const handleVisibleChange = useCallback(
+    (isVisible) => {
+      if (!isVisible) {
+        form.resetFields();
+      }
+
+      setSubmitDisabled(defaultSubmitDisabled);
+    },
+    [visible]
+  );
 
   if (isEmpty(fields)) {
     return null;
@@ -60,6 +64,7 @@ export const DrawerForm = ({
 
   return (
     <DrawerUI
+      forceRender={true}
       title={
         <PageHeader
           style={{ padding: 0 }}
@@ -70,6 +75,7 @@ export const DrawerForm = ({
       destroyOnClose={true}
       closeIcon={false}
       onClose={handleClose}
+      afterVisibleChange={handleVisibleChange}
       visible={visible}
       footer={
         <FormFooter
