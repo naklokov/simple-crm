@@ -1,23 +1,32 @@
 import React, { useCallback, useEffect, useState } from "react";
 import moment from "moment-timezone";
-import { Calendar, Col, List, Row } from "antd";
+import axios from "axios";
+import { Col, List, Row } from "antd";
 import { TasksHeader } from ".";
-import { Column } from "./components";
+import { Calendar, Column } from "./components";
 
-import { getRsqlParams, useFetch } from "../../utils";
+import {
+  defaultErrorHandler,
+  defaultSuccessHandler,
+  getFullUrl,
+  getRsqlParams,
+  getFiteredEntityArray,
+  useFetch,
+} from "../../utils";
 import { getTasksColumns } from "./utils";
 import {
   TaskEntityProps,
   urls,
   formConfig,
   PERMISSIONS,
+  TASK_STATUSES,
 } from "../../constants";
 import { ProfileInfoProps, State } from "../../__data__/interfaces";
 import { connect } from "react-redux";
 
 import style from "./tasks.module.scss";
 import { useTranslation } from "react-i18next";
-import { AddTaskDrawer } from "../../drawers";
+import { AddTaskDrawer, CompletedTaskDrawer } from "../../drawers";
 import { PagePermissionsChecker } from "../../wrappers";
 
 const {
@@ -25,6 +34,7 @@ const {
 } = formConfig.tasks;
 
 const taskDrawer = drawers.find((o) => o.code === "task");
+const completedDrawer = drawers.find((o) => o.code === "taskCompleted");
 const {
   TASKS: { GET, GET_OWNER, ADMIN },
 } = PERMISSIONS;
@@ -39,6 +49,8 @@ export const Tasks = ({ profileInfo }: TaskProps) => {
   const [tasks, setTasks] = useState([] as TaskEntityProps[]);
   const [listLoading, setListLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(moment().toISOString());
+  const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
+  const [selectedId, setSelectedId] = useState("");
 
   const query = getRsqlParams([
     { key: "userProfileId", value: profileInfo.id || "" },
@@ -47,6 +59,19 @@ export const Tasks = ({ profileInfo }: TaskProps) => {
     url: urls.tasks.entity,
     params: { query },
   });
+
+  const fetchDelete = async (id: string) => {
+    setListLoading(true);
+    try {
+      const url = getFullUrl(urls.tasks.entity, id);
+      await axios.delete(url);
+      defaultSuccessHandler(t("message.success.delete"));
+    } catch (error) {
+      defaultErrorHandler({ error });
+    } finally {
+      setListLoading(false);
+    }
+  };
 
   useEffect(() => {
     setTasks(response?.data ?? []);
@@ -78,6 +103,33 @@ export const Tasks = ({ profileInfo }: TaskProps) => {
     setAddDrawerVisible(true);
   }, [addDrawerVisible]);
 
+  const handleTaskComplete = useCallback(
+    (id: string) => {
+      setSelectedId(id);
+      setCompletedDrawerVisible(true);
+    },
+    [tasks]
+  );
+
+  const handleTaskDelete = useCallback(
+    (id: string) => {
+      fetchDelete(id);
+      setTasks(tasks.filter((task) => task.id !== id));
+    },
+    [tasks]
+  );
+
+  const handleCloseCompletedDrawer = useCallback(
+    (event, task) => {
+      setCompletedDrawerVisible(false);
+
+      if (task) {
+        setTasks(getFiteredEntityArray(task.id, tasks));
+      }
+    },
+    [tasks]
+  );
+
   return (
     <PagePermissionsChecker availablePermissions={[GET, GET_OWNER, ADMIN]}>
       <div>
@@ -89,22 +141,28 @@ export const Tasks = ({ profileInfo }: TaskProps) => {
           onClose={handleCloseAddDrawer}
           visible={addDrawerVisible}
         />
+        <CompletedTaskDrawer
+          initialValues={tasks.find(({ id }) => selectedId === id) || {}}
+          fields={completedDrawer?.fields ?? []}
+          visible={completedDrawerVisible}
+          onClose={handleCloseCompletedDrawer}
+        />
         <Row className={style.container}>
           <Col flex="auto">
             <List
               loading={listLoading}
               grid={{ column: 3 }}
               dataSource={getTasksColumns(selectedDate, tasks, t)}
-              renderItem={(column) => <Column {...column} />}
+              renderItem={(column) => (
+                <Column
+                  onDelete={handleTaskDelete}
+                  onComplete={handleTaskComplete}
+                  {...column}
+                />
+              )}
             />
           </Col>
-          <Col flex="320px">
-            <Calendar
-              fullscreen={false}
-              className={style.calendar}
-              onChange={handleChangeDate}
-            />
-          </Col>
+          <Calendar onChange={handleChangeDate} />
         </Row>
       </div>
     </PagePermissionsChecker>

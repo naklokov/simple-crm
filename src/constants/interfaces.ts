@@ -213,4 +213,5 @@ export interface TaskEntityProps {
   taskStatus: TaskStatusType;
   taskType: TaskTypeType;
   taskEndDate: string;
+  format?: string;
 }

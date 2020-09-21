@@ -3,7 +3,7 @@ import { DATE_FORMATS } from "../common";
 import { urls, DrawerProps } from "..";
 
 const {
-  TASKS: { ADD, ADMIN },
+  TASKS: { ADD, ADMIN, GET_OWNER, GET },
 } = PERMISSIONS;
 
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
@@ -65,6 +65,28 @@ export const TASKS: TasksConfigProps = {
             { max: 2000, message: "Превышена максимальная длина строки" },
           ],
           permissions: [ADMIN, ADD],
+        },
+      ],
+    },
+    {
+      code: "taskCompleted",
+      name: "Выполнить задачу",
+      description: "Форма для ввода комментария после выполнения задачи",
+      fields: [
+        {
+          fieldCode: "note",
+          fieldName: "Комментарий",
+          fieldDescription: "",
+          type: "string",
+          format: "textarea",
+          readonly: false,
+          disabled: false,
+          span: { md: 24 },
+          placeholder: "Введите комментарий по выполненной задаче",
+          rules: [
+            { max: 2000, message: "Превышена максимальная длина строки" },
+          ],
+          permissions: [GET_OWNER, GET, ADMIN],
         },
       ],
     },

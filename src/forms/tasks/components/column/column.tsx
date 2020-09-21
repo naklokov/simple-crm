@@ -10,12 +10,16 @@ interface ColumnProps {
   title: string;
   cards: TaskEntityProps[];
   dividerColor?: string;
+  onComplete: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
 export const Column = ({
   title,
   cards,
   dividerColor = "#ffffff",
+  onComplete,
+  onDelete,
 }: ColumnProps) => {
   const [t] = useTranslation("tasks");
   return (
@@ -31,11 +35,15 @@ export const Column = ({
         <div className={style.card}>
           <Card
             key={card.id}
+            id={card.id}
             clientId={card.clientId}
             title={t("card.title")}
             taskType={card.taskType}
             date={card.taskEndDate}
             taskDescription={card.taskDescription}
+            onComplete={onComplete}
+            format={card.format}
+            onDelete={onDelete}
           />
         </div>
       ))}

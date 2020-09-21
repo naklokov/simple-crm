@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { ClockCircleTwoTone } from "@ant-design/icons";
-import { Card as CardUI, Skeleton, Space, Typography } from "antd";
+import {
+  CheckCircleTwoTone,
+  ClockCircleTwoTone,
+  DeleteTwoTone,
+} from "@ant-design/icons";
+import { Card as CardUI, Popconfirm, Skeleton, Typography } from "antd";
 import {
   defaultErrorHandler,
   getDateWithTimezone,
   getFullUrl,
-  useFetch,
 } from "../../../../utils";
 import {
   DATE_FORMATS,
@@ -15,35 +18,35 @@ import {
   urls,
   ClientEntityProps,
 } from "../../../../constants";
-import { useTranslation } from "react-i18next";
-import { State } from "../../../../__data__/interfaces";
-import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
-import { setClients } from "../../../../__data__";
-import { getClient } from "../../../client-card/utils";
-import { isEmpty } from "lodash";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface CardProps {
+  id: string;
   clientId: string;
   title?: string;
   taskType: TaskTypeType;
   taskDescription?: string;
-  clients: ClientEntityProps[];
-  setClients: (clients: ClientEntityProps[]) => void;
+  format?: string;
+  onComplete: (id: string) => void;
+  onDelete: (id: string) => void;
   date?: string;
 }
 
 export const Card = ({
+  id,
   clientId,
   date,
   taskType,
   taskDescription,
-  clients,
-  setClients,
+  onDelete,
+  onComplete,
+  format = DATE_FORMATS.TIME,
   title = "",
 }: CardProps) => {
-  const client = getClient(clientId, clients);
+  const [t] = useTranslation("card");
+  // TODO переделать на redux clients для сокращение количества запросов
+  const [client, setClient] = useState({} as ClientEntityProps);
   const [loading, setLoading] = useState(false);
 
   const fetchClient = async () => {
@@ -52,8 +55,7 @@ export const Card = ({
       const response = await axios.get(
         getFullUrl(urls.clients.entity, clientId)
       );
-      const client = response?.data ?? {};
-      setClients([...clients, client]);
+      setClient(response?.data ?? {});
     } catch (error) {
       defaultErrorHandler({ error });
     } finally {
@@ -62,19 +64,36 @@ export const Card = ({
   };
 
   useEffect(() => {
-    if (isEmpty(client)) {
-      fetchClient();
-    }
-  }, [clients]);
+    fetchClient();
+  }, []);
 
   const extra = date ? (
     <div>
       <ClockCircleTwoTone />
       <span style={{ marginLeft: "4px" }}>
-        {getDateWithTimezone(date).format(DATE_FORMATS.TIME)}
+        {getDateWithTimezone(date).format(format)}
       </span>
     </div>
   ) : null;
+
+  const handleComplete = useCallback(() => {
+    onComplete(id);
+  }, [onComplete]);
+
+  const handleDelete = useCallback(() => {
+    onDelete(id);
+  }, [onDelete]);
+
+  const actions = [
+    <CheckCircleTwoTone twoToneColor="#52c41a" onClick={handleComplete} />,
+    <Popconfirm
+      title={t("delete.confirm")}
+      onConfirm={handleDelete}
+      placement="topLeft"
+    >
+      <DeleteTwoTone twoToneColor="#f5222d" />,
+    </Popconfirm>,
+  ];
 
   const titleContent = (
     <Link to={getFullUrl(urls.clients.path, clientId)}>
@@ -91,6 +110,7 @@ export const Card = ({
       title={loading ? titleSkeleton : titleContent}
       extra={extra}
       size="small"
+      actions={actions}
     >
       <strong>{TASK_TYPES_MAP[taskType]}</strong>
       {taskDescription && (
@@ -102,11 +122,4 @@ export const Card = ({
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  clients: state?.clients ?? [],
-});
-
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setClients }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Card);
+export default Card;
