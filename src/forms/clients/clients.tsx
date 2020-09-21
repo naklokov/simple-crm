@@ -24,7 +24,8 @@ import { TablePaginationConfig } from "antd/lib/table";
 import { useTranslation } from "react-i18next";
 import ClientsHeader from "./header";
 import { PagePermissionsChecker } from "../../wrappers";
-import { Checkbox } from "antd";
+import { Radio } from "antd";
+import { RadioChangeEvent } from "antd/lib/radio";
 
 const { COLUMNS, TABLES } = formConfig.clients;
 // TODO проверить пермишены
@@ -32,12 +33,17 @@ const {
   CLIENTS: { GET, GET_OWNER, ADMIN },
 } = PERMISSIONS;
 
+const CLIENTS_RADIO_OPTIONS = {
+  MY: "myClients",
+  ALL: "allClients",
+};
+
 interface PaginationsProps {
   page: number;
   pageSize: number;
   sortBy: string;
   searched: string;
-  myClientsChecked: boolean;
+  selectedRadio: string;
 }
 
 interface ClientsProps {
@@ -55,30 +61,32 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
     pageSize: 10,
     sortBy: "",
     searched: "",
-    myClientsChecked: true,
+    selectedRadio: CLIENTS_RADIO_OPTIONS.MY,
   });
   const [total, setTotal] = useState(0);
 
   const url = urls.clients.paging;
 
   useEffect(() => {
-    fetchDataSource(pagination);
-  }, [url]);
+    if (profileInfo.id) {
+      fetchDataSource(pagination);
+    }
+  }, [url, profileInfo.id]);
 
   const fetchDataSource = async ({
     searched,
-    myClientsChecked,
+    selectedRadio,
     ...params
   }: PaginationsProps) => {
-    const userProfileId = myClientsChecked ? profileInfo.id : "";
-    const query = getQueryString(searched, userProfileId);
+    const userProfileId =
+      selectedRadio === CLIENTS_RADIO_OPTIONS.MY ? profileInfo.id : "";
 
     setLoading(true);
     try {
       const response = await axios.get(url, {
         params: {
           ...params,
-          query,
+          query: getQueryString(searched, userProfileId),
         },
       });
 
@@ -122,15 +130,19 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
     [clients]
   );
 
-  const handleCheckMyClients = useCallback(() => {
-    const updated = {
-      ...pagination,
-      myClientsChecked: !pagination.myClientsChecked,
-    };
+  const handleChangeRadio = useCallback(
+    (e: RadioChangeEvent) => {
+      const { value } = e.target;
+      const updated = {
+        ...pagination,
+        selectedRadio: value,
+      };
 
-    setPagination(updated);
-    fetchDataSource(updated);
-  }, [pagination]);
+      setPagination(updated);
+      fetchDataSource(updated);
+    },
+    [pagination]
+  );
 
   const serverPagination: TablePaginationConfig = {
     pageSize: pagination.pageSize,
@@ -149,13 +161,19 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
             _links={TABLES[0]._links}
             columns={COLUMNS}
             extraHeader={
-              <Checkbox
-                style={{ float: "right", marginTop: "6px" }}
-                onChange={handleCheckMyClients}
-                checked={pagination.myClientsChecked}
+              <Radio.Group
+                style={{ float: "right" }}
+                defaultValue={pagination.selectedRadio}
+                buttonStyle="solid"
+                onChange={handleChangeRadio}
               >
-                {t("checkbox.my.clients")}
-              </Checkbox>
+                <Radio.Button value={CLIENTS_RADIO_OPTIONS.MY}>
+                  {t("radio.my")}
+                </Radio.Button>
+                <Radio.Button value={CLIENTS_RADIO_OPTIONS.ALL}>
+                  {t("radio.all")}
+                </Radio.Button>
+              </Radio.Group>
             }
             loading={loading}
             pagination={serverPagination}
