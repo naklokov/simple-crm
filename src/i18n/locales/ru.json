@@ -75,10 +75,10 @@
     "title": "Клиенты",
     "title.my": "Мои клиенты",
     "button.add.title": "＋ Добавить компанию",
-    "clients.entity.add": "Новая компания",
     "message.error": "Ошибка при получении клиентов",
     "message.delete.success": "Компания успешно удалена",
-    "checkbox.my.clients": "Мои клиенты"
+    "radio.my": "Мои клиенты",
+    "radio.all": "Все клиенты"
   },
   "table": {
     "actions.column.title": "Действия",
@@ -170,7 +170,11 @@
     "title": "Задачи",
     "today": "Сегодня",
     "tommorow": "Завтра",
-    "without.date": "Бессрочно",
-    "card.title": "Задача"
+    "overdue": "Просроченные",
+    "card.title": "Задача",
+    "calendar.title": "Выберите дату"
+  },
+  "card": {
+    "delete.confirm": "Вы хотите удалить задачу?"
   }
 }
