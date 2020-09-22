@@ -13,7 +13,7 @@ import {
   getFiteredEntityArray,
   useFetch,
 } from "../../utils";
-import { getTasksColumns } from "./utils";
+import { getTasksColumns, getCompletedTasksRsql } from "./utils";
 import {
   TaskEntityProps,
   urls,
@@ -54,6 +54,7 @@ export const Tasks = ({ profileInfo }: TaskProps) => {
 
   const query = getRsqlParams([
     { key: "userProfileId", value: profileInfo.id || "" },
+    getCompletedTasksRsql(TASK_STATUSES.COMPLETED),
   ]);
   const { response, loading } = useFetch({
     url: urls.tasks.entity,

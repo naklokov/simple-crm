@@ -1,10 +1,10 @@
 import React, { ReactNode, useEffect } from "react";
 import axios from "axios";
-import { Layout } from "antd";
+import { Layout, Space } from "antd";
 import { connect } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 
-import { Logo, Menu, Profile } from "./components";
+import { About, Logo, Menu, Profile } from "./components";
 import {
   State,
   ProfileInfoProps,
@@ -125,9 +125,10 @@ export const Authorized = ({
       </Sider>
       <Layout>
         <Header className={style.header}>
-          <div className={style.profile}>
+          <Space size={16} style={{ float: "right" }}>
+            <About />
             <Profile profileInfo={profileInfo} />
-          </div>
+          </Space>
         </Header>
         <Content className={style.content}>{children}</Content>
         {loading && <Loader />}

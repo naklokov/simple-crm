@@ -175,6 +175,16 @@
     "calendar.title": "Выберите дату"
   },
   "card": {
-    "delete.confirm": "Вы хотите удалить задачу?"
+    "delete.confirm": "Вы хотите удалить задачу?",
+    "action.complete": "Выполнить",
+    "action.delete": "Удалить"
+  },
+  "about": {
+    "title": "Информация о системе",
+    "tooltip": "Информация о системе",
+    "title.version": "Версия",
+    "title.email": "Почта",
+    "email": "support@resurs62.ru",
+    "button.cancel": "Отмена"
   }
 }

@@ -33,6 +33,7 @@ export const Calendar = ({ onChange }: CalendarProps) => {
             shape="square"
             size={64}
             style={{
+              cursor: "pointer",
               position: "fixed",
               right: "0",
               bottom: "5%",
