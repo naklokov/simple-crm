@@ -3,7 +3,7 @@ import axios from "axios";
 import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import { urls, FieldProps, TaskEntityProps } from "../../constants";
+import { urls, FieldProps } from "../../constants";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
@@ -11,7 +11,6 @@ import {
 } from "../../utils";
 import { Dropdown, Button, Menu } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
-import { noop } from "lodash";
 import { connect } from "react-redux";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { setTableLoading } from "../../__data__";
@@ -59,7 +58,7 @@ export const ViewTask = ({
       onCompleted(id);
       event.preventDefault();
     },
-    [id]
+    [id, onCompleted]
   );
 
   const handleDelete = useCallback(
@@ -67,7 +66,7 @@ export const ViewTask = ({
       fetchDelete();
       event.preventDefault();
     },
-    [id]
+    [id, fetchDelete]
   );
 
   const menu = (

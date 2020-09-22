@@ -3,15 +3,13 @@ import axios from "axios";
 import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import { urls, FieldProps, TASK_STATUSES, TASK_TYPES } from "../../constants";
+import { urls, FieldProps, TASK_STATUSES } from "../../constants";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFullUrl,
 } from "../../utils";
 import { useParams } from "react-router";
-import { connect } from "react-redux";
-import { State } from "../../__data__/interfaces";
 
 interface CompleteTaskProps {
   fields: FieldProps[];

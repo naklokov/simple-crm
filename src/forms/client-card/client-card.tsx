@@ -66,7 +66,7 @@ export const ClientCard = ({
       const response = await axios.get(url);
       setClients([response?.data] ?? []);
     } catch (error) {
-      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
+      defaultErrorHandler({ error });
     } finally {
       setLoading(false);
     }
@@ -103,7 +103,7 @@ export const ClientCard = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  clients: state?.clients ?? [],
+  clients: state?.data?.clients ?? [],
 });
 
 const mapDispathToProps = (dispatch: Dispatch) =>

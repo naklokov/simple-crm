@@ -36,7 +36,7 @@ export const Header = ({ profileInfo, onChangeTab }: HeaderProps) => (
 );
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.persist?.profileInfo,
+  profileInfo: state?.data?.profileInfo,
 });
 
 export default connect(mapStateToProps)(Header);

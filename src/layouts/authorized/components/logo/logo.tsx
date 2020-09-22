@@ -19,12 +19,11 @@ export const Logo = ({ collapsed }: LogoProps) => {
     <Link to={http.ROOT_URL}>
       <div className={style.logo}>
         <img className={style.img} alt="logo" src={LOGO} />
-        <Typography.Text
-          strong
-          className={cn(style.title, { [style.collapsed]: collapsed })}
-        >
-          {t("title").toUpperCase()}
-        </Typography.Text>
+        {!collapsed && (
+          <Typography.Text strong className={style.title}>
+            {t("title").toUpperCase()}
+          </Typography.Text>
+        )}
       </div>
     </Link>
   );

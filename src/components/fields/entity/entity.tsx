@@ -76,7 +76,7 @@ export const Entity = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.persist?.profileInfo ?? {},
+  profileInfo: state?.data?.profileInfo ?? {},
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

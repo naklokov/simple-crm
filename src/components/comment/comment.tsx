@@ -68,11 +68,11 @@ export const Comment = ({
 
       fetchProfile();
     }
-  }, [userProfileId, profileInfo]);
+  }, [userProfileId, profileInfo, commentAuthor, fetchProfile]);
 
   const handleDeleteComment = useCallback(() => {
     onDeleteComment(id);
-  }, [comment]);
+  }, [comment, id, onDeleteComment]);
 
   const handleEditComment = useCallback(
     (value) => {
@@ -82,7 +82,7 @@ export const Comment = ({
         onEditComment(id, value);
       }
     },
-    [comment, isEdit]
+    [comment, isEdit, id, onEditComment]
   );
 
   const content = getContent(isEdit, commentText, handleEditComment);
@@ -110,7 +110,7 @@ export const Comment = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.persist?.profileInfo ?? {},
+  profileInfo: state?.data?.profileInfo ?? {},
 });
 
 export default connect(mapStateToProps)(Comment);

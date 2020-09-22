@@ -80,7 +80,7 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
         setLoading(false);
       }
     },
-    [comments]
+    [comments, t]
   );
 
   const handleDeleteComment = useCallback(
@@ -100,7 +100,7 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
         setLoading(false);
       }
     },
-    [comments]
+    [comments, t]
   );
 
   const handleSendComment = useCallback(
@@ -118,7 +118,7 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
         });
       }
     },
-    [comments]
+    [comments, entityId, profileInfo.id, t]
   );
 
   return (
@@ -146,7 +146,7 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.persist?.profileInfo ?? {},
+  profileInfo: state?.data?.profileInfo ?? {},
 });
 
 export default connect(mapStateToProps)(Comments);

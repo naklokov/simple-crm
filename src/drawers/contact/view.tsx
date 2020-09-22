@@ -33,7 +33,7 @@ export const ViewContact = ({
       defaultSuccessHandler(t("message.success.edit"));
       onClose(void 0, responce?.data);
     } catch (error) {
-      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
+      defaultErrorHandler({ error });
     } finally {
       setSubmitLoading(false);
     }

@@ -3,6 +3,7 @@ import {
   GUTTER_FULL_WIDTH,
   ClientEntityProps,
   TabProps,
+  QueryProps,
 } from "../../../../constants";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
@@ -34,7 +35,7 @@ interface RequisitesProps {
 }
 
 export const Requisites = ({ tab, clients, setClients }: RequisitesProps) => {
-  const { id } = useParams();
+  const { id } = useParams<QueryProps>();
   const [form] = useForm();
   const [t] = useTranslation("clientCardRequisites");
   const [submitDisabled, setSubmitDisabled] = useState(true);
@@ -57,7 +58,7 @@ export const Requisites = ({ tab, clients, setClients }: RequisitesProps) => {
       defaultSuccessHandler(t("message.success"));
       setSubmitDisabled(true);
     } catch (error) {
-      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
+      defaultErrorHandler({ error });
     } finally {
       setSubmitLoading(false);
     }
@@ -97,7 +98,7 @@ export const Requisites = ({ tab, clients, setClients }: RequisitesProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  clients: state?.clients ?? [],
+  clients: state?.data?.clients ?? [],
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

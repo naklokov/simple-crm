@@ -1,8 +1,8 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Layout, Space } from "antd";
 import { connect } from "react-redux";
-import { Dispatch } from "@reduxjs/toolkit";
+import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 
 import { About, Logo, Menu, Profile } from "./components";
 import {
@@ -13,14 +13,19 @@ import {
 
 import style from "./authorized.module.scss";
 import {
-  setMenuCollapsed,
-  setLoading as setLoadingAction,
+  setLoading,
   setProfileInfo,
-  setPermissions as setPermissionsAction,
+  setPermissions,
+  setTasks,
 } from "../../__data__";
-import { urls } from "../../constants";
+import { TaskEntityProps, urls } from "../../constants";
 import { useTranslation } from "react-i18next";
-import { logger, defaultErrorHandler } from "../../utils";
+import {
+  logger,
+  defaultErrorHandler,
+  useFetch,
+  getRsqlParams,
+} from "../../utils";
 import { Loader } from "../../components";
 import { Redirect } from "react-router";
 import { isEmpty } from "lodash";
@@ -30,75 +35,76 @@ const { Sider, Content, Header } = Layout;
 interface AuthorizedProps {
   children: ReactNode;
   loading: boolean;
-  isMenuCollapsed: boolean;
   profileInfo: ProfileInfoProps;
+  tasks: TaskEntityProps[];
   error: ErrorAppState;
-  setCollapsed: (value: boolean) => void;
   setLoading: (loading: boolean) => void;
+  setTasks: (tasks: TaskEntityProps[]) => void;
   setPermissions: (permissions: string[]) => void;
-  setProfile: (profile: ProfileInfoProps) => void;
+  setProfileInfo: (profile: ProfileInfoProps) => void;
 }
 
 export const Authorized = ({
   children,
   loading,
-  isMenuCollapsed,
-  setCollapsed,
   profileInfo,
-  setProfile,
+  setTasks,
+  setProfileInfo,
   setPermissions,
   setLoading,
   error,
 }: AuthorizedProps) => {
   const [t] = useTranslation("authorizedLayout");
+  const [tasksLoading, setTasksLoading] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const { response: profileResponse, loading: profileLoading } = useFetch({
+    url: urls.profile.entity,
+  });
 
-  const fetchProfile = async () => {
+  const {
+    response: permissionsResponse,
+    loading: permissionsLoading,
+  } = useFetch({
+    url: urls.profile.permissions,
+  });
+
+  const fetchTasks = async (userProfileId: string) => {
+    setTasksLoading(true);
+    const query = getRsqlParams([
+      { key: "userProfileId", value: userProfileId },
+    ]);
     try {
-      setLoading(true);
-      const responce = await axios.get(urls.profile.entity);
-      setProfile(responce?.data ?? {});
-
-      logger.debug({
-        message: t("profile.success"),
+      const responce = await axios.get(urls.tasks.entity, {
+        params: { query },
       });
+      setTasks(responce?.data ?? []);
     } catch (error) {
       defaultErrorHandler({
         error,
-        defaultErrorMessage: t("profile.error"),
       });
     } finally {
-      setLoading(false);
+      setTasksLoading(false);
     }
-  };
-
-  const fetchPermissions = async () => {
-    try {
-      setLoading(true);
-      const responce = await axios.get(urls.profile.permissions);
-      // TODO Выпилить при релизе
-      console.log("user permissions", responce?.data?.permissions);
-      setPermissions(responce?.data?.permissions ?? []);
-      logger.debug({
-        message: t("permissions.success"),
-      });
-    } catch (error) {
-      defaultErrorHandler({
-        error,
-        defaultErrorMessage: t("permissions.error"),
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCollapseMenu = () => {
-    setCollapsed(!isMenuCollapsed);
   };
 
   useEffect(() => {
-    fetchProfile();
-    fetchPermissions();
-  }, []);
+    setLoading(profileLoading || permissionsLoading || tasksLoading);
+  }, [profileLoading, permissionsLoading, tasksLoading]);
+
+  useEffect(() => {
+    setProfileInfo(profileResponse?.data ?? {});
+    setPermissions(permissionsResponse?.data?.permissions ?? []);
+  }, [profileResponse, permissionsResponse]);
+
+  useEffect(() => {
+    if (profileInfo.id) {
+      fetchTasks(profileInfo.id);
+    }
+  }, [profileInfo.id]);
+
+  const handleCollapseMenu = useCallback(() => {
+    setCollapsed(!collapsed);
+  }, [collapsed]);
 
   if (!isEmpty(error)) {
     return (
@@ -115,13 +121,13 @@ export const Authorized = ({
     <Layout className={style.main}>
       <Sider
         collapsible
-        collapsed={isMenuCollapsed}
+        collapsed={collapsed}
         theme="light"
         className={style.sider}
         onCollapse={handleCollapseMenu}
       >
-        <Logo collapsed={isMenuCollapsed} />
-        <Menu collapsed={isMenuCollapsed} />
+        <Logo collapsed={collapsed} />
+        <Menu />
       </Sider>
       <Layout>
         <Header className={style.header}>
@@ -138,23 +144,21 @@ export const Authorized = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.persist?.profileInfo ?? {},
+  profileInfo: state?.data?.profileInfo ?? {},
+  tasks: state?.data?.tasks ?? {},
   loading: state?.app?.loading,
-  isMenuCollapsed: state?.app?.menuCollapsed,
   error: state?.app?.error ?? {},
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setCollapsed: (value: boolean) => {
-    dispatch(setMenuCollapsed(value));
-  },
-  setPermissions: (permissions: string[]) => {
-    dispatch(setPermissionsAction(permissions));
-  },
-  setProfile: (profileInfo: ProfileInfoProps) => {
-    dispatch(setProfileInfo(profileInfo));
-  },
-  setLoading: (loading: boolean) => dispatch(setLoadingAction(loading)),
-});
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators(
+    {
+      setTasks,
+      setPermissions,
+      setProfileInfo,
+      setLoading,
+    },
+    dispatch
+  );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Authorized);

@@ -71,7 +71,7 @@ class ErrorBoundary extends React.Component<
               </Paragraph>
 
               <Collapse ghost>
-                <Collapse.Panel header={t("expand.title")} key="1">
+                <Collapse.Panel header={t("front.expand.title")} key="1">
                   <Paragraph strong>{errorMessage}</Paragraph>
                   <Paragraph>{callStack}</Paragraph>
                 </Collapse.Panel>

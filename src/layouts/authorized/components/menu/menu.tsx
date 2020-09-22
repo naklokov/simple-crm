@@ -11,11 +11,10 @@ import { connect } from "react-redux";
 const { Item } = MenuUI;
 
 interface MenuProps {
-  collapsed: boolean;
   permissions: string[];
 }
 
-export const Menu = ({ collapsed, permissions }: MenuProps) => {
+export const Menu = ({ permissions }: MenuProps) => {
   const location = useLocation();
   const [selectedKey, setSelectedKey] = useState("");
   const itemsByPermissions = filterArrayByPermissions(MENU_ITEMS, permissions);
@@ -26,11 +25,7 @@ export const Menu = ({ collapsed, permissions }: MenuProps) => {
   }, [location]);
 
   return (
-    <MenuUI
-      mode="inline"
-      selectedKeys={[selectedKey]}
-      inlineCollapsed={collapsed}
-    >
+    <MenuUI mode="inline" selectedKeys={[selectedKey]}>
       {itemsByPermissions.map(({ id, icon, title, url }) => (
         <Item key={id} icon={icon}>
           <Link to={url}>{title}</Link>

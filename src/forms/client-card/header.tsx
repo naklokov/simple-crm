@@ -62,11 +62,14 @@ export const ClientCardHeader = ({ clients }: ClientCardHeaderProps) => {
   let extra: ReactNode[] = [];
 
   if (phone) {
-    extra = [...extra, <Call onClick={handleCall} />];
+    extra = [...extra, <Call key="call" onClick={handleCall} />];
   }
 
   if (id) {
-    extra = [...extra, <Delete onClick={handleDelete} isOwner={isOwner} />];
+    extra = [
+      ...extra,
+      <Delete key="delete" onClick={handleDelete} isOwner={isOwner} />,
+    ];
   }
 
   const breadcrumb = {
@@ -88,7 +91,7 @@ export const ClientCardHeader = ({ clients }: ClientCardHeaderProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  clients: state?.clients ?? [],
+  clients: state?.data?.clients ?? [],
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

@@ -5,7 +5,7 @@ import Modal from "antd/lib/modal/Modal";
 
 import style from "./about.module.scss";
 import { useTranslation } from "react-i18next";
-import { Button, Tooltip, Typography } from "antd";
+import { Tooltip, Typography } from "antd";
 
 const { Paragraph, Title } = Typography;
 
@@ -23,20 +23,12 @@ export const About = () => {
 
   return (
     <div>
-      <Tooltip title={t("tooltip")}>
-        <div className={style.container} onClick={handleClick}>
+      <div className={style.container} onClick={handleClick}>
+        <Tooltip title={t("tooltip")}>
           <QuestionCircleOutlined className={style.icon} />
-        </div>
-      </Tooltip>
-      <Modal
-        visible={visible}
-        onCancel={handleCancel}
-        footer={[
-          <Button key="back" onClick={handleCancel}>
-            {t("button.cancel")}
-          </Button>,
-        ]}
-      >
+        </Tooltip>
+      </div>
+      <Modal visible={visible} onCancel={handleCancel} footer={null} centered>
         <Title level={5}>{t("title")}</Title>
         <br />
         <Paragraph>

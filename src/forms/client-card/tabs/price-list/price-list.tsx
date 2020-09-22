@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { urls, TabProps, ClientEntityProps } from "../../../../constants";
+import {
+  urls,
+  TabProps,
+  ClientEntityProps,
+  QueryProps,
+} from "../../../../constants";
 import { Table } from "../../../../components";
 import {
   defaultErrorHandler,
@@ -30,7 +35,7 @@ export const PriceList = ({
 }: ContactsProps) => {
   const [t] = useTranslation("clientCardPriceList");
   const [positions, setPositions] = useState([] as any[]);
-  const { id: clientId } = useParams();
+  const { id: clientId } = useParams<QueryProps>();
   const params = {
     clientId,
     userProfileId,
@@ -60,7 +65,7 @@ export const PriceList = ({
 
       setPositions(getUpdatedEntityArray(values, positions, "itemId"));
     },
-    [positions, params]
+    [positions, params, setTableLoading, t]
   );
 
   return (
@@ -77,7 +82,7 @@ export const PriceList = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.persist?.profileInfo,
+  profileInfo: state?.data?.profileInfo,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
