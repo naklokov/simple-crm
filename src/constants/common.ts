@@ -17,6 +17,7 @@ export const CLIENT_NEW_ID = "new";
 export const RSQL_OPERATORS_MAP = {
   LIKE: "=JLIKE=",
   EQUAL: "==",
+  FIELD_EQUAL: "=JEQ=",
 };
 
 export const TASK_STATUSES = {

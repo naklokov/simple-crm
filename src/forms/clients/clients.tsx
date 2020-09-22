@@ -164,7 +164,6 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
               <Radio.Group
                 style={{ float: "right" }}
                 defaultValue={pagination.selectedRadio}
-                buttonStyle="solid"
                 onChange={handleChangeRadio}
               >
                 <Radio.Button value={CLIENTS_RADIO_OPTIONS.MY}>

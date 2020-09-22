@@ -85,13 +85,13 @@ export const Card = ({
   }, [onDelete]);
 
   const actions = [
-    <CheckCircleTwoTone twoToneColor="#52c41a" onClick={handleComplete} />,
+    <span onClick={handleComplete}>{t("action.complete")}</span>,
     <Popconfirm
       title={t("delete.confirm")}
       onConfirm={handleDelete}
       placement="topLeft"
     >
-      <DeleteTwoTone twoToneColor="#f5222d" />,
+      <span>{t("action.delete")}</span>
     </Popconfirm>,
   ];
 

@@ -1,6 +1,6 @@
 import moment, { Moment } from "moment-timezone";
 import { TaskEntityProps } from "../../constants/interfaces";
-import { DATE_FORMATS, TASK_STATUSES } from "../../constants";
+import { DATE_FORMATS, RSQL_OPERATORS_MAP } from "../../constants";
 import { isEmpty } from "lodash";
 import { getDateWithTimezone } from "../../utils";
 
@@ -12,23 +12,25 @@ const getColumnTitles = (t: Function) => [
   t("overdue"),
 ];
 
+export const getCompletedTasksRsql = (value: string) => ({
+  key: "entityData",
+  operator: RSQL_OPERATORS_MAP.FIELD_EQUAL,
+  value: `(taskStatus,${value})`,
+});
+
 export const getSortedTasksByDate = (
   tasks: TaskEntityProps[],
   date: Moment
 ) => {
-  return (
-    tasks
-      .filter(({ taskEndDate }) => {
-        const endDate = getDateWithTimezone(taskEndDate).toISOString();
-        return date.isSame(endDate, "day");
-      })
-      // TODO фильтровать при fetch запросе с бека
-      .filter(({ taskStatus }) => taskStatus === TASK_STATUSES.NOT_COMPLETED)
-      .sort(
-        (a: TaskEntityProps, b: TaskEntityProps) =>
-          moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
-      )
-  );
+  return tasks
+    .filter(({ taskEndDate }) => {
+      const endDate = getDateWithTimezone(taskEndDate).toISOString();
+      return date.isSame(endDate, "day");
+    })
+    .sort(
+      (a: TaskEntityProps, b: TaskEntityProps) =>
+        moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
+    );
 };
 
 export const getOverdueTasks = (
@@ -37,10 +39,8 @@ export const getOverdueTasks = (
 ) =>
   tasks
     .map((task) => ({ ...task, format: DATE_FORMATS.DATE_TIME }))
-    // TODO фильтровать при fetch запросе с бека
-    .filter(({ taskStatus }) => taskStatus === TASK_STATUSES.NOT_COMPLETED)
     .filter(({ id }) => !visibleTasksId.includes(id))
-    .filter(({ taskEndDate, id }) => moment().isAfter(taskEndDate));
+    .filter(({ taskEndDate }) => moment().isAfter(taskEndDate));
 
 export const getTitle = (
   date: Moment,
