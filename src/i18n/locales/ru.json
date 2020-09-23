@@ -51,7 +51,8 @@
   "authorizedLayout": {
     "title": "Проф - Ресурс CRM",
     "profile.view": "Просмотр профиля",
-    "profile.logout": "Выйти"
+    "profile.logout": "Выйти",
+    "tooltip.edit.profile": "Просмотр данных профиля"
   },
   "profileMain": {
     "title": "Информация о профиле",
