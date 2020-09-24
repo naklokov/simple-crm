@@ -3,7 +3,7 @@ import { Layout, Space } from "antd";
 import { connect } from "react-redux";
 import { About, Logo, Menu, Profile } from "./components";
 import { State } from "../../__data__/interfaces";
-import { ContainerWrapper } from "../../wrappers";
+import { ContainerWrapper, NotificationService } from "../../wrappers";
 import { Loader } from "../../components";
 import style from "./authorized.module.scss";
 
@@ -23,28 +23,30 @@ export const Authorized = ({ children, loading }: AuthorizedProps) => {
 
   return (
     <ContainerWrapper>
-      <Layout className={style.main}>
-        <Sider
-          collapsible
-          collapsed={collapsed}
-          theme="light"
-          className={style.sider}
-          onCollapse={handleCollapseMenu}
-        >
-          <Logo collapsed={collapsed} />
-          <Menu />
-        </Sider>
-        <Layout>
-          <Header className={style.header}>
-            <Space size={16} style={{ float: "right" }}>
-              <About />
-              <Profile />
-            </Space>
-          </Header>
-          {loading && <Loader />}
-          <Content className={style.content}>{children}</Content>
+      <NotificationService>
+        <Layout className={style.main}>
+          <Sider
+            collapsible
+            collapsed={collapsed}
+            theme="light"
+            className={style.sider}
+            onCollapse={handleCollapseMenu}
+          >
+            <Logo collapsed={collapsed} />
+            <Menu />
+          </Sider>
+          <Layout>
+            <Header className={style.header}>
+              <Space size={16} style={{ float: "right" }}>
+                <About />
+                <Profile />
+              </Space>
+            </Header>
+            {loading && <Loader />}
+            <Content className={style.content}>{children}</Content>
+          </Layout>
         </Layout>
-      </Layout>
+      </NotificationService>
     </ContainerWrapper>
   );
 };

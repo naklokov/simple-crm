@@ -91,7 +91,7 @@ export const ClientCardHeader = ({ clients }: ClientCardHeaderProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  clients: state?.data?.clients ?? [],
+  clients: state?.data?.clients,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

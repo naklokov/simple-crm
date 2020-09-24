@@ -1,6 +1,7 @@
 import moment, { Moment } from "moment-timezone";
 import { TaskEntityProps } from "../../constants/interfaces";
 import { DATE_FORMATS, RSQL_OPERATORS_MAP } from "../../constants";
+import { getOverdueTasks } from "../../utils";
 import { isEmpty } from "lodash";
 import { getDateWithTimezone } from "../../utils";
 
@@ -32,15 +33,6 @@ export const getSortedTasksByDate = (
         moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
     );
 };
-
-export const getOverdueTasks = (
-  tasks: TaskEntityProps[],
-  visibleTasksId: string[]
-) =>
-  tasks
-    .map((task) => ({ ...task, format: DATE_FORMATS.DATE_TIME }))
-    .filter(({ id }) => !visibleTasksId.includes(id))
-    .filter(({ taskEndDate }) => moment().isAfter(taskEndDate));
 
 export const getTitle = (
   date: Moment,

@@ -96,11 +96,11 @@ export const ContainerWrapper = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.data?.profileInfo ?? {},
-  permissions: state?.persist?.permissions ?? {},
+  profileInfo: state?.data?.profileInfo,
+  permissions: state?.persist?.permissions,
   loading: state?.app?.loading,
-  error: state?.app?.error ?? {},
-  auth: state?.persist?.auth ?? false,
+  error: state?.app?.error,
+  auth: state?.persist?.auth,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

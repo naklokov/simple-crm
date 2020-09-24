@@ -98,7 +98,7 @@ export const Requisites = ({ tab, clients, setClients }: RequisitesProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  clients: state?.data?.clients ?? [],
+  clients: state?.data?.clients,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

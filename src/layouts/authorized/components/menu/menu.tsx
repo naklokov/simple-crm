@@ -36,7 +36,7 @@ export const Menu = ({ permissions }: MenuProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  permissions: state?.persist?.permissions ?? [],
+  permissions: state?.persist?.permissions,
 });
 
 export default connect(mapStateToProps)(Menu);

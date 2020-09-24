@@ -4,7 +4,7 @@ import isEmpty from "lodash/isEmpty";
 import { Col, Form, Select } from "antd";
 import { Dispatch } from "@reduxjs/toolkit";
 import { DictionaryProps, DEFAULT_SPAN, FieldProps } from "../../../constants";
-import { defaultErrorHandler, useFetch } from "../../../utils";
+import { useFetch } from "../../../utils";
 import { setLoading } from "../../../__data__";
 import { connect } from "react-redux";
 

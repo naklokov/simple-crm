@@ -46,7 +46,7 @@ export const ComponentChecker = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  allPermissions: state?.persist?.permissions ?? [],
+  allPermissions: state?.persist?.permissions,
 });
 
 export default connect(mapStateToProps)(ComponentChecker);

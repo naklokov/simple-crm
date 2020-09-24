@@ -103,7 +103,7 @@ export const ClientCard = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  clients: state?.data?.clients ?? [],
+  clients: state?.data?.clients,
 });
 
 const mapDispathToProps = (dispatch: Dispatch) =>

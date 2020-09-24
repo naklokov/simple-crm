@@ -161,7 +161,8 @@
     "tommorow": "Завтра",
     "overdue": "Просроченные",
     "card.title": "Задача",
-    "calendar.title": "Выберите дату"
+    "calendar.title": "Выберите дату",
+    "message.success.delete": "Задача удалена"
   },
   "card": {
     "delete.confirm": "Вы хотите удалить задачу?",
@@ -175,5 +176,10 @@
     "title.email": "Почта",
     "email": "support@resurs62.ru",
     "button.cancel": "Отмена"
+  },
+  "notification": {
+    "overdue.message.title": "Внимание",
+    "overdue.message.description": "У вас {{length}} просроченных задач",
+    "link.to.tasks": "Перейти к списку задач"
   }
 }

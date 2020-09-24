@@ -11,7 +11,14 @@ import Cookies from "js-cookie";
 import { logger } from ".";
 import { COOKIES, ROOT_URL } from "../constants/http";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setAuth, setLoading } from "../__data__";
+import {
+  setAuth,
+  setClients,
+  setLoading,
+  setPermissions,
+  setProfileInfo,
+  setTasks,
+} from "../__data__";
 import { message } from "antd";
 import { SortOrder } from "antd/lib/table/interface";
 import { Link } from "react-router-dom";
@@ -56,14 +63,14 @@ export const getRsqlParams = (params: RsqlParamProps[]) => {
 
 export const fillTemplate = (
   template: string,
-  values?: { [key: string]: string }
+  values?: { [key: string]: string | number }
 ) => {
   let result = template;
   if (values) {
     const keys = Object.keys(values);
 
     keys.forEach((key) => {
-      result = result.replace(getTemplateMask(key), values[key]);
+      result = result.replace(getTemplateMask(key), values[key].toString());
     });
   }
 
@@ -82,8 +89,16 @@ export const callTel = (phone: string) => {
   window.location.assign(`tel:${phone.replace(/(\s|\(|\)|-)/gi, "")}`);
 };
 
+const clearReduxStore = (dispatch: Dispatch) => {
+  dispatch(setTasks([]));
+  dispatch(setProfileInfo({}));
+  dispatch(setPermissions([]));
+  dispatch(setClients([]));
+};
+
 export const logout = async (dispatch: Dispatch) => {
   const username = Cookies.get(COOKIES.USERNAME);
+  clearReduxStore(dispatch);
   clearCookie();
   localStorage.clear();
 

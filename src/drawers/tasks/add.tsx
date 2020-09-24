@@ -68,7 +68,7 @@ export const AddTask = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.data?.profileInfo ?? {},
+  profileInfo: state?.data?.profileInfo,
 });
 
 export default connect(mapStateToProps)(AddTask);

@@ -186,8 +186,8 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  clients: state?.data?.clients ?? [],
-  profileInfo: state?.data?.profileInfo ?? {},
+  clients: state?.data?.clients,
+  profileInfo: state?.data?.profileInfo,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

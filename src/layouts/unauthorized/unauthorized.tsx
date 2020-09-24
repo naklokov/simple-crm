@@ -46,8 +46,8 @@ export const Unauthorized = ({
   );
 };
 const mapStateToProps = (state: State) => ({
-  loading: state?.app?.loading ?? false,
-  auth: state?.persist?.auth ?? false,
+  loading: state?.app?.loading,
+  auth: state?.persist?.auth,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

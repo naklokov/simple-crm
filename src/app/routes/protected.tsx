@@ -32,7 +32,7 @@ export const ProtectedRoute = ({
 );
 
 const mapStateToProps = (state: State) => ({
-  auth: state?.persist?.auth ?? false,
+  auth: state?.persist?.auth,
 });
 
 export default connect(mapStateToProps)(ProtectedRoute);

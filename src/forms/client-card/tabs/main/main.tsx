@@ -131,8 +131,8 @@ export const Main = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  clients: state?.data?.clients ?? [],
-  profileInfo: state?.data?.profileInfo ?? {},
+  clients: state?.data?.clients,
+  profileInfo: state?.data?.profileInfo,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

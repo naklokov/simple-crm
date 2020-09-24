@@ -206,7 +206,7 @@ export const Tasks = ({ tab, allTasks, setTasks }: TasksProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  allTasks: state?.data?.tasks ?? [],
+  allTasks: state?.data?.tasks,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

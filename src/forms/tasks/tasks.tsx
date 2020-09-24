@@ -9,19 +9,16 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFullUrl,
-  getRsqlParams,
   getFiteredEntityArray,
-  useFetch,
 } from "../../utils";
-import { getTasksColumns, getCompletedTasksRsql } from "./utils";
+import { getTasksColumns } from "./utils";
 import {
   urls,
   formConfig,
   PERMISSIONS,
-  TASK_STATUSES,
   TaskEntityProps,
 } from "../../constants";
-import { ProfileInfoProps, State } from "../../__data__/interfaces";
+import { State } from "../../__data__/interfaces";
 import { connect } from "react-redux";
 
 import style from "./tasks.module.scss";
@@ -162,7 +159,7 @@ export const Tasks = ({ tasks, setTasks }: TaskProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  tasks: state?.data?.tasks ?? [],
+  tasks: state?.data?.tasks,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
