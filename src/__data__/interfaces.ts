@@ -1,9 +1,27 @@
-import { ClientEntityProps } from "../constants";
+import { ClientEntityProps, TaskEntityProps } from "../constants";
 
 export interface PersistState {
   permissions: string[];
-  profileInfo: ProfileInfoProps;
   auth: boolean;
+}
+
+export interface AppState {
+  error: ErrorAppState;
+  tableLoading: boolean;
+  loading: boolean;
+}
+
+export interface DataState {
+  dictionaries: object;
+  clients: ClientEntityProps[];
+  tasks: TaskEntityProps[];
+  profileInfo: ProfileInfoProps;
+}
+
+export interface State {
+  persist: PersistState;
+  app: AppState;
+  data: DataState;
 }
 
 export interface ErrorAppState {
@@ -11,20 +29,6 @@ export interface ErrorAppState {
   errorCode?: string;
   errorDescription?: string;
   errorMessage?: string;
-}
-
-export interface AppState {
-  menuCollapsed: boolean;
-  error: ErrorAppState;
-  tableLoading: boolean;
-  loading: boolean;
-  dictionaries: object;
-}
-
-export interface State {
-  persist: PersistState;
-  app: AppState;
-  clients?: ClientEntityProps[];
 }
 
 export interface ProfileInfoProps {

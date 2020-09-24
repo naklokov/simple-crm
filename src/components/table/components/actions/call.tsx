@@ -21,9 +21,10 @@ export const Call = ({ phone, searched }: CallProps) => {
       title={t("actions.call.confirm")}
       onConfirm={handleCall}
       placement="left"
+      key={phone}
     >
-      <Button style={{ padding: 0 }} type="link">
-        <HighlightTextWrapper text={phone} searched={searched} />
+      <Button key={phone} style={{ padding: 0 }} type="link">
+        <HighlightTextWrapper key={phone} text={phone} searched={searched} />
       </Button>
     </Popconfirm>
   );

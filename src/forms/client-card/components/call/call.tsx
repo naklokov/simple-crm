@@ -1,4 +1,4 @@
-import { PhoneTwoTone, PhoneOutlined } from "@ant-design/icons";
+import { PhoneTwoTone } from "@ant-design/icons";
 import { Button, Popconfirm } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";

@@ -3,7 +3,7 @@ import axios from "axios";
 import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import { urls, FieldProps } from "../../constants";
+import { urls, FieldProps, QueryProps } from "../../constants";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 import { useParams } from "react-router";
 
@@ -15,7 +15,7 @@ interface AddContactProps {
 
 export const AddContact = ({ fields, visible, onClose }: AddContactProps) => {
   const [t] = useTranslation("contactDrawer");
-  const { id: clientId } = useParams();
+  const { id: clientId } = useParams<QueryProps>();
   const [submitLoading, setSubmitLoading] = useState(false);
 
   const onFinish = async (values: Store) => {
@@ -28,7 +28,7 @@ export const AddContact = ({ fields, visible, onClose }: AddContactProps) => {
       defaultSuccessHandler(t("message.success.add"));
       onClose(void 0, responce?.data);
     } catch (error) {
-      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
+      defaultErrorHandler({ error });
     } finally {
       setSubmitLoading(false);
     }

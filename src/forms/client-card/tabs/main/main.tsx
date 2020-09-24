@@ -74,7 +74,7 @@ export const Main = ({
       history.replace(getFullUrl(urls.clients.path, entity.id));
       setSubmitDisabled(true);
     } catch (error) {
-      defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
+      defaultErrorHandler({ error });
     } finally {
       setSubmitLoading(false);
     }
@@ -131,8 +131,8 @@ export const Main = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  clients: state?.clients ?? [],
-  profileInfo: state?.persist?.profileInfo ?? {},
+  clients: state?.data?.clients,
+  profileInfo: state?.data?.profileInfo,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

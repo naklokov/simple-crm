@@ -2,7 +2,6 @@ import { loadState, saveState } from "../local-storage";
 
 const state = {
   persist: {
-    menuCollapsed: false,
     permissions: [],
     profileInfo: {
       id: 123,

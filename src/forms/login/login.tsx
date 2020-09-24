@@ -139,7 +139,7 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  auth: state?.persist?.auth ?? false,
+  auth: state?.persist?.auth,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

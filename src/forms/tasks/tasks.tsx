@@ -9,25 +9,26 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFullUrl,
-  getRsqlParams,
   getFiteredEntityArray,
-  useFetch,
 } from "../../utils";
-import { getTasksColumns, getCompletedTasksRsql } from "./utils";
+import { getTasksColumns } from "./utils";
 import {
-  TaskEntityProps,
   urls,
   formConfig,
   PERMISSIONS,
-  TASK_STATUSES,
+  TaskEntityProps,
 } from "../../constants";
-import { ProfileInfoProps, State } from "../../__data__/interfaces";
+import { State } from "../../__data__/interfaces";
 import { connect } from "react-redux";
 
 import style from "./tasks.module.scss";
 import { useTranslation } from "react-i18next";
 import { AddTaskDrawer, CompletedTaskDrawer } from "../../drawers";
 import { PagePermissionsChecker } from "../../wrappers";
+import { bindActionCreators } from "@reduxjs/toolkit";
+import { setTasks } from "../../__data__";
+import { Dispatch } from "@reduxjs/toolkit";
+import { isEmpty } from "lodash";
 
 const {
   TASKS: { drawers },
@@ -40,26 +41,17 @@ const {
 } = PERMISSIONS;
 
 interface TaskProps {
-  profileInfo: ProfileInfoProps;
+  tasks: TaskEntityProps[];
+  setTasks: (tasks: TaskEntityProps[]) => void;
 }
 
-export const Tasks = ({ profileInfo }: TaskProps) => {
+export const Tasks = ({ tasks, setTasks }: TaskProps) => {
   const [t] = useTranslation("tasks");
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
-  const [tasks, setTasks] = useState([] as TaskEntityProps[]);
   const [listLoading, setListLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(moment().toISOString());
   const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
   const [selectedId, setSelectedId] = useState("");
-
-  const query = getRsqlParams([
-    { key: "userProfileId", value: profileInfo.id || "" },
-    getCompletedTasksRsql(TASK_STATUSES.COMPLETED),
-  ]);
-  const { response, loading } = useFetch({
-    url: urls.tasks.entity,
-    params: { query },
-  });
 
   const fetchDelete = async (id: string) => {
     setListLoading(true);
@@ -75,12 +67,8 @@ export const Tasks = ({ profileInfo }: TaskProps) => {
   };
 
   useEffect(() => {
-    setTasks(response?.data ?? []);
-  }, [response]);
-
-  useEffect(() => {
-    setListLoading(loading);
-  }, [loading]);
+    setListLoading(isEmpty(tasks));
+  }, [tasks]);
 
   const handleChangeDate = useCallback(
     (date: moment.Moment) => {
@@ -171,7 +159,10 @@ export const Tasks = ({ profileInfo }: TaskProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.persist?.profileInfo ?? "",
+  tasks: state?.data?.tasks,
 });
 
-export default connect(mapStateToProps)(Tasks);
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators({ setTasks }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Tasks);

@@ -67,12 +67,6 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
 
   const url = urls.clients.paging;
 
-  useEffect(() => {
-    if (profileInfo.id) {
-      fetchDataSource(pagination);
-    }
-  }, [url, profileInfo.id]);
-
   const fetchDataSource = async ({
     searched,
     selectedRadio,
@@ -100,12 +94,17 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
     }
   };
 
+  useEffect(() => {
+    if (profileInfo.id) {
+      fetchDataSource(pagination);
+    }
+  }, [pagination, profileInfo.id]);
+
   const handleSearch = useCallback(
     (searched: string) => {
       const page = 1;
       const updated = { ...pagination, page, searched };
       setPagination(updated);
-      fetchDataSource(updated);
     },
     [clients]
   );
@@ -119,13 +118,12 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
   );
 
   const handleChangeTable = useCallback(
-    (pagination, filters, sorter) => {
-      const { current: page, pageSize } = pagination;
+    (paginationParams, filters, sorter) => {
+      const { current: page, pageSize } = paginationParams;
       const sortBy = getSortedParams(sorter);
 
       const updated = { ...pagination, page, pageSize, sortBy };
       setPagination(updated);
-      fetchDataSource(updated);
     },
     [clients]
   );
@@ -139,7 +137,6 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
       };
 
       setPagination(updated);
-      fetchDataSource(updated);
     },
     [pagination]
   );
@@ -189,8 +186,8 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  clients: state?.clients ?? [],
-  profileInfo: state?.persist?.profileInfo ?? {},
+  clients: state?.data?.clients,
+  profileInfo: state?.data?.profileInfo,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

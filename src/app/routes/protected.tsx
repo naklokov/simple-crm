@@ -1,5 +1,4 @@
-import React, { ReactNode } from "react";
-
+import React from "react";
 import { Redirect, Route, RouteProps } from "react-router";
 import { urls } from "../../constants";
 import { State } from "../../__data__/interfaces";
@@ -33,7 +32,7 @@ export const ProtectedRoute = ({
 );
 
 const mapStateToProps = (state: State) => ({
-  auth: state?.persist?.auth ?? false,
+  auth: state?.persist?.auth,
 });
 
 export default connect(mapStateToProps)(ProtectedRoute);

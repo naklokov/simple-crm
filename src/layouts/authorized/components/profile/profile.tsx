@@ -1,12 +1,12 @@
 import React from "react";
-import { Avatar, Typography, Dropdown, Menu, Skeleton } from "antd";
+import { Avatar, Typography, Dropdown, Menu, Skeleton, Tooltip } from "antd";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 import { logout as logoutMethod } from "../../../../utils";
 import { Dispatch } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
-import { ProfileInfoProps } from "../../../../__data__/interfaces";
+import { ProfileInfoProps, State } from "../../../../__data__/interfaces";
 
 import style from "./profile.module.scss";
 import { useTranslation } from "react-i18next";
@@ -31,10 +31,16 @@ export const Profile = ({ profileInfo, logout }: ProfileProps) => {
     </Menu>
   );
 
+  if (!fullName) {
+    return null;
+  }
+
   return (
     <div className={style.container}>
       <Link to={urls.profile.path}>
-        <Avatar src={avatar} icon={<UserOutlined />} />
+        <Tooltip title={t("tooltip.edit.profile")}>
+          <Avatar src={avatar} icon={<UserOutlined />} />
+        </Tooltip>
       </Link>
       <Dropdown overlay={menu}>
         <div className={style.dropdownContainer}>
@@ -46,8 +52,12 @@ export const Profile = ({ profileInfo, logout }: ProfileProps) => {
   );
 };
 
+const mapStateToProps = (state: State) => ({
+  profileInfo: state?.data?.profileInfo,
+});
+
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   logout: () => logoutMethod(dispatch),
 });
 
-export default connect(null, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

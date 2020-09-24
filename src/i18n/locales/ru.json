@@ -10,7 +10,7 @@
     "front.following.error": "Приложение содержит следующие ошибки: ",
     "front.title": "Произошла ошибка",
     "front.subtitle": "В процессе выполнения произошла ошибка приложения.",
-    "expand.title": "Подробное описание ошибки"
+    "front.expand.title": "Подробное описание ошибки"
   },
   "login": {
     "title": "Проф - Ресурс CRM",
@@ -52,15 +52,10 @@
     "title": "Проф - Ресурс CRM",
     "profile.view": "Просмотр профиля",
     "profile.logout": "Выйти",
-    "profile.success": "Профиль успешно загружен",
-    "profile.error": "Произошла ошибка при загрузке профиля",
-    "permissions.success": "Разрешения пользователя успешно загружены",
-    "permissions.error": "Произошла ошибка при загрузке разрешений пользователя"
+    "tooltip.edit.profile": "Просмотр данных профиля"
   },
   "profileMain": {
     "title": "Информация о профиле",
-    "rules.required": "Пожалуйста, заполните поле",
-    "submit.button": "Сохранить",
     "message.success": "Профиль успешно изменён",
     "message.error": "Ошибка при изменении профиля"
   },
@@ -74,9 +69,8 @@
   "clients": {
     "title": "Клиенты",
     "title.my": "Мои клиенты",
-    "button.add.title": "＋ Добавить компанию",
-    "message.error": "Ошибка при получении клиентов",
-    "message.delete.success": "Компания успешно удалена",
+    "button.add.title": "＋ Добавить клиента",
+    "message.delete.success": "Клиент успешно удален",
     "radio.my": "Мои клиенты",
     "radio.all": "Все клиенты"
   },
@@ -99,13 +93,11 @@
     "button.call": "Звонок",
     "button.delete": "Удалить",
     "message.success.delete": "Компания успешно удалена",
-    "message.error": "Ошибка при получении данных клиента",
     "confirm.delete": "Вы действительно хотите удалить компанию?",
     "confirm.call": "Вы действительно хотите позвонить в компанию?",
-    "title.new": "Новая компания"
+    "title.new": "Новый клиент"
   },
   "clientCardMain": {
-    "message.error": "Ошибка при изменении клиента",
     "message.success": "Информация о клиенте обновлена",
     "save": "Сохранить"
   },
@@ -114,11 +106,9 @@
     "message.delete.success": "Контакт успешно удалён"
   },
   "clientCardRequisites": {
-    "message.error": "Ошибка при изменении реквизитов клиента",
     "message.success": "Информация о реквизитах клиента обновлена"
   },
   "clientCardPriceList": {
-    "message.error": "Ошибка при получении данных прайс листа",
     "rules.editable.price": "Введите стоимость",
     "message.row.save.error": "Ошибка при сохранении данных прайс листа",
     "message.row.save.success": "Позиция прайс листа успешно изменена"
@@ -127,8 +117,7 @@
     "title.new": "Новый контакт",
     "title.view": "Контакт",
     "message.success.add": "Контакт успешно добавлен",
-    "message.success.edit": "Контакт успешно отредактирован",
-    "message.error": "Произошла ошибка при добавлении контакта"
+    "message.success.edit": "Контакт успешно отредактирован"
   },
   "tasksDrawer": {
     "title.new": "Новая задача",
@@ -172,7 +161,8 @@
     "tommorow": "Завтра",
     "overdue": "Просроченные",
     "card.title": "Задача",
-    "calendar.title": "Выберите дату"
+    "calendar.title": "Выберите дату",
+    "message.success.delete": "Задача удалена"
   },
   "card": {
     "delete.confirm": "Вы хотите удалить задачу?",
@@ -186,5 +176,10 @@
     "title.email": "Почта",
     "email": "support@resurs62.ru",
     "button.cancel": "Отмена"
+  },
+  "notification": {
+    "overdue.message.title": "Внимание",
+    "overdue.message.description": "У вас {{length}} просроченных задач",
+    "link.to.tasks": "Перейти к списку задач"
   }
 }

@@ -1,21 +1,14 @@
 import persistReducer from "./persist";
 import appReducer from "./app";
-import clientsReducer from "./clients";
+import dataReducer from "./data";
 
-export { setPermissions, setProfileInfo, setAuth } from "./persist";
+export { setPermissions, setAuth } from "./persist";
 
-export {
-  setLoading,
-  setTableLoading,
-  setDictionaries,
-  setError,
-  setMenuCollapsed,
-} from "./app";
-
-export { setClients } from "./clients";
+export { setLoading, setTableLoading, setError } from "./app";
+export { setClients, setDictionaries, setProfileInfo, setTasks } from "./data";
 
 export const reducers = {
   persist: persistReducer,
   app: appReducer,
-  clients: clientsReducer,
+  data: dataReducer,
 };

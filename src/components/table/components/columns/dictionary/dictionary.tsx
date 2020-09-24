@@ -23,7 +23,7 @@ export const Dictionary = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  dictionaries: state?.app?.dictionaries ?? {},
+  dictionaries: state?.data?.dictionaries,
 });
 
 export default connect(mapStateToProps)(Dictionary);
