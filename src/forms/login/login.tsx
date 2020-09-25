@@ -26,7 +26,6 @@ interface LoginProps {
   auth: boolean;
 }
 
-// TODO Добавить обработку rememberMe параметров из localStorage
 export const Login = ({ setAuth, auth }: LoginProps) => {
   const [form] = FormUI.useForm();
   const [t] = useTranslation(FORM_NAME);

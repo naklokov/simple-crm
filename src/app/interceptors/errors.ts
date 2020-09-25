@@ -42,7 +42,7 @@ export const errorsInterceptor = (dispatch: Dispatch, state: State) => (
 
     if (statusCode === HTTP_CODES.UNAUTHORIZED) {
       logout(dispatch);
-      Promise.reject(errorResponse);
+      return Promise.reject(errorResponse);
     }
 
     const hasError = state?.app?.error?.statusCode;
@@ -51,9 +51,9 @@ export const errorsInterceptor = (dispatch: Dispatch, state: State) => (
         dispatch(setError({ statusCode, ...error }));
       }
     }
-    Promise.reject(error);
+    return Promise.reject(error);
   } catch (error) {
     defaultErrorHandler({ error, defaultErrorMessage: DEFAULT_ERROR_MESSAGE });
-    Promise.reject(errorResponse);
+    return Promise.reject(errorResponse);
   }
 };
