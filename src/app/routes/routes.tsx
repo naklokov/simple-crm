@@ -22,7 +22,6 @@ import { ProtectedRoute } from ".";
 import { urls } from "../../constants";
 import { AuthorizedLayout, UnauthorizedLayout } from "../../layouts";
 import { ROOT_URL } from "../../constants/http";
-import { ErrorBoundary } from "../../wrappers";
 
 const MAIN_PAGE = urls.clients.path;
 
@@ -39,33 +38,34 @@ const {
 const Routes = () => (
   <Router basename={ROOT_URL}>
     <Switch>
-      <Route path={[clients.path, clientCard.path, profile.path, tasks.path]}>
-        <AuthorizedLayout>
-          <Switch>
-            <ProtectedRoute
-              key={profile.path}
-              path={profile.path}
-              component={Profile}
-            />
-            <ProtectedRoute
-              exact
-              key={clients.path}
-              path={clients.path}
-              component={Clients}
-            />
-            <ProtectedRoute
-              key={clientCard.path}
-              path={clientCard.path}
-              component={ClientCard}
-            />
-            <ProtectedRoute
-              key={tasks.path}
-              path={tasks.path}
-              component={Tasks}
-            />
-          </Switch>
-        </AuthorizedLayout>
-      </Route>
+      <ProtectedRoute
+        path={[clients.path, clientCard.path, profile.path, tasks.path]}
+        component={AuthorizedLayout}
+      >
+        <Switch>
+          <ProtectedRoute
+            key={profile.path}
+            path={profile.path}
+            component={Profile}
+          />
+          <ProtectedRoute
+            exact
+            key={clients.path}
+            path={clients.path}
+            component={Clients}
+          />
+          <ProtectedRoute
+            key={clientCard.path}
+            path={clientCard.path}
+            component={ClientCard}
+          />
+          <ProtectedRoute
+            key={tasks.path}
+            path={tasks.path}
+            component={Tasks}
+          />
+        </Switch>
+      </ProtectedRoute>
 
       <Route path={[login.path, forgotPassword.path, restorePassword.path]}>
         <UnauthorizedLayout>
