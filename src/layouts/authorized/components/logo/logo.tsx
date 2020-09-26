@@ -1,5 +1,4 @@
 import React from "react";
-import cn from "classnames";
 
 import { Typography } from "antd";
 import { LOGO } from "../../../../constants/layouts";
@@ -16,7 +15,7 @@ interface LogoProps {
 export const Logo = ({ collapsed }: LogoProps) => {
   const [t] = useTranslation("authorizedLayout");
   return (
-    <Link to={http.ROOT_URL}>
+    <Link to={http.MAIN_PAGE_URL}>
       <div className={style.logo}>
         <img className={style.img} alt="logo" src={LOGO} />
         {!collapsed && (

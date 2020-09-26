@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Redirect, Route, RouteProps } from "react-router";
 import { urls } from "../../constants";
 import { State } from "../../__data__/interfaces";
@@ -6,11 +6,13 @@ import { connect } from "react-redux";
 
 interface ProtectedRouteProps extends RouteProps {
   auth: boolean;
+  children?: ReactNode;
   component: any;
 }
 
 export const ProtectedRoute = ({
   auth,
+  children,
   component: Component,
   ...rest
 }: ProtectedRouteProps) => (
@@ -18,7 +20,7 @@ export const ProtectedRoute = ({
     {...rest}
     render={({ location, ...props }) =>
       auth ? (
-        <Component {...props} />
+        <Component {...props}>{children}</Component>
       ) : (
         <Redirect
           to={{

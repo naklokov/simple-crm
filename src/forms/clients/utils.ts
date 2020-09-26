@@ -4,7 +4,7 @@ import { getRsqlParams } from "../../utils";
 export const getSearchRsqlParams = (searched: string) => ({
   key: "entityData",
   operator: RSQL_OPERATORS_MAP.LIKE,
-  value: `(phone,shortName,city,${searched})`,
+  value: `(phone,shortName,city,"${searched}")`,
 });
 
 export const getUserProfileRsqlParams = (id: string) => ({
