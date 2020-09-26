@@ -1,3 +1,5 @@
+const { clients } = require("./urls");
+
 const HTTP_CODES = {
   SUCCESS: 200,
   BAD_REQUEST: 400,
@@ -8,6 +10,7 @@ const HTTP_CODES = {
 };
 
 const ROOT_URL = "/crm";
+const MAIN_PAGE_URL = clients.path;
 
 const ERROR_SCREEN_CODES = [
   HTTP_CODES.FORBIDDEN,
@@ -26,4 +29,5 @@ module.exports = {
   ERROR_SCREEN_CODES,
   HTTP_CODES,
   ROOT_URL,
+  MAIN_PAGE_URL,
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { UserOutlined, CalendarOutlined } from "@ant-design/icons";
 
-import { urls } from ".";
+import { urls, http } from ".";
 import { logo } from "../assets/img";
 import { PERMISSIONS } from "./permissions";
 
@@ -13,7 +13,7 @@ export const MENU_ITEMS = [
   {
     id: "clients",
     title: "Клиенты",
-    url: urls.clients.path,
+    url: http.MAIN_PAGE_URL,
     permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
     icon: <UserOutlined />,
   },
@@ -29,7 +29,7 @@ export const MENU_ITEMS = [
 export const BREADCRUMB_ROUTES = {
   CLIENTS: [
     {
-      path: "/",
+      path: http.MAIN_PAGE_URL,
       breadcrumbName: "Главная",
     },
     {
@@ -39,7 +39,7 @@ export const BREADCRUMB_ROUTES = {
   ],
   TASKS: [
     {
-      path: "/",
+      path: http.MAIN_PAGE_URL,
       breadcrumbName: "Главная",
     },
     {

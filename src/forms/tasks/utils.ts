@@ -16,7 +16,7 @@ const getColumnTitles = (t: Function) => [
 export const getCompletedTasksRsql = (value: string) => ({
   key: "entityData",
   operator: RSQL_OPERATORS_MAP.FIELD_EQUAL,
-  value: `(taskStatus,${value})`,
+  value: `(taskStatus,"${value}")`,
 });
 
 export const getSortedTasksByDate = (
