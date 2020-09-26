@@ -96,7 +96,9 @@ export const Card = ({
   ];
 
   const titleContent = (
-    <Link to={getFullUrl(urls.clients.path, clientId)}>
+    <Link
+      to={getFullUrl(urls.clients.path, clientId, { "lower:tab": "tasks" })}
+    >
       {client?.shortName ?? title}
     </Link>
   );

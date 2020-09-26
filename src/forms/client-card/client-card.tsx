@@ -23,7 +23,6 @@ import { ClientCardHeader } from ".";
 import { PagePermissionsChecker } from "../../wrappers";
 
 import style from "./client-card.module.scss";
-import { DeliveredProcedureOutlined } from "@ant-design/icons";
 
 //TODO проверить пермишены
 const {
@@ -89,13 +88,19 @@ export const ClientCard = ({
           <ClientCardHeader />
         </div>
         <Tabs
-          mainTab="main"
+          mainTab={upper.tabs[0].tabName}
+          position="upper"
           mode={mode}
           tabs={upper.tabs}
           formsMap={TABS_MAP}
         />
         {mode === "view" && (
-          <Tabs mode={mode} tabs={lower.tabs} formsMap={TABS_MAP} />
+          <Tabs
+            position="lower"
+            mode={mode}
+            tabs={lower.tabs}
+            formsMap={TABS_MAP}
+          />
         )}
       </div>
     </PagePermissionsChecker>

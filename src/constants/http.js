@@ -10,7 +10,7 @@ const HTTP_CODES = {
 };
 
 const ROOT_URL = "/crm";
-const MAIN_PAGE_URL = clients.path;
+const MAIN_PAGE_URL = ROOT_URL;
 
 const ERROR_SCREEN_CODES = [
   HTTP_CODES.FORBIDDEN,

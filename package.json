@@ -29,6 +29,7 @@
     "js-cookie": "^2.2.1",
     "lodash": "^4.17.19",
     "moment-timezone": "^0.5.31",
+    "query-string": "^6.13.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-highlight-words": "^0.16.0",

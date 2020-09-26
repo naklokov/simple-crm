@@ -29,7 +29,7 @@ export const MENU_ITEMS = [
 export const BREADCRUMB_ROUTES = {
   CLIENTS: [
     {
-      path: http.MAIN_PAGE_URL,
+      path: "/",
       breadcrumbName: "Главная",
     },
     {
@@ -39,7 +39,7 @@ export const BREADCRUMB_ROUTES = {
   ],
   TASKS: [
     {
-      path: http.MAIN_PAGE_URL,
+      path: "/",
       breadcrumbName: "Главная",
     },
     {
