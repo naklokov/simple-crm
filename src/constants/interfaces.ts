@@ -86,6 +86,8 @@ export interface TabProps {
   _links: object;
 }
 
+export type TabPositionType = "lower" | "upper" | undefined;
+
 export interface TableProps {
   tableName: string;
   tableDescription: string;

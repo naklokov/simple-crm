@@ -1,9 +1,15 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Tabs as TabsUI, Tooltip } from "antd";
-import { ModeType, TabProps } from "../../constants";
+import { ModeType, TabPositionType, TabProps } from "../../constants";
 
 import style from "./tabs.module.scss";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router";
+import {
+  getActiveQueryTab,
+  getPositionQueryParam,
+  setActiveQueryTab,
+} from "./utils";
 
 const { TabPane } = TabsUI;
 
@@ -12,6 +18,7 @@ interface TabsProps {
   mainTab?: string;
   mode?: ModeType;
   tabs: TabProps[];
+  position: TabPositionType;
   formsMap: { [key: string]: (props: any) => JSX.Element };
 }
 
@@ -21,17 +28,17 @@ export const Tabs = ({
   tabs,
   formsMap,
   className,
+  position,
   ...props
 }: TabsProps) => {
-  const defaultActiveKey = tabs?.[0]?.tabCode ?? "";
-  const [activeTab, setActiveTab] = useState(defaultActiveKey);
+  const queryParam = getPositionQueryParam(position);
+  const history = useHistory();
   const [t] = useTranslation("tabs");
-
-  const tab = tabs.find(({ tabCode }) => tabCode === activeTab);
-  const Form = formsMap[activeTab];
+  const activeTab = getActiveQueryTab(tabs);
+  const Form = formsMap[activeTab.tabCode];
 
   const handleChange = useCallback((id) => {
-    setActiveTab(id);
+    setActiveQueryTab(id, queryParam, history);
   }, []);
 
   const isTabDisabled = (currentTab: string) =>
@@ -41,7 +48,8 @@ export const Tabs = ({
     <div className={className}>
       <TabsUI
         className={style.tabs}
-        defaultActiveKey={defaultActiveKey}
+        defaultActiveKey={activeTab.tabCode}
+        activeKey={activeTab.tabCode}
         onChange={handleChange}
       >
         {tabs.map(({ tabCode, tabName }) => {
@@ -65,7 +73,7 @@ export const Tabs = ({
         })}
       </TabsUI>
       <div className={style.form}>
-        <Form tab={tab} mode={mode} {...props} />
+        <Form tab={activeTab} mode={mode} {...props} />
       </div>
     </div>
   );

@@ -20,6 +20,7 @@ import {
   setTasks,
 } from "../__data__";
 import { message } from "antd";
+import { stringify } from "query-string";
 import { SortOrder } from "antd/lib/table/interface";
 import { Link } from "react-router-dom";
 import { Route } from "antd/lib/breadcrumb/Breadcrumb";
@@ -180,9 +181,11 @@ export const getItemRender = (
 ) => {
   const last = routes.indexOf(route) === routes.length - 1;
   return last ? (
-    <span>{route.breadcrumbName}</span>
+    <span key={route.path}>{route.breadcrumbName}</span>
   ) : (
-    <Link to={`/${paths.join("/")}`}>{route.breadcrumbName}</Link>
+    <Link key={route.path} to={`/${paths.join("/")}`}>
+      {route.breadcrumbName}
+    </Link>
   );
 };
 
