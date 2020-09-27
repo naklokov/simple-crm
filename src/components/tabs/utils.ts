@@ -1,5 +1,5 @@
 import { parse, stringify } from "query-string";
-import { TabProps } from "../../constants";
+import { TabPositionType, TabProps } from "../../constants";
 
 export const getActiveQueryTab = (tabs: TabProps[]) => {
   const queries = parse(window.location.search);
@@ -15,3 +15,6 @@ export const setActiveQueryTab = (value: string, key: string, history: any) => {
   };
   history.push({ search: stringify(updated) });
 };
+
+export const getPositionQueryParam = (position: TabPositionType) =>
+  position ? `${position}:tab` : `tab`;

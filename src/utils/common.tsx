@@ -78,14 +78,9 @@ export const fillTemplate = (
   return result;
 };
 
-export const getFullUrl = (
-  url: string = "",
-  id?: string,
-  params: object = {}
-): string => {
+export const getFullUrl = (url: string = "", id?: string): string => {
   if (id) {
-    const stringifyParams = stringify(params);
-    return `${url}/${id}${stringifyParams}`;
+    return `${url}/${id}`;
   }
 
   return url;

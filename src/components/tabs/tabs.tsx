@@ -1,11 +1,15 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Tabs as TabsUI, Tooltip } from "antd";
-import { ModeType, TabProps } from "../../constants";
+import { ModeType, TabPositionType, TabProps } from "../../constants";
 
 import style from "./tabs.module.scss";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
-import { getActiveQueryTab, setActiveQueryTab } from "./utils";
+import {
+  getActiveQueryTab,
+  getPositionQueryParam,
+  setActiveQueryTab,
+} from "./utils";
 
 const { TabPane } = TabsUI;
 
@@ -14,7 +18,7 @@ interface TabsProps {
   mainTab?: string;
   mode?: ModeType;
   tabs: TabProps[];
-  position?: string;
+  position: TabPositionType;
   formsMap: { [key: string]: (props: any) => JSX.Element };
 }
 
@@ -24,10 +28,10 @@ export const Tabs = ({
   tabs,
   formsMap,
   className,
-  position = "",
+  position,
   ...props
 }: TabsProps) => {
-  const queryParam = position ? `${position}:tab` : "tab";
+  const queryParam = getPositionQueryParam(position);
   const history = useHistory();
   const [t] = useTranslation("tabs");
   const activeTab = getActiveQueryTab(tabs);

@@ -13,7 +13,7 @@ export const MENU_ITEMS = [
   {
     id: "clients",
     title: "Клиенты",
-    url: http.MAIN_PAGE_URL,
+    url: urls.clients.path,
     permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
     icon: <UserOutlined />,
   },

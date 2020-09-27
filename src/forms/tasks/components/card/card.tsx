@@ -20,6 +20,7 @@ import {
 } from "../../../../constants";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { stringify } from "query-string";
 
 interface CardProps {
   id: string;
@@ -97,7 +98,10 @@ export const Card = ({
 
   const titleContent = (
     <Link
-      to={getFullUrl(urls.clients.path, clientId, { "lower:tab": "tasks" })}
+      to={{
+        pathname: getFullUrl(urls.clients.path, clientId),
+        search: stringify({ "lower:tab": "tasks" }),
+      }}
     >
       {client?.shortName ?? title}
     </Link>
