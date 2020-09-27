@@ -1,7 +1,6 @@
 import { Button, Typography, notification } from "antd";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router";
 import { TaskEntityProps, urls } from "../../../../constants";
 
 interface OverdueDescriptionProps {
