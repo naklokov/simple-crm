@@ -10,7 +10,7 @@ import { Button, notification, Typography } from "antd";
 import { getCurrentTasks } from "./utils";
 import { CurrentDescription, OverdueDescription } from "./components";
 import { useHistory } from "react-router";
-import { TaskEntityProps, TASK_TYPES, TASK_TYPES_MAP } from "../../constants";
+import { TaskEntityProps, TASK_TYPES_MAP } from "../../constants";
 
 const MINUTE = 60000;
 

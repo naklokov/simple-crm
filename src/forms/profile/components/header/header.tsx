@@ -1,4 +1,5 @@
 import React from "react";
+import { random } from "lodash";
 import { Avatar } from "../../../../components";
 import { Typography, Tabs } from "antd";
 import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
@@ -16,7 +17,9 @@ interface HeaderProps {
 
 export const Header = ({ profileInfo, onChangeTab }: HeaderProps) => (
   <div className={style.container}>
-    <div className={style.background}>
+    <div
+      className={(style.background, style[`backgroundImage${random(1, 10)}`])}
+    >
       <div className={style.avatar}>
         <Avatar src={profileInfo.avatar} size={218} />
       </div>

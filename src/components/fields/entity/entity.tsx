@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
-import { Dispatch } from "@reduxjs/toolkit";
 import { DEFAULT_SPAN, FieldProps, urls } from "../../../constants";
-import { getRsqlParams, useFetch } from "../../../utils";
-import { setLoading } from "../../../__data__";
+import { defaultErrorHandler, getRsqlParams, useFetch } from "../../../utils";
 import { connect } from "react-redux";
 import { ProfileInfoProps, State } from "../../../__data__/interfaces";
 
 const { Option } = Select;
 
 interface DictionaryComponentProps extends FieldProps {
-  setLoading: (loading: boolean) => void;
   profileInfo: ProfileInfoProps;
 }
 
@@ -30,18 +28,29 @@ export const Entity = ({
   profileInfo,
 }: DictionaryComponentProps) => {
   const [options, setOptions] = useState([]);
-  const url = _links?.self.href ?? "";
-  const query = getRsqlParams([
-    { key: "userProfileId", value: profileInfo.id || "" },
-  ]);
+  const [loading, setLoading] = useState(false);
 
-  const { response, loading } = useFetch({ url, params: { query } });
+  const fetchEntity = async (userProfileId: string) => {
+    try {
+      setLoading(true);
+      const url = _links?.self.href ?? "";
+      const query = getRsqlParams([
+        { key: "userProfileId", value: userProfileId },
+      ]);
+      const response = await axios.get(url, { params: { query } });
+      setOptions(response?.data ?? []);
+    } catch (error) {
+      defaultErrorHandler({ error });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (response) {
-      setOptions(response?.data);
+    if (profileInfo.id) {
+      fetchEntity(profileInfo.id);
     }
-  }, [response]);
+  }, [profileInfo.id]);
 
   return (
     <Col {...span} key={fieldCode}>
@@ -79,8 +88,4 @@ const mapStateToProps = (state: State) => ({
   profileInfo: state?.data?.profileInfo,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setLoading: (loading: boolean) => dispatch(setLoading(loading)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Entity);
+export default connect(mapStateToProps)(Entity);

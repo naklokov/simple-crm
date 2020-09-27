@@ -3,8 +3,8 @@ import axios from "axios";
 import { Form, Typography, Row, Button, message } from "antd";
 import { FORM_NAME } from "./constansts";
 import { connect } from "react-redux";
-import { Dispatch } from "@reduxjs/toolkit";
-import { setLoading, setProfileInfo } from "../../../../__data__";
+import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
+import { setProfileInfo } from "../../../../__data__";
 import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
 import { useTranslation } from "react-i18next";
 import {
@@ -33,15 +33,14 @@ const {
 
 interface MainProps {
   profileInfo: ProfileInfoProps;
-  setProfile: (profileInfo: ProfileInfoProps) => void;
-  setLoading: (loading: boolean) => void;
+  setProfileInfo: (profileInfo: ProfileInfoProps) => void;
 }
 
 const {
   PROFILE_INFO: { ADMIN, UPDATE, UPDATE_OWNER },
 } = PERMISSIONS;
 
-export const Main = ({ profileInfo, setProfile }: MainProps) => {
+export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
   const [form] = Form.useForm();
   const [t] = useTranslation(FORM_NAME);
   const history = useHistory();
@@ -61,7 +60,7 @@ export const Main = ({ profileInfo, setProfile }: MainProps) => {
         ...values,
       });
 
-      setProfile(responce.data);
+      setProfileInfo(responce.data);
       setSubmitDisabled(true);
 
       defaultSuccessHandler(t("message.success"));
@@ -71,6 +70,10 @@ export const Main = ({ profileInfo, setProfile }: MainProps) => {
       setSubmitLoading(false);
     }
   };
+
+  if (!profileInfo.id) {
+    return null;
+  }
 
   return (
     <div className={style.container}>
@@ -110,11 +113,7 @@ const mapStateToProps = (state: State) => ({
   profileInfo: state?.data?.profileInfo,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setProfile: (profileInfo: ProfileInfoProps) => {
-    dispatch(setProfileInfo(profileInfo));
-  },
-  setLoading: (loading: boolean) => dispatch(setLoading(loading)),
-});
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators({ setProfileInfo }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

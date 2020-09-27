@@ -13,11 +13,98 @@
 
 .background {
   height: 200px;
-  background: linear-gradient(
-    var(--profile-background-color-from),
-    var(--profile-background-color-to) 70.71%
-  );
-  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
+  opacity: 1;
+
+  &Image1 {
+    opacity: 0.5;
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0),
+        85%,
+        rgba(255, 255, 255, 1)
+      ),
+      url("../../../../assets/img/backgrounds/1.jpg");
+  }
+
+  &Image2 {
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0),
+        85%,
+        rgba(255, 255, 255, 1)
+      ),
+      url("../../../../assets/img/backgrounds/2.jpg");
+  }
+
+  &Image3 {
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0),
+        85%,
+        rgba(255, 255, 255, 1)
+      ),
+      url("../../../../assets/img/backgrounds/3.jpg");
+  }
+
+  &Image4 {
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0),
+        85%,
+        rgba(255, 255, 255, 1)
+      ),
+      url("../../../../assets/img/backgrounds/4.jpg");
+  }
+
+  &Image5 {
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0),
+        85%,
+        rgba(255, 255, 255, 1)
+      ),
+      url("../../../../assets/img/backgrounds/5.jpg");
+  }
+
+  &Image6 {
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0),
+        85%,
+        rgba(255, 255, 255, 1)
+      ),
+      url("../../../../assets/img/backgrounds/6.jpg");
+  }
+
+  &Image7 {
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0),
+        85%,
+        rgba(255, 255, 255, 1)
+      ),
+      url("../../../../assets/img/backgrounds/7.jpg");
+  }
+
+  &Image8 {
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0),
+        85%,
+        rgba(255, 255, 255, 1)
+      ),
+      url("../../../../assets/img/backgrounds/8.jpg");
+  }
+
+  &Image9 {
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0),
+        85%,
+        rgba(255, 255, 255, 1)
+      ),
+      url("../../../../assets/img/backgrounds/9.jpg");
+  }
+
+  &Image10 {
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0),
+        85%,
+        rgba(255, 255, 255, 1)
+      ),
+      url("../../../../assets/img/backgrounds/10.jpg");
+  }
 }
 
 .avatar {
@@ -37,5 +124,5 @@
 .tabs {
   position: relative;
   left: var(--offset-lg);
-  top: var(--offset-md2);
+  top: 7px;
 }

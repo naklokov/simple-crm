@@ -66,10 +66,6 @@ export const Tasks = ({ tasks, setTasks }: TaskProps) => {
     }
   };
 
-  useEffect(() => {
-    setListLoading(isEmpty(tasks));
-  }, [tasks]);
-
   const handleChangeDate = useCallback(
     (date: moment.Moment) => {
       setSelectedDate(date.toISOString());
