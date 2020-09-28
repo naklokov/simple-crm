@@ -162,7 +162,9 @@
     "overdue": "Просроченные",
     "card.title": "Задача",
     "calendar.title": "Выберите дату",
-    "message.success.delete": "Задача удалена"
+    "message.success.delete": "Задача удалена",
+    "tasks.drawer.button.close": "Закрыть",
+    "button.now": "Сейчас"
   },
   "card": {
     "delete.confirm": "Вы хотите удалить задачу?",
