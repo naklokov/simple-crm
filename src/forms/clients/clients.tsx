@@ -30,7 +30,7 @@ import { RadioChangeEvent } from "antd/lib/radio";
 const { COLUMNS, TABLES } = formConfig.clients;
 // TODO проверить пермишены
 const {
-  CLIENTS: { GET, GET_OWNER, ADMIN },
+  CLIENTS: { GET },
 } = PERMISSIONS;
 
 const CLIENTS_RADIO_OPTIONS = {
@@ -148,7 +148,7 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
   };
 
   return (
-    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER, ADMIN]}>
+    <PagePermissionsChecker availablePermissions={[GET]}>
       <div>
         <div className={style.header}>
           <ClientsHeader />

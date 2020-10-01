@@ -56,9 +56,9 @@ export const Main = ({
   const [t] = useTranslation("clientCardMain");
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
+  const client = getClient(id, clients);
 
-  const initialValues =
-    mode === "add" ? getAddMetaValues(profileInfo) : getClient(id, clients);
+  const initialValues = mode === "add" ? getAddMetaValues(profileInfo) : client;
 
   const handleValuesChange = (changed: Object, allValues: Object) => {
     const isChanged = isValuesChanged(initialValues, allValues);
@@ -112,6 +112,7 @@ export const Main = ({
           {tab.fields?.map((field) => (
             <ComponentPermissionsChecker
               key={field.fieldCode}
+              isOwner={client?.isOwner}
               availablePermissions={field.permissions}
               mode="disabled"
             >

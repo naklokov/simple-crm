@@ -6,7 +6,9 @@ import { useTranslation } from "react-i18next";
 
 import style from "./contacts.module.scss";
 
-const { CLIENTS } = PERMISSIONS;
+const {
+  CONTACTS: { ADD, ADMIN },
+} = PERMISSIONS;
 
 interface HeaderProps {
   onClickAdd: () => void;
@@ -15,14 +17,7 @@ interface HeaderProps {
 export const Header = ({ onClickAdd }: HeaderProps) => {
   const [t] = useTranslation("clientCardContacts");
   return (
-    <ComponentPermissionsChecker
-      availablePermissions={[
-        CLIENTS.ADD,
-        CLIENTS.ADMIN,
-        CLIENTS.UPDATE,
-        CLIENTS.UPDATE_OWNER,
-      ]}
-    >
+    <ComponentPermissionsChecker availablePermissions={[ADD, ADMIN]}>
       <Button type="primary" className={style.button} onClick={onClickAdd}>
         {t("title.add")}
       </Button>

@@ -19,6 +19,7 @@ import { State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect, useDispatch } from "react-redux";
 import { TablePaginationConfig } from "antd/lib/table";
+import { ComponentPermissionsChecker } from "../../wrappers";
 
 interface TableProps {
   dataSource: any[];
@@ -37,6 +38,10 @@ interface TableProps {
   withTitle?: boolean;
   extraHeader?: JSX.Element;
   className?: string;
+  permissions?: {
+    add: boolean;
+    edit: boolean;
+  };
   onChangeTable?: (
     pagination: any,
     filters: any,
@@ -63,6 +68,7 @@ export const Table = ({
   withTitle = true,
   extraHeader,
   onChangeTable = noop,
+  permissions: { add = true, edit = true },
 }: TableProps) => {
   const [t] = useTranslation("table");
   const dispatch = useDispatch();
@@ -119,7 +125,7 @@ export const Table = ({
       ]}
       dataSource={source.map((item) => ({ ...item, key: item.id }))}
       pagination={{ ...pagination, locale: "ru-RU" }}
-      components={getEditableTableBody()}
+      components={edit ? getEditableTableBody() : void 0}
       rowClassName={() => style.editableRow}
       loading={loading || tableLoading}
     />

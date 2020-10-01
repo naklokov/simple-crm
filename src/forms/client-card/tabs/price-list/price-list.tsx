@@ -5,6 +5,7 @@ import {
   TabProps,
   ClientEntityProps,
   QueryProps,
+  PERMISSIONS,
 } from "../../../../constants";
 import { Table } from "../../../../components";
 import {
@@ -20,6 +21,10 @@ import { setTableLoading } from "../../../../__data__";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
+
+const {
+  NAMEDITEMS: { UPDATE_OWNER, UPDATE },
+} = PERMISSIONS;
 
 interface ContactsProps {
   profileInfo: ProfileInfoProps;
@@ -68,6 +73,7 @@ export const PriceList = ({
     [positions, params, setTableLoading, t]
   );
 
+  // TODO Добавить разрешения для редактирования прайс листа
   return (
     <Table
       columns={tab.columns}

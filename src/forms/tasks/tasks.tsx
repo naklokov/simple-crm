@@ -116,7 +116,7 @@ export const Tasks = ({ tasks, setTasks }: TaskProps) => {
   );
 
   return (
-    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER, ADMIN]}>
+    <PagePermissionsChecker availablePermissions={[GET]}>
       <div>
         <div className={style.header}>
           <TasksHeader onAddClick={handleAddClick} />

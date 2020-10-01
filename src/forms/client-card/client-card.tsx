@@ -24,9 +24,8 @@ import { PagePermissionsChecker } from "../../wrappers";
 
 import style from "./client-card.module.scss";
 
-//TODO проверить пермишены
 const {
-  CLIENTS: { GET, GET_OWNER },
+  CLIENTS: { GET },
 } = PERMISSIONS;
 
 interface ClientCardProps {
@@ -82,7 +81,7 @@ export const ClientCard = ({
   }
 
   return (
-    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER]}>
+    <PagePermissionsChecker availablePermissions={[GET]}>
       <div>
         <div className={style.header}>
           <ClientCardHeader />

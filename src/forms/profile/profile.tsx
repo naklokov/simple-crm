@@ -22,11 +22,11 @@ export const Profile = ({ profileInfo }: ProfileProps) => {
 
   const Form = TABS_MAP[activeTab];
   const {
-    PROFILE_INFO: { ADMIN, GET, GET_OWNER },
+    PROFILE_INFO: { GET },
   } = PERMISSIONS;
 
   return (
-    <PagePermissionsChecker availablePermissions={[ADMIN, GET, GET_OWNER]}>
+    <PagePermissionsChecker availablePermissions={[GET]}>
       <div className={style.container}>
         <Header onChangeTab={handleChangeTab} />
         <Form />

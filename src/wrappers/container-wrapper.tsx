@@ -67,6 +67,9 @@ export const ContainerWrapper = ({
 
   useEffect(() => {
     setProfileInfo(profileResponse?.data ?? {});
+    if (permissionsResponse?.data?.permissions) {
+      console.log("permissions", permissionsResponse?.data?.permissions);
+    }
     setPermissions(permissionsResponse?.data?.permissions ?? []);
   }, [profileResponse, permissionsResponse]);
 

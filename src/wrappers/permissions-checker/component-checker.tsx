@@ -19,13 +19,27 @@ export const ComponentChecker = ({
   isOwner = true,
 }: ComponentCheckerProps) => {
   const [allowed, setAllowed] = useState(true);
+  const [owner, setOwner] = useState(true);
 
   useEffect(() => {
     const isAllow = hasPermission(availablePermissions, allPermissions);
     setAllowed(isAllow);
   }, [availablePermissions, allPermissions]);
 
-  if (!allowed || !isOwner) {
+  useEffect(() => {
+    const hasOwnerPermission = allPermissions.some((permission) =>
+      permission.toLowerCase().endsWith(".owner")
+    );
+    const owner = isOwner || hasOwnerPermission;
+    setOwner(owner);
+  }, [allPermissions, isOwner]);
+
+  useEffect(() => {
+    const isAllow = hasPermission(availablePermissions, allPermissions);
+    setAllowed(isAllow);
+  }, [availablePermissions, allPermissions]);
+
+  if (!allowed || !owner) {
     if (mode === "hide") {
       return null;
     }
