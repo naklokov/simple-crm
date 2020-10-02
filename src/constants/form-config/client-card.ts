@@ -308,6 +308,7 @@ export const upper: UpperProps = {
           fieldName: "ИНН",
           fieldDescription: "",
           type: "string",
+          format: "vat",
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,

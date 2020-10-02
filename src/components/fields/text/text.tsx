@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, Input, Col } from "antd";
 import { DEFAULT_SPAN, FieldProps } from "../../../constants";
+import { vatValidator } from "./utils";
 
 export const Text = ({
   fieldCode,
