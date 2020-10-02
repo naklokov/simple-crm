@@ -63,6 +63,7 @@ export interface FieldProps {
   readonly?: boolean;
   disabled?: boolean;
   rules?: Rule[];
+  withSelectBefore?: boolean;
   format?: FieldFormatType;
   span?: SpanProps;
   rows?: number;

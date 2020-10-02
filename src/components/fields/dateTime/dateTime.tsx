@@ -1,9 +1,13 @@
-import "moment/locale/ru";
-
 import React from "react";
+import moment from "moment-timezone";
 import { Col, Form, DatePicker } from "antd";
 import { DATE_FORMATS, DEFAULT_SPAN, FieldProps } from "../../../constants";
 import { getDateWithTimezone } from "../../../utils";
+
+const getDisabledDate = (currentDate: moment.Moment) =>
+  getDateWithTimezone(currentDate.toISOString()).isBefore(
+    moment().startOf("day")
+  );
 
 const handleValueProp = (value: any) => {
   if (typeof value === "string") {
@@ -23,6 +27,7 @@ export const DateTime = ({
   placeholder = "Введите дату",
   disabled = false,
   readonly = false,
+  withSelectBefore = false,
   span = DEFAULT_SPAN,
 }: FieldProps) => {
   const showTime = /hh:mm/gi.test(format);
@@ -43,6 +48,7 @@ export const DateTime = ({
           disabled={disabled}
           showTime={showTime}
           inputReadOnly={readonly}
+          disabledDate={!withSelectBefore ? getDisabledDate : void 0}
         />
       </Form.Item>
     </Col>

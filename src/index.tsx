@@ -5,6 +5,7 @@ import _ from "lodash";
 
 import "./i18n";
 import "antd/dist/antd.css";
+import "moment/locale/ru";
 
 _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 

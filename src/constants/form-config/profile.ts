@@ -25,6 +25,7 @@ export const FIELDS: FieldProps[] = [
     format: DATE_FORMATS.DATE,
     readonly: false,
     disabled: false,
+    withSelectBefore: true,
     rules: [{ required: true, message: REQUIRED_MESSAGE }],
     permissions: [PROFILE_INFO.ADMIN],
   },
