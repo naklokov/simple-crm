@@ -54,7 +54,7 @@ export const COLUMNS: ColumnProps[] = [
     columnType: "dictionary",
     titleField: "fullName",
     valueField: "id",
-    sorter: true,
+    sorter: false,
     columnDescription: "Куратор компании",
   },
 ];

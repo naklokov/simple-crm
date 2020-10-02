@@ -28,14 +28,6 @@ export const errorsInterceptor = (dispatch: Dispatch, state: State) => (
     const statusCode = errorResponse?.response?.status;
     const error: ErrorProps = errorResponse?.response?.data ?? {};
 
-    const { errorDescription = DEFAULT_ERROR_MESSAGE } = error;
-
-    if (errorDescription) {
-      logger.error({
-        message: errorDescription,
-      });
-    }
-
     if (NODE_ENV === "development") {
       console.error(`[ERROR] Response with statusCode: ${statusCode}`, error);
     }
