@@ -24,7 +24,7 @@ var config = {
   // delete ALL existing files at destination before uploading, if true
   deleteRemote: true,
   // Passive mode is forced (EPSV command is not sent)
-  forcePasv: true,
+  forcePasv: false,
 };
 
 ftpDeploy
