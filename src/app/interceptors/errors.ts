@@ -10,7 +10,7 @@ const DEFAULT_ERROR_MESSAGE = "Произошла ошибка";
 
 const {
   env: { NODE_ENV },
-} = process;
+} = require("process");
 
 interface ErrorResponceProps {
   config: any;
