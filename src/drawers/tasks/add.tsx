@@ -45,7 +45,6 @@ export const AddTask = ({
         ...metaAddingInfo,
         ...values,
       });
-      debugger;
       defaultSuccessHandler(t("message.success.add"));
       onClose(void 0, responce?.data);
     } catch (error) {

@@ -1,6 +1,11 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Tabs as TabsUI, Tooltip } from "antd";
-import { ModeType, TabPositionType, TabProps } from "../../constants";
+import {
+  ClientEntityProps,
+  ModeType,
+  TabPositionType,
+  TabProps,
+} from "../../constants";
 
 import style from "./tabs.module.scss";
 import { useTranslation } from "react-i18next";
@@ -19,6 +24,7 @@ interface TabsProps {
   mode?: ModeType;
   tabs: TabProps[];
   position: TabPositionType;
+  client?: ClientEntityProps;
   formsMap: { [key: string]: (props: any) => JSX.Element };
 }
 
@@ -29,6 +35,7 @@ export const Tabs = ({
   formsMap,
   className,
   position,
+  client,
   ...props
 }: TabsProps) => {
   const queryParam = getPositionQueryParam(position);
@@ -73,7 +80,7 @@ export const Tabs = ({
         })}
       </TabsUI>
       <div className={style.form}>
-        <Form tab={activeTab} mode={mode} {...props} />
+        <Form tab={activeTab} client={client} mode={mode} {...props} />
       </div>
     </div>
   );

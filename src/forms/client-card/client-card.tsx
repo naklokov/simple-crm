@@ -1,18 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import { useParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import {
   ClientEntityProps,
+  FORM_NAMES,
   PERMISSIONS,
   QueryProps,
   urls,
 } from "../../constants";
 import { connect } from "react-redux";
-import { State } from "../../__data__/interfaces";
+import { State, UpdateFormProps } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
-import { setLoading, setClients } from "../../__data__";
+import { updateForm, setLoading } from "../../__data__";
 import { getClientCardMode, getClient } from "./utils";
 import { Tabs, Loader } from "../../components";
 import { upper, lower } from "../../constants/form-config/client-card";
@@ -31,8 +32,9 @@ const {
 
 interface ClientCardProps {
   clients: ClientEntityProps[];
+  client: ClientEntityProps;
   setLoading: (loading: boolean) => void;
-  setClients: (clients: ClientEntityProps[]) => void;
+  updateForm: ({ name, data }: UpdateFormProps) => void;
 }
 
 export const TABS_MAP: {
@@ -48,13 +50,15 @@ export const TABS_MAP: {
 
 export const ClientCard = ({
   clients,
-  setClients,
+  client,
   setLoading,
+  updateForm,
 }: ClientCardProps) => {
-  const [t] = useTranslation("clientCard");
   const { id: clientId } = useParams<QueryProps>();
+  const [t] = useTranslation(FORM_NAMES.CLIENT_CARD);
+
+  const storedClient = getClient(clientId, clients);
   const mode = getClientCardMode(clientId);
-  const client = getClient(clientId, clients);
 
   const isClientEmpty = mode === "view" && isEmpty(client);
   const url = getFullUrl(urls.clientCard.entity, clientId);
@@ -63,7 +67,7 @@ export const ClientCard = ({
     try {
       setLoading(true);
       const response = await axios.get(url);
-      setClients([response?.data] ?? []);
+      updateForm({ name: FORM_NAMES.CLIENT_CARD, data: response?.data });
     } catch (error) {
       defaultErrorHandler({ error });
     } finally {
@@ -72,9 +76,17 @@ export const ClientCard = ({
   };
 
   useEffect(() => {
-    if (isClientEmpty) {
-      fetchClientCard();
+    if (mode === "view") {
+      if (isEmpty(storedClient)) {
+        fetchClientCard();
+      } else {
+        updateForm({ name: FORM_NAMES.CLIENT_CARD, data: storedClient });
+      }
     }
+
+    return () => {
+      updateForm({ name: FORM_NAMES.CLIENT_CARD, data: {} });
+    };
   }, [clients]);
 
   if (isClientEmpty) {
@@ -109,9 +121,10 @@ export const ClientCard = ({
 
 const mapStateToProps = (state: State) => ({
   clients: state?.data?.clients,
+  client: state?.app?.forms?.[FORM_NAMES.CLIENT_CARD] ?? {},
 });
 
 const mapDispathToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setLoading, setClients }, dispatch);
+  bindActionCreators({ updateForm, setLoading }, dispatch);
 
 export default connect(mapStateToProps, mapDispathToProps)(ClientCard);

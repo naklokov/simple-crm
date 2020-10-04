@@ -5,6 +5,7 @@ const appSlide = createSlice({
   initialState: {
     loading: false,
     tableLoading: false,
+    forms: {},
     error: {},
   },
   reducers: {
@@ -17,9 +18,20 @@ const appSlide = createSlice({
     setTableLoading(state, action) {
       state.tableLoading = action.payload;
     },
+    updateForm(state, action) {
+      state.forms = {
+        ...state.forms,
+        [action.payload?.name]: action.payload?.data ?? {},
+      };
+    },
   },
 });
 
-export const { setLoading, setTableLoading, setError } = appSlide.actions;
+export const {
+  setLoading,
+  setTableLoading,
+  setError,
+  updateForm,
+} = appSlide.actions;
 
 export default appSlide.reducer;

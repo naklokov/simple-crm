@@ -1,7 +1,33 @@
 import React from "react";
-import { Form, Col, Input } from "antd";
+import { Form, Col } from "antd";
+import MaskedInput from "react-text-mask";
 import { DEFAULT_SPAN, FieldProps } from "../../../constants";
-import InputMask from "react-input-mask";
+
+const PHONE_MASK = [
+  "+",
+  "7",
+  " ",
+  "(",
+  /[1-9]/,
+  /\d/,
+  /\d/,
+  ")",
+  " ",
+  /\d/,
+  /\d/,
+  /\d/,
+  "-",
+  /\d/,
+  /\d/,
+  "-",
+  /\d/,
+  /\d/,
+  ",",
+  " ",
+  /\d/,
+  /\d/,
+  /\d/,
+];
 
 export const Phone = ({
   fieldCode,
@@ -22,11 +48,13 @@ export const Phone = ({
       extra={fieldDescription}
       rules={rules}
     >
-      <InputMask
-        mask="+7 (999) 999-99-99, 99999"
-        alwaysShowMask={false}
-        maskChar="_"
+      <MaskedInput
         className="ant-input"
+        guide={false}
+        mask={PHONE_MASK}
+        placeholder={placeholder}
+        disabled={disabled}
+        readOnly={readonly}
       />
     </Form.Item>
   </Col>

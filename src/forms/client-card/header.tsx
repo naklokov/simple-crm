@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import {
   BREADCRUMB_ROUTES,
   ClientEntityProps,
+  FORM_NAMES,
   QueryProps,
   urls,
 } from "../../constants";
@@ -24,15 +25,15 @@ import { Call, Delete } from "./components";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 
 interface ClientCardHeaderProps {
-  clients?: ClientEntityProps[];
+  client: ClientEntityProps;
 }
 
-export const ClientCardHeader = ({ clients }: ClientCardHeaderProps) => {
+export const ClientCardHeader = ({ client }: ClientCardHeaderProps) => {
   const [t] = useTranslation("clientCard");
   const history = useHistory();
   const { id } = useParams<QueryProps>();
 
-  const { shortName, phone, isOwner } = getClient(id, clients);
+  const { shortName, phone, isOwner } = client;
   const title = shortName || t("title.new");
 
   const fetchDelete = async () => {
@@ -91,7 +92,7 @@ export const ClientCardHeader = ({ clients }: ClientCardHeaderProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  clients: state?.data?.clients,
+  client: state?.app?.forms?.[FORM_NAMES.CLIENT_CARD] ?? {},
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
