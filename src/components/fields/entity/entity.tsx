@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
 import { DEFAULT_SPAN, FieldProps, urls } from "../../../constants";
+import { ClientEntityProps } from "../../../constants/interfaces";
 import { defaultErrorHandler, getRsqlParams, useFetch } from "../../../utils";
 import { connect } from "react-redux";
 import { ProfileInfoProps, State } from "../../../__data__/interfaces";
@@ -10,6 +11,7 @@ const { Option } = Select;
 
 interface DictionaryComponentProps extends FieldProps {
   profileInfo: ProfileInfoProps;
+  clients: ClientEntityProps[];
 }
 
 export const Entity = ({
@@ -26,14 +28,23 @@ export const Entity = ({
   _links,
   span = DEFAULT_SPAN,
   profileInfo,
+  clients,
 }: DictionaryComponentProps) => {
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState<any>([]);
   const [loading, setLoading] = useState(false);
 
   const fetchEntity = async (userProfileId: string) => {
     try {
       setLoading(true);
       const url = _links?.self.href ?? "";
+      // TODO переделать на поиск с startWith
+      if (url === urls.clients.entity) {
+        const personalClients = clients.filter(
+          (o) => o.userProfileId === userProfileId
+        );
+        setOptions(personalClients);
+        return;
+      }
       const query = getRsqlParams([
         { key: "userProfileId", value: userProfileId },
       ]);
@@ -73,7 +84,7 @@ export const Entity = ({
             option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
         >
-          {options.map((o) => (
+          {options.map((o: any) => (
             <Option key={o[codeField]} value={o[codeField]}>
               {o[titleField]}
             </Option>
@@ -86,6 +97,7 @@ export const Entity = ({
 
 const mapStateToProps = (state: State) => ({
   profileInfo: state?.data?.profileInfo,
+  clients: state?.data?.clients,
 });
 
 export default connect(mapStateToProps)(Entity);

@@ -28,7 +28,6 @@ import { PagePermissionsChecker } from "../../wrappers";
 import { bindActionCreators } from "@reduxjs/toolkit";
 import { setTasks } from "../../__data__";
 import { Dispatch } from "@reduxjs/toolkit";
-import { isEmpty } from "lodash";
 
 const {
   TASKS: { drawers },

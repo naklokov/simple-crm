@@ -19,20 +19,17 @@ export const getCompletedTasksRsql = (value: string) => ({
   value: `(taskStatus,"${value}")`,
 });
 
-export const getSortedTasksByDate = (
-  tasks: TaskEntityProps[],
-  date: Moment
-) => {
-  return tasks
-    .filter(({ taskEndDate }) => {
-      const endDate = getDateWithTimezone(taskEndDate).toISOString();
-      return date.isSame(endDate, "day");
-    })
-    .sort(
-      (a: TaskEntityProps, b: TaskEntityProps) =>
-        moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
-    );
-};
+export const getTasksByDate = (tasks: TaskEntityProps[], date: Moment) =>
+  tasks.filter(({ taskEndDate }) => {
+    const endDate = getDateWithTimezone(taskEndDate);
+    return date.isSame(endDate, "day");
+  });
+
+export const getSortedTasksByDate = (tasks: TaskEntityProps[], date: Moment) =>
+  getTasksByDate(tasks, date).sort(
+    (a: TaskEntityProps, b: TaskEntityProps) =>
+      moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
+  );
 
 export const getTitle = (
   date: Moment,

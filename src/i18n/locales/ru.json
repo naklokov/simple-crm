@@ -93,8 +93,8 @@
     "button.call": "Звонок",
     "button.delete": "Удалить",
     "message.success.delete": "Компания успешно удалена",
-    "confirm.delete": "Вы действительно хотите удалить компанию?",
-    "confirm.call": "Вы действительно хотите позвонить в компанию?",
+    "confirm.delete": "Вы хотите удалить компанию?",
+    "confirm.call": "Вы хотите позвонить в компанию?",
     "title.new": "Новый клиент"
   },
   "clientCardMain": {
@@ -127,7 +127,8 @@
     "message.success.add": "Задача успешно добавлена",
     "message.success.edit": "Задача успешно отредактирована",
     "message.success.completed": "Задача выполнена",
-    "message.success.delete": "Задача удалена"
+    "message.success.delete": "Задача удалена",
+    "confirm.delete": "Вы хотите удалить задачу?"
   },
   "tabs": {
     "tooltip.disabled": "Заполните основную информацию"
@@ -164,7 +165,8 @@
     "calendar.title": "Выберите дату",
     "message.success.delete": "Задача удалена",
     "tasks.drawer.button.close": "Закрыть",
-    "button.now": "Сейчас"
+    "button.now": "Сейчас",
+    "button.load.more": "Загрузить ещё"
   },
   "card": {
     "delete.confirm": "Вы хотите удалить задачу?",

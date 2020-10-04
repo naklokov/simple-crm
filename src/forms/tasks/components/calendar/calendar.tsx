@@ -4,11 +4,12 @@ import { Drawer, Calendar as CalendarUI, Avatar, Badge, Button } from "antd";
 import { useTranslation } from "react-i18next";
 import { CalendarOutlined } from "@ant-design/icons";
 import { Header } from "./components";
-import { getSortedTasksByDate } from "../../utils";
+import { getTasksByDate } from "../../utils";
 import { useSelector } from "react-redux";
 import { State } from "../../../../__data__/interfaces";
 
 import style from "./calendar.module.scss";
+import { memoize } from "lodash";
 
 interface CalendarProps {
   onChange: (date: moment.Moment) => void;
@@ -18,11 +19,22 @@ export const Calendar = ({ onChange }: CalendarProps) => {
   const [t] = useTranslation("tasks");
   const [visible, setVisible] = useState(false);
   const tasks = useSelector((state: State) => state?.data?.tasks);
+  const getTasksCount = memoize(
+    (date, tasks) => getTasksByDate(tasks, date)?.length ?? 0
+  );
 
-  const handleDateCellRender = (date: moment.Moment) => {
-    const tasksCount = getSortedTasksByDate(tasks, date)?.length ?? 0;
-    return <Badge size="small" className={style.badge} count={tasksCount} />;
-  };
+  const handleDateCellRender = useCallback(
+    (date: moment.Moment) => {
+      return (
+        <Badge
+          size="small"
+          className={style.badge}
+          count={getTasksCount(date, tasks)}
+        />
+      );
+    },
+    [tasks.length]
+  );
 
   const handleOpen = useCallback(() => {
     setVisible(true);

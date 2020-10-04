@@ -2,7 +2,12 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
 import { connect } from "react-redux";
-import { TaskEntityProps, urls } from "../constants";
+import {
+  ClientEntityProps,
+  TaskEntityProps,
+  TASK_STATUSES,
+  urls,
+} from "../constants";
 import { defaultErrorHandler, useFetch, getRsqlParams } from "../utils";
 import { State, ProfileInfoProps, ErrorAppState } from "../__data__/interfaces";
 import {
@@ -12,6 +17,8 @@ import {
   setTasks,
 } from "../__data__";
 import { Redirect } from "react-router";
+import { getCompletedTasksRsql } from "../forms/tasks/utils";
+import { setClients } from "../__data__";
 
 interface ContainerWrapperProps {
   children: ReactNode;
@@ -23,6 +30,7 @@ interface ContainerWrapperProps {
   setTasks: (tasks: TaskEntityProps[]) => void;
   setPermissions: (permissions: string[]) => void;
   setProfileInfo: (profile: ProfileInfoProps) => void;
+  setClients: (clients: ClientEntityProps[]) => void;
 }
 
 export const ContainerWrapper = ({
@@ -33,8 +41,10 @@ export const ContainerWrapper = ({
   setTasks,
   setPermissions,
   setProfileInfo,
+  setClients,
 }: ContainerWrapperProps) => {
   const [tasksLoading, setTasksLoading] = useState(false);
+  const [clientsLoading, setClientsLoading] = useState(false);
   const { response: profileResponse, loading: profileLoading } = useFetch({
     url: urls.profile.entity,
   });
@@ -46,10 +56,27 @@ export const ContainerWrapper = ({
     url: urls.profile.permissions,
   });
 
+  const fetchClientsPersonal = async (userProfileId: string) => {
+    try {
+      setClientsLoading(true);
+      const url = urls.clients.entity;
+      const query = getRsqlParams([
+        { key: "userProfileId", value: userProfileId },
+      ]);
+      const response = await axios.get(url, { params: { query } });
+      setClients(response?.data ?? []);
+    } catch (error) {
+      defaultErrorHandler({ error });
+    } finally {
+      setClientsLoading(false);
+    }
+  };
+
   const fetchTasks = async (userProfileId: string) => {
     setTasksLoading(true);
     const query = getRsqlParams([
       { key: "userProfileId", value: userProfileId },
+      getCompletedTasksRsql(TASK_STATUSES.NOT_COMPLETED),
     ]);
     try {
       const responce = await axios.get(urls.tasks.entity, {
@@ -73,13 +100,15 @@ export const ContainerWrapper = ({
   useEffect(() => {
     if (profileInfo.id) {
       fetchTasks(profileInfo.id);
+      fetchClientsPersonal(profileInfo.id);
     }
   }, [profileInfo.id]);
 
   useEffect(() => {
-    const isLoaded = profileLoading || permissionsLoading || tasksLoading;
+    const isLoaded =
+      profileLoading || permissionsLoading || tasksLoading || clientsLoading;
     setLoading(isLoaded);
-  }, [profileLoading, permissionsLoading, tasksLoading]);
+  }, [profileLoading, permissionsLoading, tasksLoading, clientsLoading]);
 
   if (error.statusCode) {
     return (
@@ -110,6 +139,7 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
       setPermissions,
       setProfileInfo,
       setLoading,
+      setClients,
     },
     dispatch
   );
