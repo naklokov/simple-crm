@@ -5,10 +5,13 @@ var config = {
   user: "front",
   // Password optional, prompted if none given
   password: "front123",
+  // external
   host: "176.212.190.167",
+  // internal
+  // host: "176.212.190.167",
   port: 21,
-  localRoot: "../build",
-  remoteRoot: "/nginx/html",
+  localRoot: "build/",
+  remoteRoot: "/nginx/www/crm",
   include: ["*", "**/*"], // this would upload everything except dot files
   // include: ["*.php", "dist/*", ".*"],
   // e.g. exclude sourcemaps, and ALL files in node_modules (including dot files)

@@ -9,7 +9,7 @@ import {
   defaultSuccessHandler,
   getFullUrl,
 } from "../../utils";
-import { Dropdown, Button, Menu } from "antd";
+import { Dropdown, Button, Menu, Popconfirm } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
@@ -61,14 +61,6 @@ export const ViewTask = ({
     [id, onCompleted]
   );
 
-  const handleDelete = useCallback(
-    (event: React.MouseEvent) => {
-      fetchDelete();
-      event.preventDefault();
-    },
-    [id, fetchDelete]
-  );
-
   const menu = (
     <Menu>
       <Menu.Item>
@@ -77,9 +69,15 @@ export const ViewTask = ({
         </a>
       </Menu.Item>
       <Menu.Item>
-        <a target="_blank" rel="noopener noreferrer" onClick={handleDelete}>
-          {t("additional.action.remove.title")}
-        </a>
+        <Popconfirm
+          title={t("confirm.delete")}
+          onConfirm={fetchDelete}
+          placement="left"
+        >
+          <a target="_blank" rel="noopener noreferrer">
+            {t("additional.action.remove.title")}
+          </a>
+        </Popconfirm>
       </Menu.Item>
     </Menu>
   );

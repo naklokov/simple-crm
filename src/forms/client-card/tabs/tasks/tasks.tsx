@@ -1,6 +1,10 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import moment from "moment-timezone";
-import { getUpdatedEntityArray } from "../../../../utils";
+import {
+  getRsqlParams,
+  getUpdatedEntityArray,
+  useFetch,
+} from "../../../../utils";
 import { useTranslation } from "react-i18next";
 import { Tabs, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -41,12 +45,11 @@ const taskDrawer = drawers.find((drawer) => drawer.code === "task");
 
 interface TasksProps {
   tab: TabProps;
-  allTasks: TaskEntityProps[];
-  setTasks: (tasks: TaskEntityProps[]) => void;
 }
 
-export const Tasks = ({ tab, allTasks, setTasks }: TasksProps) => {
+export const Tasks = ({ tab }: TasksProps) => {
   const [t] = useTranslation("clientCardTasks");
+  const [tasks, setTasks] = useState<TaskEntityProps[]>([]);
   const { id: clientId } = useParams<QueryProps>();
   const [activeDrawerId, setActiveDrawerId] = useState("");
   const [loading, setLoading] = useState(false);
@@ -54,13 +57,20 @@ export const Tasks = ({ tab, allTasks, setTasks }: TasksProps) => {
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
   const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
 
-  const tasks = useMemo(() => allTasks.filter((o) => o.clientId === clientId), [
-    allTasks,
-  ]);
+  const query = getRsqlParams([{ key: "clientId", value: clientId }]);
+
+  const { response, loading: fetchLoading } = useFetch({
+    url: urls.tasks.entity,
+    params: { query },
+  });
 
   useEffect(() => {
-    setLoading(isEmpty(allTasks));
-  }, [allTasks]);
+    setLoading(fetchLoading);
+  }, [fetchLoading]);
+
+  useEffect(() => {
+    setTasks(response?.data ?? []);
+  }, [response]);
 
   const handleAddClick = useCallback(() => {
     setAddDrawerVisible(true);
@@ -205,11 +215,4 @@ export const Tasks = ({ tab, allTasks, setTasks }: TasksProps) => {
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  allTasks: state?.data?.tasks,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setTasks }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Tasks);
+export default Tasks;

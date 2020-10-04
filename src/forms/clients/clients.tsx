@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useState, useMemo } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { Table } from "../../components";
@@ -26,6 +26,7 @@ import ClientsHeader from "./header";
 import { PagePermissionsChecker } from "../../wrappers";
 import { Radio } from "antd";
 import { RadioChangeEvent } from "antd/lib/radio";
+import { unionBy } from "lodash";
 
 const { COLUMNS, TABLES } = formConfig.clients;
 // TODO проверить пермишены
@@ -65,6 +66,15 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
   });
   const [total, setTotal] = useState(0);
 
+  const clientsPersonal = clients.filter(
+    ({ userProfileId }) => userProfileId === profileInfo.id
+  );
+
+  const dataSource =
+    pagination.selectedRadio === CLIENTS_RADIO_OPTIONS.MY
+      ? clientsPersonal
+      : clients;
+
   const url = urls.clients.paging;
 
   const fetchDataSource = async ({
@@ -72,20 +82,20 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
     selectedRadio,
     ...params
   }: PaginationsProps) => {
-    const userProfileId =
-      selectedRadio === CLIENTS_RADIO_OPTIONS.MY ? profileInfo.id : "";
+    // const userProfileId =
+    //   selectedRadio === CLIENTS_RADIO_OPTIONS.MY ? profileInfo.id : "";
 
     setLoading(true);
     try {
       const response = await axios.get(url, {
         params: {
           ...params,
-          query: getQueryString(searched, userProfileId),
+          query: getQueryString(searched),
         },
       });
 
       const { totalCount, rows } = response?.data ?? {};
-      setClients(rows);
+      setClients(unionBy(rows, clients, "id"));
       setTotal(totalCount);
     } catch (error) {
       defaultErrorHandler({ error });
@@ -95,7 +105,10 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
   };
 
   useEffect(() => {
-    if (profileInfo.id) {
+    if (
+      profileInfo.id &&
+      pagination.selectedRadio !== CLIENTS_RADIO_OPTIONS.MY
+    ) {
       fetchDataSource(pagination);
     }
   }, [pagination, profileInfo.id]);
@@ -141,11 +154,14 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
     [pagination]
   );
 
-  const serverPagination: TablePaginationConfig = {
-    pageSize: pagination.pageSize,
-    current: pagination.page,
-    total,
-  };
+  const serverPagination: TablePaginationConfig =
+    pagination.selectedRadio === CLIENTS_RADIO_OPTIONS.ALL
+      ? {
+          pageSize: pagination.pageSize,
+          current: pagination.page,
+          total,
+        }
+      : { pageSize: pagination.pageSize, current: pagination.page };
 
   return (
     <PagePermissionsChecker availablePermissions={[GET, GET_OWNER, ADMIN]}>
@@ -174,7 +190,7 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
             loading={loading}
             pagination={serverPagination}
             onDeleteRow={handleDelete}
-            dataSource={clients}
+            dataSource={dataSource}
             onSearch={handleSearch}
             onChangeTable={handleChangeTable}
             withSearch

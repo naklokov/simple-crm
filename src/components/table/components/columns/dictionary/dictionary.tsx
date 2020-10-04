@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { ColumnProps } from "../../../../../constants";
-import { dictionaries } from "../../../../../constants/urls";
 import { State } from "../../../../../__data__/interfaces";
 
 interface DictionaryProps {

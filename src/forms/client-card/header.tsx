@@ -40,7 +40,7 @@ export const ClientCardHeader = ({ clients }: ClientCardHeaderProps) => {
     try {
       const url = getFullUrl(urls.clients.entity, id);
       await axios.delete(url);
-      history.goBack();
+      history.replace(urls.clients.path);
       defaultSuccessHandler(t("message.success.delete"));
     } catch (error) {
       defaultErrorHandler({ error });
