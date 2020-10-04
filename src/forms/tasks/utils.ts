@@ -62,11 +62,12 @@ export const getTasksColumns = (
       };
     });
 
+    const overdueTasks = getOverdueTasks(tasks, visibleTasksId);
     return [
       ...dates,
       {
-        title: titles[2],
-        cards: getOverdueTasks(tasks, visibleTasksId),
+        title: `${titles[2]} - ${overdueTasks.length}`,
+        cards: overdueTasks,
         dividerColor: DIVIDER_COLORS[2],
       },
     ];

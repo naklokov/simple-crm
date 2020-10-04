@@ -32,3 +32,7 @@ export const TASK_TYPES = {
 export const TASK_TYPES_MAP = {
   CALL: "Звонок",
 };
+
+export const FORM_NAMES = {
+  CLIENT_CARD: "clientCard",
+};

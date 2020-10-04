@@ -9,6 +9,7 @@ export interface AppState {
   error: ErrorAppState;
   tableLoading: boolean;
   loading: boolean;
+  forms: any;
 }
 
 export interface DataState {
@@ -48,4 +49,9 @@ export interface ProfileInfoProps {
   isActive?: boolean;
   isDeleted?: boolean;
   isLocked?: boolean;
+}
+
+export interface UpdateFormProps {
+  name: string;
+  data: any;
 }
