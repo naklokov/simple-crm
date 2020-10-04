@@ -1,7 +1,7 @@
 {
   "name": "olivje.crm.pl",
   "version": "0.0.0",
-  "homepage": "http://localhost:3000/crm",
+  "homepage": "http://localhost:3000",
   "author": {
     "name": "ukropchik"
   },

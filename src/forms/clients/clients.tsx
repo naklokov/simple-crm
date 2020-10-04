@@ -191,7 +191,11 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
             pagination={serverPagination}
             onDeleteRow={handleDelete}
             dataSource={dataSource}
-            onSearch={handleSearch}
+            onSearch={
+              pagination.selectedRadio === CLIENTS_RADIO_OPTIONS.ALL
+                ? handleSearch
+                : void 0
+            }
             onChangeTable={handleChangeTable}
             withSearch
           />

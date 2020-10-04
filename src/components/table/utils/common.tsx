@@ -60,7 +60,7 @@ export const getFilteredDataSource = (
 ) => {
   const visibleColumns = dataSource.map((item) => {
     const picked = columns?.map((col) => col.columnCode) ?? [];
-    return pick(item, picked);
+    return pick(item, [...picked, "id"]);
   });
 
   const filteredIds = visibleColumns
