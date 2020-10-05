@@ -434,7 +434,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          rules: [],
           permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
         },
         {

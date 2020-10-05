@@ -108,7 +108,13 @@ export const ContainerWrapper = ({
     const isLoaded =
       profileLoading || permissionsLoading || tasksLoading || clientsLoading;
     setLoading(isLoaded);
-  }, [profileLoading, permissionsLoading, tasksLoading, clientsLoading]);
+  }, [
+    profileLoading,
+    permissionsLoading,
+    tasksLoading,
+    clientsLoading,
+    setLoading,
+  ]);
 
   if (error.statusCode) {
     return (

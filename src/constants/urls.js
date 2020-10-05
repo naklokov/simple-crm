@@ -4,6 +4,9 @@ module.exports = {
     submit: "/crm/login",
     logout: "/crm/logout",
   },
+  main: {
+    path: "/main",
+  },
   forgotPassword: {
     path: "/forgotPassword",
     submit: "/crm/rest/password/initiate",
@@ -20,7 +23,7 @@ module.exports = {
     base: "/crm/rest/log",
   },
   profile: {
-    path: "/profile",
+    path: "/main/profile",
     entity: "/crm/rest/user/profile",
     permissions: "/crm/rest/user/permissions",
   },
@@ -28,12 +31,12 @@ module.exports = {
     entity: "/crm/rest/entity/userProfiles",
   },
   clients: {
-    path: "/clients",
+    path: "/main/clients",
     entity: "/crm/rest/entity/clients",
     paging: "/crm/rest/entity/clients/paging",
   },
   clientCard: {
-    path: "/clients/:id",
+    path: "/main/clients/:id",
     entity: "/crm/rest/entity/clients",
   },
   contacts: {
@@ -46,7 +49,7 @@ module.exports = {
     entity: "/crm/rest/entity/comments",
   },
   tasks: {
-    path: "/tasks",
+    path: "/main/tasks",
     entity: "/crm/rest/entity/tasks",
   },
   deals: {

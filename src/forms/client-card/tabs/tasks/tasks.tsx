@@ -4,6 +4,7 @@ import {
   getRsqlParams,
   getUpdatedEntityArray,
   useFetch,
+  useFormValues,
 } from "../../../../utils";
 import { useTranslation } from "react-i18next";
 import { Tabs, Button } from "antd";
@@ -17,6 +18,7 @@ import {
   formConfig,
   TaskEntityProps,
   QueryProps,
+  FORM_NAMES,
 } from "../../../../constants";
 import { useParams } from "react-router";
 import {
@@ -24,11 +26,6 @@ import {
   ViewTaskDrawer,
   CompletedTaskDrawer,
 } from "../../../../drawers";
-import { State } from "../../../../__data__/interfaces";
-import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
-import { connect } from "react-redux";
-import { isEmpty } from "lodash";
-import { setTasks } from "../../../../__data__";
 
 const { TabPane } = Tabs;
 
@@ -57,6 +54,11 @@ export const Tasks = ({ tab }: TasksProps) => {
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
   const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
 
+  const { update: viewFormUpdate } = useFormValues(FORM_NAMES.TASK_VIEW);
+  const { update: completedFormUpdate } = useFormValues(
+    FORM_NAMES.TASK_COMPLETED
+  );
+
   const query = getRsqlParams([{ key: "clientId", value: clientId }]);
 
   const { response, loading: fetchLoading } = useFetch({
@@ -78,7 +80,7 @@ export const Tasks = ({ tab }: TasksProps) => {
 
   const handleDoneRow = useCallback(
     (id) => {
-      setActiveDrawerId(id);
+      completedFormUpdate(tasks.find((o) => o.id === id));
       setCompletedDrawerVisible(true);
     },
     [tasks]
@@ -86,7 +88,7 @@ export const Tasks = ({ tab }: TasksProps) => {
 
   const handleViewRow = useCallback(
     (id) => {
-      setActiveDrawerId(id);
+      viewFormUpdate(tasks.find((o) => o.id === id));
       setViewDrawerVisible(true);
     },
     [tasks]
@@ -159,7 +161,6 @@ export const Tasks = ({ tab }: TasksProps) => {
       />
       <ViewTaskDrawer
         title={taskDrawer?.name ?? ""}
-        initialValues={tasks.find((o) => o.id === activeDrawerId) ?? {}}
         fields={taskDrawer?.fields ?? []}
         onClose={handleCloseViewDrawer}
         visible={viewDrawerVisible}
@@ -167,7 +168,6 @@ export const Tasks = ({ tab }: TasksProps) => {
         onCompleted={handleTaskCompleted}
       />
       <CompletedTaskDrawer
-        initialValues={tasks.find((o) => o.id === activeDrawerId) ?? {}}
         fields={completedDrawer?.fields ?? []}
         visible={completedDrawerVisible}
         onClose={handleCloseCompletedDrawer}

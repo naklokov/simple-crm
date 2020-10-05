@@ -23,9 +23,8 @@ import { urls } from "../../constants";
 import { AuthorizedLayout, UnauthorizedLayout } from "../../layouts";
 import { ROOT_URL } from "../../constants/http";
 
-const MAIN_PAGE = urls.clients.path;
-
 const {
+  main,
   clientCard,
   clients,
   profile,
@@ -39,7 +38,13 @@ const Routes = () => (
   <Router basename={ROOT_URL}>
     <Switch>
       <ProtectedRoute
-        path={[clients.path, clientCard.path, profile.path, tasks.path]}
+        path={[
+          main.path,
+          clients.path,
+          profile.path,
+          clientCard.path,
+          tasks.path,
+        ]}
         component={AuthorizedLayout}
       >
         <Switch>
@@ -64,6 +69,8 @@ const Routes = () => (
             path={tasks.path}
             component={Tasks}
           />
+
+          <Redirect from={main.path} to={{ pathname: clients.path }} exact />
         </Switch>
       </ProtectedRoute>
 
@@ -89,8 +96,8 @@ const Routes = () => (
         path={urls.error.path}
         component={ErrorScreen}
       />
-      <Redirect from="/" to={{ pathname: MAIN_PAGE }} exact />
-      <Redirect from="/crm" to={{ pathname: MAIN_PAGE }} exact />
+      <Redirect from="/" to={{ pathname: urls.main.path }} exact />
+      <Redirect from="/crm" to={{ pathname: urls.main.path }} exact />
       <Route path="*">
         <NotFoundScreen />
       </Route>

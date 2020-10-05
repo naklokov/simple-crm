@@ -35,4 +35,9 @@ export const TASK_TYPES_MAP = {
 
 export const FORM_NAMES = {
   CLIENT_CARD: "clientCard",
+  CONTACT_VIEW: "contactView",
+  CONTACT_ADD: "contactAdd",
+  TASK_ADD: "taskAdd",
+  TASK_COMPLETED: "taskCompleted",
+  TASK_VIEW: "taskView",
 };

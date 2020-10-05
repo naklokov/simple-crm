@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { urls, TabProps, formConfig, QueryProps } from "../../../../constants";
+import {
+  urls,
+  TabProps,
+  formConfig,
+  QueryProps,
+  FORM_NAMES,
+} from "../../../../constants";
 import { Table } from "../../../../components";
 import {
   getFiteredEntityArray,
@@ -7,6 +13,7 @@ import {
   useFetch,
   getRsqlParams,
   defaultSuccessHandler,
+  useFormValues,
 } from "../../../../utils";
 import { useParams } from "react-router";
 import { Header } from "./header";
@@ -31,7 +38,7 @@ export const Contacts = ({ tab }: ContactsProps) => {
   const [t] = useTranslation("clientCardContacts");
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
-  const [activeDrawerId, setActiveDrawerId] = useState("");
+  const { update: viewFormUpdate } = useFormValues(FORM_NAMES.CONTACT_VIEW);
 
   const [contacts, setContacts] = useState([] as any[]);
   const { id: clientId } = useParams<QueryProps>();
@@ -50,15 +57,15 @@ export const Contacts = ({ tab }: ContactsProps) => {
     setAddDrawerVisible(true);
   }, []);
 
-  const handleViewRow = useCallback(
+  const handleViewContact = useCallback(
     (id) => {
-      setActiveDrawerId(id);
+      viewFormUpdate(contacts.find((o) => o.id == id));
       setViewDrawerVisible(true);
     },
     [contacts]
   );
 
-  const handleDeleteRow = useCallback(
+  const handleDeleteContact = useCallback(
     (id) => {
       defaultSuccessHandler(t("message.delete.success"));
       setContacts(getFiteredEntityArray(id, contacts));
@@ -67,22 +74,20 @@ export const Contacts = ({ tab }: ContactsProps) => {
   );
 
   const handleCloseAddDrawer = useCallback(
-    (event, contact) => {
+    (event: any, data: any) => {
       setAddDrawerVisible(false);
-
-      if (contact) {
-        setContacts([...contacts, contact]);
+      if (data) {
+        setContacts([...contacts, data]);
       }
     },
     [contacts]
   );
 
   const handleCloseViewDrawer = useCallback(
-    (event, contact) => {
+    (event: any, data: any) => {
       setViewDrawerVisible(false);
-
-      if (contact) {
-        setContacts(getUpdatedEntityArray(contact, contacts));
+      if (data) {
+        setContacts(getUpdatedEntityArray(data, contacts));
       }
     },
     [contacts]
@@ -98,9 +103,6 @@ export const Contacts = ({ tab }: ContactsProps) => {
       <ViewContactDrawer
         title={drawer?.name ?? ""}
         visible={viewDrawerVisible}
-        initialValues={
-          contacts?.find((contact) => activeDrawerId === contact.id) ?? {}
-        }
         fields={drawer?.fields ?? []}
         onClose={handleCloseViewDrawer}
       />
@@ -110,8 +112,8 @@ export const Contacts = ({ tab }: ContactsProps) => {
           actions={tab.actions}
           loading={loading}
           pagination={{ pageSize: 5 }}
-          onViewRow={handleViewRow}
-          onDeleteRow={handleDeleteRow}
+          onViewRow={handleViewContact}
+          onDeleteRow={handleDeleteContact}
           dataSource={contacts}
           extraHeader={<Header onClickAdd={handleAddContact} />}
         />

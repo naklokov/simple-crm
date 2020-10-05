@@ -20,7 +20,7 @@ export const Done = ({
 }: DoneProps) => {
   const handleClick = useCallback(() => {
     onDone(id);
-  }, [id]);
+  }, [id, onDone]);
 
   if (!isOwner) {
     return null;

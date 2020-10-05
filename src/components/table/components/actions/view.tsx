@@ -18,7 +18,7 @@ export const View = ({
 }: ViewProps) => {
   const handleClick = useCallback(() => {
     onView(id);
-  }, [id]);
+  }, [id, onView]);
 
   return (
     <Button style={{ paddingLeft: 0 }} type="link" onClick={handleClick}>

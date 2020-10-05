@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Drawer as DrawerUI, Form, PageHeader } from "antd";
 import { FormFooter } from "../form-footer";
 import { ComponentPermissionsChecker } from "../../wrappers";
-import { createFormField, isValuesChanged } from "../../utils";
+import { createFormField, isValuesChanged, useFormValues } from "../../utils";
 import isEmpty from "lodash/isEmpty";
 import { FieldProps } from "../../constants";
 import { Store } from "antd/lib/form/interface";
@@ -10,7 +10,6 @@ import { Store } from "antd/lib/form/interface";
 interface DrawerFormProps {
   name: string;
   fields: FieldProps[];
-  initialValues?: object;
   submitLoading: boolean;
   title: string | React.ReactNode;
   visible: boolean;
@@ -23,7 +22,6 @@ interface DrawerFormProps {
 export const DrawerForm = ({
   fields,
   name,
-  initialValues = {},
   onFinish,
   submitLoading,
   title,
@@ -34,6 +32,7 @@ export const DrawerForm = ({
 }: DrawerFormProps) => {
   const [form] = Form.useForm();
   const [submitDisabled, setSubmitDisabled] = useState(defaultSubmitDisabled);
+  const { values: initialValues, clear } = useFormValues(name);
 
   const handleValuesChange = useCallback(
     (changed: Object, allValues: Object) => {
@@ -43,9 +42,22 @@ export const DrawerForm = ({
     [setSubmitDisabled, initialValues]
   );
 
-  const handleClose = useCallback((event) => {
-    onClose(event);
-  }, []);
+  const handleClose = useCallback(
+    (event) => {
+      clear();
+      onClose(event);
+    },
+    [onClose]
+  );
+
+  const handleFinish = useCallback(
+    (values: Store) => {
+      const data = { ...initialValues, ...values };
+      clear();
+      onFinish(data);
+    },
+    [initialValues, onClose, onFinish]
+  );
 
   const handleVisibleChange = useCallback(
     (isVisible) => {
@@ -90,7 +102,7 @@ export const DrawerForm = ({
         name={name}
         form={form}
         onValuesChange={handleValuesChange}
-        onFinish={onFinish}
+        onFinish={handleFinish}
         layout="vertical"
         initialValues={initialValues}
       >
