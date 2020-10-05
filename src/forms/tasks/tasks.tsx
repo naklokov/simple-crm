@@ -126,7 +126,6 @@ export const Tasks = ({ tasks, setTasks }: TaskProps) => {
           visible={addDrawerVisible}
         />
         <CompletedTaskDrawer
-          initialValues={tasks.find(({ id }) => selectedId === id) || {}}
           fields={completedDrawer?.fields ?? []}
           visible={completedDrawerVisible}
           onClose={handleCloseCompletedDrawer}

@@ -9,6 +9,7 @@ import {
   TASK_STATUSES,
   TASK_TYPES,
   QueryProps,
+  FORM_NAMES,
 } from "../../constants";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 import { useParams } from "react-router";
@@ -58,7 +59,7 @@ export const AddTask = ({
     <DrawerForm
       title={t("title.new")}
       fields={fields}
-      name="taskAdd"
+      name={FORM_NAMES.TASK_ADD}
       onClose={onClose}
       visible={visible}
       submitLoading={loading}

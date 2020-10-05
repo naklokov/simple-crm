@@ -6,7 +6,7 @@ import { LOGO } from "../../../../constants/layouts";
 import style from "./logo.module.scss";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { http } from "../../../../constants";
+import { urls } from "../../../../constants";
 
 interface LogoProps {
   collapsed: boolean;
@@ -15,7 +15,7 @@ interface LogoProps {
 export const Logo = ({ collapsed }: LogoProps) => {
   const [t] = useTranslation("authorizedLayout");
   return (
-    <Link to={http.MAIN_PAGE_URL}>
+    <Link to={urls.main.path}>
       <div className={style.logo}>
         <img className={style.img} alt="logo" src={LOGO} />
         {!collapsed && (

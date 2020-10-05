@@ -3,18 +3,16 @@ import axios from "axios";
 import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import { urls, FieldProps, TASK_STATUSES } from "../../constants";
+import { urls, FieldProps, TASK_STATUSES, FORM_NAMES } from "../../constants";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFullUrl,
 } from "../../utils";
-import { useParams } from "react-router";
 
 interface CompleteTaskProps {
   fields: FieldProps[];
   visible: boolean;
-  initialValues: Store;
   onClose: (event: any, entity?: Store) => void;
 }
 
@@ -22,25 +20,18 @@ export const CompleteTask = ({
   fields,
   visible,
   onClose,
-  initialValues: { id, ...initialValues },
 }: CompleteTaskProps) => {
   const [t] = useTranslation("tasksDrawer");
-  const { id: clientId } = useParams();
   const [loading, setLoading] = useState(false);
   const metaCompletedInfo = {
     taskStatus: TASK_STATUSES.COMPLETED,
   };
 
-  const onFinish = async (values: Store) => {
+  const onFinish = async (data: Store) => {
     setLoading(true);
     try {
-      const data = {
-        ...values,
-        ...initialValues,
-        ...metaCompletedInfo,
-      };
-      const url = getFullUrl(urls.tasks.entity, id);
-      const responce = await axios.put(url, data);
+      const url = getFullUrl(urls.tasks.entity, data.id);
+      const responce = await axios.put(url, { ...data, ...metaCompletedInfo });
       defaultSuccessHandler(t("message.success.completed"));
       onClose(void 0, responce?.data);
     } catch (error) {
@@ -52,10 +43,9 @@ export const CompleteTask = ({
 
   return (
     <DrawerForm
-      initialValues={initialValues}
       title={t("title.completed")}
       fields={fields}
-      name="taskCompleted"
+      name={FORM_NAMES.TASK_COMPLETED}
       onClose={onClose}
       visible={visible}
       submitLoading={loading}

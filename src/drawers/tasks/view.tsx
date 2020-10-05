@@ -3,11 +3,12 @@ import axios from "axios";
 import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import { urls, FieldProps } from "../../constants";
+import { urls, FieldProps, FORM_NAMES } from "../../constants";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFullUrl,
+  useFormValues,
 } from "../../utils";
 import { Dropdown, Button, Menu, Popconfirm } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
@@ -16,7 +17,6 @@ import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { setTableLoading } from "../../__data__";
 
 interface ViewTaskProps {
-  initialValues: Store;
   fields: FieldProps[];
   visible: boolean;
   title: string;
@@ -27,7 +27,6 @@ interface ViewTaskProps {
 }
 
 export const ViewTask = ({
-  initialValues: { id, ...initialValues },
   fields,
   visible,
   onClose,
@@ -37,6 +36,9 @@ export const ViewTask = ({
   title,
 }: ViewTaskProps) => {
   const [t] = useTranslation("tasksDrawer");
+  const {
+    values: { id, isOwner },
+  } = useFormValues(FORM_NAMES.TASK_VIEW);
   const [loading, setLoading] = useState(false);
 
   const fetchDelete = async () => {
@@ -92,11 +94,10 @@ export const ViewTask = ({
     );
   };
 
-  const onFinish = async (values: Store) => {
+  const onFinish = async (data: Store) => {
     try {
       setLoading(true);
-      const data = { ...initialValues, ...values };
-      const url = getFullUrl(urls.tasks.entity, id);
+      const url = getFullUrl(urls.tasks.entity, data.id);
       const responce = await axios.put(url, data);
       defaultSuccessHandler(t("message.success.edit"));
       onClose(void 0, responce?.data);
@@ -109,15 +110,14 @@ export const ViewTask = ({
 
   return (
     <DrawerForm
-      initialValues={initialValues}
       title={title}
       fields={fields}
-      name="taskView"
+      name={FORM_NAMES.TASK_VIEW}
       onClose={onClose}
       visible={visible}
       submitLoading={loading}
       onFinish={onFinish}
-      headerButtons={initialValues.isOwner ? [<DropdownMenu key="more" />] : []}
+      headerButtons={isOwner ? [<DropdownMenu key="more" />] : []}
     />
   );
 };

@@ -3,11 +3,10 @@ import axios from "axios";
 import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import { urls, FieldProps } from "../../constants";
+import { urls, FieldProps, FORM_NAMES } from "../../constants";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 
 interface ViewContactProps {
-  initialValues: Store;
   fields: FieldProps[];
   visible: boolean;
   title: string;
@@ -15,7 +14,6 @@ interface ViewContactProps {
 }
 
 export const ViewContact = ({
-  initialValues: { id, ...initialValues },
   fields,
   visible,
   onClose,
@@ -24,11 +22,10 @@ export const ViewContact = ({
   const [t] = useTranslation("contactDrawer");
   const [submitLoading, setSubmitLoading] = useState(false);
 
-  const onFinish = async (values: Store) => {
+  const onFinish = async (data: Store) => {
     try {
       setSubmitLoading(true);
-      const data = { ...initialValues, ...values };
-      const url = `${urls.contacts.entity}/${id}`;
+      const url = `${urls.contacts.entity}/${data.id}`;
       const responce = await axios.put(url, data);
       defaultSuccessHandler(t("message.success.edit"));
       onClose(void 0, responce?.data);
@@ -41,10 +38,9 @@ export const ViewContact = ({
 
   return (
     <DrawerForm
-      initialValues={initialValues}
       title={title}
       fields={fields}
-      name="contactView"
+      name={FORM_NAMES.CONTACT_VIEW}
       onClose={onClose}
       visible={visible}
       submitLoading={submitLoading}

@@ -29,21 +29,21 @@ export const MENU_ITEMS = [
 export const BREADCRUMB_ROUTES = {
   CLIENTS: [
     {
-      path: "/",
+      path: urls.main.path,
       breadcrumbName: "Главная",
     },
     {
-      path: urls.clients.path,
+      path: urls.clients.path.replace(urls.main.path, ""),
       breadcrumbName: "Клиенты",
     },
   ],
   TASKS: [
     {
-      path: "/",
+      path: urls.main.path,
       breadcrumbName: "Главная",
     },
     {
-      path: urls.tasks.path,
+      path: urls.tasks.path.replace(urls.main.path, ""),
       breadcrumbName: "Задачи",
     },
   ],
