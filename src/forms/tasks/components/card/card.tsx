@@ -1,8 +1,12 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { ClockCircleTwoTone } from "@ant-design/icons";
 import { Card as CardUI, Popconfirm, Skeleton, Typography } from "antd";
-import { getDateWithTimezone, getFullUrl } from "../../../../utils";
+import {
+  defaultErrorHandler,
+  getDateWithTimezone,
+  getFullUrl,
+} from "../../../../utils";
 import {
   DATE_FORMATS,
   TASK_TYPES_MAP,
@@ -13,13 +17,10 @@ import {
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { stringify } from "query-string";
-import { State } from "../../../../__data__/interfaces";
-import { connect } from "react-redux";
 
 interface CardProps {
   id: string;
   clientId: string;
-  clients: ClientEntityProps[];
   title?: string;
   taskType: TaskTypeType;
   taskDescription?: string;
@@ -32,7 +33,6 @@ interface CardProps {
 export const Card = ({
   id,
   clientId,
-  clients,
   date,
   taskType,
   taskDescription,
@@ -42,10 +42,26 @@ export const Card = ({
   title = "",
 }: CardProps) => {
   const [t] = useTranslation("card");
-  const client = useMemo(() => clients.find(({ id }) => id === clientId), [
-    clients,
-    clientId,
-  ]);
+  const [client, setClient] = useState({} as ClientEntityProps);
+  const [loading, setLoading] = useState(false);
+
+  const fetchClient = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        getFullUrl(urls.clients.entity, clientId)
+      );
+      setClient(response?.data ?? {});
+    } catch (error) {
+      defaultErrorHandler({ error });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchClient();
+  }, []);
 
   const extra = date ? (
     <div>
@@ -90,8 +106,10 @@ export const Card = ({
     <Skeleton.Input style={{ width: "200px" }} active={true} size={"small"} />
   );
 
+  const cardTitle = loading ? titleSkeleton : titleContent;
+
   return (
-    <CardUI title={titleContent} extra={extra} size="small" actions={actions}>
+    <CardUI title={cardTitle} extra={extra} size="small" actions={actions}>
       <strong>{TASK_TYPES_MAP[taskType]}</strong>
       {taskDescription && (
         <Typography.Paragraph ellipsis={{ rows: 2, expandable: true }}>
@@ -102,8 +120,4 @@ export const Card = ({
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  clients: state?.data?.clients,
-});
-
-export default connect(mapStateToProps)(Card);
+export default Card;

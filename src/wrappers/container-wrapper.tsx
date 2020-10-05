@@ -14,11 +14,10 @@ import {
   setLoading,
   setProfileInfo,
   setPermissions,
-  setTasks,
+  setActiveTasks,
 } from "../__data__";
 import { Redirect } from "react-router";
 import { getCompletedTasksRsql } from "../forms/tasks/utils";
-import { setClients } from "../__data__";
 
 interface ContainerWrapperProps {
   children: ReactNode;
@@ -27,10 +26,9 @@ interface ContainerWrapperProps {
   error: ErrorAppState;
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  setTasks: (tasks: TaskEntityProps[]) => void;
+  setActiveTasks: (tasks: TaskEntityProps[]) => void;
   setPermissions: (permissions: string[]) => void;
   setProfileInfo: (profile: ProfileInfoProps) => void;
-  setClients: (clients: ClientEntityProps[]) => void;
 }
 
 export const ContainerWrapper = ({
@@ -38,10 +36,9 @@ export const ContainerWrapper = ({
   profileInfo,
   error,
   setLoading,
-  setTasks,
+  setActiveTasks,
   setPermissions,
   setProfileInfo,
-  setClients,
 }: ContainerWrapperProps) => {
   const [tasksLoading, setTasksLoading] = useState(false);
   const [clientsLoading, setClientsLoading] = useState(false);
@@ -56,21 +53,21 @@ export const ContainerWrapper = ({
     url: urls.profile.permissions,
   });
 
-  const fetchClientsPersonal = async (userProfileId: string) => {
-    try {
-      setClientsLoading(true);
-      const url = urls.clients.entity;
-      const query = getRsqlParams([
-        { key: "userProfileId", value: userProfileId },
-      ]);
-      const response = await axios.get(url, { params: { query } });
-      setClients(response?.data ?? []);
-    } catch (error) {
-      defaultErrorHandler({ error });
-    } finally {
-      setClientsLoading(false);
-    }
-  };
+  // const fetchClientsPersonal = async (userProfileId: string) => {
+  //   try {
+  //     setClientsLoading(true);
+  //     const url = urls.clients.entity;
+  //     const query = getRsqlParams([
+  //       { key: "userProfileId", value: userProfileId },
+  //     ]);
+  //     const response = await axios.get(url, { params: { query } });
+  //     setClients(response?.data ?? []);
+  //   } catch (error) {
+  //     defaultErrorHandler({ error });
+  //   } finally {
+  //     setClientsLoading(false);
+  //   }
+  // };
 
   const fetchTasks = async (userProfileId: string) => {
     setTasksLoading(true);
@@ -82,7 +79,7 @@ export const ContainerWrapper = ({
       const responce = await axios.get(urls.tasks.entity, {
         params: { query },
       });
-      setTasks(responce?.data ?? []);
+      setActiveTasks(responce?.data ?? []);
     } catch (error) {
       defaultErrorHandler({
         error,
@@ -100,7 +97,6 @@ export const ContainerWrapper = ({
   useEffect(() => {
     if (profileInfo.id) {
       fetchTasks(profileInfo.id);
-      fetchClientsPersonal(profileInfo.id);
     }
   }, [profileInfo.id]);
 
@@ -141,11 +137,10 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      setTasks,
+      setActiveTasks,
       setPermissions,
       setProfileInfo,
       setLoading,
-      setClients,
     },
     dispatch
   );

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { connect } from "react-redux";
 import { TableAll, TablePersonal } from "./components";
-import { ClientEntityProps, PERMISSIONS } from "../../constants";
+import { PERMISSIONS } from "../../constants";
 
 import style from "./clients.module.scss";
 import { ProfileInfoProps, State } from "../../__data__/interfaces";
@@ -11,7 +11,7 @@ import { PagePermissionsChecker } from "../../wrappers";
 import { Radio } from "antd";
 import { RadioChangeEvent } from "antd/lib/radio";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
-import { setClients, setTableLoading } from "../../__data__";
+import { setTableLoading } from "../../__data__";
 
 // TODO проверить пермишены
 const {
@@ -25,12 +25,10 @@ const CLIENTS_RADIO_OPTIONS = {
 
 interface ClientsProps {
   title?: string;
-  clients: ClientEntityProps[];
   profileInfo: ProfileInfoProps;
-  setClients: (clients: ClientEntityProps[]) => void;
 }
 
-export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
+export const Clients = ({ profileInfo }: ClientsProps) => {
   const [t] = useTranslation("clients");
   const [selectedRadio, setSelectedRadio] = useState(CLIENTS_RADIO_OPTIONS.MY);
 
@@ -57,12 +55,8 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
     </Radio.Group>
   );
 
-  const table =
-    selectedRadio === CLIENTS_RADIO_OPTIONS.ALL ? (
-      <TableAll userProfileId={profileInfo.id} extraHeader={radioSelect} />
-    ) : (
-      <TablePersonal extraHeader={radioSelect} />
-    );
+  const Table =
+    selectedRadio === CLIENTS_RADIO_OPTIONS.ALL ? TableAll : TablePersonal;
 
   return (
     <PagePermissionsChecker availablePermissions={[GET, GET_OWNER, ADMIN]}>
@@ -70,18 +64,19 @@ export const Clients = ({ setClients, clients, profileInfo }: ClientsProps) => {
         <div className={style.header}>
           <ClientsHeader />
         </div>
-        <div className={style.container}>{table}</div>
+        <div className={style.container}>
+          <Table extraHeader={radioSelect} userProfileId={profileInfo.id} />
+        </div>
       </div>
     </PagePermissionsChecker>
   );
 };
 
 const mapStateToProps = (state: State) => ({
-  clients: state?.data?.clients,
   profileInfo: state?.data?.profileInfo,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setClients, setTableLoading }, dispatch);
+  bindActionCreators({ setTableLoading }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Clients);

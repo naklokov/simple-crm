@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import moment from "moment-timezone";
 import axios from "axios";
 import { Col, List, Row } from "antd";
@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { AddTaskDrawer, CompletedTaskDrawer } from "../../drawers";
 import { PagePermissionsChecker } from "../../wrappers";
 import { bindActionCreators } from "@reduxjs/toolkit";
-import { setTasks } from "../../__data__";
+import { setActiveTasks } from "../../__data__";
 import { Dispatch } from "@reduxjs/toolkit";
 
 const {
@@ -40,17 +40,16 @@ const {
 } = PERMISSIONS;
 
 interface TaskProps {
-  tasks: TaskEntityProps[];
-  setTasks: (tasks: TaskEntityProps[]) => void;
+  activeTasks: TaskEntityProps[];
+  setActiveTasks: (tasks: TaskEntityProps[]) => void;
 }
 
-export const Tasks = ({ tasks, setTasks }: TaskProps) => {
+export const Tasks = ({ activeTasks, setActiveTasks }: TaskProps) => {
   const [t] = useTranslation("tasks");
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [listLoading, setListLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(moment().toISOString());
   const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
-  const [selectedId, setSelectedId] = useState("");
 
   const fetchDelete = async (id: string) => {
     setListLoading(true);
@@ -77,10 +76,10 @@ export const Tasks = ({ tasks, setTasks }: TaskProps) => {
       setAddDrawerVisible(false);
 
       if (task) {
-        setTasks([...tasks, task]);
+        setActiveTasks([...activeTasks, task]);
       }
     },
-    [tasks]
+    [activeTasks]
   );
 
   const handleAddClick = useCallback(() => {
@@ -89,18 +88,17 @@ export const Tasks = ({ tasks, setTasks }: TaskProps) => {
 
   const handleTaskComplete = useCallback(
     (id: string) => {
-      setSelectedId(id);
       setCompletedDrawerVisible(true);
     },
-    [tasks]
+    [activeTasks]
   );
 
   const handleTaskDelete = useCallback(
     (id: string) => {
       fetchDelete(id);
-      setTasks(tasks.filter((task) => task.id !== id));
+      setActiveTasks(activeTasks.filter((task) => task.id !== id));
     },
-    [tasks]
+    [activeTasks]
   );
 
   const handleCloseCompletedDrawer = useCallback(
@@ -108,10 +106,15 @@ export const Tasks = ({ tasks, setTasks }: TaskProps) => {
       setCompletedDrawerVisible(false);
 
       if (task) {
-        setTasks(getFiteredEntityArray(task.id, tasks));
+        setActiveTasks(getFiteredEntityArray(task.id, activeTasks));
       }
     },
-    [tasks]
+    [activeTasks]
+  );
+
+  const dataSource = useMemo(
+    () => getTasksColumns(selectedDate, activeTasks, t),
+    [selectedDate, activeTasks, t]
   );
 
   return (
@@ -135,7 +138,7 @@ export const Tasks = ({ tasks, setTasks }: TaskProps) => {
             <List
               loading={listLoading}
               grid={{ column: 3 }}
-              dataSource={getTasksColumns(selectedDate, tasks, t)}
+              dataSource={dataSource}
               renderItem={(column) => (
                 <Column
                   onDelete={handleTaskDelete}
@@ -153,10 +156,10 @@ export const Tasks = ({ tasks, setTasks }: TaskProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  tasks: state?.data?.tasks,
+  activeTasks: state?.data?.activeTasks,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setTasks }, dispatch);
+  bindActionCreators({ setActiveTasks }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tasks);

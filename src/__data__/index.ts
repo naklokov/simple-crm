@@ -5,7 +5,12 @@ import dataReducer from "./data";
 export { setPermissions, setAuth } from "./persist";
 
 export { setLoading, setTableLoading, setError, updateForm } from "./app";
-export { setClients, setDictionaries, setProfileInfo, setTasks } from "./data";
+export {
+  setClients,
+  setDictionaries,
+  setProfileInfo,
+  setActiveTasks,
+} from "./data";
 
 export const reducers = {
   persist: persistReducer,

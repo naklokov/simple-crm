@@ -3,22 +3,16 @@ import axios from "axios";
 
 import { useParams } from "react-router";
 import { useTranslation } from "react-i18next";
-import {
-  ClientEntityProps,
-  FORM_NAMES,
-  PERMISSIONS,
-  QueryProps,
-  urls,
-} from "../../constants";
+import { FORM_NAMES, PERMISSIONS, QueryProps, urls } from "../../constants";
 import { connect } from "react-redux";
-import { State, UpdateFormProps } from "../../__data__/interfaces";
+import { ProfileInfoProps, State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
-import { updateForm, setLoading } from "../../__data__";
-import { getClientCardMode, getClient } from "./utils";
+import { setLoading } from "../../__data__";
+import { getClientCardMode } from "./utils";
 import { Tabs, Loader } from "../../components";
 import { upper, lower } from "../../constants/form-config/client-card";
 import { Main, Comments, Contacts, Requisites, PriceList, Tasks } from "./tabs";
-import { defaultErrorHandler, getFullUrl } from "../../utils";
+import { defaultErrorHandler, getFullUrl, useFormValues } from "../../utils";
 import { isEmpty } from "lodash";
 import { ClientCardHeader } from ".";
 import { PagePermissionsChecker } from "../../wrappers";
@@ -31,10 +25,8 @@ const {
 } = PERMISSIONS;
 
 interface ClientCardProps {
-  clients: ClientEntityProps[];
-  client: ClientEntityProps;
+  profileInfo: ProfileInfoProps;
   setLoading: (loading: boolean) => void;
-  updateForm: ({ name, data }: UpdateFormProps) => void;
 }
 
 export const TABS_MAP: {
@@ -48,16 +40,13 @@ export const TABS_MAP: {
   tasks: Tasks,
 };
 
-export const ClientCard = ({
-  clients,
-  client,
-  setLoading,
-  updateForm,
-}: ClientCardProps) => {
+export const ClientCard = ({ setLoading }: ClientCardProps) => {
   const { id: clientId } = useParams<QueryProps>();
   const [t] = useTranslation(FORM_NAMES.CLIENT_CARD);
+  const { values: client, update, clear } = useFormValues(
+    FORM_NAMES.CLIENT_CARD
+  );
 
-  const storedClient = getClient(clientId, clients);
   const mode = getClientCardMode(clientId);
 
   const isClientEmpty = mode === "view" && isEmpty(client);
@@ -67,7 +56,7 @@ export const ClientCard = ({
     try {
       setLoading(true);
       const response = await axios.get(url);
-      updateForm({ name: FORM_NAMES.CLIENT_CARD, data: response?.data });
+      update(response?.data);
     } catch (error) {
       defaultErrorHandler({ error });
     } finally {
@@ -77,17 +66,13 @@ export const ClientCard = ({
 
   useEffect(() => {
     if (mode === "view") {
-      if (isEmpty(storedClient)) {
-        fetchClientCard();
-      } else {
-        updateForm({ name: FORM_NAMES.CLIENT_CARD, data: storedClient });
-      }
+      fetchClientCard();
     }
 
     return () => {
-      updateForm({ name: FORM_NAMES.CLIENT_CARD, data: {} });
+      clear();
     };
-  }, [clients]);
+  }, []);
 
   if (isClientEmpty) {
     return <Loader />;
@@ -121,10 +106,10 @@ export const ClientCard = ({
 
 const mapStateToProps = (state: State) => ({
   clients: state?.data?.clients,
-  client: state?.app?.forms?.[FORM_NAMES.CLIENT_CARD] ?? {},
+  profileInfo: state?.data?.profileInfo,
 });
 
 const mapDispathToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ updateForm, setLoading }, dispatch);
+  bindActionCreators({ setLoading }, dispatch);
 
 export default connect(mapStateToProps, mapDispathToProps)(ClientCard);
