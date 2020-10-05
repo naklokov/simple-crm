@@ -1,10 +1,9 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import moment from "moment-timezone";
 import { Drawer, Calendar as CalendarUI, Avatar, Badge, Button } from "antd";
 import { useTranslation } from "react-i18next";
 import { CalendarOutlined } from "@ant-design/icons";
 import { Header } from "./components";
-import { getTasksByDate } from "../../utils";
 import { useSelector } from "react-redux";
 import { State } from "../../../../__data__/interfaces";
 
@@ -18,23 +17,15 @@ interface CalendarProps {
 export const Calendar = ({ onChange }: CalendarProps) => {
   const [t] = useTranslation("tasks");
   const [visible, setVisible] = useState(false);
-  const tasks = useSelector((state: State) => state?.data?.tasks);
-  const getTasksCount = memoize(
-    (date, tasks) => getTasksByDate(tasks, date)?.length ?? 0
-  );
+  const tasks = useSelector((state: State) => state?.data?.activeTasks);
 
-  const handleDateCellRender = useCallback(
-    (date: moment.Moment) => {
-      return (
-        <Badge
-          size="small"
-          className={style.badge}
-          count={getTasksCount(date, tasks)}
-        />
-      );
-    },
-    [tasks.length]
-  );
+  // const handleDateCellRender = useCallback(
+  //   (date: moment.Moment) => {
+  //     console.log(date.toISOString());
+  //     return <Badge dot className={style.badge} count={getCount(date)} />;
+  //   },
+  //   [tasks.length]
+  // );
 
   const handleOpen = useCallback(() => {
     setVisible(true);
@@ -77,7 +68,7 @@ export const Calendar = ({ onChange }: CalendarProps) => {
       >
         <CalendarUI
           headerRender={Header}
-          dateCellRender={handleDateCellRender}
+          // dateCellRender={handleDateCellRender}
           fullscreen={false}
           style={{ width: "330px", borderBottom: "1px solid #f0f0f0" }}
           onChange={onChange}

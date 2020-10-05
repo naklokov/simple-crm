@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   GUTTER_FULL_WIDTH,
-  ClientEntityProps,
   ModeType,
   TabProps,
   urls,
@@ -14,23 +13,16 @@ import {
   isValuesChanged,
   defaultErrorHandler,
   defaultSuccessHandler,
-  getUpdatedEntityArray,
   getFullUrl,
+  useFormValues,
 } from "../../../../utils";
 import { Row, Form } from "antd";
 import { FormFooter } from "../../../../components";
 import { useParams, useHistory } from "react-router";
-import {
-  State,
-  ProfileInfoProps,
-  UpdateFormProps,
-} from "../../../../__data__/interfaces";
+import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
 import { connect } from "react-redux";
-import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
-import { setClients, updateForm } from "../../../../__data__";
 import { Store } from "antd/lib/form/interface";
 import { useTranslation } from "react-i18next";
-import { useForm } from "antd/lib/form/Form";
 import { getAddMetaValues, addClient, editClient } from "../../utils";
 
 import style from "./main.module.scss";
@@ -38,26 +30,19 @@ import style from "./main.module.scss";
 interface MainProps {
   mode: ModeType;
   tab: TabProps;
-  client: ClientEntityProps;
   profileInfo: ProfileInfoProps;
-  updateForm: ({ name, data }: UpdateFormProps) => void;
 }
 
-export const Main = ({
-  tab,
-  client,
-  profileInfo,
-  updateForm,
-  mode,
-}: MainProps) => {
+export const Main = ({ tab, profileInfo, mode }: MainProps) => {
   const { id } = useParams<QueryProps>();
-  const [form] = useForm();
+  const [form] = Form.useForm();
   const history = useHistory();
   const [t] = useTranslation("clientCardMain");
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
+  const { values, update } = useFormValues(FORM_NAMES.CLIENT_CARD);
 
-  const initialValues = mode === "add" ? getAddMetaValues(profileInfo) : client;
+  const initialValues = mode === "add" ? getAddMetaValues(profileInfo) : values;
 
   const handleValuesChange = (changed: Object, allValues: Object) => {
     const isChanged = isValuesChanged(initialValues, allValues);
@@ -65,10 +50,12 @@ export const Main = ({
   };
 
   const onFinishAdd = async (values: Store) => {
+    setSubmitLoading(true);
     try {
-      setSubmitLoading(true);
-      const entity = await addClient({ ...initialValues, ...values });
-      updateForm({ name: FORM_NAMES.CLIENT_CARD, data: entity });
+      const data = { ...initialValues, ...values };
+      const entity = await addClient(data);
+      update(data);
+
       defaultSuccessHandler(t("message.success"));
       history.replace(getFullUrl(urls.clients.path, entity.id));
       setSubmitDisabled(true);
@@ -80,10 +67,11 @@ export const Main = ({
   };
 
   const onFinishEdit = async (values: Store) => {
+    setSubmitLoading(true);
     try {
-      setSubmitLoading(true);
-      const entity = await editClient(id, { ...initialValues, ...values });
-      updateForm({ name: FORM_NAMES.CLIENT_CARD, data: entity });
+      const data = { ...initialValues, ...values };
+      await editClient(id, data);
+      update(data);
 
       defaultSuccessHandler(t("message.success"));
       setSubmitDisabled(true);
@@ -129,11 +117,7 @@ export const Main = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  client: state?.app?.forms?.[FORM_NAMES.CLIENT_CARD] ?? {},
   profileInfo: state?.data?.profileInfo,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setClients, updateForm }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps)(Main);

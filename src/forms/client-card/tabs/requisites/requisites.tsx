@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   GUTTER_FULL_WIDTH,
-  ClientEntityProps,
   TabProps,
   QueryProps,
   FORM_NAMES,
@@ -12,35 +11,35 @@ import {
   isValuesChanged,
   defaultErrorHandler,
   defaultSuccessHandler,
+  useFormValues,
 } from "../../../../utils";
 import { Row, Form } from "antd";
 import { FormFooter } from "../../../../components";
 import { useParams } from "react-router";
-import { State, UpdateFormProps } from "../../../../__data__/interfaces";
-import { connect } from "react-redux";
-import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
-import { updateForm } from "../../../../__data__";
 import { Store } from "antd/lib/form/interface";
 import { useTranslation } from "react-i18next";
 import { useForm } from "antd/lib/form/Form";
-import { editClient, getClient } from "../../utils";
+import { editClient } from "../../utils";
 
 import style from "./requisites.module.scss";
+import { connect } from "react-redux";
+import { ProfileInfoProps, State } from "../../../../__data__/interfaces";
 
 interface RequisitesProps {
   tab: TabProps;
-  client: ClientEntityProps;
-  updateForm: ({ name, data }: UpdateFormProps) => void;
+  profileInfo: ProfileInfoProps;
 }
 
-export const Requisites = ({ tab, client, updateForm }: RequisitesProps) => {
+export const Requisites = ({ tab, profileInfo }: RequisitesProps) => {
   const { id } = useParams<QueryProps>();
   const [form] = useForm();
   const [t] = useTranslation("clientCardRequisites");
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
+  const { values: client, update } = useFormValues(FORM_NAMES.CLIENT_CARD);
 
   const handleValuesChange = (changed: Object, allValues: Object) => {
+    debugger;
     const isChanged = isValuesChanged(client, allValues);
     setSubmitDisabled(!isChanged);
   };
@@ -48,8 +47,9 @@ export const Requisites = ({ tab, client, updateForm }: RequisitesProps) => {
   const onFinish = async (values: Store) => {
     try {
       setSubmitLoading(true);
-      const entity = await editClient(id, { ...client, ...values });
-      updateForm({ name: FORM_NAMES.CLIENT_CARD, data: entity });
+      const data = { ...client, ...values };
+      await editClient(id, data);
+      update(data);
 
       defaultSuccessHandler(t("message.success"));
       setSubmitDisabled(true);
@@ -94,10 +94,7 @@ export const Requisites = ({ tab, client, updateForm }: RequisitesProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  client: state?.app?.forms?.[FORM_NAMES.CLIENT_CARD] ?? {},
+  profileInfo: state?.data?.profileInfo,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ updateForm }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Requisites);
+export default connect(mapStateToProps)(Requisites);

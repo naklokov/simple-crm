@@ -48,7 +48,6 @@ export const Tasks = ({ tab }: TasksProps) => {
   const [t] = useTranslation("clientCardTasks");
   const [tasks, setTasks] = useState<TaskEntityProps[]>([]);
   const { id: clientId } = useParams<QueryProps>();
-  const [activeDrawerId, setActiveDrawerId] = useState("");
   const [loading, setLoading] = useState(false);
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
@@ -113,7 +112,6 @@ export const Tasks = ({ tab }: TasksProps) => {
         const updated = getUpdatedEntityArray(task, tasks);
         setTasks(updated);
       }
-      setActiveDrawerId("");
     },
     [tasks]
   );

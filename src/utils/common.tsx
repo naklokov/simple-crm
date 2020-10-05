@@ -17,7 +17,7 @@ import {
   setLoading,
   setPermissions,
   setProfileInfo,
-  setTasks,
+  setActiveTasks,
 } from "../__data__";
 import { message } from "antd";
 import { stringify } from "query-string";
@@ -91,10 +91,10 @@ export const callTel = (phone: string) => {
 };
 
 const clearReduxStore = (dispatch: Dispatch) => {
-  dispatch(setTasks([]));
+  dispatch(setClients([]));
   dispatch(setProfileInfo({}));
   dispatch(setPermissions([]));
-  dispatch(setClients([]));
+  dispatch(setActiveTasks([]));
 };
 
 export const logout = async (dispatch: Dispatch) => {

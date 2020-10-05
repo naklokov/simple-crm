@@ -49,6 +49,13 @@ export const COLUMNS: ColumnProps[] = [
     columnDescription: "Дата регистрации",
   },
   {
+    columnName: "ИНН",
+    columnCode: "inn",
+    columnType: "string",
+    columnDescription: "ИНН",
+    sorter: false,
+  },
+  {
     columnName: "Куратор",
     columnCode: "userProfileId",
     columnType: "dictionary",
