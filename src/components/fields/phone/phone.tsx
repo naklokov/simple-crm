@@ -27,7 +27,7 @@ const BASE_PHONE_MASK = [
 
 const FULL_PHONE_MASK = [...BASE_PHONE_MASK, ",", " ", /\d/, /\d/, /\d/];
 
-const getClearPhone = (value: string) => value.replace(/[^0-9]/g, "");
+const getClearPhone = (value: string) => value?.replace(/[^0-9]/g, "") ?? "";
 
 const getMask = (value: string) => {
   const clearValue = getClearPhone(value);
