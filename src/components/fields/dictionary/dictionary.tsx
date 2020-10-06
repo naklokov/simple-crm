@@ -7,11 +7,13 @@ import { DictionaryProps, DEFAULT_SPAN, FieldProps } from "../../../constants";
 import { useFetch } from "../../../utils";
 import { setLoading } from "../../../__data__";
 import { connect } from "react-redux";
+import { FormInstance } from "antd/lib/form";
 
 const { Option } = Select;
 
 interface DictionaryComponentProps extends FieldProps {
   setLoading: (loading: boolean) => void;
+  form: FormInstance;
 }
 
 export const Dictionary = ({

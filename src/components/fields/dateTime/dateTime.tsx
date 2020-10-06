@@ -3,6 +3,7 @@ import moment from "moment-timezone";
 import { Col, Form, DatePicker } from "antd";
 import { DATE_FORMATS, DEFAULT_SPAN, FieldProps } from "../../../constants";
 import { getDateWithTimezone } from "../../../utils";
+import { FormInstance } from "antd/lib/form";
 
 const getDisabledDate = (currentDate: moment.Moment) =>
   getDateWithTimezone(currentDate.toISOString()).isBefore(
@@ -18,6 +19,10 @@ const handleValueProp = (value: any) => {
   return { value };
 };
 
+interface DateTimeFormField extends FieldProps {
+  form: FormInstance;
+}
+
 export const DateTime = ({
   fieldCode,
   format = DATE_FORMATS.DATE,
@@ -29,7 +34,7 @@ export const DateTime = ({
   readonly = false,
   withSelectBefore = false,
   span = DEFAULT_SPAN,
-}: FieldProps) => {
+}: DateTimeFormField) => {
   const showTime = /hh:mm/gi.test(format);
   return (
     <Col {...span} key={fieldCode}>

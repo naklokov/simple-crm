@@ -2,7 +2,7 @@ import React from "react";
 import { Result, Button } from "antd";
 import { useTranslation } from "react-i18next";
 import { ErrorAppState } from "../../../../__data__/interfaces";
-import { http } from "../../../../constants";
+import { http, urls } from "../../../../constants";
 
 interface ClientErrorProps {
   error: ErrorAppState;
@@ -18,7 +18,7 @@ export const ClientError = ({ error }: ClientErrorProps) => {
       title={t("title.forbidden")}
       subTitle={errorDescription || t("subtitle.default")}
       extra={
-        <Button type="primary" href={http.ROOT_URL}>
+        <Button type="primary" href={urls.main.path}>
           {t("button")}
         </Button>
       }

@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Form, Col } from "antd";
 import MaskedInput from "react-text-mask";
 import { DEFAULT_SPAN, FieldProps } from "../../../constants";
+import { FormInstance } from "antd/lib/form";
 
 const BASE_PHONE_MASK = [
   "+",
@@ -28,9 +29,20 @@ const FULL_PHONE_MASK = [...BASE_PHONE_MASK, ",", " ", /\d/, /\d/, /\d/];
 
 const getClearPhone = (value: string) => value.replace(/[^0-9]/g, "");
 
+const getMask = (value: string) => {
+  const clearValue = getClearPhone(value);
+  const withoutCode = clearValue.length <= 11;
+  return withoutCode ? BASE_PHONE_MASK : FULL_PHONE_MASK;
+};
+
+interface PhoneFormField extends FieldProps {
+  form: FormInstance;
+}
+
 export const Phone = ({
   fieldCode,
   format,
+  form,
   rules,
   fieldName,
   fieldDescription,
@@ -38,20 +50,20 @@ export const Phone = ({
   disabled = false,
   readonly = false,
   span = DEFAULT_SPAN,
-}: FieldProps) => {
-  const [mask, setMask] = useState(BASE_PHONE_MASK);
+}: PhoneFormField) => {
+  const [mask, setMask] = useState(getMask(form.getFieldValue(fieldCode)));
 
   const handleChange = useCallback((event) => {
     const { value } = event.target;
     const clearValue = getClearPhone(value);
-    const withoutCode = clearValue.length < 10;
-    setMask(withoutCode ? BASE_PHONE_MASK : FULL_PHONE_MASK);
+    const isBasePhone = clearValue.length < 10;
+    setMask(isBasePhone ? BASE_PHONE_MASK : FULL_PHONE_MASK);
   }, []);
 
   const handleBlur = useCallback((event) => {
     const { value } = event.target;
-    const clearValue = getClearPhone(value);
-    setMask(clearValue.length <= 11 ? BASE_PHONE_MASK : FULL_PHONE_MASK);
+    const mask = getMask(value);
+    setMask(mask);
   }, []);
 
   return (

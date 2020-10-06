@@ -10,6 +10,7 @@ import {
   defaultSuccessHandler,
   getFullUrl,
   getFiteredEntityArray,
+  useFormValues,
 } from "../../utils";
 import { getTasksColumns } from "./utils";
 import {
@@ -17,6 +18,7 @@ import {
   formConfig,
   PERMISSIONS,
   TaskEntityProps,
+  FORM_NAMES,
 } from "../../constants";
 import { State } from "../../__data__/interfaces";
 import { connect } from "react-redux";
@@ -50,6 +52,10 @@ export const Tasks = ({ activeTasks, setActiveTasks }: TaskProps) => {
   const [listLoading, setListLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(moment().toISOString());
   const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
+
+  const { update: completedFormUpdate } = useFormValues(
+    FORM_NAMES.TASK_COMPLETED
+  );
 
   const fetchDelete = async (id: string) => {
     setListLoading(true);
@@ -88,6 +94,7 @@ export const Tasks = ({ activeTasks, setActiveTasks }: TaskProps) => {
 
   const handleTaskComplete = useCallback(
     (id: string) => {
+      completedFormUpdate(activeTasks.find((o) => o.id === id));
       setCompletedDrawerVisible(true);
     },
     [activeTasks]

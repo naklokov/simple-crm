@@ -1,6 +1,11 @@
 import React from "react";
 import { Form, Input, Col } from "antd";
 import { DEFAULT_SPAN, FieldProps } from "../../../constants";
+import { FormInstance } from "antd/lib/form";
+
+interface TextAreaFormField extends FieldProps {
+  form: FormInstance;
+}
 
 export const TextArea = ({
   fieldCode,
@@ -12,7 +17,7 @@ export const TextArea = ({
   readonly = false,
   rows = 4,
   span = DEFAULT_SPAN,
-}: FieldProps) => {
+}: TextAreaFormField) => {
   return (
     <Col {...span} key={fieldCode}>
       <Form.Item
