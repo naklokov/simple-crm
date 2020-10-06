@@ -101,7 +101,7 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
               availablePermissions={field.permissions}
               mode="disabled"
             >
-              {createFormField(field)}
+              {createFormField(field, form)}
             </ComponentPermissionsChecker>
           ))}
         </Row>

@@ -39,7 +39,6 @@ export const Requisites = ({ tab, profileInfo }: RequisitesProps) => {
   const { values: client, update } = useFormValues(FORM_NAMES.CLIENT_CARD);
 
   const handleValuesChange = (changed: Object, allValues: Object) => {
-    debugger;
     const isChanged = isValuesChanged(client, allValues);
     setSubmitDisabled(!isChanged);
   };
@@ -79,7 +78,7 @@ export const Requisites = ({ tab, profileInfo }: RequisitesProps) => {
               availablePermissions={field.permissions}
               mode="disabled"
             >
-              {createFormField(field)}
+              {createFormField(field, form)}
             </ComponentPermissionsChecker>
           ))}
         </Row>

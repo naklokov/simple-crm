@@ -26,6 +26,10 @@ import {
   ViewTaskDrawer,
   CompletedTaskDrawer,
 } from "../../../../drawers";
+import { setActiveTasks } from "../../../../__data__";
+import { State } from "../../../../__data__/interfaces";
+import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
+import { connect } from "react-redux";
 
 const { TabPane } = Tabs;
 
@@ -42,9 +46,11 @@ const taskDrawer = drawers.find((drawer) => drawer.code === "task");
 
 interface TasksProps {
   tab: TabProps;
+  activeTasks: TaskEntityProps[];
+  setActiveTasks: (tasks: TaskEntityProps[]) => void;
 }
 
-export const Tasks = ({ tab }: TasksProps) => {
+export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
   const [t] = useTranslation("clientCardTasks");
   const [tasks, setTasks] = useState<TaskEntityProps[]>([]);
   const { id: clientId } = useParams<QueryProps>();
@@ -99,9 +105,10 @@ export const Tasks = ({ tab }: TasksProps) => {
 
       if (task) {
         setTasks([...tasks, task]);
+        setActiveTasks([...activeTasks, task]);
       }
     },
-    [tasks]
+    [tasks, activeTasks]
   );
 
   const handleCloseViewDrawer = useCallback(
@@ -109,27 +116,29 @@ export const Tasks = ({ tab }: TasksProps) => {
       setViewDrawerVisible(false);
 
       if (task) {
-        const updated = getUpdatedEntityArray(task, tasks);
-        setTasks(updated);
+        setTasks(getUpdatedEntityArray(task, tasks));
+        setActiveTasks(getUpdatedEntityArray(task, activeTasks));
       }
     },
-    [tasks]
+    [tasks, activeTasks]
   );
 
   const handleTaskDelete = useCallback(
     (id) => {
       setViewDrawerVisible(false);
       setTasks(tasks.filter((task) => task.id !== id));
+      setActiveTasks(activeTasks.filter((task) => task.id !== id));
     },
-    [tasks]
+    [tasks, activeTasks]
   );
 
   const handleTaskCompleted = useCallback(
     (id) => {
+      completedFormUpdate(tasks.find((o) => o.id === id));
       setViewDrawerVisible(false);
       setCompletedDrawerVisible(true);
     },
-    [tasks]
+    [tasks, activeTasks]
   );
 
   const handleCloseCompletedDrawer = useCallback(
@@ -138,9 +147,10 @@ export const Tasks = ({ tab }: TasksProps) => {
 
       if (task) {
         setTasks(getUpdatedEntityArray(task, tasks));
+        setActiveTasks(getUpdatedEntityArray(task, activeTasks));
       }
     },
-    [tasks]
+    [tasks, activeTasks]
   );
 
   const notCompletedSortedTasks = tasks
@@ -213,4 +223,11 @@ export const Tasks = ({ tab }: TasksProps) => {
   );
 };
 
-export default Tasks;
+const mapStateToProps = (state: State) => ({
+  activeTasks: state?.data?.activeTasks,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators({ setActiveTasks }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Tasks);

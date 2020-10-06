@@ -9,6 +9,7 @@ import {
 import { defaultErrorHandler, getRsqlParams } from "../../../utils";
 import { connect } from "react-redux";
 import { ProfileInfoProps, State } from "../../../__data__/interfaces";
+import { FormInstance } from "antd/lib/form";
 
 const { Option } = Select;
 
@@ -20,6 +21,7 @@ export const getSearchRsqlParams = (titleField: string, searched: string) => ({
 
 interface DictionaryComponentProps extends FieldProps {
   profileInfo: ProfileInfoProps;
+  form: FormInstance;
 }
 
 export const Entity = ({

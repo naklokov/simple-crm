@@ -112,7 +112,7 @@ export const DrawerForm = ({
             availablePermissions={field.permissions}
             mode="disabled"
           >
-            {createFormField(field)}
+            {createFormField(field, form)}
           </ComponentPermissionsChecker>
         ))}
       </Form>

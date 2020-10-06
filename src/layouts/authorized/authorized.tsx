@@ -23,30 +23,30 @@ export const Authorized = ({ children, loading }: AuthorizedProps) => {
 
   return (
     <ContainerWrapper>
-      <NotificationService>
-        <Layout className={style.main}>
-          <Sider
-            collapsible
-            collapsed={collapsed}
-            theme="light"
-            className={style.sider}
-            onCollapse={handleCollapseMenu}
-          >
-            <Logo collapsed={collapsed} />
-            <Menu />
-          </Sider>
-          <Layout>
-            <Header className={style.header}>
-              <Space size={16} style={{ float: "right" }}>
-                <About />
-                <Profile />
-              </Space>
-            </Header>
-            {loading && <Loader />}
-            <Content className={style.content}>{children}</Content>
-          </Layout>
+      {/* <NotificationService> */}
+      <Layout className={style.main}>
+        <Sider
+          collapsible
+          collapsed={collapsed}
+          theme="light"
+          className={style.sider}
+          onCollapse={handleCollapseMenu}
+        >
+          <Logo collapsed={collapsed} />
+          <Menu />
+        </Sider>
+        <Layout>
+          <Header className={style.header}>
+            <Space size={16} style={{ float: "right" }}>
+              <About />
+              <Profile />
+            </Space>
+          </Header>
+          {loading && <Loader />}
+          <Content className={style.content}>{children}</Content>
         </Layout>
-      </NotificationService>
+      </Layout>
+      {/* </NotificationService> */}
     </ContainerWrapper>
   );
 };
