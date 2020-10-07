@@ -3,7 +3,7 @@ import axios from "axios";
 import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import { urls, FieldProps, FORM_NAMES } from "../../constants";
+import { urls, FieldProps, FORM_NAMES, PERMISSIONS_SET } from "../../constants";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 
 interface ViewContactProps {
@@ -38,6 +38,7 @@ export const ViewContact = ({
 
   return (
     <DrawerForm
+      permissions={PERMISSIONS_SET.CONTACT_UPDATE}
       title={title}
       fields={fields}
       name={FORM_NAMES.CONTACT_VIEW}

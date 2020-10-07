@@ -9,7 +9,7 @@ import style from "./login.module.scss";
 import { useHistory, useLocation } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
 import { urls, http } from "../../constants";
-import { logger, defaultErrorHandler, clearCookie } from "../../utils";
+import { logger, defaultErrorHandler } from "../../utils";
 import { FORM_NAME, FIELDS } from "./constants";
 
 import { storeRememberMeParams, getRules, getInitialValues } from "./utils";
@@ -40,7 +40,7 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
   }, []);
 
   if (auth) {
-    history.push(http.ROOT_URL);
+    history.push(urls.main.path);
   }
 
   const onFinish = async (values: Store) => {

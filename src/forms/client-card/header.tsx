@@ -11,7 +11,6 @@ import {
 import { connect } from "react-redux";
 import { State } from "../../__data__/interfaces";
 import { useHistory, useParams } from "react-router";
-import { getClient } from "./utils";
 import { PageHeader } from "antd";
 import {
   callTel,
@@ -67,10 +66,7 @@ export const ClientCardHeader = ({ client }: ClientCardHeaderProps) => {
   }
 
   if (id) {
-    extra = [
-      ...extra,
-      <Delete key="delete" onClick={handleDelete} isOwner={isOwner} />,
-    ];
+    extra = [...extra, <Delete key="delete" onClick={handleDelete} />];
   }
 
   const breadcrumb = {

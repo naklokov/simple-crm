@@ -34,7 +34,7 @@ export const ForgotPassword = () => {
       await axios.post(urls.forgotPassword.submit, { username });
       defaultSuccessHandler(t("message.success", { username }));
 
-      history.push(http.ROOT_URL);
+      history.push(urls.main.path);
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {

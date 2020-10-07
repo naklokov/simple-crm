@@ -10,6 +10,7 @@ import {
   TASK_TYPES,
   QueryProps,
   FORM_NAMES,
+  PERMISSIONS,
 } from "../../constants";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 import { useParams } from "react-router";
@@ -64,6 +65,7 @@ export const AddTask = ({
       visible={visible}
       submitLoading={loading}
       onFinish={onFinish}
+      permissions={[PERMISSIONS.TASKS.ADD]}
     />
   );
 };

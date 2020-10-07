@@ -4,6 +4,7 @@ import {
   TabProps,
   QueryProps,
   FORM_NAMES,
+  PERMISSIONS_SET,
 } from "../../../../constants";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
@@ -36,17 +37,17 @@ export const Requisites = ({ tab, profileInfo }: RequisitesProps) => {
   const [t] = useTranslation("clientCardRequisites");
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
-  const { values: client, update } = useFormValues(FORM_NAMES.CLIENT_CARD);
+  const { values, update } = useFormValues(FORM_NAMES.CLIENT_CARD);
 
   const handleValuesChange = (changed: Object, allValues: Object) => {
-    const isChanged = isValuesChanged(client, allValues);
+    const isChanged = isValuesChanged(values, allValues);
     setSubmitDisabled(!isChanged);
   };
 
-  const onFinish = async (values: Store) => {
+  const onFinish = async (submitedValues: Store) => {
     try {
       setSubmitLoading(true);
-      const data = { ...client, ...values };
+      const data = { ...values, ...submitedValues };
       await editClient(id, data);
       update(data);
 
@@ -67,7 +68,7 @@ export const Requisites = ({ tab, profileInfo }: RequisitesProps) => {
         layout="vertical"
         name={"clientCardRequisites"}
         form={form}
-        initialValues={client}
+        initialValues={values}
       >
         <Row
           gutter={[GUTTER_FULL_WIDTH.HORIZONTAL, GUTTER_FULL_WIDTH.VERTICAL]}
@@ -76,17 +77,23 @@ export const Requisites = ({ tab, profileInfo }: RequisitesProps) => {
             <ComponentPermissionsChecker
               key={field.fieldCode}
               availablePermissions={field.permissions}
-              mode="disabled"
+              isOwner={values?.isOwner}
+              mode="readonly"
             >
               {createFormField(field, form)}
             </ComponentPermissionsChecker>
           ))}
         </Row>
-        <FormFooter
-          loading={submitLoading}
-          disabled={submitDisabled}
-          withCancel={false}
-        />
+        <ComponentPermissionsChecker
+          availablePermissions={PERMISSIONS_SET.CLIENT_UPDATE}
+          isOwner={values?.isOwner}
+        >
+          <FormFooter
+            loading={submitLoading}
+            disabled={submitDisabled}
+            withCancel={false}
+          />
+        </ComponentPermissionsChecker>
       </Form>
     </div>
   );

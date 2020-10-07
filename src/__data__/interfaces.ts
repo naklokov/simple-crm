@@ -49,6 +49,7 @@ export interface ProfileInfoProps {
   isActive?: boolean;
   isDeleted?: boolean;
   isLocked?: boolean;
+  isOwner?: boolean;
 }
 
 export interface UpdateFormProps {

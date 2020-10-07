@@ -18,6 +18,7 @@ import {
 } from "../__data__";
 import { Redirect } from "react-router";
 import { getCompletedTasksRsql } from "../forms/tasks/utils";
+import { isEmpty } from "lodash";
 
 interface ContainerWrapperProps {
   children: ReactNode;
@@ -53,22 +54,6 @@ export const ContainerWrapper = ({
     url: urls.profile.permissions,
   });
 
-  // const fetchClientsPersonal = async (userProfileId: string) => {
-  //   try {
-  //     setClientsLoading(true);
-  //     const url = urls.clients.entity;
-  //     const query = getRsqlParams([
-  //       { key: "userProfileId", value: userProfileId },
-  //     ]);
-  //     const response = await axios.get(url, { params: { query } });
-  //     setClients(response?.data ?? []);
-  //   } catch (error) {
-  //     defaultErrorHandler({ error });
-  //   } finally {
-  //     setClientsLoading(false);
-  //   }
-  // };
-
   const fetchTasks = async (userProfileId: string) => {
     setTasksLoading(true);
     const query = getRsqlParams([
@@ -92,6 +77,10 @@ export const ContainerWrapper = ({
   useEffect(() => {
     setProfileInfo(profileResponse?.data ?? {});
     setPermissions(permissionsResponse?.data?.permissions ?? []);
+
+    if (!isEmpty(permissionsResponse?.data?.permissions)) {
+      console.log("PERMISSIONS", permissionsResponse?.data?.permissions);
+    }
   }, [profileResponse, permissionsResponse]);
 
   useEffect(() => {

@@ -20,9 +20,7 @@ export const TasksHeader = ({ onAddClick }: TasksHeaderProps) => {
   };
 
   const extra = (
-    <ComponentPermissionsChecker
-      availablePermissions={[TASKS.ADMIN, TASKS.ADD]}
-    >
+    <ComponentPermissionsChecker availablePermissions={[TASKS.ADD]}>
       <Button type="primary" onClick={onAddClick}>
         {t("button.add.title")}
       </Button>

@@ -7,8 +7,6 @@ const HTTP_CODES = {
   SERVER_ERROR: 500,
 };
 
-const ROOT_URL = "/crm";
-
 const ERROR_SCREEN_CODES = [
   HTTP_CODES.FORBIDDEN,
   HTTP_CODES.SERVER_ERROR,
@@ -25,5 +23,4 @@ module.exports = {
   COOKIES,
   ERROR_SCREEN_CODES,
   HTTP_CODES,
-  ROOT_URL,
 };

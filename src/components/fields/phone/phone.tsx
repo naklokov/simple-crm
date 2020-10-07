@@ -37,6 +37,7 @@ const getMask = (value: string) => {
 
 interface PhoneFormField extends FieldProps {
   form: FormInstance;
+  style?: object;
 }
 
 export const Phone = ({
@@ -50,6 +51,7 @@ export const Phone = ({
   disabled = false,
   readonly = false,
   span = DEFAULT_SPAN,
+  style = {},
 }: PhoneFormField) => {
   const [mask, setMask] = useState(getMask(form.getFieldValue(fieldCode)));
 
@@ -69,7 +71,7 @@ export const Phone = ({
   return (
     <Col {...span} key={fieldCode}>
       <Form.Item
-        style={{ width: "100%" }}
+        style={{ width: "100%", ...style }}
         name={fieldCode}
         label={fieldName}
         extra={fieldDescription}

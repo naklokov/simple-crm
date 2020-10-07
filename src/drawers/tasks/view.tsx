@@ -3,7 +3,7 @@ import axios from "axios";
 import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import { urls, FieldProps, FORM_NAMES } from "../../constants";
+import { urls, FieldProps, FORM_NAMES, PERMISSIONS_SET } from "../../constants";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
@@ -15,6 +15,7 @@ import { EllipsisOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { setTableLoading } from "../../__data__";
+import { ComponentPermissionsChecker } from "../../wrappers";
 
 interface ViewTaskProps {
   fields: FieldProps[];
@@ -117,7 +118,15 @@ export const ViewTask = ({
       visible={visible}
       submitLoading={loading}
       onFinish={onFinish}
-      headerButtons={isOwner ? [<DropdownMenu key="more" />] : []}
+      headerButtons={[
+        <ComponentPermissionsChecker
+          availablePermissions={PERMISSIONS_SET.TASK_UPDATE}
+          isOwner={isOwner}
+        >
+          <DropdownMenu key="more" />
+        </ComponentPermissionsChecker>,
+      ]}
+      permissions={PERMISSIONS_SET.TASK_UPDATE}
     />
   );
 };

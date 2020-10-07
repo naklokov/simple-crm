@@ -39,7 +39,8 @@ const getRenderProp = (column: ColumnProps, searched: string) => ({
 export const getColumn = (
   column: ColumnProps,
   searched: string,
-  onSaveRow: (record: any) => void
+  onSaveRow: (record: any) => void,
+  permissions: string[] = []
 ) => {
   const { columnCode, columnName } = column;
 
@@ -48,7 +49,7 @@ export const getColumn = (
     title: columnName,
     dataIndex: columnCode,
     ...getSorterProp(column),
-    ...getEditableProp(column, onSaveRow),
+    ...getEditableProp(column, onSaveRow, permissions),
     ...getRenderProp(column, searched),
   };
 };
@@ -100,11 +101,12 @@ export const getActions = (
 export const getDataColumns = (
   columns: ColumnProps[] = [],
   searched: string,
-  onSaveRow: (record: any) => void = noop
+  onSaveRow: (record: any) => void = noop,
+  permissions?: string[]
 ) =>
   columns.map(({ columnActions, ...column }) => {
     // TODO получение всех необходимых словарей перед отрисовкой, т.к. render не поддерживает асинхронщину
-    const columnProps = getColumn(column, searched, onSaveRow);
+    const columnProps = getColumn(column, searched, onSaveRow, permissions);
 
     if (!isEmpty(columnActions)) {
       const actions = columnActions || [];

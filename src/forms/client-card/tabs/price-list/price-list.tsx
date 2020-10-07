@@ -5,6 +5,7 @@ import {
   TabProps,
   ClientEntityProps,
   QueryProps,
+  PERMISSIONS_SET,
 } from "../../../../constants";
 import { Table } from "../../../../components";
 import {
@@ -76,6 +77,7 @@ export const PriceList = ({
       pagination={{ pageSize: 5 }}
       dataSource={positions}
       onSaveRow={handleSaveRow}
+      permissions={PERMISSIONS_SET.CLIENT_UPDATE}
       withSearch
     />
   );

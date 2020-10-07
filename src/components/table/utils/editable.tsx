@@ -1,11 +1,17 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState, useContext, useMemo } from "react";
 import { Input, Form, InputNumber } from "antd";
 import { noop, isEqual } from "lodash";
 
 import style from "../table.module.scss";
-import { defaultErrorHandler } from "../../../utils";
-import { ColumnProps } from "../../../constants";
+import { defaultErrorHandler, useFormValues } from "../../../utils";
+import { ColumnProps, FORM_NAMES } from "../../../constants";
 import { useTranslation } from "react-i18next";
+import {
+  checkOwner,
+  checkAllow,
+} from "../../../wrappers/permissions-checker/utils";
+import { useSelector } from "react-redux";
+import { State } from "../../../__data__/interfaces";
 
 const EditableContext = React.createContext<any>("");
 
@@ -31,18 +37,30 @@ const EditableCell = ({
   dataIndex,
   record,
   onSaveRow,
+  permissions = [],
   ...restProps
 }: any) => {
   const [t] = useTranslation("clientCardPriceList");
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<Input>(null);
   const form = useContext(EditableContext);
+  const { values } = useFormValues(FORM_NAMES.CLIENT_CARD);
+  const allPermissions = useSelector(
+    (state: State) => state?.persist?.permissions
+  );
+
+  const hasPermissions = useMemo(
+    () =>
+      checkAllow(permissions, allPermissions) ||
+      checkOwner(permissions, allPermissions, values?.isOwner),
+    [permissions, allPermissions, values?.isOwner]
+  );
 
   useEffect(() => {
-    if (editing) {
+    if (editing && hasPermissions) {
       inputRef?.current?.focus?.() ?? noop();
     }
-  }, [editing]);
+  }, [editing, hasPermissions]);
 
   const toggleEdit = () => {
     setEditing(!editing);
@@ -68,7 +86,7 @@ const EditableCell = ({
 
   let childNode = children;
 
-  if (editable) {
+  if (editable && hasPermissions) {
     childNode = editing ? (
       <Form.Item
         style={{ margin: 0 }}
@@ -108,7 +126,8 @@ const EditableCell = ({
 
 export const getEditableProp = (
   column: ColumnProps,
-  onSaveRow: (record: any) => void
+  onSaveRow: (record: any) => void,
+  permissions: string[] = []
 ) => {
   if (column.editable) {
     return {
@@ -118,6 +137,7 @@ export const getEditableProp = (
         dataIndex: column.columnCode,
         title: column.columnName,
         onSaveRow,
+        permissions,
       }),
     };
   }

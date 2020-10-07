@@ -1,4 +1,4 @@
-import { Button, Divider, Typography } from "antd";
+import { Divider, Typography } from "antd";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card } from "..";

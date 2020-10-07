@@ -1,6 +1,6 @@
 import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
-import { PERMISSIONS } from "../permissions";
+import { PERMISSIONS, PERMISSIONS_SET } from "../permissions";
 import { DATE_FORMATS } from "../common";
 
 const { CLIENTS, TASKS } = PERMISSIONS;
@@ -38,7 +38,7 @@ export const lower: LowerProps = {
           span: { md: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: [TASKS.GET_OWNER, TASKS.GET, TASKS.ADMIN],
+          permissions: PERMISSIONS_SET.TASK_UPDATE,
         },
         {
           fieldCode: "taskDescription",
@@ -53,7 +53,7 @@ export const lower: LowerProps = {
           rules: [
             { max: 2000, message: "Превышена максимальная длина строки" },
           ],
-          permissions: [TASKS.GET_OWNER, TASKS.GET, TASKS.ADMIN],
+          permissions: PERMISSIONS_SET.TASK_UPDATE,
         },
       ],
     },
@@ -75,7 +75,7 @@ export const lower: LowerProps = {
           rules: [
             { max: 2000, message: "Превышена максимальная длина строки" },
           ],
-          permissions: [TASKS.GET_OWNER, TASKS.GET, TASKS.ADMIN],
+          permissions: PERMISSIONS_SET.TASK_UPDATE,
         },
       ],
     },
@@ -97,12 +97,12 @@ export const lower: LowerProps = {
         {
           actionName: "Просмотр",
           actionType: "view",
-          permissions: [CLIENTS.ADMIN, CLIENTS.DELETE, CLIENTS.DELETE_OWNER],
+          permissions: [],
         },
         {
           actionName: "Выполнить",
           actionType: "done",
-          permissions: [CLIENTS.ADMIN, CLIENTS.DELETE, CLIENTS.DELETE_OWNER],
+          permissions: PERMISSIONS_SET.TASK_UPDATE,
         },
       ],
       columns: [
@@ -154,7 +154,7 @@ export const upper: UpperProps = {
           span: { md: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CONTACT_UPDATE,
         },
         {
           fieldCode: "phone",
@@ -166,7 +166,7 @@ export const upper: UpperProps = {
           span: { md: 24 },
           placeholder: PHONE_PLACEHOLDER,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CONTACT_UPDATE,
         },
         {
           fieldCode: "email",
@@ -183,7 +183,7 @@ export const upper: UpperProps = {
               message: EMAIL_MESSAGE,
             },
           ],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CONTACT_UPDATE,
         },
         {
           fieldCode: "position",
@@ -195,7 +195,7 @@ export const upper: UpperProps = {
           span: { md: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CONTACT_UPDATE,
         },
         {
           fieldCode: "note",
@@ -209,7 +209,7 @@ export const upper: UpperProps = {
           rows: 2,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CONTACT_UPDATE,
         },
       ],
     },
@@ -230,7 +230,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "city",
@@ -241,7 +241,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "address",
@@ -252,7 +252,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "phone",
@@ -263,7 +263,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PHONE_PLACEHOLDER,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "email",
@@ -279,7 +279,7 @@ export const upper: UpperProps = {
               message: EMAIL_MESSAGE,
             },
           ],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "inn",
@@ -290,7 +290,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "fullName",
@@ -301,7 +301,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "webPage",
@@ -312,7 +312,7 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           type: "string",
           rules: [],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "note",
@@ -325,7 +325,7 @@ export const upper: UpperProps = {
           // span: { lg: 12, xl: 10 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: [],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "creationDate",
@@ -334,10 +334,10 @@ export const upper: UpperProps = {
           type: "date",
           readonly: true,
           placeholder: PLACEHOLDER_DEFAULT,
-          disabled: true,
+          disabled: false,
           format: "DD.MM.yyyy",
           rules: [],
-          permissions: [],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
       ],
       _links: {
@@ -355,12 +355,12 @@ export const upper: UpperProps = {
         {
           actionName: "Просмотр",
           actionType: "view",
-          permissions: [CLIENTS.ADMIN, CLIENTS.DELETE, CLIENTS.DELETE_OWNER],
+          permissions: [],
         },
         {
           actionName: "Удалить",
           actionType: "delete",
-          permissions: [CLIENTS.ADMIN, CLIENTS.DELETE, CLIENTS.DELETE_OWNER],
+          permissions: PERMISSIONS_SET.CONTACT_DELETE,
           href: urls.contacts.entity,
         },
       ],
@@ -396,7 +396,7 @@ export const upper: UpperProps = {
           columnActions: [
             {
               actionName: "",
-              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              permissions: [],
               actionType: "email",
             },
           ],
@@ -435,7 +435,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "kpp",
@@ -446,7 +446,7 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           type: "string",
           rules: [],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "legalAddress",
@@ -457,7 +457,7 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           type: "string",
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "servicingBank",
@@ -468,7 +468,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "checkingAccount",
@@ -479,7 +479,7 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           type: "string",
           rules: [],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "correspondentAccount",
@@ -490,7 +490,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "chiefFio",
@@ -501,7 +501,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
           fieldCode: "headPosition",
@@ -512,7 +512,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: [CLIENTS.GET_OWNER, CLIENTS.GET, CLIENTS.ADMIN],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
       ],
       _links: {

@@ -76,10 +76,10 @@ export const renderActions = (
   <React.Fragment>
     {actions.map((action) => (
       <ComponentPermissionsChecker
-        key={action.actionCode}
+        key={action.actionType}
         availablePermissions={action.permissions}
       >
-        <Space size="middle" key={action.actionCode}>
+        <Space size="middle">
           {getActionComponent(
             entity.id,
             text,
@@ -88,7 +88,7 @@ export const renderActions = (
             onDelete,
             onView,
             onDone,
-            entity.isOwner
+            entity?.isOwner
           )}
         </Space>
       </ComponentPermissionsChecker>

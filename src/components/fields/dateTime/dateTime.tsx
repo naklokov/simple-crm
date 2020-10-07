@@ -21,6 +21,7 @@ const handleValueProp = (value: any) => {
 
 interface DateTimeFormField extends FieldProps {
   form: FormInstance;
+  style?: object;
 }
 
 export const DateTime = ({
@@ -34,11 +35,13 @@ export const DateTime = ({
   readonly = false,
   withSelectBefore = false,
   span = DEFAULT_SPAN,
+  style = {},
 }: DateTimeFormField) => {
   const showTime = /hh:mm/gi.test(format);
   return (
     <Col {...span} key={fieldCode}>
       <Form.Item
+        style={style}
         name={fieldCode}
         label={fieldName}
         extra={fieldDescription}

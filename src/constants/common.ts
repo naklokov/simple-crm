@@ -1,5 +1,3 @@
-import { TaskStatusType } from "./interfaces";
-
 export const DATE_FORMATS = {
   DATE: "DD.MM.YYYY",
   DATE_TIME: "DD.MM.YYYY HH:mm",

@@ -14,6 +14,7 @@ const { Option } = Select;
 interface DictionaryComponentProps extends FieldProps {
   setLoading: (loading: boolean) => void;
   form: FormInstance;
+  style?: object;
 }
 
 export const Dictionary = ({
@@ -28,6 +29,7 @@ export const Dictionary = ({
   _links,
   span = DEFAULT_SPAN,
   setLoading,
+  style = {},
 }: DictionaryComponentProps) => {
   const [dictionary, setDictionary] = useState<DictionaryProps>({});
   const url = _links?.self.href ?? "";
@@ -50,7 +52,7 @@ export const Dictionary = ({
     <Col {...span} key={fieldCode}>
       <Form.Item
         name={fieldCode}
-        style={{ width: "100%" }}
+        style={{ width: "100%", ...style }}
         label={fieldName}
         extra={fieldDescription}
         rules={rules}

@@ -21,7 +21,6 @@ import {
 import { ProtectedRoute } from ".";
 import { urls } from "../../constants";
 import { AuthorizedLayout, UnauthorizedLayout } from "../../layouts";
-import { ROOT_URL } from "../../constants/http";
 
 const {
   main,
@@ -35,7 +34,7 @@ const {
 } = urls;
 
 const Routes = () => (
-  <Router basename={ROOT_URL}>
+  <Router basename="/crm">
     <Switch>
       <ProtectedRoute
         path={[
