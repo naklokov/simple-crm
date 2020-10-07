@@ -14,6 +14,7 @@ interface DrawerFormProps {
   title: string | React.ReactNode;
   visible: boolean;
   defaultSubmitDisabled?: boolean;
+  permissions?: string[];
   onFinish: (values: Store) => void;
   onClose: (event?: any) => void;
   headerButtons?: React.ReactNode[];
@@ -29,6 +30,7 @@ export const DrawerForm = ({
   visible,
   headerButtons,
   defaultSubmitDisabled = true,
+  permissions = [],
 }: DrawerFormProps) => {
   const [form] = Form.useForm();
   const [submitDisabled, setSubmitDisabled] = useState(defaultSubmitDisabled);
@@ -90,12 +92,17 @@ export const DrawerForm = ({
       afterVisibleChange={handleVisibleChange}
       visible={visible}
       footer={
-        <FormFooter
-          form={form}
-          loading={submitLoading}
-          onCancel={onClose}
-          disabled={submitDisabled}
-        />
+        <ComponentPermissionsChecker
+          isOwner={initialValues?.isOwner}
+          availablePermissions={permissions}
+        >
+          <FormFooter
+            form={form}
+            loading={submitLoading}
+            onCancel={onClose}
+            disabled={submitDisabled}
+          />
+        </ComponentPermissionsChecker>
       }
     >
       <Form
@@ -110,7 +117,8 @@ export const DrawerForm = ({
           <ComponentPermissionsChecker
             key={field.fieldCode}
             availablePermissions={field.permissions}
-            mode="disabled"
+            mode="readonly"
+            isOwner={initialValues?.isOwner}
           >
             {createFormField(field, form)}
           </ComponentPermissionsChecker>

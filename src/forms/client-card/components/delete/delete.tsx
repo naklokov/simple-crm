@@ -1,25 +1,22 @@
-import { DeleteTwoTone, PhoneTwoTone } from "@ant-design/icons";
+import { DeleteTwoTone } from "@ant-design/icons";
 import { Button, Popconfirm } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { PERMISSIONS } from "../../../../constants";
+import { FORM_NAMES, PERMISSIONS_SET } from "../../../../constants";
+import { useFormValues } from "../../../../utils";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 
 interface DeleteProps {
   onClick: () => void;
-  isOwner: boolean;
 }
 
-const {
-  CLIENTS: { ADMIN, GET, GET_OWNER },
-} = PERMISSIONS;
-
-export const Delete = ({ onClick, isOwner = false }: DeleteProps) => {
+export const Delete = ({ onClick }: DeleteProps) => {
   const [t] = useTranslation("clientCard");
+  const { values } = useFormValues(FORM_NAMES.CLIENT_CARD);
   return (
     <ComponentPermissionsChecker
-      availablePermissions={[ADMIN, GET, GET_OWNER]}
-      isOwner={isOwner}
+      availablePermissions={PERMISSIONS_SET.CLIENT_DELETE}
+      isOwner={values?.isOwner}
     >
       <Popconfirm
         title={t("confirm.delete")}

@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { http } from "../../../constants";
+import { http, urls } from "../../../constants";
 
 const { COOKIES } = http;
 
@@ -14,4 +14,4 @@ export const storeRememberMeParams = () => {
 
 // TODO исправить на корректный тип у history
 export const getPrevUrl = (history: any) =>
-  history?.location?.state?.from?.pathname ?? http.ROOT_URL;
+  history?.location?.state?.from?.pathname ?? urls.main.path;

@@ -19,6 +19,7 @@ import {
   TaskEntityProps,
   QueryProps,
   FORM_NAMES,
+  PERMISSIONS_SET,
 } from "../../../../constants";
 import { useParams } from "react-router";
 import {
@@ -30,6 +31,7 @@ import { setActiveTasks } from "../../../../__data__";
 import { State } from "../../../../__data__/interfaces";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
+import { ComponentPermissionsChecker } from "../../../../wrappers";
 
 const { TabPane } = Tabs;
 
@@ -59,6 +61,7 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
   const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
 
+  const { values } = useFormValues(FORM_NAMES.CLIENT_CARD);
   const { update: viewFormUpdate } = useFormValues(FORM_NAMES.TASK_VIEW);
   const { update: completedFormUpdate } = useFormValues(
     FORM_NAMES.TASK_COMPLETED
@@ -184,11 +187,16 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
         <Tabs
           tabBarExtraContent={{
             left: (
-              <Button
-                icon={<PlusOutlined />}
-                onClick={handleAddClick}
-                className={style.button}
-              />
+              <ComponentPermissionsChecker
+                isOwner={values?.isOwner}
+                availablePermissions={PERMISSIONS_SET.CLIENT_UPDATE}
+              >
+                <Button
+                  icon={<PlusOutlined />}
+                  onClick={handleAddClick}
+                  className={style.button}
+                />
+              </ComponentPermissionsChecker>
             ),
           }}
         >

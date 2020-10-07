@@ -5,6 +5,7 @@ import { FormInstance } from "antd/lib/form";
 
 interface TextAreaFormField extends FieldProps {
   form: FormInstance;
+  style?: object;
 }
 
 export const TextArea = ({
@@ -17,6 +18,7 @@ export const TextArea = ({
   readonly = false,
   rows = 4,
   span = DEFAULT_SPAN,
+  style = {},
 }: TextAreaFormField) => {
   return (
     <Col {...span} key={fieldCode}>
@@ -25,7 +27,7 @@ export const TextArea = ({
         label={fieldName}
         extra={fieldDescription}
         rules={rules}
-        style={{ width: "100%" }}
+        style={{ width: "100%", ...style }}
       >
         <Input.TextArea
           autoComplete="off"

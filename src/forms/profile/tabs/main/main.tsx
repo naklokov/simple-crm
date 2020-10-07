@@ -91,8 +91,9 @@ export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
         >
           {FIELDS.map((field) => (
             <ComponentPermissionsChecker
+              isOwner={profileInfo?.isOwner}
               availablePermissions={field.permissions}
-              mode="disabled"
+              mode="readonly"
             >
               {createFormField(field, form)}
             </ComponentPermissionsChecker>

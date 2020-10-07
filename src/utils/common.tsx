@@ -9,7 +9,7 @@ import axios from "axios";
 import moment from "moment-timezone";
 import Cookies from "js-cookie";
 import { logger } from ".";
-import { COOKIES, ROOT_URL } from "../constants/http";
+import { COOKIES } from "../constants/http";
 import { Dispatch } from "@reduxjs/toolkit";
 import {
   setAuth,
@@ -20,7 +20,6 @@ import {
   setActiveTasks,
 } from "../__data__";
 import { message } from "antd";
-import { stringify } from "query-string";
 import { SortOrder } from "antd/lib/table/interface";
 import { Link } from "react-router-dom";
 import { Route } from "antd/lib/breadcrumb/Breadcrumb";

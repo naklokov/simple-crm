@@ -22,6 +22,7 @@ export const getSearchRsqlParams = (titleField: string, searched: string) => ({
 interface DictionaryComponentProps extends FieldProps {
   profileInfo: ProfileInfoProps;
   form: FormInstance;
+  style?: object;
 }
 
 export const Entity = ({
@@ -38,6 +39,7 @@ export const Entity = ({
   _links,
   span = DEFAULT_SPAN,
   profileInfo,
+  style = {},
 }: DictionaryComponentProps) => {
   const [options, setOptions] = useState<any>([]);
   const [loading, setLoading] = useState(false);
@@ -72,7 +74,7 @@ export const Entity = ({
       <Form.Item
         name={fieldCode}
         label={fieldName}
-        style={{ width: "100%" }}
+        style={{ width: "100%", ...style }}
         extra={fieldDescription}
         rules={rules}
       >

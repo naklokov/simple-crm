@@ -1,13 +1,15 @@
+import { Tooltip } from "antd";
 import React, { ReactElement, useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { State } from "../../__data__/interfaces";
-import { hasPermission } from "./utils";
+import { checkOwner, checkAllow } from "./utils";
 
 interface ComponentCheckerProps {
   children: JSX.Element;
   availablePermissions: string[];
   allPermissions: string[];
-  mode?: "hide" | "disabled";
+  mode?: "hide" | "readonly";
   isOwner?: boolean;
 }
 
@@ -19,30 +21,34 @@ export const ComponentChecker = ({
   isOwner = true,
 }: ComponentCheckerProps) => {
   const [allowed, setAllowed] = useState(true);
+  const [owner, setOwner] = useState(false);
 
   useEffect(() => {
-    const isAllow = hasPermission(availablePermissions, allPermissions);
+    const isAllow = checkAllow(availablePermissions, allPermissions);
     setAllowed(isAllow);
+
+    const owner = checkOwner(availablePermissions, allPermissions, isOwner);
+    setOwner(owner);
   }, [availablePermissions, allPermissions]);
 
-  if (!allowed || !isOwner) {
-    if (mode === "hide") {
-      return null;
-    }
-
-    if (mode === "disabled") {
-      return (
-        <React.Fragment>
-          {React.cloneElement(children, {
-            disabled: true,
-            rules: [],
-          })}
-        </React.Fragment>
-      );
-    }
+  if (allowed || owner) {
+    return <React.Fragment>{children}</React.Fragment>;
   }
 
-  return <React.Fragment>{children}</React.Fragment>;
+  if (mode === "readonly") {
+    return (
+      <React.Fragment>
+        {React.cloneElement(children, {
+          readonly: true,
+          rules: [],
+          placeholder: "",
+          style: { pointerEvents: "none" },
+        })}
+      </React.Fragment>
+    );
+  }
+
+  return null;
 };
 
 const mapStateToProps = (state: State) => ({

@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import axios from "axios";
 import { checkAuthCookie, isValuesChanged, logout } from "..";
-import { COOKIES, ROOT_URL } from "../../constants/http";
+import { COOKIES } from "../../constants/http";
 import { urls } from "../../constants";
 
 beforeEach(() => {
@@ -38,5 +38,5 @@ test("logout", () => {
   expect(Cookies.get(COOKIES.REMEMBER_ME)).toBeUndefined();
   expect(Cookies.get(COOKIES.JSESSIONID)).toBeUndefined();
   expect(getSpy).toHaveBeenCalledWith(urls.login.logout);
-  expect(replaceSpy).toHaveBeenCalledWith(ROOT_URL);
+  expect(replaceSpy).toHaveBeenCalledWith(urls.main.path);
 });

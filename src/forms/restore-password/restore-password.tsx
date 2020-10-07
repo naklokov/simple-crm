@@ -10,11 +10,7 @@ import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
 import { urls, http } from "../../constants";
 import { FIELDS, FORM_NAME } from "./constants";
-import {
-  logger,
-  defaultErrorHandler,
-  defaultSuccessHandler,
-} from "../../utils";
+import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 
 import { getRules, checkEqualPasswords, checkToken, getToken } from "./utils";
 import { connect } from "react-redux";
@@ -52,7 +48,7 @@ export const RestorePassword = ({ setLoading }: RestorePasswordProps) => {
       setSubmitLoading(true);
       await axios.post(urls.restorePassword.submit, { password, token });
       defaultSuccessHandler(t("message.success"));
-      history.push(http.ROOT_URL);
+      history.push(urls.main.path);
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {

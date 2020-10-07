@@ -6,6 +6,7 @@ import {
   urls,
   QueryProps,
   FORM_NAMES,
+  PERMISSIONS_SET,
 } from "../../../../constants";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
@@ -43,6 +44,7 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
   const { values, update } = useFormValues(FORM_NAMES.CLIENT_CARD);
 
   const initialValues = mode === "add" ? getAddMetaValues(profileInfo) : values;
+  const isOwner = values?.isOwner;
 
   const handleValuesChange = (changed: Object, allValues: Object) => {
     const isChanged = isValuesChanged(initialValues, allValues);
@@ -99,18 +101,24 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
             <ComponentPermissionsChecker
               key={field.fieldCode}
               availablePermissions={field.permissions}
-              mode="disabled"
+              mode="readonly"
+              isOwner={isOwner}
             >
               {createFormField(field, form)}
             </ComponentPermissionsChecker>
           ))}
         </Row>
-        <FormFooter
-          loading={submitLoading}
-          disabled={submitDisabled}
-          withCancel={mode === "add"}
-          onCancel={history.goBack}
-        />
+        <ComponentPermissionsChecker
+          isOwner={isOwner}
+          availablePermissions={PERMISSIONS_SET.CLIENT_UPDATE}
+        >
+          <FormFooter
+            loading={submitLoading}
+            disabled={submitDisabled}
+            withCancel={mode === "add"}
+            onCancel={history.goBack}
+          />
+        </ComponentPermissionsChecker>
       </Form>
     </div>
   );

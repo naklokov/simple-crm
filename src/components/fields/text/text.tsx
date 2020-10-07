@@ -5,6 +5,7 @@ import { FormInstance } from "antd/lib/form";
 
 interface TextFormField extends FieldProps {
   form: FormInstance;
+  style?: object;
 }
 
 export const Text = ({
@@ -17,10 +18,11 @@ export const Text = ({
   disabled = false,
   readonly = false,
   span = DEFAULT_SPAN,
+  style = {},
 }: TextFormField) => (
   <Col {...span} key={fieldCode}>
     <Form.Item
-      style={{ width: "100%" }}
+      style={{ width: "100%", ...style }}
       name={fieldCode}
       label={fieldName}
       extra={fieldDescription}
