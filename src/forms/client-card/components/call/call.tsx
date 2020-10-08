@@ -10,13 +10,13 @@ interface CallProps {
 }
 
 const {
-  CLIENTS: { ADMIN, GET, GET_OWNER },
+  CLIENTS: { GET, GET_OWNER },
 } = PERMISSIONS;
 
 export const Call = ({ onClick }: CallProps) => {
   const [t] = useTranslation("clientCard");
   return (
-    <ComponentPermissionsChecker availablePermissions={[ADMIN, GET, GET_OWNER]}>
+    <ComponentPermissionsChecker availablePermissions={[GET, GET_OWNER]}>
       <Popconfirm
         title={t("confirm.call")}
         onConfirm={onClick}

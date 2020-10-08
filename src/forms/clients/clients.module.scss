@@ -3,6 +3,7 @@
 @import "../../assets/styles/common";
 
 .container {
+  border-radius: var(--form-border-radius);
   margin: var(--offset-md2);
   background-color: var(--background-color-form);
 }

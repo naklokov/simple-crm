@@ -1,5 +1,5 @@
 import { ActionProps, ColumnProps, urls } from "../index";
-import { PERMISSIONS } from "../permissions";
+import { PERMISSIONS, PERMISSIONS_SET } from "../permissions";
 
 const { CLIENTS } = PERMISSIONS;
 
@@ -13,7 +13,7 @@ export const COLUMNS: ColumnProps[] = [
     columnActions: [
       {
         actionName: "",
-        permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+        permissions: [CLIENTS.GET, CLIENTS.GET_OWNER],
         actionType: "href",
         href: urls.clients.path,
       },
@@ -70,7 +70,7 @@ export const ACTIONS: ActionProps[] = [
   {
     actionName: "Удалить",
     actionType: "delete",
-    permissions: [CLIENTS.ADMIN, CLIENTS.DELETE, CLIENTS.DELETE_OWNER],
+    permissions: PERMISSIONS_SET.CLIENT_DELETE,
     href: urls.clients.entity,
   },
 ];

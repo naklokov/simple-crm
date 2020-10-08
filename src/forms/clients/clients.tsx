@@ -15,7 +15,7 @@ import { setTableLoading } from "../../__data__";
 
 // TODO проверить пермишены
 const {
-  CLIENTS: { GET, GET_OWNER, ADMIN },
+  CLIENTS: { GET, GET_OWNER },
 } = PERMISSIONS;
 
 const CLIENTS_RADIO_OPTIONS = {
@@ -59,7 +59,7 @@ export const Clients = ({ profileInfo }: ClientsProps) => {
     selectedRadio === CLIENTS_RADIO_OPTIONS.ALL ? TableAll : TablePersonal;
 
   return (
-    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER, ADMIN]}>
+    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER]}>
       <div>
         <div className={style.header}>
           <ClientsHeader />
