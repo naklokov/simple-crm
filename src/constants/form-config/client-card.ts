@@ -2,7 +2,7 @@ import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
 import { PERMISSIONS, PERMISSIONS_SET } from "../permissions";
 import { DATE_FORMATS } from "../common";
-import { vatRule } from "../../utils";
+import { phoneRule, vatRule } from "../../utils";
 
 interface UpperProps {
   tabs: TabProps[];
@@ -164,7 +164,7 @@ export const upper: UpperProps = {
           disabled: false,
           span: { md: 24 },
           placeholder: PHONE_PLACEHOLDER,
-          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          rules: [{ required: true, message: REQUIRED_MESSAGE }, phoneRule],
           permissions: PERMISSIONS_SET.CONTACT_UPDATE,
         },
         {
@@ -261,7 +261,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PHONE_PLACEHOLDER,
-          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          rules: [{ required: true, message: REQUIRED_MESSAGE }, phoneRule],
           permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {

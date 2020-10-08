@@ -4,6 +4,7 @@ import { FieldProps } from "../constants";
 import isEqual from "lodash/isEqual";
 import some from "lodash/some";
 import { FormInstance } from "antd/lib/form";
+import { clear } from "console";
 
 interface EntityWithId {
   [key: string]: any;
@@ -56,6 +57,9 @@ export const getUpdatedEntityArray = <T extends EntityWithId>(
 export const getFiteredEntityArray = (id: string, array: any[]) =>
   array.filter((o) => o.id !== id);
 
+export const getClearPhone = (value: string) =>
+  value?.replace(/[^0-9]/g, "") ?? "";
+
 export const vatRule = {
   validator: (_: any, value: string) => {
     // может быть пустым
@@ -69,6 +73,26 @@ export const vatRule = {
 
     return Promise.reject("Некорректный формат ИНН");
   },
+};
+
+export const phoneRule = {
+  validator: (_: any, value: string) => {
+    // может быть пустым
+    if (!value) {
+      return Promise.resolve();
+    }
+
+    if (checkPhone(value)) {
+      return Promise.resolve();
+    }
+
+    return Promise.reject("Некорректный формат телефона");
+  },
+};
+
+export const checkPhone = (value: string) => {
+  const clearPhone = getClearPhone(value);
+  return clearPhone.length > 10;
 };
 
 export const checkINN = (value: any) => {

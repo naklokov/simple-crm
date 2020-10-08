@@ -78,6 +78,7 @@ export const Entity = ({
         style={{ width: "100%", ...style }}
         extra={fieldDescription}
         rules={rules}
+        validateTrigger="onSubmit"
       >
         <Select
           showSearch

@@ -1,6 +1,7 @@
 import { FieldProps, urls } from "..";
 import { PERMISSIONS } from "../permissions";
 import { DATE_FORMATS } from "../common";
+import { phoneRule } from "../../utils";
 
 const { USERPROFILES } = PERMISSIONS;
 
@@ -78,7 +79,7 @@ export const FIELDS: FieldProps[] = [
     readonly: false,
     disabled: false,
     placeholder: PHONE_PLACEHOLDER,
-    rules: [],
+    rules: [phoneRule],
     permissions: [USERPROFILES.UPDATE, USERPROFILES.UPDATE_OWNER],
   },
   {
