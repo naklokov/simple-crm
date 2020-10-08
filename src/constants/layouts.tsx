@@ -14,14 +14,14 @@ export const MENU_ITEMS = [
     id: "clients",
     title: "Клиенты",
     url: urls.clients.path,
-    permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+    permissions: [CLIENTS.GET, CLIENTS.GET_OWNER],
     icon: <UserOutlined />,
   },
   {
     id: "tasks",
     title: "Задачи",
     url: urls.tasks.path,
-    permissions: [TASKS.ADMIN, TASKS.GET, TASKS.GET_OWNER],
+    permissions: [TASKS.GET, TASKS.GET_OWNER],
     icon: <CalendarOutlined />,
   },
 ];

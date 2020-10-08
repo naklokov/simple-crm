@@ -1,10 +1,6 @@
-import { PERMISSIONS } from "../permissions";
+import { PERMISSIONS, PERMISSIONS_SET } from "../permissions";
 import { DATE_FORMATS } from "../common";
 import { urls, DrawerProps } from "..";
-
-const {
-  TASKS: { ADD, ADMIN, GET_OWNER, GET },
-} = PERMISSIONS;
 
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
 const PLACEHOLDER_DEFAULT = "Введите значение";
@@ -31,7 +27,7 @@ export const TASKS: TasksConfigProps = {
           disabled: false,
           span: { md: 24 },
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: [ADMIN, ADD],
+          permissions: PERMISSIONS_SET.TASK_UPDATE,
           _links: {
             self: {
               href: urls.clients.entity,
@@ -49,7 +45,7 @@ export const TASKS: TasksConfigProps = {
           span: { md: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: [ADMIN, ADD],
+          permissions: PERMISSIONS_SET.TASK_UPDATE,
         },
         {
           fieldCode: "taskDescription",
@@ -64,7 +60,7 @@ export const TASKS: TasksConfigProps = {
           rules: [
             { max: 2000, message: "Превышена максимальная длина строки" },
           ],
-          permissions: [ADMIN, ADD],
+          permissions: PERMISSIONS_SET.TASK_UPDATE,
         },
       ],
     },
@@ -86,7 +82,7 @@ export const TASKS: TasksConfigProps = {
           rules: [
             { max: 2000, message: "Превышена максимальная длина строки" },
           ],
-          permissions: [GET_OWNER, GET, ADMIN],
+          permissions: PERMISSIONS_SET.TASK_UPDATE,
         },
       ],
     },

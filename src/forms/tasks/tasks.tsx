@@ -38,7 +38,7 @@ const {
 const taskDrawer = drawers.find((o) => o.code === "task");
 const completedDrawer = drawers.find((o) => o.code === "taskCompleted");
 const {
-  TASKS: { GET, GET_OWNER, ADMIN },
+  TASKS: { GET, GET_OWNER },
 } = PERMISSIONS;
 
 interface TaskProps {
@@ -125,7 +125,7 @@ export const Tasks = ({ activeTasks, setActiveTasks }: TaskProps) => {
   );
 
   return (
-    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER, ADMIN]}>
+    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER]}>
       <div>
         <div className={style.header}>
           <TasksHeader onAddClick={handleAddClick} />

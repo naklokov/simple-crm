@@ -2,8 +2,7 @@ import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
 import { PERMISSIONS, PERMISSIONS_SET } from "../permissions";
 import { DATE_FORMATS } from "../common";
-
-const { CLIENTS, TASKS } = PERMISSIONS;
+import { vatRule } from "../../utils";
 
 interface UpperProps {
   tabs: TabProps[];
@@ -289,7 +288,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [],
+          rules: [vatRule],
           permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
@@ -383,7 +382,7 @@ export const upper: UpperProps = {
             {
               actionType: "call",
               actionName: "",
-              permissions: [CLIENTS.ADMIN, CLIENTS.GET, CLIENTS.GET_OWNER],
+              permissions: [],
             },
           ],
         },

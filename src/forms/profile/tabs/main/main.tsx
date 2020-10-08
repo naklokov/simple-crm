@@ -37,7 +37,7 @@ interface MainProps {
 }
 
 const {
-  PROFILE_INFO: { ADMIN, UPDATE, UPDATE_OWNER },
+  USERPROFILES: { UPDATE, UPDATE_OWNER },
 } = PERMISSIONS;
 
 export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
@@ -102,7 +102,7 @@ export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
           ))}
         </Row>
         <FormFooter
-          permissions={[ADMIN, UPDATE, UPDATE_OWNER]}
+          permissions={[UPDATE, UPDATE_OWNER]}
           loading={submitLoading}
           disabled={submitDisabled}
           onCancel={history.goBack}
