@@ -4,6 +4,7 @@ import MaskedInput, { conformToMask } from "react-text-mask";
 import { DEFAULT_SPAN, FieldProps } from "../../../constants";
 import { FormInstance } from "antd/lib/form";
 import { Readonly } from "../readonly";
+import { getClearPhone } from "../../../utils";
 
 const BASE_PHONE_MASK = [
   "+",
@@ -27,8 +28,6 @@ const BASE_PHONE_MASK = [
 ];
 
 const FULL_PHONE_MASK = [...BASE_PHONE_MASK, ",", " ", /\d/, /\d/, /\d/];
-
-const getClearPhone = (value: string) => value?.replace(/[^0-9]/g, "") ?? "";
 
 const getMask = (value: string) => {
   const clearValue = getClearPhone(value);
@@ -80,6 +79,7 @@ export const Phone = ({
         label={fieldName}
         extra={fieldDescription}
         rules={rules}
+        validateTrigger="onSubmit"
       >
         {readonly ? (
           <Readonly format={formatFunc} />

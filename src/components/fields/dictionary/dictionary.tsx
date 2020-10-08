@@ -61,6 +61,7 @@ export const Dictionary = ({
         label={fieldName}
         extra={fieldDescription}
         rules={rules}
+        validateTrigger="onSubmit"
       >
         {readonly ? (
           <Readonly format={formatFunc} />

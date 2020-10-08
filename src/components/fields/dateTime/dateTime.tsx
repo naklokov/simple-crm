@@ -53,6 +53,7 @@ export const DateTime = ({
         extra={fieldDescription}
         rules={rules}
         getValueProps={handleValueProp}
+        validateTrigger="onSubmit"
       >
         {readonly ? (
           <Readonly format={formatFunc} />
