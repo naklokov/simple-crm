@@ -185,5 +185,8 @@
     "overdue.message.title": "Внимание",
     "overdue.message.description": "У вас {{length}} просроченных задач",
     "link.to.tasks": "Перейти к списку задач"
+  },
+  "readonly": {
+    "empty": "Не указан(о/а)"
   }
 }

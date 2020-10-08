@@ -8,6 +8,7 @@ import { useFetch } from "../../../utils";
 import { setLoading } from "../../../__data__";
 import { connect } from "react-redux";
 import { FormInstance } from "antd/lib/form";
+import { Readonly } from "../readonly";
 
 const { Option } = Select;
 
@@ -30,6 +31,7 @@ export const Dictionary = ({
   span = DEFAULT_SPAN,
   setLoading,
   style = {},
+  form,
 }: DictionaryComponentProps) => {
   const [dictionary, setDictionary] = useState<DictionaryProps>({});
   const url = _links?.self.href ?? "";
@@ -48,6 +50,9 @@ export const Dictionary = ({
     return null;
   }
 
+  const formatFunc = (value: string) =>
+    options.find((o) => o.valueCode === value)?.value ?? "";
+
   return (
     <Col {...span} key={fieldCode}>
       <Form.Item
@@ -57,17 +62,21 @@ export const Dictionary = ({
         extra={fieldDescription}
         rules={rules}
       >
-        <Select
-          placeholder={placeholder}
-          style={{ width: "100%" }}
-          disabled={disabled}
-        >
-          {options.map(({ id, value, valueCode }) => (
-            <Option key={id} value={valueCode}>
-              {value}
-            </Option>
-          ))}
-        </Select>
+        {readonly ? (
+          <Readonly format={formatFunc} />
+        ) : (
+          <Select
+            placeholder={placeholder}
+            style={{ width: "100%" }}
+            disabled={disabled}
+          >
+            {options.map(({ id, value, valueCode }) => (
+              <Option key={id} value={valueCode}>
+                {value}
+              </Option>
+            ))}
+          </Select>
+        )}
       </Form.Item>
     </Col>
   );

@@ -2,9 +2,10 @@ import { FieldProps, urls } from "..";
 import { PERMISSIONS } from "../permissions";
 import { DATE_FORMATS } from "../common";
 
-const { PROFILE_INFO } = PERMISSIONS;
+const { USERPROFILES } = PERMISSIONS;
 
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
+const PHONE_PLACEHOLDER = "+7 (___) ___-__-__";
 
 export const FIELDS: FieldProps[] = [
   {
@@ -15,7 +16,7 @@ export const FIELDS: FieldProps[] = [
     readonly: false,
     disabled: false,
     rules: [{ required: true, message: REQUIRED_MESSAGE }],
-    permissions: [PROFILE_INFO.ADMIN],
+    permissions: [USERPROFILES.UPDATE],
   },
   {
     fieldCode: "birthDate",
@@ -27,7 +28,7 @@ export const FIELDS: FieldProps[] = [
     disabled: false,
     withSelectBefore: true,
     rules: [{ required: true, message: REQUIRED_MESSAGE }],
-    permissions: [PROFILE_INFO.ADMIN],
+    permissions: [USERPROFILES.UPDATE],
   },
   {
     fieldCode: "position",
@@ -37,7 +38,7 @@ export const FIELDS: FieldProps[] = [
     readonly: false,
     disabled: false,
     rules: [],
-    permissions: [PROFILE_INFO.ADMIN],
+    permissions: [USERPROFILES.UPDATE],
     _links: {
       self: {
         href: urls.dictionaries.position,
@@ -57,7 +58,7 @@ export const FIELDS: FieldProps[] = [
         message: "Пожалуйста, введите корректный email",
       },
     ],
-    permissions: [PROFILE_INFO.ADMIN],
+    permissions: [USERPROFILES.UPDATE],
   },
   {
     fieldCode: "location",
@@ -67,7 +68,18 @@ export const FIELDS: FieldProps[] = [
     readonly: false,
     disabled: false,
     rules: [{ required: true, message: REQUIRED_MESSAGE }],
-    permissions: [PROFILE_INFO.ADMIN],
+    permissions: [USERPROFILES.UPDATE],
+  },
+  {
+    fieldCode: "phone",
+    fieldName: "Мобильный телефон",
+    fieldDescription: "",
+    type: "phone",
+    readonly: false,
+    disabled: false,
+    placeholder: PHONE_PLACEHOLDER,
+    rules: [],
+    permissions: [USERPROFILES.UPDATE, USERPROFILES.UPDATE_OWNER],
   },
   {
     fieldCode: "aboutMe",
@@ -77,7 +89,7 @@ export const FIELDS: FieldProps[] = [
     placeholder: "Введите информацию о ваших увлечениях, хобби, интересах...",
     fieldDescription: "Максимум 2000 символов",
     readonly: false,
-    permissions: [],
+    permissions: [USERPROFILES.UPDATE, USERPROFILES.UPDATE_OWNER],
     disabled: false,
     rules: [{ max: 2000, message: "Превышена максимальная длина строки" }],
     span: { lg: 12, xl: 10 },

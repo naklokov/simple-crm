@@ -77,7 +77,9 @@ export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
 
   return (
     <div className={style.container}>
-      <Typography.Title level={4}>{t("title")}</Typography.Title>
+      <Typography.Title level={4} className={style.title}>
+        {t("title")}
+      </Typography.Title>
       <Form
         onValuesChange={handleValuesChange}
         onFinish={onFinish}
