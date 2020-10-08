@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Form, Col } from "antd";
-import MaskedInput from "react-text-mask";
+import MaskedInput, { conformToMask } from "react-text-mask";
 import { DEFAULT_SPAN, FieldProps } from "../../../constants";
 import { FormInstance } from "antd/lib/form";
+import { Readonly } from "../readonly";
 
 const BASE_PHONE_MASK = [
   "+",
@@ -68,6 +69,9 @@ export const Phone = ({
     setMask(mask);
   }, []);
 
+  const formatFunc = (value: string) =>
+    value ? conformToMask(value, mask, {}).conformedValue : "";
+
   return (
     <Col {...span} key={fieldCode}>
       <Form.Item
@@ -77,16 +81,19 @@ export const Phone = ({
         extra={fieldDescription}
         rules={rules}
       >
-        <MaskedInput
-          className="ant-input"
-          guide={false}
-          mask={mask}
-          placeholder={placeholder}
-          disabled={disabled}
-          readOnly={readonly}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
+        {readonly ? (
+          <Readonly format={formatFunc} />
+        ) : (
+          <MaskedInput
+            className="ant-input"
+            guide={false}
+            mask={mask}
+            placeholder={placeholder}
+            disabled={disabled}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+        )}
       </Form.Item>
     </Col>
   );

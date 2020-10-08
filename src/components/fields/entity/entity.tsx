@@ -25,6 +25,7 @@ interface DictionaryComponentProps extends FieldProps {
   style?: object;
 }
 
+// TODO сделать readonly
 export const Entity = ({
   fieldCode,
   format,

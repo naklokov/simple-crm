@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Input, Col } from "antd";
 import { DEFAULT_SPAN, FieldProps } from "../../../constants";
 import { FormInstance } from "antd/lib/form";
+import { Readonly } from "../readonly";
 
 interface TextFormField extends FieldProps {
   form: FormInstance;
@@ -29,12 +30,15 @@ export const Text = ({
       validateTrigger="onSubmit"
       rules={rules}
     >
-      <Input
-        autoComplete="off"
-        placeholder={placeholder}
-        disabled={disabled}
-        readOnly={readonly}
-      />
+      {readonly ? (
+        <Readonly />
+      ) : (
+        <Input
+          autoComplete="off"
+          placeholder={placeholder}
+          disabled={disabled}
+        />
+      )}
     </Form.Item>
   </Col>
 );

@@ -1,9 +1,10 @@
 import React from "react";
 import moment from "moment-timezone";
-import { Col, Form, DatePicker } from "antd";
+import { Col, Form, DatePicker, Typography } from "antd";
 import { DATE_FORMATS, DEFAULT_SPAN, FieldProps } from "../../../constants";
 import { getDateWithTimezone } from "../../../utils";
 import { FormInstance } from "antd/lib/form";
+import { Readonly } from "../readonly";
 
 const getDisabledDate = (currentDate: moment.Moment) =>
   getDateWithTimezone(currentDate.toISOString()).isBefore(
@@ -36,8 +37,13 @@ export const DateTime = ({
   withSelectBefore = false,
   span = DEFAULT_SPAN,
   style = {},
+  form,
 }: DateTimeFormField) => {
   const showTime = /hh:mm/gi.test(format);
+
+  const formatFunc = (value: string) =>
+    value ? getDateWithTimezone(value).format(format) : "";
+
   return (
     <Col {...span} key={fieldCode}>
       <Form.Item
@@ -48,16 +54,20 @@ export const DateTime = ({
         rules={rules}
         getValueProps={handleValueProp}
       >
-        <DatePicker
-          autoComplete="off"
-          style={{ width: "100%" }}
-          format={format}
-          placeholder={placeholder}
-          disabled={disabled}
-          showTime={showTime}
-          inputReadOnly={readonly}
-          disabledDate={!withSelectBefore ? getDisabledDate : void 0}
-        />
+        {readonly ? (
+          <Readonly format={formatFunc} />
+        ) : (
+          <DatePicker
+            autoComplete="off"
+            style={{ width: "100%" }}
+            format={format}
+            placeholder={placeholder}
+            disabled={disabled}
+            showTime={showTime}
+            inputReadOnly={readonly}
+            disabledDate={!withSelectBefore ? getDisabledDate : void 0}
+          />
+        )}
       </Form.Item>
     </Col>
   );
