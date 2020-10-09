@@ -1,26 +1,19 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { Button } from "antd";
-import noop from "lodash/noop";
 import { HighlightTextWrapper } from "../../../../wrappers";
+import { TableActionsContext } from "../../utils";
 
 interface DoneProps {
   id: string;
   title?: string;
-  onDone?: (id: string) => void;
-  searched: string;
   isOwner?: boolean;
 }
 
-export const Done = ({
-  id,
-  title = "",
-  onDone = noop,
-  searched,
-  isOwner = true,
-}: DoneProps) => {
+export const Done = ({ id, title = "", isOwner = true }: DoneProps) => {
+  const { onDoneRow } = useContext(TableActionsContext);
   const handleClick = useCallback(() => {
-    onDone(id);
-  }, [id, onDone]);
+    onDoneRow(id);
+  }, [id, onDoneRow]);
 
   if (!isOwner) {
     return null;
@@ -28,7 +21,7 @@ export const Done = ({
 
   return (
     <Button style={{ paddingLeft: 0 }} type="link" onClick={handleClick}>
-      <HighlightTextWrapper text={title} searched={searched} />
+      <HighlightTextWrapper text={title} searched="" />
     </Button>
   );
 };

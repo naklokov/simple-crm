@@ -2,7 +2,12 @@ import React, { useCallback, useState } from "react";
 import { Drawer as DrawerUI, Form, PageHeader } from "antd";
 import { FormFooter } from "../form-footer";
 import { ComponentPermissionsChecker } from "../../wrappers";
-import { createFormField, isValuesChanged, useFormValues } from "../../utils";
+import {
+  createFormField,
+  FormContext,
+  isValuesChanged,
+  useFormValues,
+} from "../../utils";
 import isEmpty from "lodash/isEmpty";
 import { FieldProps } from "../../constants";
 import { Store } from "antd/lib/form/interface";
@@ -120,7 +125,9 @@ export const DrawerForm = ({
             mode="readonly"
             isOwner={initialValues?.isOwner}
           >
-            {createFormField(field, form)}
+            <FormContext.Provider value={form}>
+              {createFormField(field)}
+            </FormContext.Provider>
           </ComponentPermissionsChecker>
         ))}
       </Form>

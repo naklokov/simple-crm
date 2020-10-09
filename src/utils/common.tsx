@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   urls,
   ErrorProps,
@@ -49,6 +49,8 @@ export const clearCookie = () => {
   Cookies.remove(COOKIES.JSESSIONID);
   Cookies.remove(COOKIES.REMEMBER_ME);
 };
+
+export const FormContext = React.createContext<any>("");
 
 const getTemplateMask = (param: string) => `{{${param}}}`;
 

@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link as LinkUI } from "react-router-dom";
 import { HighlightTextWrapper } from "../../../../wrappers";
+import { SearchedContext } from "../../utils";
 
 interface LinkProps {
   title: string;
-  searched: string;
   href?: string;
 }
 
-export const Link = ({ title, href = "", searched }: LinkProps) => {
+export const Link = ({ title, href = "" }: LinkProps) => {
+  const searched = useContext(SearchedContext);
+
   return (
     <LinkUI to={href}>
       <HighlightTextWrapper text={title} searched={searched} />

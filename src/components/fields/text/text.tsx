@@ -1,17 +1,10 @@
 import React from "react";
 import { Form, Input, Col } from "antd";
 import { DEFAULT_SPAN, FieldProps } from "../../../constants";
-import { FormInstance } from "antd/lib/form";
 import { Readonly } from "../readonly";
-
-interface TextFormField extends FieldProps {
-  form: FormInstance;
-  style?: object;
-}
 
 export const Text = ({
   fieldCode,
-  format,
   rules,
   fieldName,
   fieldDescription,
@@ -19,11 +12,10 @@ export const Text = ({
   disabled = false,
   readonly = false,
   span = DEFAULT_SPAN,
-  style = {},
-}: TextFormField) => (
+}: FieldProps) => (
   <Col {...span} key={fieldCode}>
     <Form.Item
-      style={{ width: "100%", ...style }}
+      style={{ width: "100%" }}
       name={fieldCode}
       label={fieldName}
       extra={fieldDescription}

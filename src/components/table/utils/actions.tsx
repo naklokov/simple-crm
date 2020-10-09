@@ -10,10 +10,6 @@ const getActionComponent = (
   id: string,
   text: string,
   action: ActionProps,
-  searched: string,
-  onDelete?: (id: string) => void,
-  onView?: (id: string) => void,
-  onDone?: (id: string) => void,
   isOwner?: boolean
 ) => {
   const fullHref = getFullUrl(action.href, id);
@@ -25,38 +21,21 @@ const getActionComponent = (
           href={fullHref}
           title={action.actionName}
           id={id}
-          searched={searched}
-          onDelete={onDelete}
           isOwner={isOwner}
         />
       );
     case "done":
       return (
-        <Done
-          key={id}
-          title={action.actionName}
-          id={id}
-          searched={searched}
-          onDone={onDone}
-          isOwner={isOwner}
-        />
+        <Done key={id} title={action.actionName} id={id} isOwner={isOwner} />
       );
     case "view":
-      return (
-        <View
-          key={id}
-          title={action.actionName}
-          id={id}
-          searched={searched}
-          onView={onView}
-        />
-      );
+      return <View key={id} title={action.actionName} id={id} />;
     case "call":
-      return <Call key={id} phone={text} searched={searched} />;
+      return <Call key={id} phone={text} />;
     case "email":
-      return <Email key={id} mail={text} searched={searched} />;
+      return <Email key={id} mail={text} />;
     case "href":
-      return <Link key={id} title={text} href={fullHref} searched={searched} />;
+      return <Link key={id} title={text} href={fullHref} />;
     default:
       return (
         <a key={id} href="/">{`Неизвестное событие ${action.actionType}`}</a>
@@ -67,11 +46,7 @@ const getActionComponent = (
 export const renderActions = (
   actions: ActionProps[],
   text: string,
-  entity: EntityProps,
-  searched: string,
-  onDelete?: (id: string) => void,
-  onView?: (id: string) => void,
-  onDone?: (id: string) => void
+  entity: EntityProps
 ) => (
   <React.Fragment>
     {actions.map((action) => (
@@ -80,16 +55,7 @@ export const renderActions = (
         availablePermissions={action.permissions}
       >
         <Space size="middle">
-          {getActionComponent(
-            entity.id,
-            text,
-            action,
-            searched,
-            onDelete,
-            onView,
-            onDone,
-            entity?.isOwner
-          )}
+          {getActionComponent(entity.id, text, action, entity?.isOwner)}
         </Space>
       </ComponentPermissionsChecker>
     ))}

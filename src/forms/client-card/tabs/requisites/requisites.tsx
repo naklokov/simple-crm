@@ -13,6 +13,7 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   useFormValues,
+  FormContext,
 } from "../../../../utils";
 import { Row, Form } from "antd";
 import { FormFooter } from "../../../../components";
@@ -80,7 +81,9 @@ export const Requisites = ({ tab, profileInfo }: RequisitesProps) => {
               isOwner={values?.isOwner}
               mode="readonly"
             >
-              {createFormField(field, form)}
+              <FormContext.Provider value={form}>
+                {createFormField(field)}
+              </FormContext.Provider>
             </ComponentPermissionsChecker>
           ))}
         </Row>

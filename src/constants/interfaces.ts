@@ -126,6 +126,8 @@ export interface ErrorProps {
   errorMessage?: string;
 }
 
+
+export type RecordType = { [key: string]: string };
 export type ActionType = "href" | "delete" | "call" | "email" | "view" | "done";
 export type ColumnType =
   | "string"

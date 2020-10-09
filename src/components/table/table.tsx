@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, Key } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Table as TableUI } from "antd";
 
 import { ColumnProps, ActionProps } from "../../constants/interfaces";
@@ -9,6 +9,8 @@ import {
   getFilteredDataSource,
   getEditableTableBody,
   fetchDictionaries,
+  SearchedContext,
+  TableActionsContext,
 } from "./utils";
 import { Header } from "./components";
 import noop from "lodash/noop";
@@ -19,7 +21,6 @@ import { State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect, useDispatch } from "react-redux";
 import { TablePaginationConfig } from "antd/lib/table";
-import { isEmpty } from "lodash";
 
 interface TableProps {
   dataSource: any[];
@@ -79,53 +80,65 @@ export const Table = ({
     }
   }, [_links]);
 
+  const clientSearch = (value: string) => {
+    if (value) {
+      const filtered = getFilteredDataSource(value, dataSource, columns);
+      debugger;
+      setFilteredDataSource(filtered as never[]);
+      return;
+    }
+
+    setFilteredDataSource([]);
+  };
+
   const handleSearch = useCallback(
     (inputSearch) => {
       setSearched(inputSearch);
 
-      if (inputSearch) {
-        const filtered = getFilteredDataSource(
-          inputSearch,
-          dataSource,
-          columns
-        );
-        setFilteredDataSource(filtered as never[]);
-        return;
+      if (onSearch) {
+        onSearch(inputSearch);
+      } else {
+        clientSearch(inputSearch);
       }
-
-      setFilteredDataSource([]);
     },
-    [dataSource, filteredDataSource, columns]
+    [dataSource, filteredDataSource, columns, onSearch]
   );
 
   const title = withTitle
     ? () => (
         <Header
-          onSearch={onSearch || handleSearch}
           withSearch={withSearch}
+          onSearch={handleSearch}
           extra={extraHeader}
         />
       )
     : void 0;
 
-  const source = searched ? filteredDataSource : dataSource;
+  const isClientSearch = searched && !onSearch;
+  const source = isClientSearch ? filteredDataSource : dataSource;
 
   return (
-    <TableUI
-      className={className}
-      onChange={onChangeTable}
-      size="middle"
-      title={title}
-      columns={[
-        ...getDataColumns(columns, searched, onSaveRow, permissions),
-        getActions(actions, t, searched, onDeleteRow, onViewRow, onDoneRow),
-      ]}
-      dataSource={source.map((item) => ({ ...item, key: item.id }))}
-      pagination={{ ...pagination }}
-      components={getEditableTableBody()}
-      rowClassName={() => style.editableRow}
-      loading={loading || tableLoading}
-    />
+    <SearchedContext.Provider value={searched}>
+      <TableActionsContext.Provider
+        value={{ onSaveRow, onDeleteRow, onViewRow, onDoneRow }}
+      >
+        <TableUI
+          className={className}
+          onChange={onChangeTable}
+          size="middle"
+          title={title}
+          columns={[
+            ...getDataColumns(columns, permissions),
+            getActions(actions, t),
+          ]}
+          dataSource={source.map((item) => ({ ...item, key: item.id }))}
+          pagination={{ ...pagination }}
+          components={getEditableTableBody()}
+          rowClassName={() => style.editableRow}
+          loading={loading || tableLoading}
+        />
+      </TableActionsContext.Provider>
+    </SearchedContext.Provider>
   );
 };
 

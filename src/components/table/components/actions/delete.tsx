@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import axios from "axios";
 import { Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { setTableLoading } from "../../../../__data__";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { HighlightTextWrapper } from "../../../../wrappers";
+import { TableActionsContext } from "../../utils";
 
 interface DeleteProps {
   id: string;
@@ -16,7 +17,6 @@ interface DeleteProps {
   onDelete?: (id: string) => void;
   title?: string;
   href?: string;
-  searched: string;
   isOwner?: boolean;
 }
 
@@ -25,18 +25,17 @@ export const Delete = ({
   title = "",
   href,
   setTableLoading,
-  onDelete = noop,
-  searched,
   isOwner = true,
 }: DeleteProps) => {
   const [t] = useTranslation("table");
+  const { onDeleteRow } = useContext(TableActionsContext);
 
   const fetchDelete = async () => {
     if (href) {
       try {
         setTableLoading(true);
         await axios.delete(href);
-        onDelete(id);
+        onDeleteRow(id);
       } catch (error) {
         defaultErrorHandler({ error });
       } finally {
@@ -47,7 +46,7 @@ export const Delete = ({
 
   const handleDelete = useCallback(() => {
     fetchDelete();
-  }, [onDelete, id, href]);
+  }, [onDeleteRow, id, href]);
 
   if (!isOwner) {
     return null;
@@ -60,7 +59,7 @@ export const Delete = ({
       placement="left"
     >
       <Button style={{ padding: 0 }} type="link">
-        <HighlightTextWrapper text={title} searched={searched} />
+        <HighlightTextWrapper text={title} searched="" />
       </Button>
     </Popconfirm>
   );
