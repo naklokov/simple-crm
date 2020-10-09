@@ -3,7 +3,11 @@ import { Input, Form, InputNumber } from "antd";
 import { noop, isEqual } from "lodash";
 
 import style from "../table.module.scss";
-import { defaultErrorHandler, useFormValues } from "../../../utils";
+import {
+  defaultErrorHandler,
+  useFormValues,
+  FormContext,
+} from "../../../utils";
 import { ColumnProps, FORM_NAMES } from "../../../constants";
 import { useTranslation } from "react-i18next";
 import {
@@ -12,8 +16,7 @@ import {
 } from "../../../wrappers/permissions-checker/utils";
 import { useSelector } from "react-redux";
 import { State } from "../../../__data__/interfaces";
-
-const EditableContext = React.createContext<any>("");
+import { TableActionsContext } from "./common";
 
 interface EditableRowProps {
   index: number;
@@ -23,9 +26,9 @@ const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
   const [form] = Form.useForm();
   return (
     <Form key={index} form={form} component={false}>
-      <EditableContext.Provider value={form}>
+      <FormContext.Provider value={form}>
         <tr {...props} />
-      </EditableContext.Provider>
+      </FormContext.Provider>
     </Form>
   );
 };
@@ -36,14 +39,14 @@ const EditableCell = ({
   children,
   dataIndex,
   record,
-  onSaveRow,
   permissions = [],
   ...restProps
 }: any) => {
   const [t] = useTranslation("clientCardPriceList");
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<Input>(null);
-  const form = useContext(EditableContext);
+  const form = useContext(FormContext);
+  const { onSaveRow } = useContext(TableActionsContext);
   const { values } = useFormValues(FORM_NAMES.CLIENT_CARD);
   const allPermissions = useSelector(
     (state: State) => state?.persist?.permissions
@@ -126,7 +129,6 @@ const EditableCell = ({
 
 export const getEditableProp = (
   column: ColumnProps,
-  onSaveRow: (record: any) => void,
   permissions: string[] = []
 ) => {
   if (column.editable) {
@@ -136,7 +138,6 @@ export const getEditableProp = (
         editable: column.editable,
         dataIndex: column.columnCode,
         title: column.columnName,
-        onSaveRow,
         permissions,
       }),
     };

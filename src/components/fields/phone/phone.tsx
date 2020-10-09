@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { Form, Col } from "antd";
 import MaskedInput, { conformToMask } from "react-text-mask";
 import { DEFAULT_SPAN, FieldProps } from "../../../constants";
-import { FormInstance } from "antd/lib/form";
 import { Readonly } from "../readonly";
-import { getClearPhone } from "../../../utils";
+import { FormContext, getClearPhone } from "../../../utils";
 
 const BASE_PHONE_MASK = [
   "+",
@@ -35,15 +34,8 @@ const getMask = (value: string) => {
   return withoutCode ? BASE_PHONE_MASK : FULL_PHONE_MASK;
 };
 
-interface PhoneFormField extends FieldProps {
-  form: FormInstance;
-  style?: object;
-}
-
 export const Phone = ({
   fieldCode,
-  format,
-  form,
   rules,
   fieldName,
   fieldDescription,
@@ -51,8 +43,8 @@ export const Phone = ({
   disabled = false,
   readonly = false,
   span = DEFAULT_SPAN,
-  style = {},
-}: PhoneFormField) => {
+}: FieldProps) => {
+  const form = useContext(FormContext);
   const [mask, setMask] = useState(getMask(form.getFieldValue(fieldCode)));
 
   const handleChange = useCallback((event) => {
@@ -74,7 +66,7 @@ export const Phone = ({
   return (
     <Col {...span} key={fieldCode}>
       <Form.Item
-        style={{ width: "100%", ...style }}
+        style={{ width: "100%" }}
         name={fieldCode}
         label={fieldName}
         extra={fieldDescription}

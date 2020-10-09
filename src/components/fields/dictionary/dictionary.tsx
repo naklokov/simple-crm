@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import isEmpty from "lodash/isEmpty";
 import { Col, Form, Select } from "antd";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -7,20 +6,16 @@ import { DictionaryProps, DEFAULT_SPAN, FieldProps } from "../../../constants";
 import { useFetch } from "../../../utils";
 import { setLoading } from "../../../__data__";
 import { connect } from "react-redux";
-import { FormInstance } from "antd/lib/form";
 import { Readonly } from "../readonly";
 
 const { Option } = Select;
 
 interface DictionaryComponentProps extends FieldProps {
   setLoading: (loading: boolean) => void;
-  form: FormInstance;
-  style?: object;
 }
 
 export const Dictionary = ({
   fieldCode,
-  format,
   rules,
   fieldName,
   fieldDescription,
@@ -30,8 +25,6 @@ export const Dictionary = ({
   _links,
   span = DEFAULT_SPAN,
   setLoading,
-  style = {},
-  form,
 }: DictionaryComponentProps) => {
   const [dictionary, setDictionary] = useState<DictionaryProps>({});
   const url = _links?.self.href ?? "";
@@ -57,7 +50,7 @@ export const Dictionary = ({
     <Col {...span} key={fieldCode}>
       <Form.Item
         name={fieldCode}
-        style={{ width: "100%", ...style }}
+        style={{ width: "100%" }}
         label={fieldName}
         extra={fieldDescription}
         rules={rules}

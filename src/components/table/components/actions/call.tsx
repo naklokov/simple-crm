@@ -1,16 +1,17 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
 import { HighlightTextWrapper } from "../../../../wrappers";
 import { callTel } from "../../../../utils";
+import { SearchedContext } from "../../utils";
 
 interface CallProps {
   phone: string;
-  searched: string;
 }
 
-export const Call = ({ phone, searched }: CallProps) => {
+export const Call = ({ phone }: CallProps) => {
   const [t] = useTranslation("table");
+  const searched = useContext(SearchedContext);
 
   const handleCall = useCallback(() => {
     callTel(phone);

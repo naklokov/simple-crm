@@ -20,11 +20,6 @@ const handleValueProp = (value: any) => {
   return { value };
 };
 
-interface DateTimeFormField extends FieldProps {
-  form: FormInstance;
-  style?: object;
-}
-
 export const DateTime = ({
   fieldCode,
   format = DATE_FORMATS.DATE,
@@ -36,9 +31,7 @@ export const DateTime = ({
   readonly = false,
   withSelectBefore = false,
   span = DEFAULT_SPAN,
-  style = {},
-  form,
-}: DateTimeFormField) => {
+}: FieldProps) => {
   const showTime = /hh:mm/gi.test(format);
 
   const formatFunc = (value: string) =>
@@ -47,7 +40,6 @@ export const DateTime = ({
   return (
     <Col {...span} key={fieldCode}>
       <Form.Item
-        style={style}
         name={fieldCode}
         label={fieldName}
         extra={fieldDescription}

@@ -109,8 +109,8 @@ export const TableAll = ({ extraHeader, userProfileId }: TableAllProps) => {
       pagination={serverPagination}
       onDeleteRow={handleDelete}
       dataSource={dataSource}
-      onSearch={handleSearch}
       onChangeTable={handleChangeTable}
+      onSearch={handleSearch}
       withSearch
     />
   );

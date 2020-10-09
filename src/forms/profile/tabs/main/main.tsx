@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Form, Typography, Row, Button, message } from "antd";
+import { Form, Typography, Row } from "antd";
 import { FORM_NAME } from "./constansts";
 import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
@@ -10,9 +10,9 @@ import { useTranslation } from "react-i18next";
 import {
   createFormField,
   isValuesChanged,
-  logger,
   defaultErrorHandler,
   defaultSuccessHandler,
+  FormContext,
 } from "../../../../utils";
 import {
   GUTTER_FULL_WIDTH,
@@ -97,7 +97,9 @@ export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
               availablePermissions={field.permissions}
               mode="readonly"
             >
-              {createFormField(field, form)}
+              <FormContext.Provider value={form}>
+                {createFormField(field)}
+              </FormContext.Provider>
             </ComponentPermissionsChecker>
           ))}
         </Row>

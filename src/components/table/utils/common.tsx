@@ -1,47 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import isEmpty from "lodash/isEmpty";
 import pick from "lodash/pick";
 import noop from "lodash/noop";
 import { columns } from "../components";
 
 import { ActionProps, ColumnProps, EntityProps } from "../../../constants";
-import { HighlightTextWrapper } from "../../../wrappers";
-import { getFormattedText } from "./formatters";
 import { getSorterProp } from "./sorter";
 import { getEditableProp } from "./editable";
 import { renderActions } from "./actions";
 
-const { Dictionary } = columns;
+const { Dictionary, Date, Text, Number } = columns;
 
-const getRenderProp = (column: ColumnProps, searched: string) => ({
+export const SearchedContext = React.createContext("");
+export const TableActionsContext = React.createContext({
+  onSaveRow: noop,
+  onDeleteRow: noop,
+  onViewRow: noop,
+  onDoneRow: noop,
+});
+
+const getRenderProp = (column: ColumnProps) => ({
   render: (text: string, record: any) => {
-    const { format, columnType, columnCode } = column;
-    let renderText = text;
+    const { format, columnType } = column;
 
-    if (columnType === "dictionary") {
-      return <Dictionary value={text} column={column} />;
+    switch (columnType) {
+      case "dictionary":
+        return <Dictionary value={text} column={column} />;
+      case "date":
+        return <Date value={text} format={format} record={record} />;
+      case "number":
+        return <Number value={text} format={format} record={record} />;
+      default:
+        return <Text value={text} format={format} record={record} />;
     }
-
-    if (format) {
-      renderText = getFormattedText(text, format, columnType, record);
-    }
-
-    return (
-      <HighlightTextWrapper
-        key={columnType}
-        text={renderText}
-        searched={searched}
-      />
-    );
   },
 });
 
-export const getColumn = (
-  column: ColumnProps,
-  searched: string,
-  onSaveRow: (record: any) => void,
-  permissions: string[] = []
-) => {
+export const getColumn = (column: ColumnProps, permissions: string[] = []) => {
   const { columnCode, columnName } = column;
 
   return {
@@ -49,8 +44,8 @@ export const getColumn = (
     title: columnName,
     dataIndex: columnCode,
     ...getSorterProp(column),
-    ...getEditableProp(column, onSaveRow, permissions),
-    ...getRenderProp(column, searched),
+    ...getEditableProp(column, permissions),
+    ...getRenderProp(column),
   };
 };
 
@@ -80,11 +75,7 @@ export const getFilteredDataSource = (
 
 export const getActions = (
   actions: ActionProps[] = [],
-  t: (value: string) => string,
-  searched: string,
-  onDelete: (id: string) => void,
-  onView: (id: string) => void,
-  onDone: (id: string) => void
+  t: (value: string) => string
 ) => {
   if (isEmpty(actions)) {
     return {};
@@ -94,26 +85,24 @@ export const getActions = (
     title: t("actions.column.title"),
     key: "actions",
     render: (text: string, entity: EntityProps) =>
-      renderActions(actions, text, entity, searched, onDelete, onView, onDone),
+      renderActions(actions, text, entity),
   };
 };
 
 export const getDataColumns = (
   columns: ColumnProps[] = [],
-  searched: string,
-  onSaveRow: (record: any) => void = noop,
   permissions?: string[]
 ) =>
   columns.map(({ columnActions, ...column }) => {
     // TODO получение всех необходимых словарей перед отрисовкой, т.к. render не поддерживает асинхронщину
-    const columnProps = getColumn(column, searched, onSaveRow, permissions);
+    const columnProps = getColumn(column, permissions);
 
     if (!isEmpty(columnActions)) {
       const actions = columnActions || [];
       return {
         ...columnProps,
         render: (text: string, entity: EntityProps) =>
-          renderActions(actions, text, entity, searched),
+          renderActions(actions, text, entity),
       };
     }
 

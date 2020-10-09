@@ -3,8 +3,6 @@ import { fields } from "../components";
 import { FieldProps } from "../constants";
 import isEqual from "lodash/isEqual";
 import some from "lodash/some";
-import { FormInstance } from "antd/lib/form";
-import { clear } from "console";
 
 interface EntityWithId {
   [key: string]: any;
@@ -21,25 +19,22 @@ export const isValuesChanged = (
   return some(keys, (key) => !isEqual(prev[key], next[key]));
 };
 
-export const createFormField = (
-  field: FieldProps,
-  form: FormInstance
-): JSX.Element => {
+export const createFormField = (field: FieldProps): JSX.Element => {
   switch (field.type) {
     case "string":
       if (field.format === "textarea") {
-        return <TextArea {...field} form={form} />;
+        return <TextArea {...field} />;
       }
 
-      return <Text {...field} form={form} />;
+      return <Text {...field} />;
     case "phone":
-      return <Phone {...field} form={form} />;
+      return <Phone {...field} />;
     case "date":
-      return <DateTime {...field} form={form} />;
+      return <DateTime {...field} />;
     case "dictionary":
-      return <Dictionary {...field} form={form} />;
+      return <Dictionary {...field} />;
     case "entity":
-      return <Entity {...field} form={form} />;
+      return <Entity {...field} />;
     default:
       return <div />;
   }

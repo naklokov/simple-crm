@@ -16,6 +16,7 @@ import {
   defaultSuccessHandler,
   getFullUrl,
   useFormValues,
+  FormContext,
 } from "../../../../utils";
 import { Row, Form } from "antd";
 import { FormFooter } from "../../../../components";
@@ -104,7 +105,9 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
               mode="readonly"
               isOwner={isOwner}
             >
-              {createFormField(field, form)}
+              <FormContext.Provider value={form}>
+                {createFormField(field)}
+              </FormContext.Provider>
             </ComponentPermissionsChecker>
           ))}
         </Row>

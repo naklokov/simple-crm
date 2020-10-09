@@ -21,14 +21,11 @@ export const getSearchRsqlParams = (titleField: string, searched: string) => ({
 
 interface DictionaryComponentProps extends FieldProps {
   profileInfo: ProfileInfoProps;
-  form: FormInstance;
-  style?: object;
 }
 
 // TODO сделать readonly
 export const Entity = ({
   fieldCode,
-  format,
   rules,
   fieldName,
   titleField = "value",
@@ -36,11 +33,9 @@ export const Entity = ({
   fieldDescription,
   placeholder = "Выберите значение",
   disabled = false,
-  readonly = false,
   _links,
   span = DEFAULT_SPAN,
   profileInfo,
-  style = {},
 }: DictionaryComponentProps) => {
   const [options, setOptions] = useState<any>([]);
   const [loading, setLoading] = useState(false);
@@ -75,7 +70,7 @@ export const Entity = ({
       <Form.Item
         name={fieldCode}
         label={fieldName}
-        style={{ width: "100%", ...style }}
+        style={{ width: "100%" }}
         extra={fieldDescription}
         rules={rules}
         validateTrigger="onSubmit"
