@@ -91,6 +91,7 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
           name={FIELDS.USERNAME}
           rules={rules.username}
           validateTrigger="onBlur"
+          className={style.login}
         >
           <Input
             className={style.username}
