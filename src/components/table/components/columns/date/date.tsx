@@ -16,7 +16,7 @@ export const Date = ({ value, format, record }: DateProps) => {
     : value;
   const searched = useContext(SearchedContext);
 
-  return <HighlightTextWrapper text={formattedDate} searched={searched} />;
+  return <HighlightTextWrapper text={formattedDate} searched={[searched]} />;
 };
 
 export default Date;

@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from "react";
 import { Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
 import { HighlightTextWrapper } from "../../../../wrappers";
-import { callTel } from "../../../../utils";
+import { callTel, getConformedValue } from "../../../../utils";
 import { SearchedContext } from "../../utils";
 
 interface CallProps {
@@ -25,7 +25,11 @@ export const Call = ({ phone }: CallProps) => {
       key={phone}
     >
       <Button key={phone} style={{ padding: 0 }} type="link">
-        <HighlightTextWrapper key={phone} text={phone} searched={searched} />
+        <HighlightTextWrapper
+          key={phone}
+          text={getConformedValue(phone)}
+          searched={[searched, getConformedValue(searched)]}
+        />
       </Button>
     </Popconfirm>
   );

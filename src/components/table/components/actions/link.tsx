@@ -13,7 +13,7 @@ export const Link = ({ title, href = "" }: LinkProps) => {
 
   return (
     <LinkUI to={href}>
-      <HighlightTextWrapper text={title} searched={searched} />
+      <HighlightTextWrapper text={title} searched={[searched]} />
     </LinkUI>
   );
 };

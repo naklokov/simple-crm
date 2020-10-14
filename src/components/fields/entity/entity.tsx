@@ -1,23 +1,13 @@
 import React, { useState, useCallback } from "react";
 import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
-import {
-  DEFAULT_SPAN,
-  FieldProps,
-  RSQL_OPERATORS_MAP,
-} from "../../../constants";
+import { DEFAULT_SPAN, FieldProps } from "../../../constants";
 import { defaultErrorHandler, getRsqlParams } from "../../../utils";
 import { connect } from "react-redux";
 import { ProfileInfoProps, State } from "../../../__data__/interfaces";
-import { FormInstance } from "antd/lib/form";
+import { getSearchByColumnsRsql } from "../../../forms/clients/utils";
 
 const { Option } = Select;
-
-export const getSearchRsqlParams = (titleField: string, searched: string) => ({
-  key: "entityData",
-  operator: RSQL_OPERATORS_MAP.LIKE,
-  value: `(${titleField},"${searched}")`,
-});
 
 interface DictionaryComponentProps extends FieldProps {
   profileInfo: ProfileInfoProps;
@@ -46,7 +36,7 @@ export const Entity = ({
       const url = _links?.self.href ?? "";
       const query = getRsqlParams([
         { key: "userProfileId", value: userProfileId },
-        getSearchRsqlParams(titleField, searched),
+        getSearchByColumnsRsql([titleField], searched),
       ]);
       const response = await axios.get(url, { params: { query } });
       setOptions(response?.data ?? []);

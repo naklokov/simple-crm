@@ -59,7 +59,7 @@ export const Delete = ({
       placement="left"
     >
       <Button style={{ padding: 0 }} type="link">
-        <HighlightTextWrapper text={title} searched="" />
+        <HighlightTextWrapper text={title} />
       </Button>
     </Popconfirm>
   );
