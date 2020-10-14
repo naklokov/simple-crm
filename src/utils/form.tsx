@@ -1,8 +1,9 @@
 import React from "react";
 import { fields } from "../components";
-import { FieldProps } from "../constants";
+import { BASE_PHONE_MASK, FieldProps, FULL_PHONE_MASK } from "../constants";
 import isEqual from "lodash/isEqual";
 import some from "lodash/some";
+import { conformToMask } from "react-text-mask";
 
 interface EntityWithId {
   [key: string]: any;
@@ -52,8 +53,21 @@ export const getUpdatedEntityArray = <T extends EntityWithId>(
 export const getFiteredEntityArray = (id: string, array: any[]) =>
   array.filter((o) => o.id !== id);
 
-export const getClearPhone = (value: string) =>
-  value?.replace(/[^0-9]/g, "") ?? "";
+export const getClearPhone = (value: string) => value?.replace(/\D/g, "") ?? "";
+
+export const getNormalizePhone = (value: string) =>
+  value?.replace(/[^\d\+\,]/g, "") ?? "";
+
+export const getMask = (value: string) => {
+  const clearValue = getClearPhone(value);
+  const withoutCode = clearValue.length <= 11;
+  return withoutCode ? BASE_PHONE_MASK : FULL_PHONE_MASK;
+};
+
+export const getConformedValue = (value: string) => {
+  const mask = getMask(value);
+  return conformToMask(value, mask, { guide: false })?.conformedValue ?? "";
+};
 
 export const vatRule = {
   validator: (_: any, value: string) => {

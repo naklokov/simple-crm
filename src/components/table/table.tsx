@@ -35,6 +35,8 @@ interface TableProps {
   onSaveRow?: (record: any) => void;
   onDoneRow?: (record: any) => void;
   onSearch?: (inputSearch: string) => void;
+  onSearchColumn?: (inputSearch: string) => void;
+  onResetFilters?: (inputSearch: string) => void;
   withSearch?: boolean;
   withTitle?: boolean;
   extraHeader?: JSX.Element;
@@ -61,6 +63,8 @@ export const Table = ({
   onViewRow = noop,
   onSaveRow = noop,
   onDoneRow = noop,
+  onSearchColumn = noop,
+  onResetFilters = noop,
   onSearch,
   withSearch = false,
   withTitle = true,
@@ -120,7 +124,14 @@ export const Table = ({
   return (
     <SearchedContext.Provider value={searched}>
       <TableActionsContext.Provider
-        value={{ onSaveRow, onDeleteRow, onViewRow, onDoneRow }}
+        value={{
+          onSaveRow,
+          onDeleteRow,
+          onViewRow,
+          onDoneRow,
+          onSearchColumn,
+          onResetFilters,
+        }}
       >
         <TableUI
           className={className}

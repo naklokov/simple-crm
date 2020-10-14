@@ -10,6 +10,7 @@ export const COLUMNS: ColumnProps[] = [
     columnType: "string",
     columnDescription: "Наименование",
     sorter: true,
+    filterable: true,
     columnActions: [
       {
         actionName: "",

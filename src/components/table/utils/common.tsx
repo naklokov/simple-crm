@@ -8,6 +8,7 @@ import { ActionProps, ColumnProps, EntityProps } from "../../../constants";
 import { getSorterProp } from "./sorter";
 import { getEditableProp } from "./editable";
 import { renderActions } from "./actions";
+import { getColumnSearchProp } from "./column-search";
 
 const { Dictionary, Date, Text, Number } = columns;
 
@@ -17,6 +18,8 @@ export const TableActionsContext = React.createContext({
   onDeleteRow: noop,
   onViewRow: noop,
   onDoneRow: noop,
+  onSearchColumn: noop,
+  onResetFilters: noop,
 });
 
 const getRenderProp = (column: ColumnProps) => ({
@@ -45,6 +48,7 @@ export const getColumn = (column: ColumnProps, permissions: string[] = []) => {
     dataIndex: columnCode,
     ...getSorterProp(column),
     ...getEditableProp(column, permissions),
+    ...getColumnSearchProp(column),
     ...getRenderProp(column),
   };
 };

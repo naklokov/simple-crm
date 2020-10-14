@@ -1,10 +1,13 @@
 import { RsqlParamProps, RSQL_OPERATORS_MAP } from "../../constants";
 import { getRsqlParams } from "../../utils";
 
-export const getSearchRsqlParams = (searched: string) => ({
+export const getSearchByColumnsRsql = (
+  columns: string[],
+  searched: string
+) => ({
   key: "entityData",
   operator: RSQL_OPERATORS_MAP.LIKE,
-  value: `(phone,inn,shortName,city,"${searched}")`,
+  value: `(${columns.join(",")},"${searched.replace('"', '\\"')}")`,
 });
 
 export const getUserProfileRsqlParams = (id: string) => ({
@@ -16,7 +19,9 @@ export const getQueryString = (searched?: string, userProfileId?: string) => {
   let params: RsqlParamProps[] = [];
 
   if (searched) {
-    params.push(getSearchRsqlParams(searched));
+    params.push(
+      getSearchByColumnsRsql(["phone", "inn", "shortName", "city"], searched)
+    );
   }
   if (userProfileId) {
     params.push(getUserProfileRsqlParams(userProfileId));

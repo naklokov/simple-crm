@@ -188,5 +188,10 @@
   },
   "readonly": {
     "empty": "Не указан(о/а)"
+  },
+  "columnSearch": {
+    "placeholder": "Введите текст для поиска",
+    "search": "Поиск",
+    "reset": "Сброс"
   }
 }
