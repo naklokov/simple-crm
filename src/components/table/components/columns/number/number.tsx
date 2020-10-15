@@ -29,7 +29,7 @@ export const Number = ({ value, format, record }: NumberProps) => {
     : value.toString();
   const searched = useContext(SearchedContext);
 
-  return <HighlightTextWrapper text={formattedNumber} searched={searched} />;
+  return <HighlightTextWrapper text={formattedNumber} searched={[searched]} />;
 };
 
 export default Number;

@@ -22,7 +22,7 @@ export const Dictionary = ({
   const option = dictionary?.find((o: any) => o[valueField] === value);
   const text = option?.[titleField] ?? "";
 
-  return <HighlightTextWrapper text={text} searched={searched} />;
+  return <HighlightTextWrapper text={text} searched={[searched]} />;
 };
 
 const mapStateToProps = (state: State) => ({

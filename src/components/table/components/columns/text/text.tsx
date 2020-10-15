@@ -14,7 +14,7 @@ export const Text = ({ value, format, record }: TextProps) => {
   const formattedText = format ? fillTemplate(format, record) : value;
   const searched = useContext(SearchedContext);
 
-  return <HighlightTextWrapper text={formattedText} searched={searched} />;
+  return <HighlightTextWrapper text={formattedText} searched={[searched]} />;
 };
 
 export default Text;

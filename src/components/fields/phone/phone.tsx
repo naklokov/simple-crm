@@ -1,38 +1,20 @@
 import React, { useCallback, useContext, useState } from "react";
 import { Form, Col } from "antd";
-import MaskedInput, { conformToMask } from "react-text-mask";
-import { DEFAULT_SPAN, FieldProps } from "../../../constants";
+import MaskedInput from "react-text-mask";
+import {
+  BASE_PHONE_MASK,
+  DEFAULT_SPAN,
+  FieldProps,
+  FULL_PHONE_MASK,
+} from "../../../constants";
 import { Readonly } from "../readonly";
-import { FormContext, getClearPhone } from "../../../utils";
-
-const BASE_PHONE_MASK = [
-  "+",
-  "7",
-  " ",
-  "(",
-  /[1-9]/,
-  /\d/,
-  /\d/,
-  ")",
-  " ",
-  /\d/,
-  /\d/,
-  /\d/,
-  "-",
-  /\d/,
-  /\d/,
-  "-",
-  /\d/,
-  /\d/,
-];
-
-const FULL_PHONE_MASK = [...BASE_PHONE_MASK, ",", " ", /\d/, /\d/, /\d/];
-
-const getMask = (value: string) => {
-  const clearValue = getClearPhone(value);
-  const withoutCode = clearValue.length <= 11;
-  return withoutCode ? BASE_PHONE_MASK : FULL_PHONE_MASK;
-};
+import {
+  FormContext,
+  getClearPhone,
+  getConformedValue,
+  getMask,
+  getNormalizePhone,
+} from "../../../utils";
 
 export const Phone = ({
   fieldCode,
@@ -60,8 +42,7 @@ export const Phone = ({
     setMask(mask);
   }, []);
 
-  const formatFunc = (value: string) =>
-    value ? conformToMask(value, mask, {}).conformedValue : "";
+  const formatFunc = (value: string) => getConformedValue(value);
 
   return (
     <Col {...span} key={fieldCode}>
@@ -72,6 +53,7 @@ export const Phone = ({
         extra={fieldDescription}
         rules={rules}
         validateTrigger="onSubmit"
+        normalize={getNormalizePhone}
       >
         {readonly ? (
           <Readonly format={formatFunc} />
@@ -79,9 +61,9 @@ export const Phone = ({
           <MaskedInput
             className="ant-input"
             guide={false}
-            mask={mask}
             placeholder={placeholder}
             disabled={disabled}
+            mask={mask}
             onChange={handleChange}
             onBlur={handleBlur}
           />

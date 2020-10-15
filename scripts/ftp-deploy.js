@@ -9,7 +9,7 @@ var config = {
   host: "176.212.190.167",
   // internal
   // host: "176.212.190.167",
-  port: 21,
+  port: 31,
   localRoot: "build/",
   remoteRoot: "/nginx/www/crm",
   include: ["*", "**/*"], // this would upload everything except dot files

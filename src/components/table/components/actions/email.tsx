@@ -23,7 +23,7 @@ export const Email = ({ mail }: EmailProps) => {
       placement="left"
     >
       <Button style={{ padding: 0 }} type="link">
-        <HighlightTextWrapper text={mail} searched={searched} />
+        <HighlightTextWrapper text={mail} searched={[searched]} />
       </Button>
     </Popconfirm>
   );
