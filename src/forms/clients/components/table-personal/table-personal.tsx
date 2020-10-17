@@ -2,7 +2,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { Table } from "../../../../components";
-import { ClientEntityProps, formConfig, urls } from "../../../../constants";
+import {
+  ClientEntityProps,
+  ColumnProps,
+  formConfig,
+  urls,
+} from "../../../../constants";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
@@ -12,11 +17,17 @@ import {
 import { getQueryString } from "../../utils";
 import { TablePaginationConfig } from "antd/lib/table";
 
+export type TableSearchColumnsType = {
+  column: string;
+  searched: string;
+};
+
 interface PaginationsProps {
   page: number;
   pageSize: number;
   sortBy: string;
-  searched: string;
+  searchedAll: string;
+  searchedColumns: TableSearchColumnsType[];
 }
 
 const { COLUMNS, TABLES } = formConfig.clients;
@@ -30,23 +41,32 @@ export const TablePersonal = ({ extraHeader, userProfileId }: TableProps) => {
   const [t] = useTranslation("clients");
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<ClientEntityProps[]>([]);
-  const [pagination, setPagination] = useState({
+  const [pagination, setPagination] = useState<PaginationsProps>({
     page: 1,
     pageSize: 10,
     sortBy: "",
-    searched: "",
+    searchedAll: "",
+    searchedColumns: [],
   });
   const [total, setTotal] = useState(0);
 
   const url = urls.clients.paging;
 
-  const fetchDataSource = async ({ searched, ...params }: PaginationsProps) => {
+  const fetchDataSource = async ({
+    searchedAll,
+    searchedColumns,
+    ...params
+  }: PaginationsProps) => {
     setLoading(true);
     try {
       const response = await axios.get(url, {
         params: {
           ...params,
-          query: getQueryString(searched, userProfileId),
+          query: getQueryString({
+            searchedAll,
+            searchedColumns,
+            userProfileId,
+          }),
         },
       });
 
@@ -67,9 +87,9 @@ export const TablePersonal = ({ extraHeader, userProfileId }: TableProps) => {
   }, [pagination, userProfileId]);
 
   const handleSearch = useCallback(
-    (searched: string) => {
+    (searchedAll: string) => {
       const page = 1;
-      const updated = { ...pagination, page, searched };
+      const updated = { ...pagination, page, searchedAll };
       setPagination(updated);
     },
     [dataSource]
@@ -94,6 +114,31 @@ export const TablePersonal = ({ extraHeader, userProfileId }: TableProps) => {
     [dataSource]
   );
 
+  const handleSearchColumn = useCallback(
+    (searched: string, column: ColumnProps) => {
+      const updated = {
+        ...pagination,
+        searchedColumns: [
+          ...pagination.searchedColumns,
+          { column: column.columnCode, searched },
+        ],
+      };
+      debugger;
+
+      setPagination(updated);
+    },
+    [pagination]
+  );
+
+  const handleResetFilters = useCallback(
+    (column: ColumnProps) => {
+      const updatedSearchedColumns = pagination.searchedColumns.find(
+        (o) => o.column !== column.c
+      );
+    },
+    [pagination]
+  );
+
   const serverPagination: TablePaginationConfig = {
     pageSize: pagination.pageSize,
     current: pagination.page,
@@ -111,6 +156,8 @@ export const TablePersonal = ({ extraHeader, userProfileId }: TableProps) => {
       dataSource={dataSource}
       onSearch={handleSearch}
       onChangeTable={handleChangeTable}
+      onSearchColumn={handleSearchColumn}
+      onResetFilters={handleResetFilters}
       withSearch
     />
   );

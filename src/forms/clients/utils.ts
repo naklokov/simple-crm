@@ -1,5 +1,7 @@
+import { isEmpty } from "lodash";
 import { RsqlParamProps, RSQL_OPERATORS_MAP } from "../../constants";
 import { getRsqlParams } from "../../utils";
+import { TableSearchColumnsType } from "./components/table-personal/table-personal";
 
 export const getSearchByColumnsRsql = (
   columns: string[],
@@ -15,14 +17,29 @@ export const getUserProfileRsqlParams = (id: string) => ({
   value: id,
 });
 
-export const getQueryString = (searched?: string, userProfileId?: string) => {
+export const getQueryString = ({
+  searchedAll,
+  searchedColumns,
+  userProfileId,
+}: {
+  searchedAll?: string;
+  searchedColumns?: TableSearchColumnsType[];
+  userProfileId?: string;
+}) => {
   let params: RsqlParamProps[] = [];
 
-  if (searched) {
+  if (searchedAll) {
     params.push(
-      getSearchByColumnsRsql(["phone", "inn", "shortName", "city"], searched)
+      getSearchByColumnsRsql(["phone", "inn", "shortName", "city"], searchedAll)
     );
   }
+
+  if (!isEmpty(searchedColumns)) {
+    searchedColumns?.forEach(({ column, searched }) => {
+      params.push(getSearchByColumnsRsql([column], searched));
+    });
+  }
+
   if (userProfileId) {
     params.push(getUserProfileRsqlParams(userProfileId));
   }

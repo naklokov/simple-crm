@@ -35,8 +35,8 @@ interface TableProps {
   onSaveRow?: (record: any) => void;
   onDoneRow?: (record: any) => void;
   onSearch?: (inputSearch: string) => void;
-  onSearchColumn?: (inputSearch: string) => void;
-  onResetFilters?: (inputSearch: string) => void;
+  onSearchColumn?: (searched: string, column: ColumnProps) => void;
+  onResetFilters?: (column: ColumnProps) => void;
   withSearch?: boolean;
   withTitle?: boolean;
   extraHeader?: JSX.Element;
