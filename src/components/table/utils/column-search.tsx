@@ -1,5 +1,5 @@
 import React from "react";
-import { TextSearch } from "../components";
+import { TextSearch, DictionarySearch } from "../components";
 import { ColumnProps } from "../../../constants";
 
 interface FilterPassedProps {
@@ -15,6 +15,8 @@ export const getColumnSearchProp = (column: ColumnProps) => {
     const handleSaveRef = (passedRef: HTMLInputElement) => {
       searchInput = passedRef;
     };
+    const Search =
+      column.columnType === "dictionary" ? DictionarySearch : TextSearch;
 
     return {
       filterDropdown: ({
@@ -23,7 +25,7 @@ export const getColumnSearchProp = (column: ColumnProps) => {
         confirm,
         clearFilters,
       }: FilterPassedProps) => (
-        <TextSearch
+        <Search
           column={column}
           setRef={handleSaveRef}
           selectedKeys={selectedKeys}

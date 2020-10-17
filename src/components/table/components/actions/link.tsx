@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link as LinkUI } from "react-router-dom";
 import { HighlightTextWrapper } from "../../../../wrappers";
-import { SearchedContext } from "../../utils";
+import { SearchedAllContext } from "../../utils";
 
 interface LinkProps {
   title: string;
@@ -9,7 +9,7 @@ interface LinkProps {
 }
 
 export const Link = ({ title, href = "" }: LinkProps) => {
-  const searched = useContext(SearchedContext);
+  const searched = useContext(SearchedAllContext);
 
   return (
     <LinkUI to={href}>

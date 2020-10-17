@@ -4,7 +4,12 @@ import pick from "lodash/pick";
 import noop from "lodash/noop";
 import { columns } from "../components";
 
-import { ActionProps, ColumnProps, EntityProps } from "../../../constants";
+import {
+  ActionProps,
+  ColumnProps,
+  EntityProps,
+  TableSearchColumnsType,
+} from "../../../constants";
 import { getSorterProp } from "./sorter";
 import { getEditableProp } from "./editable";
 import { renderActions } from "./actions";
@@ -12,7 +17,10 @@ import { getColumnSearchProp } from "./column-search";
 
 const { Dictionary, Date, Text, Number } = columns;
 
-export const SearchedContext = React.createContext("");
+export const SearchedAllContext = React.createContext("");
+export const SearchedColumnsContext = React.createContext<
+  TableSearchColumnsType[]
+>([]);
 export const TableActionsContext = React.createContext({
   onSaveRow: noop,
   onDeleteRow: noop,

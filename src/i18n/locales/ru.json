@@ -190,7 +190,8 @@
     "empty": "Не указан(о/а)"
   },
   "columnSearch": {
-    "placeholder": "Введите текст для поиска",
+    "placeholder.text": "Введите текст для поиска",
+    "placeholder.dictionary": "Введите значение для поиска",
     "search": "Поиск",
     "reset": "Сброс"
   }

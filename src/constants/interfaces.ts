@@ -87,6 +87,12 @@ export interface TabProps {
   _links: object;
 }
 
+
+export type TableSearchColumnsType = {
+  column: string;
+  searched: string;
+};
+
 export type TabPositionType = "lower" | "upper" | undefined;
 
 export interface TableProps {

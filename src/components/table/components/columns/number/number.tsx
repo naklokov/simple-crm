@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from "react";
 import { ColumnFormatType, RecordType } from "../../../../../constants";
-import { SearchedContext } from "../../../utils";
+import { SearchedAllContext, SearchedColumnsContext } from "../../../utils";
 import { HighlightTextWrapper } from "../../../../../wrappers";
 
 interface NumberProps {
@@ -27,9 +27,19 @@ export const Number = ({ value, format, record }: NumberProps) => {
   const formattedNumber = format
     ? formatNumber(value, format, record)
     : value.toString();
-  const searched = useContext(SearchedContext);
+  const searched = useContext(SearchedAllContext);
+  const searchedColumns = useContext(SearchedColumnsContext);
 
-  return <HighlightTextWrapper text={formattedNumber} searched={[searched]} />;
+  const searchedColumn = searchedColumns.find(
+    (column) => column.column === record.columnCode
+  );
+
+  return (
+    <HighlightTextWrapper
+      text={formattedNumber}
+      searched={[searched, searchedColumn?.searched ?? ""]}
+    />
+  );
 };
 
 export default Number;

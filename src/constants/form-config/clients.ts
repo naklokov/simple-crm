@@ -39,6 +39,7 @@ export const COLUMNS: ColumnProps[] = [
     columnCode: "city",
     columnType: "string",
     columnDescription: "Город",
+    filterable: true,
     sorter: true,
   },
   {

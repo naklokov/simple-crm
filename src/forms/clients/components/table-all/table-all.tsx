@@ -1,8 +1,13 @@
-import React, { ReactNode, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { Table } from "../../../../components";
-import { ClientEntityProps, formConfig, urls } from "../../../../constants";
+import {
+  ClientEntityProps,
+  ColumnProps,
+  formConfig,
+  urls,
+} from "../../../../constants";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
@@ -12,41 +17,52 @@ import {
 import { getQueryString } from "../../utils";
 import { TablePaginationConfig } from "antd/lib/table";
 
+export type TableSearchColumnsType = {
+  column: string;
+  searched: string;
+};
+
 interface PaginationsProps {
   page: number;
   pageSize: number;
   sortBy: string;
-  searched: string;
+  searchedAll: string;
+  searchedColumns: TableSearchColumnsType[];
 }
 
 const { COLUMNS, TABLES } = formConfig.clients;
 
-interface TableAllProps {
+interface TableProps {
   extraHeader: JSX.Element;
-  userProfileId?: string;
 }
 
-export const TableAll = ({ extraHeader, userProfileId }: TableAllProps) => {
+export const TablePersonal = ({ extraHeader }: TableProps) => {
   const [t] = useTranslation("clients");
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<ClientEntityProps[]>([]);
-  const [pagination, setPagination] = useState({
-    page: 1,
-    pageSize: 10,
-    sortBy: "",
-    searched: "",
-  });
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [sortBy, setSortBy] = useState("");
+  const [searchedAll, setSearchedAll] = useState("");
+  const [searchedColumns, setSearchedColumns] = useState<
+    TableSearchColumnsType[]
+  >([]);
   const [total, setTotal] = useState(0);
 
   const url = urls.clients.paging;
 
-  const fetchDataSource = async ({ searched, ...params }: PaginationsProps) => {
+  const fetchDataSource = async () => {
     setLoading(true);
     try {
       const response = await axios.get(url, {
         params: {
-          ...params,
-          query: getQueryString(searched),
+          page,
+          pageSize,
+          sortBy,
+          query: getQueryString({
+            searchedAll,
+            searchedColumns,
+          }),
         },
       });
 
@@ -61,16 +77,13 @@ export const TableAll = ({ extraHeader, userProfileId }: TableAllProps) => {
   };
 
   useEffect(() => {
-    if (userProfileId) {
-      fetchDataSource(pagination);
-    }
-  }, [pagination, userProfileId]);
+    fetchDataSource();
+  }, [page, pageSize, sortBy, searchedAll, searchedColumns]);
 
   const handleSearch = useCallback(
-    (searched: string) => {
-      const page = 1;
-      const updated = { ...pagination, page, searched };
-      setPagination(updated);
+    (searchedAll: string) => {
+      setPage(1);
+      setSearchedAll(searchedAll);
     },
     [dataSource]
   );
@@ -85,18 +98,40 @@ export const TableAll = ({ extraHeader, userProfileId }: TableAllProps) => {
 
   const handleChangeTable = useCallback(
     (paginationParams, filters, sorter) => {
-      const { current: page, pageSize } = paginationParams;
+      const { current, pageSize } = paginationParams;
       const sortBy = getSortedParams(sorter);
-
-      const updated = { ...pagination, page, pageSize, sortBy };
-      setPagination(updated);
+      setSortBy(sortBy);
+      setPage(current);
+      setPageSize(pageSize);
     },
     [dataSource]
   );
 
+  const handleSearchColumn = useCallback(
+    (selectedKeys: string[], confirm: any, column: ColumnProps) => {
+      const updatedSearchedColumns: TableSearchColumnsType[] = [
+        ...searchedColumns,
+        { column: column.columnCode, searched: selectedKeys[0] },
+      ];
+
+      setSearchedColumns(updatedSearchedColumns);
+    },
+    [searchedColumns]
+  );
+
+  const handleResetFilters = useCallback(
+    (column: ColumnProps) => {
+      const updatedSearchedColumns = searchedColumns.filter(
+        (o) => o.column !== column.columnCode
+      );
+      setSearchedColumns(updatedSearchedColumns);
+    },
+    [searchedColumns]
+  );
+
   const serverPagination: TablePaginationConfig = {
-    pageSize: pagination.pageSize,
-    current: pagination.page,
+    pageSize,
+    current: page,
     total,
   };
 
@@ -109,11 +144,15 @@ export const TableAll = ({ extraHeader, userProfileId }: TableAllProps) => {
       pagination={serverPagination}
       onDeleteRow={handleDelete}
       dataSource={dataSource}
-      onChangeTable={handleChangeTable}
       onSearch={handleSearch}
+      onChangeTable={handleChangeTable}
+      onSearchColumn={handleSearchColumn}
+      onResetFilters={handleResetFilters}
+      searchAll={searchedAll}
+      searchedColumns={searchedColumns}
       withSearch
     />
   );
 };
 
-export default TableAll;
+export default TablePersonal;

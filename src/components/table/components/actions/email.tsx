@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from "react";
 import { Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
 import { HighlightTextWrapper } from "../../../../wrappers";
-import { SearchedContext } from "../../utils";
+import { SearchedAllContext } from "../../utils";
 
 interface EmailProps {
   mail: string;
@@ -10,7 +10,7 @@ interface EmailProps {
 
 export const Email = ({ mail }: EmailProps) => {
   const [t] = useTranslation("table");
-  const searched = useContext(SearchedContext);
+  const searched = useContext(SearchedAllContext);
 
   const handleCall = useCallback(() => {
     window.location.assign(`mailto:${mail}`);

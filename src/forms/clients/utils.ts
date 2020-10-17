@@ -1,7 +1,6 @@
 import { isEmpty } from "lodash";
-import { RsqlParamProps, RSQL_OPERATORS_MAP } from "../../constants";
+import { RsqlParamProps, RSQL_OPERATORS_MAP, TableSearchColumnsType } from "../../constants";
 import { getRsqlParams } from "../../utils";
-import { TableSearchColumnsType } from "./components/table-personal/table-personal";
 
 export const getSearchByColumnsRsql = (
   columns: string[],
