@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Table as TableUI } from "antd";
 
 import {
   ColumnProps,
   ActionProps,
-  TableSearchColumnsType,
+  RecordType,
 } from "../../constants/interfaces";
 import { useTranslation } from "react-i18next";
 import {
   getActions,
   getDataColumns,
-  getFilteredDataSource,
   getEditableTableBody,
   fetchDictionaries,
   SearchedAllContext,
@@ -45,7 +44,8 @@ interface TableProps {
     confirm: any,
     column: ColumnProps
   ) => void;
-  onResetFilters?: (column: ColumnProps, clearFilters: Function) => void;
+  onResetAllFilters?: () => void;
+  onResetFilter?: (column: ColumnProps, clearFilters: Function) => void;
   withSearch?: boolean;
   withTitle?: boolean;
   extraHeader?: JSX.Element;
@@ -58,7 +58,7 @@ interface TableProps {
     extra: any
   ) => void;
   searchAll?: string;
-  searchedColumns?: TableSearchColumnsType[];
+  searchedColumns?: RecordType;
 }
 
 export const Table = ({
@@ -75,7 +75,8 @@ export const Table = ({
   onSaveRow = noop,
   onDoneRow = noop,
   onSearchColumn = noop,
-  onResetFilters = noop,
+  onResetFilter = noop,
+  onResetAllFilters = noop,
   onSearch,
   withSearch = false,
   withTitle = true,
@@ -83,12 +84,10 @@ export const Table = ({
   onChangeTable = noop,
   permissions = [],
   searchAll = "",
-  searchedColumns = [],
+  searchedColumns = {},
 }: TableProps) => {
   const [t] = useTranslation("table");
   const dispatch = useDispatch();
-  const [filteredDataSource, setFilteredDataSource] = useState([]);
-  const [searchedClient, setSearchedClient] = useState("");
 
   useEffect(() => {
     if (_links) {
@@ -97,38 +96,28 @@ export const Table = ({
     }
   }, [_links]);
 
-  const clientSearch = (value: string) => {
-    if (value) {
-      const filtered = getFilteredDataSource(value, dataSource, columns);
-      setFilteredDataSource(filtered as never[]);
-      return;
-    }
-
-    setFilteredDataSource([]);
-  };
-
-  const handleSearch = useCallback(
-    (inputSearch) => {
-      setSearchedClient(inputSearch);
-      clientSearch(inputSearch);
-    },
-    [dataSource, filteredDataSource, columns, onSearch]
-  );
-
   const title = withTitle
     ? () => (
         <Header
           withSearch={withSearch}
-          onSearch={onSearch || handleSearch}
+          onSearch={onSearch}
           extra={extraHeader}
+          onResetAllFilters={onResetAllFilters}
         />
       )
     : void 0;
 
-  const source = searchedClient ? filteredDataSource : dataSource;
+  const dataSourceWithKeys = useMemo(
+    () =>
+      dataSource.map((item) => ({
+        ...item,
+        key: item.id,
+      })),
+    [dataSource]
+  );
 
   return (
-    <SearchedAllContext.Provider value={searchAll || searchedClient}>
+    <SearchedAllContext.Provider value={searchAll}>
       <SearchedColumnsContext.Provider value={searchedColumns}>
         <TableActionsContext.Provider
           value={{
@@ -137,7 +126,7 @@ export const Table = ({
             onViewRow,
             onDoneRow,
             onSearchColumn,
-            onResetFilters,
+            onResetFilter,
           }}
         >
           <TableUI
@@ -146,10 +135,10 @@ export const Table = ({
             size="middle"
             title={title}
             columns={[
-              ...getDataColumns(columns, permissions),
+              ...getDataColumns(columns, searchedColumns, permissions),
               getActions(actions, t),
             ]}
-            dataSource={source.map((item) => ({ ...item, key: item.id }))}
+            dataSource={dataSourceWithKeys}
             pagination={{ ...pagination }}
             components={getEditableTableBody()}
             rowClassName={() => style.editableRow}

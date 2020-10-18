@@ -25,6 +25,7 @@ export const COLUMNS: ColumnProps[] = [
     columnCode: "phone",
     columnType: "string",
     columnDescription: "Телефон",
+    filterable: true,
     columnActions: [
       {
         actionType: "call",
@@ -55,6 +56,7 @@ export const COLUMNS: ColumnProps[] = [
     columnCode: "inn",
     columnType: "string",
     columnDescription: "ИНН",
+    filterable: true,
     sorter: false,
   },
   {
@@ -64,6 +66,8 @@ export const COLUMNS: ColumnProps[] = [
     titleField: "fullName",
     valueField: "id",
     sorter: false,
+    filterable: true,
+    filterOperator: "equal",
     columnDescription: "Куратор компании",
   },
 ];

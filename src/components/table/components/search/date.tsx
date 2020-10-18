@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
-import { Select } from "antd";
+import moment from "moment-timezone";
+import { DatePicker, Select } from "antd";
 import { Option } from "antd/lib/mentions";
 import { SearchFooter } from ".";
 import { WithTranslation, withTranslation } from "react-i18next";
@@ -8,18 +9,18 @@ import { TableActionsContext } from "../../utils";
 import { flow } from "lodash";
 import { connect } from "react-redux";
 import { State } from "../../../../__data__/interfaces";
+import { getDateWithTimezone } from "../../../../utils";
 
-interface DictionarySearchProps extends WithTranslation {
+interface DateSearchProps extends WithTranslation {
   column: ColumnProps;
   setSelectedKeys: any;
   setRef: any;
   selectedKeys: any;
   confirm: string;
   clearFilters: any;
-  dictionaries: any;
 }
 
-export const DictionarySearch = ({
+export const DateSearch = ({
   t,
   setSelectedKeys,
   column,
@@ -27,34 +28,23 @@ export const DictionarySearch = ({
   selectedKeys,
   confirm,
   clearFilters,
-  dictionaries,
-}: DictionarySearchProps) => {
-  const options = dictionaries?.[column.columnCode] ?? [];
+}: DateSearchProps) => {
+  const showTime = /hh:mm/gi.test(column?.format ?? "");
+
   return (
     <div style={{ padding: 8 }}>
-      <Select
-        showSearch
-        style={{ width: 190, display: "block", marginBottom: 8 }}
-        placeholder={t("placeholder.dictionary")}
-        optionFilterProp="children"
-        value={selectedKeys[0]}
+      <DatePicker
+        ref={setRef}
+        autoComplete="off"
+        style={{ width: 200, marginBottom: 8, display: "block" }}
+        format={column.format}
+        placeholder={t("placeholder.date")}
+        showTime={showTime}
+        value={selectedKeys[0] ? moment(selectedKeys[0]) : null}
         onChange={(value) => {
-          setSelectedKeys([value]);
+          setSelectedKeys([value?.toISOString()]);
         }}
-        filterOption={(input, option) =>
-          option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-      >
-        {options.map((o: any) => {
-          const value = o?.[column?.valueField ?? ""];
-          const title = o?.[column?.titleField ?? ""];
-          return (
-            <Select.Option key={value} value={value}>
-              {title}
-            </Select.Option>
-          );
-        })}
-      </Select>
+      />
       <SearchFooter
         selectedKeys={selectedKeys}
         column={column}
@@ -72,4 +62,4 @@ const mapStateToProps = (state: State) => ({
 export default flow([
   connect(mapStateToProps),
   withTranslation(["columnSearch"]),
-])(DictionarySearch);
+])(DateSearch);

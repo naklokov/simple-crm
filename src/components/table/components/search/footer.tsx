@@ -21,7 +21,7 @@ export const Footer = ({
 }: FooterProps) => {
   return (
     <TableActionsContext.Consumer>
-      {({ onSearchColumn, onResetFilters }) => (
+      {({ onSearchColumn, onResetFilter }) => (
         <Space>
           <Button
             type="primary"
@@ -33,7 +33,7 @@ export const Footer = ({
             {t("search")}
           </Button>
           <Button
-            onClick={() => onResetFilters(column, clearFilters)}
+            onClick={() => onResetFilter(column, clearFilters)}
             size="small"
             style={{ width: 90 }}
           >

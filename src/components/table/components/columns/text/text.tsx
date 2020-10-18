@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext } from "react";
 import {
   ColumnFormatType,
   ColumnProps,
@@ -12,22 +12,18 @@ interface TextProps {
   value: string;
   format?: ColumnFormatType;
   record: RecordType;
+  column: ColumnProps;
 }
 
-export const Text = ({ value, format, record }: TextProps) => {
+export const Text = ({ value, format, record, column }: TextProps) => {
   const formattedText = format ? fillTemplate(format, record) : value;
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext(SearchedColumnsContext);
 
-  debugger;
-  const searchedColumn = searchedColumns.find(
-    (column) => column.column === record.columnCode
-  );
-
   return (
     <HighlightTextWrapper
       text={formattedText}
-      searched={[searched, searchedColumn?.searched ?? ""]}
+      searched={[searched, searchedColumns[column?.columnCode]]}
     />
   );
 };

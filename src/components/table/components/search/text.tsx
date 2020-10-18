@@ -1,5 +1,4 @@
-import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Space } from "antd";
+import { Input } from "antd";
 import React from "react";
 import { WithTranslation, withTranslation } from "react-i18next";
 import { SearchFooter } from ".";
@@ -32,9 +31,9 @@ export const TextSearch = ({
           ref={setRef}
           placeholder={t("placeholder.text")}
           value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
+          onChange={(e) => {
+            setSelectedKeys(e.target.value ? [e.target.value] : []);
+          }}
           onPressEnter={() => onSearchColumn(selectedKeys, confirm, column)}
           style={{ width: 188, marginBottom: 8, display: "block" }}
         />

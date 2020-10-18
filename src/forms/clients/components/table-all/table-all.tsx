@@ -6,6 +6,7 @@ import {
   ClientEntityProps,
   ColumnProps,
   formConfig,
+  RecordType,
   urls,
 } from "../../../../constants";
 import {
@@ -16,19 +17,6 @@ import {
 } from "../../../../utils";
 import { getQueryString } from "../../utils";
 import { TablePaginationConfig } from "antd/lib/table";
-
-export type TableSearchColumnsType = {
-  column: string;
-  searched: string;
-};
-
-interface PaginationsProps {
-  page: number;
-  pageSize: number;
-  sortBy: string;
-  searchedAll: string;
-  searchedColumns: TableSearchColumnsType[];
-}
 
 const { COLUMNS, TABLES } = formConfig.clients;
 
@@ -44,9 +32,7 @@ export const TablePersonal = ({ extraHeader }: TableProps) => {
   const [pageSize, setPageSize] = useState(10);
   const [sortBy, setSortBy] = useState("");
   const [searchedAll, setSearchedAll] = useState("");
-  const [searchedColumns, setSearchedColumns] = useState<
-    TableSearchColumnsType[]
-  >([]);
+  const [searchedColumns, setSearchedColumns] = useState<RecordType>({});
   const [total, setTotal] = useState(0);
 
   const url = urls.clients.paging;
@@ -62,6 +48,7 @@ export const TablePersonal = ({ extraHeader }: TableProps) => {
           query: getQueryString({
             searchedAll,
             searchedColumns,
+            columns: COLUMNS,
           }),
         },
       });
@@ -109,25 +96,33 @@ export const TablePersonal = ({ extraHeader }: TableProps) => {
 
   const handleSearchColumn = useCallback(
     (selectedKeys: string[], confirm: any, column: ColumnProps) => {
-      const updatedSearchedColumns: TableSearchColumnsType[] = [
+      const updated = {
         ...searchedColumns,
-        { column: column.columnCode, searched: selectedKeys[0] },
-      ];
+        [column.columnCode]: selectedKeys[0],
+      };
 
-      setSearchedColumns(updatedSearchedColumns);
+      setSearchedColumns(updated);
+      confirm();
     },
     [searchedColumns]
   );
 
-  const handleResetFilters = useCallback(
-    (column: ColumnProps) => {
-      const updatedSearchedColumns = searchedColumns.filter(
-        (o) => o.column !== column.columnCode
-      );
-      setSearchedColumns(updatedSearchedColumns);
+  const handleResetFilter = useCallback(
+    (column: ColumnProps, clearFilters: Function) => {
+      const updated = {
+        ...searchedColumns,
+        [column.columnCode]: "",
+      };
+      setSearchedColumns(updated);
+      clearFilters();
     },
     [searchedColumns]
   );
+
+  const handleResetAllFilters = useCallback(() => {
+    setSearchedAll("");
+    setSearchedColumns({});
+  }, []);
 
   const serverPagination: TablePaginationConfig = {
     pageSize,
@@ -147,9 +142,10 @@ export const TablePersonal = ({ extraHeader }: TableProps) => {
       onSearch={handleSearch}
       onChangeTable={handleChangeTable}
       onSearchColumn={handleSearchColumn}
-      onResetFilters={handleResetFilters}
+      onResetFilter={handleResetFilter}
       searchAll={searchedAll}
       searchedColumns={searchedColumns}
+      onResetAllFilters={handleResetAllFilters}
       withSearch
     />
   );

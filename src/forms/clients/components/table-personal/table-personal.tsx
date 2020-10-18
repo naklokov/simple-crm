@@ -6,7 +6,7 @@ import {
   ClientEntityProps,
   ColumnProps,
   formConfig,
-  TableSearchColumnsType,
+  RecordType,
   urls,
 } from "../../../../constants";
 import {
@@ -33,9 +33,7 @@ export const TablePersonal = ({ extraHeader, userProfileId }: TableProps) => {
   const [pageSize, setPageSize] = useState(10);
   const [sortBy, setSortBy] = useState("");
   const [searchedAll, setSearchedAll] = useState("");
-  const [searchedColumns, setSearchedColumns] = useState<
-    TableSearchColumnsType[]
-  >([]);
+  const [searchedColumns, setSearchedColumns] = useState<RecordType>({});
   const [total, setTotal] = useState(0);
 
   const url = urls.clients.paging;
@@ -52,6 +50,7 @@ export const TablePersonal = ({ extraHeader, userProfileId }: TableProps) => {
             searchedAll,
             searchedColumns,
             userProfileId,
+            columns: COLUMNS,
           }),
         },
       });
@@ -101,27 +100,33 @@ export const TablePersonal = ({ extraHeader, userProfileId }: TableProps) => {
 
   const handleSearchColumn = useCallback(
     (selectedKeys: string[], confirm: any, column: ColumnProps) => {
-      const updatedSearchedColumns: TableSearchColumnsType[] = [
+      const updated = {
         ...searchedColumns,
-        { column: column.columnCode, searched: selectedKeys[0] },
-      ];
+        [column.columnCode]: selectedKeys[0],
+      };
 
-      setSearchedColumns(updatedSearchedColumns);
+      setSearchedColumns(updated);
       confirm();
     },
     [searchedColumns]
   );
 
-  const handleResetFilters = useCallback(
+  const handleResetFilter = useCallback(
     (column: ColumnProps, clearFilters: Function) => {
-      const updatedSearchedColumns = searchedColumns.filter(
-        (o) => o.column !== column.columnCode
-      );
-      setSearchedColumns(updatedSearchedColumns);
+      const updated = {
+        ...searchedColumns,
+        [column.columnCode]: "",
+      };
+      setSearchedColumns(updated);
       clearFilters();
     },
     [searchedColumns]
   );
+
+  const handleResetAllFilters = useCallback(() => {
+    setSearchedAll("");
+    setSearchedColumns({});
+  }, []);
 
   const serverPagination: TablePaginationConfig = {
     pageSize,
@@ -141,9 +146,10 @@ export const TablePersonal = ({ extraHeader, userProfileId }: TableProps) => {
       onSearch={handleSearch}
       onChangeTable={handleChangeTable}
       onSearchColumn={handleSearchColumn}
-      onResetFilters={handleResetFilters}
+      onResetFilter={handleResetFilter}
       searchAll={searchedAll}
       searchedColumns={searchedColumns}
+      onResetAllFilters={handleResetAllFilters}
       withSearch
     />
   );

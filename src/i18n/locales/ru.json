@@ -87,7 +87,7 @@
     "actions.email.yes": "Да",
 
     "search.all.placeholder": "Поиск",
-    "search.all.clear": "Очистить фильтр"
+    "search.all.clear": "Очистить все фильтры"
   },
   "clientCard": {
     "button.call": "Звонок",
@@ -192,6 +192,7 @@
   "columnSearch": {
     "placeholder.text": "Введите текст для поиска",
     "placeholder.dictionary": "Введите значение для поиска",
+    "placeholder.date": "Выберите дату",
     "search": "Поиск",
     "reset": "Сброс"
   }

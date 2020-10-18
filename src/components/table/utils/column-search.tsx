@@ -1,6 +1,17 @@
 import React from "react";
-import { TextSearch, DictionarySearch } from "../components";
-import { ColumnProps } from "../../../constants";
+import { TextSearch, DictionarySearch, DateSearch } from "../components";
+import { ColumnType, ColumnProps, RecordType } from "../../../constants";
+
+const getSearch = (columnType: ColumnType) => {
+  switch (columnType) {
+    case "dictionary":
+      return DictionarySearch;
+    case "date":
+      return DateSearch;
+    default:
+      return TextSearch;
+  }
+};
 
 interface FilterPassedProps {
   setSelectedKeys: any;
@@ -9,16 +20,20 @@ interface FilterPassedProps {
   clearFilters: any;
 }
 
-export const getColumnSearchProp = (column: ColumnProps) => {
+export const getColumnSearchProp = (
+  column: ColumnProps,
+  searchedColumns: RecordType
+) => {
   if (column.filterable) {
     let searchInput: HTMLInputElement;
     const handleSaveRef = (passedRef: HTMLInputElement) => {
       searchInput = passedRef;
     };
-    const Search =
-      column.columnType === "dictionary" ? DictionarySearch : TextSearch;
-
+    const Search = getSearch(column.columnType);
     return {
+      filteredValue: searchedColumns?.[column.columnCode]
+        ? [searchedColumns[column.columnCode]]
+        : null,
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,

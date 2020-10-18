@@ -87,7 +87,6 @@ export interface TabProps {
   _links: object;
 }
 
-
 export type TableSearchColumnsType = {
   column: string;
   searched: string;
@@ -133,6 +132,7 @@ export interface ErrorProps {
 }
 
 export type RecordType = { [key: string]: string };
+export type FilterOperaratorType = "equal" | "rsql";
 export type ActionType = "href" | "delete" | "call" | "email" | "view" | "done";
 export type ColumnType =
   | "string"
@@ -152,6 +152,7 @@ export interface ColumnProps {
   format?: ColumnFormatType;
   sorter: any;
   filterable?: boolean;
+  filterOperator?: FilterOperaratorType;
   editable?: boolean;
   columnActions?: ActionProps[];
 }
