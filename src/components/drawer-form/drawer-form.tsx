@@ -23,6 +23,7 @@ interface DrawerFormProps {
   onFinish: (values: Store) => void;
   onClose: (event?: any) => void;
   headerButtons?: React.ReactNode[];
+  initialValues?: any;
 }
 
 export const DrawerForm = ({
@@ -36,10 +37,11 @@ export const DrawerForm = ({
   headerButtons,
   defaultSubmitDisabled = true,
   permissions = [],
+  initialValues = {},
 }: DrawerFormProps) => {
   const [form] = Form.useForm();
   const [submitDisabled, setSubmitDisabled] = useState(defaultSubmitDisabled);
-  const { values: initialValues, clear } = useFormValues(name);
+  const { clear } = useFormValues(name);
 
   const handleValuesChange = useCallback(
     (changed: Object, allValues: Object) => {
@@ -98,7 +100,7 @@ export const DrawerForm = ({
       visible={visible}
       footer={
         <ComponentPermissionsChecker
-          isOwner={initialValues?.isOwner}
+          isOwner={initialValues?.isOwner ?? false}
           availablePermissions={permissions}
         >
           <FormFooter
