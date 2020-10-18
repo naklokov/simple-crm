@@ -4,19 +4,28 @@ import pick from "lodash/pick";
 import noop from "lodash/noop";
 import { columns } from "../components";
 
-import { ActionProps, ColumnProps, EntityProps } from "../../../constants";
+import {
+  ActionProps,
+  ColumnProps,
+  EntityProps,
+  RecordType,
+} from "../../../constants";
 import { getSorterProp } from "./sorter";
 import { getEditableProp } from "./editable";
 import { renderActions } from "./actions";
+import { getColumnSearchProp } from "./column-search";
 
 const { Dictionary, Date, Text, Number } = columns;
 
-export const SearchedContext = React.createContext("");
+export const SearchedAllContext = React.createContext("");
+export const SearchedColumnsContext = React.createContext<RecordType>({});
 export const TableActionsContext = React.createContext({
   onSaveRow: noop,
   onDeleteRow: noop,
   onViewRow: noop,
   onDoneRow: noop,
+  onSearchColumn: noop,
+  onResetFilter: noop,
 });
 
 const getRenderProp = (column: ColumnProps) => ({
@@ -27,16 +36,31 @@ const getRenderProp = (column: ColumnProps) => ({
       case "dictionary":
         return <Dictionary value={text} column={column} />;
       case "date":
-        return <Date value={text} format={format} record={record} />;
+        return (
+          <Date value={text} format={format} record={record} column={column} />
+        );
       case "number":
-        return <Number value={text} format={format} record={record} />;
+        return (
+          <Number
+            value={text}
+            format={format}
+            record={record}
+            column={column}
+          />
+        );
       default:
-        return <Text value={text} format={format} record={record} />;
+        return (
+          <Text value={text} format={format} record={record} column={column} />
+        );
     }
   },
 });
 
-export const getColumn = (column: ColumnProps, permissions: string[] = []) => {
+export const getColumn = (
+  column: ColumnProps,
+  searchedColumns: RecordType,
+  permissions: string[] = []
+) => {
   const { columnCode, columnName } = column;
 
   return {
@@ -45,6 +69,7 @@ export const getColumn = (column: ColumnProps, permissions: string[] = []) => {
     dataIndex: columnCode,
     ...getSorterProp(column),
     ...getEditableProp(column, permissions),
+    ...getColumnSearchProp(column, searchedColumns),
     ...getRenderProp(column),
   };
 };
@@ -52,11 +77,12 @@ export const getColumn = (column: ColumnProps, permissions: string[] = []) => {
 export const getFilteredDataSource = (
   searched: string,
   dataSource: any[],
-  columns?: ColumnProps[]
+  columns?: ColumnProps[],
+  idField: string = "id"
 ) => {
   const visibleColumns = dataSource.map((item) => {
     const picked = columns?.map((col) => col.columnCode) ?? [];
-    return pick(item, [...picked, "id"]);
+    return pick(item, [...picked, idField]);
   });
 
   const filteredIds = visibleColumns
@@ -68,9 +94,9 @@ export const getFilteredDataSource = (
           ?.includes(searched?.toLowerCase());
       })
     )
-    .map((o) => o.id);
+    .map((o) => o?.[idField]);
 
-  return dataSource.filter((o) => filteredIds.includes(o?.id));
+  return dataSource.filter((o) => filteredIds.includes(o?.[idField]));
 };
 
 export const getActions = (
@@ -91,25 +117,20 @@ export const getActions = (
 
 export const getDataColumns = (
   columns: ColumnProps[] = [],
+  searchedColumns: RecordType,
   permissions?: string[]
 ) =>
   columns.map(({ columnActions, ...column }) => {
-    // TODO получение всех необходимых словарей перед отрисовкой, т.к. render не поддерживает асинхронщину
-    const columnProps = getColumn(column, permissions);
+    const columnProps = getColumn(column, searchedColumns, permissions);
 
     if (!isEmpty(columnActions)) {
       const actions = columnActions || [];
       return {
         ...columnProps,
         render: (text: string, entity: EntityProps) =>
-          renderActions(actions, text, entity),
+          renderActions(actions, text, entity, column),
       };
     }
 
     return columnProps;
   });
-
-export const getLinks = (dataSource: any[]) => {
-  const { self, ...links } = dataSource[0]?._links ?? {};
-  return links;
-};

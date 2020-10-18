@@ -1,5 +1,5 @@
 import React from "react";
-import { ActionProps, EntityProps } from "../../../constants";
+import { ActionProps, ColumnProps, EntityProps } from "../../../constants";
 import { getFullUrl } from "../../../utils";
 import { Delete, View, Call, Email, Link } from "../components";
 import { ComponentPermissionsChecker } from "../../../wrappers";
@@ -10,6 +10,7 @@ const getActionComponent = (
   id: string,
   text: string,
   action: ActionProps,
+  column?: ColumnProps,
   isOwner?: boolean
 ) => {
   const fullHref = getFullUrl(action.href, id);
@@ -31,11 +32,11 @@ const getActionComponent = (
     case "view":
       return <View key={id} title={action.actionName} id={id} />;
     case "call":
-      return <Call key={id} phone={text} />;
+      return <Call key={id} phone={text} column={column} />;
     case "email":
-      return <Email key={id} mail={text} />;
+      return <Email key={id} mail={text} column={column} />;
     case "href":
-      return <Link key={id} title={text} href={fullHref} />;
+      return <Link key={id} title={text} href={fullHref} column={column} />;
     default:
       return (
         <a key={id} href="/">{`Неизвестное событие ${action.actionType}`}</a>
@@ -46,7 +47,8 @@ const getActionComponent = (
 export const renderActions = (
   actions: ActionProps[],
   text: string,
-  entity: EntityProps
+  entity: EntityProps,
+  column?: ColumnProps
 ) => (
   <React.Fragment>
     {actions.map((action) => (
@@ -55,7 +57,7 @@ export const renderActions = (
         availablePermissions={action.permissions}
       >
         <Space size="middle">
-          {getActionComponent(entity.id, text, action, entity?.isOwner)}
+          {getActionComponent(entity.id, text, action, column, entity?.isOwner)}
         </Space>
       </ComponentPermissionsChecker>
     ))}

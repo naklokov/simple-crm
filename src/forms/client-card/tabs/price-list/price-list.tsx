@@ -21,6 +21,7 @@ import { setTableLoading } from "../../../../__data__";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { getFilteredDataSource } from "../../../../components/table/utils";
 
 interface ContactsProps {
   profileInfo: ProfileInfoProps;
@@ -35,7 +36,9 @@ export const PriceList = ({
   setTableLoading,
 }: ContactsProps) => {
   const [t] = useTranslation("clientCardPriceList");
-  const [positions, setPositions] = useState([] as any[]);
+  const [searchedAll, setSearchedAll] = useState("");
+  const [filteredPositions, setFilteredPositions] = useState<any[]>([]);
+  const [positions, setPositions] = useState<any[]>([]);
   const { id: clientId } = useParams<QueryProps>();
   const params = {
     clientId,
@@ -69,15 +72,40 @@ export const PriceList = ({
     [positions, params, setTableLoading, t]
   );
 
+  const handleSearch = useCallback(
+    (searched: string) => {
+      setSearchedAll(searched);
+      if (searched) {
+        const filtered = getFilteredDataSource(
+          searched,
+          positions,
+          tab.columns,
+          "itemId"
+        );
+        setFilteredPositions(filtered);
+      } else {
+        setFilteredPositions([]);
+      }
+    },
+    [filteredPositions, positions]
+  );
+
+  const handleResetAllFilters = useCallback(() => {
+    setSearchedAll("");
+  }, []);
+
   return (
     <Table
+      onSearch={handleSearch}
       columns={tab.columns}
       actions={tab.actions}
       loading={loading}
       pagination={{ pageSize: 5 }}
-      dataSource={positions}
+      dataSource={searchedAll ? filteredPositions : positions}
       onSaveRow={handleSaveRow}
       permissions={PERMISSIONS_SET.CLIENT_UPDATE}
+      searchAll={searchedAll}
+      onResetAllFilters={handleResetAllFilters}
       withSearch
     />
   );

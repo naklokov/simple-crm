@@ -3,15 +3,33 @@ import { Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
 import { HighlightTextWrapper } from "../../../../wrappers";
 import { callTel, getConformedValue } from "../../../../utils";
-import { SearchedContext } from "../../utils";
+import { SearchedAllContext, SearchedColumnsContext } from "../../utils";
+import { ColumnProps, RecordType } from "../../../../constants";
 
 interface CallProps {
   phone: string;
+  column?: ColumnProps;
 }
 
-export const Call = ({ phone }: CallProps) => {
+export const Call = ({ phone, column }: CallProps) => {
   const [t] = useTranslation("table");
-  const searched = useContext(SearchedContext);
+  const searched = useContext(SearchedAllContext);
+  const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
+  const searchedColumnValue = searchedColumns[column?.columnCode ?? ""] ?? "";
+
+  let searchedOptions = [searchedColumnValue, searched || ""];
+  const isPhone = (val: string) => /^\+7[\d]+$/.test(val);
+
+  if (isPhone(searched)) {
+    searchedOptions = [...searchedOptions, getConformedValue(searched)];
+  }
+
+  if (isPhone(searchedColumnValue)) {
+    searchedOptions = [
+      ...searchedOptions,
+      getConformedValue(searchedColumnValue),
+    ];
+  }
 
   const handleCall = useCallback(() => {
     callTel(phone);
@@ -28,7 +46,7 @@ export const Call = ({ phone }: CallProps) => {
         <HighlightTextWrapper
           key={phone}
           text={getConformedValue(phone)}
-          searched={[searched, getConformedValue(searched)]}
+          searched={searchedOptions}
         />
       </Button>
     </Popconfirm>
