@@ -1,8 +1,8 @@
 module.exports = {
   login: {
     path: "/login",
-    submit: "/crm/rest/login",
-    logout: "/crm/rest/logout",
+    submit: "/crm/login",
+    logout: "/crm/logout",
   },
   main: {
     path: "/main",
