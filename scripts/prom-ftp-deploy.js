@@ -9,7 +9,7 @@ var config = {
   host: "176.212.190.167",
   // internal
   // host: "176.212.190.167",
-  port: 31,
+  port: 21,
   localRoot: "build/",
   remoteRoot: "/nginx/www/crm",
   include: ["*", "**/*"], // this would upload everything except dot files
@@ -29,5 +29,5 @@ var config = {
 
 ftpDeploy
   .deploy(config)
-  .then((res) => console.log("finished:", res))
+  .then((res) => console.log("prom has been published:", res))
   .catch((err) => console.log(err));
