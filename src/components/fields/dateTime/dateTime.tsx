@@ -11,6 +11,25 @@ const getDisabledDate = (currentDate: moment.Moment) =>
     moment().startOf("day")
   );
 
+function range(start: number, end: number) {
+  const result = [];
+  for (let i = start; i < end; i++) {
+    result.push(i);
+  }
+  return result;
+}
+
+const getDisabledTime = () => {
+  debugger;
+  const currentHours = moment().get("hours");
+  const currentMinutes = moment().get("minutes");
+
+  return {
+    disabledHours: () => range(0, currentHours),
+    disabledMinutes: () => range(0, currentMinutes),
+  };
+};
+
 const handleValueProp = (value: any) => {
   if (typeof value === "string") {
     const date = getDateWithTimezone(value);
@@ -32,7 +51,9 @@ export const DateTime = ({
   withSelectBefore = false,
   span = DEFAULT_SPAN,
 }: FieldProps) => {
-  const showTime = /hh:mm/gi.test(format);
+  const showTime = /hh:mm/gi.test(format)
+    ? { hideDisabledOptions: true }
+    : false;
 
   const formatFunc = (value: string) =>
     value ? getDateWithTimezone(value).format(format) : "";
@@ -59,6 +80,7 @@ export const DateTime = ({
             showTime={showTime}
             inputReadOnly={readonly}
             disabledDate={!withSelectBefore ? getDisabledDate : void 0}
+            disabledTime={!withSelectBefore ? getDisabledTime : void 0}
           />
         )}
       </Form.Item>
