@@ -1,9 +1,8 @@
 import React from "react";
 import moment from "moment-timezone";
-import { Col, Form, DatePicker, Typography } from "antd";
+import { Col, Form, DatePicker } from "antd";
 import { DATE_FORMATS, DEFAULT_SPAN, FieldProps } from "../../../constants";
 import { getDateWithTimezone } from "../../../utils";
-import { FormInstance } from "antd/lib/form";
 import { Readonly } from "../readonly";
 
 const getDisabledDate = (currentDate: moment.Moment) =>
@@ -19,14 +18,15 @@ function range(start: number, end: number) {
   return result;
 }
 
-const getDisabledTime = () => {
-  debugger;
+const getDisabledTime = (selectedDate: moment.Moment | null) => {
   const currentHours = moment().get("hours");
   const currentMinutes = moment().get("minutes");
+  const isAfterCurrentHour = moment().endOf("hour").isAfter(selectedDate);
+  const isAfterCurrentDay = moment().endOf("day").isAfter(selectedDate);
 
   return {
-    disabledHours: () => range(0, currentHours),
-    disabledMinutes: () => range(0, currentMinutes),
+    disabledHours: () => (isAfterCurrentDay ? range(0, currentHours) : []),
+    disabledMinutes: () => (isAfterCurrentHour ? range(0, currentMinutes) : []),
   };
 };
 
