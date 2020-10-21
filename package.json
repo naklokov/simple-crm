@@ -1,6 +1,6 @@
 {
   "name": "olivje.crm.pl",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "http://localhost:3000",
   "author": {
     "name": "ukropchik"
@@ -24,7 +24,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/react-text-mask": "5.4.6",
     "@types/react-virtualized": "^9.21.10",
-    "antd": "^4.6.3",
+    "antd": "4.7.2",
     "axios": "^0.19.2",
     "i18next": "^19.4.5",
     "js-cookie": "^2.2.1",
@@ -48,15 +48,17 @@
     "type": "git",
     "url": "http://bitbucket.org/olivje_group/olivje.crm.pl.git"
   },
-  "proxy": "http://176.212.190.167:8080",
+  "proxy": "http://176.212.190.167:8081",
   "scripts": {
     "start": "react-scripts start",
     "server": "node stub/server.js",
     "dev": "concurrently \"npm run server\" \"npm start\"",
     "rest": "npm start",
     "build": "react-scripts build",
-    "deploy": "node scripts/ftp-deploy.js",
-    "publish": "npm run build && npm run deploy",
+    "deploy:dev": "node scripts/dev-ftp-deploy.js",
+    "deploy:prom": "node scripts/prom-ftp-deploy.js",
+    "publish:dev": "npm run build && npm run deploy:dev",
+    "publish:prom": "npm run build && npm run deploy:prom",
     "test": "react-scripts test",
     "test:coverage": "npm test -- --coverage",
     "eject": "react-scripts eject"

@@ -21,7 +21,7 @@ export const Done = ({ id, title = "", isOwner = true }: DoneProps) => {
 
   return (
     <Button style={{ paddingLeft: 0 }} type="link" onClick={handleClick}>
-      <HighlightTextWrapper text={title} searched="" />
+      <HighlightTextWrapper text={title} />
     </Button>
   );
 };

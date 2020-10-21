@@ -1,15 +1,34 @@
 import React from "react";
 import moment from "moment-timezone";
-import { Col, Form, DatePicker, Typography } from "antd";
+import { Col, Form, DatePicker } from "antd";
 import { DATE_FORMATS, DEFAULT_SPAN, FieldProps } from "../../../constants";
 import { getDateWithTimezone } from "../../../utils";
-import { FormInstance } from "antd/lib/form";
 import { Readonly } from "../readonly";
 
 const getDisabledDate = (currentDate: moment.Moment) =>
   getDateWithTimezone(currentDate.toISOString()).isBefore(
     moment().startOf("day")
   );
+
+function range(start: number, end: number) {
+  const result = [];
+  for (let i = start; i < end; i++) {
+    result.push(i);
+  }
+  return result;
+}
+
+const getDisabledTime = (selectedDate: moment.Moment | null) => {
+  const currentHours = moment().get("hours");
+  const currentMinutes = moment().get("minutes");
+  const isAfterCurrentHour = moment().endOf("hour").isAfter(selectedDate);
+  const isAfterCurrentDay = moment().endOf("day").isAfter(selectedDate);
+
+  return {
+    disabledHours: () => (isAfterCurrentDay ? range(0, currentHours) : []),
+    disabledMinutes: () => (isAfterCurrentHour ? range(0, currentMinutes) : []),
+  };
+};
 
 const handleValueProp = (value: any) => {
   if (typeof value === "string") {
@@ -32,7 +51,9 @@ export const DateTime = ({
   withSelectBefore = false,
   span = DEFAULT_SPAN,
 }: FieldProps) => {
-  const showTime = /hh:mm/gi.test(format);
+  const showTime = /hh:mm/gi.test(format)
+    ? { hideDisabledOptions: true }
+    : false;
 
   const formatFunc = (value: string) =>
     value ? getDateWithTimezone(value).format(format) : "";
@@ -59,6 +80,7 @@ export const DateTime = ({
             showTime={showTime}
             inputReadOnly={readonly}
             disabledDate={!withSelectBefore ? getDisabledDate : void 0}
+            disabledTime={!withSelectBefore ? getDisabledTime : void 0}
           />
         )}
       </Form.Item>

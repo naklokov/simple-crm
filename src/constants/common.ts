@@ -39,3 +39,26 @@ export const FORM_NAMES = {
   TASK_COMPLETED: "taskCompleted",
   TASK_VIEW: "taskView",
 };
+
+export const BASE_PHONE_MASK = [
+  "+",
+  "7",
+  " ",
+  "(",
+  /[1-9]/,
+  /\d/,
+  /\d/,
+  ")",
+  " ",
+  /\d/,
+  /\d/,
+  /\d/,
+  "-",
+  /\d/,
+  /\d/,
+  "-",
+  /\d/,
+  /\d/,
+];
+
+export const FULL_PHONE_MASK = [...BASE_PHONE_MASK, ",", " ", /\d/, /\d/, /\d/];

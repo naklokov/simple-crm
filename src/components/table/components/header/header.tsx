@@ -9,18 +9,20 @@ interface HeaderProps {
   withSearch?: boolean;
   onSearch?: (value: string) => void;
   extra?: JSX.Element;
+  onResetAllFilters: () => void;
 }
 
 export const Header = ({
   withSearch = false,
   onSearch = noop,
   extra,
+  onResetAllFilters,
 }: HeaderProps) => {
   const [t] = useTranslation("table");
   const [value, setValue] = useState("");
 
   const handleClear = useCallback(() => {
-    onSearch("");
+    onResetAllFilters();
     setValue("");
   }, [onSearch]);
 

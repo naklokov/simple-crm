@@ -14,7 +14,9 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFullUrl,
+  useFormValues,
 } from "../../utils";
+import { isEmpty } from "lodash";
 
 interface CompleteTaskProps {
   fields: FieldProps[];
@@ -32,11 +34,12 @@ export const CompleteTask = ({
   const metaCompletedInfo = {
     taskStatus: TASK_STATUSES.COMPLETED,
   };
+  const { values } = useFormValues(FORM_NAMES.TASK_COMPLETED);
 
   const onFinish = async (data: Store) => {
     setLoading(true);
     try {
-      const url = getFullUrl(urls.tasks.entity, data.id);
+      const url = getFullUrl(urls.tasks.entity, values.id);
       const responce = await axios.put(url, { ...data, ...metaCompletedInfo });
       defaultSuccessHandler(t("message.success.completed"));
       onClose(void 0, responce?.data);
@@ -46,6 +49,10 @@ export const CompleteTask = ({
       setLoading(false);
     }
   };
+
+  if (isEmpty(values)) {
+    return null;
+  }
 
   return (
     <DrawerForm

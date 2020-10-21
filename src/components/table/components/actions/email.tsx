@@ -2,15 +2,18 @@ import React, { useCallback, useContext } from "react";
 import { Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
 import { HighlightTextWrapper } from "../../../../wrappers";
-import { SearchedContext } from "../../utils";
+import { SearchedAllContext, SearchedColumnsContext } from "../../utils";
+import { ColumnProps, RecordType } from "../../../../constants";
 
 interface EmailProps {
   mail: string;
+  column?: ColumnProps;
 }
 
-export const Email = ({ mail }: EmailProps) => {
+export const Email = ({ mail, column }: EmailProps) => {
   const [t] = useTranslation("table");
-  const searched = useContext(SearchedContext);
+  const searched = useContext(SearchedAllContext);
+  const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
 
   const handleCall = useCallback(() => {
     window.location.assign(`mailto:${mail}`);
@@ -23,7 +26,13 @@ export const Email = ({ mail }: EmailProps) => {
       placement="left"
     >
       <Button style={{ padding: 0 }} type="link">
-        <HighlightTextWrapper text={mail} searched={searched} />
+        <HighlightTextWrapper
+          text={mail}
+          searched={[
+            searched,
+            searchedColumns?.[column?.columnCode ?? ""] ?? "",
+          ]}
+        />
       </Button>
     </Popconfirm>
   );

@@ -29,5 +29,5 @@ var config = {
 
 ftpDeploy
   .deploy(config)
-  .then((res) => console.log("finished:", res))
+  .then((res) => console.log("prom has been published:", res))
   .catch((err) => console.log(err));

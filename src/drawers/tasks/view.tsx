@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { setTableLoading } from "../../__data__";
 import { ComponentPermissionsChecker } from "../../wrappers";
+import { isEmpty } from "lodash";
 
 interface ViewTaskProps {
   fields: FieldProps[];
@@ -37,18 +38,16 @@ export const ViewTask = ({
   title,
 }: ViewTaskProps) => {
   const [t] = useTranslation("tasksDrawer");
-  const {
-    values: { id, isOwner },
-  } = useFormValues(FORM_NAMES.TASK_VIEW);
+  const { values } = useFormValues(FORM_NAMES.TASK_VIEW);
   const [loading, setLoading] = useState(false);
 
   const fetchDelete = async () => {
     setTableLoading(true);
     try {
-      const url = getFullUrl(urls.tasks.entity, id);
+      const url = getFullUrl(urls.tasks.entity, values.id);
       await axios.delete(url);
       defaultSuccessHandler(t("message.success.delete"));
-      onDelete(id);
+      onDelete(values.id);
     } catch (error) {
       defaultErrorHandler({ error });
     } finally {
@@ -58,10 +57,10 @@ export const ViewTask = ({
 
   const handleCompleted = useCallback(
     (event: React.MouseEvent) => {
-      onCompleted(id);
+      onCompleted(values.id);
       event.preventDefault();
     },
-    [id, onCompleted]
+    [values.id, onCompleted]
   );
 
   const menu = (
@@ -109,6 +108,10 @@ export const ViewTask = ({
     }
   };
 
+  if (isEmpty(values)) {
+    return null;
+  }
+
   return (
     <DrawerForm
       title={title}
@@ -117,11 +120,12 @@ export const ViewTask = ({
       onClose={onClose}
       visible={visible}
       submitLoading={loading}
+      initialValues={values}
       onFinish={onFinish}
       headerButtons={[
         <ComponentPermissionsChecker
           availablePermissions={PERMISSIONS_SET.TASK_UPDATE}
-          isOwner={isOwner}
+          isOwner={values.isOwner}
         >
           <DropdownMenu key="more" />
         </ComponentPermissionsChecker>,
