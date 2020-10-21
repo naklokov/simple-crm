@@ -9,6 +9,8 @@ export type FieldType =
   | "date"
   | "dictionary"
   | "entity"
+  | "email"
+  | "href"
   | "phone";
 
 export type FieldFormatType = "textarea" | string;

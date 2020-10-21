@@ -10,7 +10,16 @@ interface EntityWithId {
   id: string;
 }
 
-const { Text, TextArea, DateTime, Dictionary, Phone, Entity } = fields;
+const {
+  Text,
+  TextArea,
+  DateTime,
+  Dictionary,
+  Phone,
+  Entity,
+  Email,
+  Href,
+} = fields;
 
 export const isValuesChanged = (
   prev: { [key: string]: any },
@@ -28,6 +37,10 @@ export const createFormField = (field: FieldProps): JSX.Element => {
       }
 
       return <Text {...field} />;
+    case "href":
+      return <Href {...field} />;
+    case "email":
+      return <Email {...field} />;
     case "phone":
       return <Phone {...field} />;
     case "date":
@@ -163,4 +176,9 @@ export const checkINN = (value: any) => {
   }
 
   return false;
+};
+
+export const checkEmail = (email: string) => {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
 };

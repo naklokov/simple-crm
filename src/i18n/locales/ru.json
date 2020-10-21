@@ -195,5 +195,9 @@
     "placeholder.date": "Выберите дату",
     "search": "Поиск",
     "reset": "Сброс"
+  },
+  "fields": {
+    "email.tooltip": "Написать письмо",
+    "href.tooltip": "Перейти по ссылке"
   }
 }

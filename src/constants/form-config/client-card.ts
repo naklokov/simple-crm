@@ -171,7 +171,7 @@ export const upper: UpperProps = {
           fieldCode: "email",
           fieldName: "Email",
           fieldDescription: "",
-          type: "string",
+          type: "email",
           readonly: false,
           disabled: false,
           span: { md: 24 },
@@ -271,7 +271,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          type: "string",
+          type: "email",
           rules: [
             {
               type: "email",
@@ -309,7 +309,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          type: "string",
+          type: "href",
           rules: [],
           permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },

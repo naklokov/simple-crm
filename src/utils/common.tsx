@@ -199,3 +199,8 @@ export const handlePressEnter = (
     e.preventDefault();
   }
 };
+
+export const openUrlTargetBlank = (url: string) => {
+  const win = window.open(url, "_blank");
+  win?.focus();
+};
