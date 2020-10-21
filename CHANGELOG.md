@@ -1,6 +1,6 @@
 # Список обновлений
 
-## [0.0.1](https://bitbucket.org/olivje_group/olivje.crm.pl/commits/c43a3536c1133675e0a766873c16ab8f5f19ea41)
+## [0.0.1](https://bitbucket.org/olivje_group/olivje.crm.pl/commits/fa8625d7bc66580664283ae21fb291657baf3db5)
 
 #### 21.10.2020
 
@@ -14,7 +14,7 @@
 
 - _fix:_ Заблокировать выбор даты и времени до текущей минуты [OLVE-247](https://olivje-group.atlassian.net/browse/OLVE-247)
 
-## [0.0.0](https://bitbucket.org/olivje_group/olivje.crm.pl/commits/69ac2c79c7aa6c2283a2144c71ab0e0a3d2e3559)
+## [0.0.0](https://bitbucket.org/olivje_group/olivje.crm.pl/commits/bcd791f2ce1250f0ed8c3cd19c9468b7b949d1d2)
 
 #### 10.10.2020
 
