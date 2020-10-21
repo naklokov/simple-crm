@@ -24,7 +24,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/react-text-mask": "5.4.6",
     "@types/react-virtualized": "^9.21.10",
-    "antd": "^4.6.3",
+    "antd": "4.7.2",
     "axios": "^0.19.2",
     "i18next": "^19.4.5",
     "js-cookie": "^2.2.1",
