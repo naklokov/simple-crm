@@ -16,7 +16,7 @@ export const Delete = ({ onClick }: DeleteProps) => {
   return (
     <ComponentPermissionsChecker
       availablePermissions={PERMISSIONS_SET.CLIENT_DELETE}
-      isOwner={values?.isOwner}
+      hasRight={values?.isOwner?.DELETE}
     >
       <Popconfirm
         title={t("confirm.delete")}

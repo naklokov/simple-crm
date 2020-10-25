@@ -11,10 +11,11 @@ import {
   QueryProps,
   FORM_NAMES,
   PERMISSIONS,
+  ProfileInfoProps,
+  State,
 } from "../../constants";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 import { useParams } from "react-router";
-import { ProfileInfoProps, State } from "../../__data__/interfaces";
 import { connect } from "react-redux";
 
 interface AddTaskProps {
@@ -65,7 +66,7 @@ export const AddTask = ({
       visible={visible}
       submitLoading={loading}
       onFinish={onFinish}
-      permissions={[PERMISSIONS.TASKS.ADD]}
+      permissions={[PERMISSIONS.TASKS["ADD.ALL"]]}
     />
   );
 };

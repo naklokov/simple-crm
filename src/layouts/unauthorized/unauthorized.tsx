@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import style from "./unauthorized.module.scss";
 import { logo } from "../../assets/img";
-import { State } from "../../__data__/interfaces";
+import { State } from "../../constants";
 import { connect } from "react-redux";
 import { Loader } from "../../components";
 import { checkAuthCookie } from "../../utils";

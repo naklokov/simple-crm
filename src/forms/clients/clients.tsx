@@ -1,10 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { connect } from "react-redux";
 import { TableAll, TablePersonal } from "./components";
-import { PERMISSIONS } from "../../constants";
+import { PERMISSIONS, ProfileInfoProps, State } from "../../constants";
 
 import style from "./clients.module.scss";
-import { ProfileInfoProps, State } from "../../__data__/interfaces";
 import { useTranslation } from "react-i18next";
 import ClientsHeader from "./header";
 import { PagePermissionsChecker } from "../../wrappers";
@@ -12,11 +11,6 @@ import { Radio } from "antd";
 import { RadioChangeEvent } from "antd/lib/radio";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { setTableLoading } from "../../__data__";
-
-// TODO проверить пермишены
-const {
-  CLIENTS: { GET, GET_OWNER },
-} = PERMISSIONS;
 
 const CLIENTS_RADIO_OPTIONS = {
   MY: "myClients",
@@ -59,7 +53,9 @@ export const Clients = ({ profileInfo }: ClientsProps) => {
     selectedRadio === CLIENTS_RADIO_OPTIONS.ALL ? TableAll : TablePersonal;
 
   return (
-    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER]}>
+    <PagePermissionsChecker
+      availablePermissions={[PERMISSIONS.CLIENTS["GET.ALL"]]}
+    >
       <div>
         <div className={style.header}>
           <ClientsHeader />

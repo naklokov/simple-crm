@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { PERMISSIONS, BREADCRUMB_ROUTES } from "../../constants";
 import { getItemRender } from "../../utils";
@@ -20,7 +20,7 @@ export const TasksHeader = ({ onAddClick }: TasksHeaderProps) => {
   };
 
   const extra = (
-    <ComponentPermissionsChecker availablePermissions={[TASKS.ADD]}>
+    <ComponentPermissionsChecker availablePermissions={[TASKS["ADD.ALL"]]}>
       <Button type="primary" onClick={onAddClick}>
         {t("button.add.title")}
       </Button>

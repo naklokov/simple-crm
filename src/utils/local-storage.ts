@@ -1,4 +1,4 @@
-import { PersistState } from "../__data__/interfaces";
+import { PersistState } from "../constants";
 import { logger } from ".";
 
 const STATE_ITEM = "state";

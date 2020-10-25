@@ -14,7 +14,7 @@ export const COLUMNS: ColumnProps[] = [
     columnActions: [
       {
         actionName: "",
-        permissions: [CLIENTS.GET, CLIENTS.GET_OWNER],
+        permissions: [],
         actionType: "href",
         href: urls.clients.path,
       },

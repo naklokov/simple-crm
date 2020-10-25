@@ -11,10 +11,6 @@ import { getFullUrl, getItemRender } from "../../utils";
 import { Button, PageHeader } from "antd";
 import { ComponentPermissionsChecker } from "../../wrappers";
 
-const {
-  CLIENTS: { ADD },
-} = PERMISSIONS;
-
 export const ClientsHeader = ({ title }: { title?: string }) => {
   const [t] = useTranslation("clients");
   const history = useHistory();
@@ -30,7 +26,9 @@ export const ClientsHeader = ({ title }: { title?: string }) => {
   };
 
   const extra = (
-    <ComponentPermissionsChecker availablePermissions={[ADD]}>
+    <ComponentPermissionsChecker
+      availablePermissions={[PERMISSIONS.CLIENTS["ADD.ALL"]]}
+    >
       <Button type="primary" onClick={handleClickAdd}>
         {title || t("button.add.title")}
       </Button>

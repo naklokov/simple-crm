@@ -1,10 +1,14 @@
 import React, { useState, useCallback } from "react";
 import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
-import { DEFAULT_SPAN, FieldProps } from "../../../constants";
+import {
+  DEFAULT_SPAN,
+  FieldProps,
+  ProfileInfoProps,
+  State,
+} from "../../../constants";
 import { defaultErrorHandler, getRsqlParams } from "../../../utils";
 import { connect } from "react-redux";
-import { ProfileInfoProps, State } from "../../../__data__/interfaces";
 import { getSearchByColumnsRsql } from "../../../forms/clients/utils";
 
 const { Option } = Select;

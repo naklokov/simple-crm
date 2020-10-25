@@ -1,7 +1,6 @@
 import React from "react";
-import { ErrorAppState } from "../../__data__/interfaces";
 import { ClientError, ServerError } from "./components";
-import { http } from "../../constants";
+import { http, ErrorAppState } from "../../constants";
 import { useLocation } from "react-router";
 import NotFoundScreen from "./not-found-screen";
 

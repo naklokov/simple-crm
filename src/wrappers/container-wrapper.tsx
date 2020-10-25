@@ -3,13 +3,14 @@ import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
 import { connect } from "react-redux";
 import {
-  ClientEntityProps,
+  State,
+  ProfileInfoProps,
+  ErrorAppState,
   TaskEntityProps,
   TASK_STATUSES,
   urls,
 } from "../constants";
 import { defaultErrorHandler, useFetch, getRsqlParams } from "../utils";
-import { State, ProfileInfoProps, ErrorAppState } from "../__data__/interfaces";
 import {
   setLoading,
   setProfileInfo,

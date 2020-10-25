@@ -31,7 +31,7 @@ store.subscribe(() => {
 
 axios.interceptors.response.use(
   (response) => response,
-  errorsInterceptor(store.dispatch, store.getState())
+  errorsInterceptor(store.dispatch, store.getState()?.app?.error ?? {})
 );
 
 const App = () => (

@@ -1,11 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { Table as TableUI } from "antd";
 
-import {
-  ColumnProps,
-  ActionProps,
-  RecordType,
-} from "../../constants/interfaces";
+import { ColumnProps, ActionProps, RecordType, State } from "../../constants";
 import { useTranslation } from "react-i18next";
 import {
   getActions,
@@ -21,7 +17,6 @@ import noop from "lodash/noop";
 
 import style from "./table.module.scss";
 import { setTableLoading } from "../../__data__";
-import { State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect, useDispatch } from "react-redux";
 import { TablePaginationConfig } from "antd/lib/table";

@@ -1,6 +1,9 @@
 import moment, { Moment } from "moment-timezone";
-import { TaskEntityProps } from "../../constants/interfaces";
-import { DATE_FORMATS, RSQL_OPERATORS_MAP } from "../../constants";
+import {
+  DATE_FORMATS,
+  RSQL_OPERATORS_MAP,
+  TaskEntityProps,
+} from "../../constants";
 import { getOverdueTasks } from "../../utils";
 import { isEmpty } from "lodash";
 import { getDateWithTimezone } from "../../utils";

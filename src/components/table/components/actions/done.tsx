@@ -6,16 +6,16 @@ import { TableActionsContext } from "../../utils";
 interface DoneProps {
   id: string;
   title?: string;
-  isOwner?: boolean;
+  hasRight?: boolean;
 }
 
-export const Done = ({ id, title = "", isOwner = true }: DoneProps) => {
+export const Done = ({ id, title = "", hasRight = true }: DoneProps) => {
   const { onDoneRow } = useContext(TableActionsContext);
   const handleClick = useCallback(() => {
     onDoneRow(id);
   }, [id, onDoneRow]);
 
-  if (!isOwner) {
+  if (!hasRight) {
     return null;
   }
 

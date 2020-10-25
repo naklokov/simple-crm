@@ -1,6 +1,6 @@
 import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
-import { PERMISSIONS, PERMISSIONS_SET } from "../permissions";
+import { PERMISSIONS_SET } from "../permissions";
 import { DATE_FORMATS } from "../common";
 import { phoneRule, vatRule } from "../../utils";
 
@@ -321,7 +321,7 @@ export const upper: UpperProps = {
           format: "textarea",
           disabled: false,
           readonly: false,
-          // span: { lg: 12, xl: 10 },
+          span: { lg: 12, xl: 10 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
           permissions: PERMISSIONS_SET.CLIENT_UPDATE,
@@ -331,12 +331,12 @@ export const upper: UpperProps = {
           fieldName: "Дата регистрации",
           fieldDescription: "",
           type: "date",
-          readonly: false,
+          readonly: true,
           placeholder: PLACEHOLDER_DEFAULT,
-          disabled: false,
+          disabled: true,
           format: "DD.MM.yyyy",
           rules: [],
-          permissions: [PERMISSIONS.CLIENTS.UPDATE],
+          permissions: [],
         },
       ],
       _links: {

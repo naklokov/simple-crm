@@ -5,6 +5,8 @@ import {
   QueryProps,
   FORM_NAMES,
   PERMISSIONS_SET,
+  ProfileInfoProps,
+  State,
 } from "../../../../constants";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
@@ -25,7 +27,6 @@ import { editClient } from "../../utils";
 
 import style from "./requisites.module.scss";
 import { connect } from "react-redux";
-import { ProfileInfoProps, State } from "../../../../__data__/interfaces";
 
 interface RequisitesProps {
   tab: TabProps;
@@ -74,22 +75,22 @@ export const Requisites = ({ tab, profileInfo }: RequisitesProps) => {
         <Row
           gutter={[GUTTER_FULL_WIDTH.HORIZONTAL, GUTTER_FULL_WIDTH.VERTICAL]}
         >
-          {tab.fields?.map((field) => (
-            <ComponentPermissionsChecker
-              key={field.fieldCode}
-              availablePermissions={field.permissions}
-              isOwner={values?.isOwner}
-              mode="readonly"
-            >
-              <FormContext.Provider value={form}>
+          <FormContext.Provider value={form}>
+            {tab.fields?.map((field) => (
+              <ComponentPermissionsChecker
+                key={field.fieldCode}
+                availablePermissions={field.permissions}
+                hasRight={values?.isOwner?.UPDATE}
+                mode="readonly"
+              >
                 {createFormField(field)}
-              </FormContext.Provider>
-            </ComponentPermissionsChecker>
-          ))}
+              </ComponentPermissionsChecker>
+            ))}
+          </FormContext.Provider>
         </Row>
         <ComponentPermissionsChecker
           availablePermissions={PERMISSIONS_SET.CLIENT_UPDATE}
-          isOwner={values?.isOwner}
+          hasRight={values?.isOwner?.UPDATE}
         >
           <FormFooter
             loading={submitLoading}

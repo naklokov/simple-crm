@@ -17,7 +17,7 @@ interface DeleteProps {
   onDelete?: (id: string) => void;
   title?: string;
   href?: string;
-  isOwner?: boolean;
+  hasRight?: boolean;
 }
 
 export const Delete = ({
@@ -25,7 +25,7 @@ export const Delete = ({
   title = "",
   href,
   setTableLoading,
-  isOwner = true,
+  hasRight = true,
 }: DeleteProps) => {
   const [t] = useTranslation("table");
   const { onDeleteRow } = useContext(TableActionsContext);
@@ -48,7 +48,7 @@ export const Delete = ({
     fetchDelete();
   }, [onDeleteRow, id, href]);
 
-  if (!isOwner) {
+  if (!hasRight) {
     return null;
   }
 

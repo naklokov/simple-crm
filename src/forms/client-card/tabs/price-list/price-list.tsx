@@ -6,6 +6,8 @@ import {
   ClientEntityProps,
   QueryProps,
   PERMISSIONS_SET,
+  ProfileInfoProps,
+  State,
 } from "../../../../constants";
 import { Table } from "../../../../components";
 import {
@@ -16,7 +18,6 @@ import {
   defaultSuccessHandler,
 } from "../../../../utils";
 import { useParams } from "react-router";
-import { ProfileInfoProps, State } from "../../../../__data__/interfaces";
 import { setTableLoading } from "../../../../__data__";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";

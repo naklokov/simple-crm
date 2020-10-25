@@ -1,4 +1,4 @@
-import { ColumnProps, ColumnType } from "../../../constants/interfaces";
+import { ColumnProps, ColumnType } from "../../../constants";
 
 const getSorterFunction = (
   columnCode: string,

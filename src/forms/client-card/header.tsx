@@ -7,9 +7,9 @@ import {
   FORM_NAMES,
   QueryProps,
   urls,
+  State,
 } from "../../constants";
 import { connect } from "react-redux";
-import { State } from "../../__data__/interfaces";
 import { useHistory, useParams } from "react-router";
 import { PageHeader } from "antd";
 import {

@@ -4,13 +4,12 @@ import { isEmpty } from "lodash";
 import moment from "moment-timezone";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { State } from "../../__data__/interfaces";
 import { getOverdueTasks } from "../../utils";
 import { notification } from "antd";
 import { getCurrentTasks } from "./utils";
 import { CurrentDescription, OverdueDescription } from "./components";
 import { useHistory } from "react-router";
-import { TaskEntityProps, TASK_TYPES_MAP } from "../../constants";
+import { TaskEntityProps, TASK_TYPES_MAP, State } from "../../constants";
 
 const MINUTE = 60000;
 

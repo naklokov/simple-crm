@@ -3,8 +3,7 @@ import moment from "moment";
 import { Store } from "antd/lib/form/interface";
 
 import { getFullUrl } from "../../../utils";
-import { urls, ClientEntityProps } from "../../../constants";
-import { ProfileInfoProps } from "../../../__data__/interfaces";
+import { urls, ClientEntityProps, ProfileInfoProps } from "../../../constants";
 
 export const editClient = async (id: string, data: Store) => {
   const url = getFullUrl(urls.clientCard.entity, id);

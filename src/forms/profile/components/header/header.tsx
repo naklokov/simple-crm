@@ -2,7 +2,7 @@ import React from "react";
 import { random } from "lodash";
 import { Avatar } from "../../../../components";
 import { Typography, Tabs } from "antd";
-import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
+import { State, ProfileInfoProps } from "../../../../constants";
 import { connect } from "react-redux";
 import { TABS_CONTENT } from "../../constansts";
 
