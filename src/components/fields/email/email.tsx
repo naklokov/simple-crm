@@ -32,8 +32,9 @@ export const Email = ({
     window.location.assign(getEmailLink(value));
   }, [value]);
 
+  const colSpan = { ...DEFAULT_SPAN, ...span };
   return (
-    <Col {...span} key={fieldCode}>
+    <Col {...colSpan} key={fieldCode}>
       <Form.Item
         style={{ width: "100%" }}
         name={fieldCode}

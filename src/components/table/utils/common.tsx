@@ -61,12 +61,14 @@ export const getColumn = (
   searchedColumns: RecordType,
   permissions: string[] = []
 ) => {
-  const { columnCode, columnName } = column;
+  const { columnCode, columnName, width, fixed } = column;
 
   return {
     key: columnCode,
     title: columnName,
     dataIndex: columnCode,
+    width,
+    fixed,
     ...getSorterProp(column),
     ...getEditableProp(column, permissions),
     ...getColumnSearchProp(column, searchedColumns),

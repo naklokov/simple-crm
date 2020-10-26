@@ -6,11 +6,17 @@ import { configureStore } from "@reduxjs/toolkit";
 import { Routes } from "./routes";
 import { reducers } from "../__data__";
 import { errorsInterceptor } from "./interceptors";
-import { storage } from "../utils";
+import { storage, checkMobile } from "../utils";
 import { ConfigProvider, message } from "antd";
 
 import ruRu from "antd/es/locale/ru_RU";
 import { ErrorBoundary } from "../wrappers";
+
+declare global {
+  interface Window {
+    isMobile: boolean;
+  }
+}
 
 message.config({
   maxCount: 1,
@@ -33,6 +39,8 @@ axios.interceptors.response.use(
   (response) => response,
   errorsInterceptor(store.dispatch, store.getState()?.app?.error ?? {})
 );
+
+window.isMobile = checkMobile();
 
 const App = () => (
   <ConfigProvider locale={ruRu}>

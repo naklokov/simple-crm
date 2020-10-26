@@ -59,8 +59,9 @@ export const Entity = ({
     }
   }, []);
 
+  const colSpan = { ...DEFAULT_SPAN, ...span };
   return (
-    <Col {...span} key={fieldCode}>
+    <Col {...colSpan} key={fieldCode}>
       <Form.Item
         name={fieldCode}
         label={fieldName}

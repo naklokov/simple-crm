@@ -41,6 +41,7 @@ export interface SpanProps {
   md?: number;
   xl?: number;
   lg?: number;
+  sm?: number;
 }
 
 export type FullCalendarDateType = "DD.MM.YYYY";
@@ -51,6 +52,8 @@ export type ColumnFormatType =
   | FullCalendarDateTimeType;
 
 export type TabPositionType = "lower" | "upper" | undefined;
+
+export type FixedPositionType = "left" | "right";
 
 // Интерфейсы
 
@@ -93,6 +96,8 @@ export interface ColumnProps {
   titleField?: string;
   valueField?: string;
   format?: ColumnFormatType;
+  width?: number;
+  fixed?: FixedPositionType;
   sorter: any;
   filterable?: boolean;
   filterOperator?: FilterOperaratorType;

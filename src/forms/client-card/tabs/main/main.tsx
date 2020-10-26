@@ -47,7 +47,6 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
   const { values, update } = useFormValues(FORM_NAMES.CLIENT_CARD);
 
   const initialValues = mode === "add" ? getAddMetaValues(profileInfo) : values;
-  const isOwner = values?.isOwner;
 
   const handleValuesChange = (changed: Object, allValues: Object) => {
     const isChanged = isValuesChanged(initialValues, allValues);
@@ -106,7 +105,7 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
                 key={field.fieldCode}
                 availablePermissions={field.permissions}
                 mode="readonly"
-                hasRight={values?.isOwner.UPDATE}
+                hasRight={values?.isOwner?.UPDATE}
                 field={field.fieldCode}
               >
                 {createFormField(field)}

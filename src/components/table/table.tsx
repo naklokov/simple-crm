@@ -138,6 +138,7 @@ export const Table = ({
             components={getEditableTableBody()}
             rowClassName={() => style.editableRow}
             loading={loading || tableLoading}
+            scroll={window.isMobile ? { x: 1500 } : void 0}
           />
         </TableActionsContext.Provider>
       </SearchedColumnsContext.Provider>
