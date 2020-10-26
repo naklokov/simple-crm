@@ -1,11 +1,7 @@
 import React, { useContext } from "react";
 import { connect } from "react-redux";
-import {
-  ColumnProps,
-  RecordType,
-} from "../../../../../constants";
+import { ColumnProps, RecordType, State } from "../../../../../constants";
 import { HighlightTextWrapper } from "../../../../../wrappers";
-import { State } from "../../../../../__data__/interfaces";
 import { SearchedAllContext, SearchedColumnsContext } from "../../../utils";
 
 interface DictionaryProps {

@@ -12,7 +12,7 @@ interface ReadonlyProps {
 
 const DEFAULT_FORMAT = (value: string) => value;
 
-const { Link, Text } = Typography;
+const { Link, Paragraph } = Typography;
 
 export const Readonly = ({
   value = "",
@@ -22,7 +22,7 @@ export const Readonly = ({
 }: ReadonlyProps) => {
   const [t] = useTranslation("readonly");
 
-  if (type === "href") {
+  if (type === "href" && value) {
     return (
       <Link onClick={onClickLink}>
         <strong>{format(value)}</strong>
@@ -31,8 +31,8 @@ export const Readonly = ({
   }
 
   return (
-    <Text>
-      <strong>{format(value) || t("empty")}</strong>
-    </Text>
+    <Paragraph strong ellipsis={{ rows: 2, expandable: true }}>
+      {format(value) || t("empty")}
+    </Paragraph>
   );
 };

@@ -1,9 +1,7 @@
-import { http, ErrorProps } from "../../constants";
+import { http, ErrorProps, State, ErrorAppState } from "../../constants";
 import { logger, logout, defaultErrorHandler } from "../../utils";
-import { message } from "antd";
 import { setError } from "../../__data__";
 import { Dispatch } from "@reduxjs/toolkit";
-import { State } from "../../__data__/interfaces";
 
 const { ERROR_SCREEN_CODES, HTTP_CODES } = http;
 const DEFAULT_ERROR_MESSAGE = "Произошла ошибка";
@@ -20,9 +18,10 @@ interface ErrorResponceProps {
   };
 }
 
-export const errorsInterceptor = (dispatch: Dispatch, state: State) => (
-  errorResponse: ErrorResponceProps
-) => {
+export const errorsInterceptor = (
+  dispatch: Dispatch,
+  errorStore: ErrorAppState
+) => (errorResponse: ErrorResponceProps) => {
   try {
     let originalRequest = errorResponse.config;
     const statusCode = errorResponse?.response?.status;
@@ -37,7 +36,7 @@ export const errorsInterceptor = (dispatch: Dispatch, state: State) => (
       return Promise.reject(errorResponse);
     }
 
-    const hasError = state?.app?.error?.statusCode;
+    const hasError = errorStore?.statusCode;
     if (ERROR_SCREEN_CODES.includes(statusCode) && !originalRequest._retry) {
       if (!hasError) {
         dispatch(setError({ statusCode, ...error }));

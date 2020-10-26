@@ -86,8 +86,8 @@ export const ViewTask = ({
 
   const DropdownMenu = () => {
     return (
-      <Dropdown key="more" overlay={menu}>
-        <Button style={{ padding: "0 8px", border: "none" }}>
+      <Dropdown key="more" overlay={menu} trigger={["click", "hover"]}>
+        <Button style={{ padding: "0 8px" }}>
           <EllipsisOutlined />
         </Button>
       </Dropdown>
@@ -124,10 +124,11 @@ export const ViewTask = ({
       onFinish={onFinish}
       headerButtons={[
         <ComponentPermissionsChecker
+          key="dropdown"
           availablePermissions={PERMISSIONS_SET.TASK_UPDATE}
-          isOwner={values.isOwner}
+          hasRight={values.isOwner?.UPDATE}
         >
-          <DropdownMenu key="more" />
+          <DropdownMenu />
         </ComponentPermissionsChecker>,
       ]}
       permissions={PERMISSIONS_SET.TASK_UPDATE}

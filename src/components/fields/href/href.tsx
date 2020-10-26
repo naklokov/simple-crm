@@ -34,8 +34,9 @@ export const Href = ({
     openUrlTargetBlank(url);
   }, [value]);
 
+  const colSpan = { ...DEFAULT_SPAN, ...span };
   return (
-    <Col {...span} key={fieldCode}>
+    <Col {...colSpan} key={fieldCode}>
       <Form.Item
         style={{ width: "100%" }}
         name={fieldCode}

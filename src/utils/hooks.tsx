@@ -1,9 +1,8 @@
-import { useState, useEffect, SetStateAction } from "react";
+import { useState, useEffect } from "react";
 import axios, { AxiosResponse } from "axios";
 import { defaultErrorHandler } from "./common";
-import { Dispatch } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { State } from "../__data__/interfaces";
+import { EntityOwnerProps, State } from "../constants";
 import { updateForm } from "../__data__";
 
 type MethodType = "get" | "post" | "put" | "delete";
@@ -44,10 +43,16 @@ export const useFetch = ({
   return { response, loading, error };
 };
 
-export const useFormValues = (formName: string) => {
+interface FormReturnProps {
+  values: EntityOwnerProps;
+  update: (data: EntityOwnerProps) => void;
+  clear: () => void;
+}
+
+export const useFormValues = (formName: string): FormReturnProps => {
   const dispatch = useDispatch();
   const values = useSelector(
-    (state: State) => state?.app?.forms?.[formName] ?? {}
+    (state: State) => state?.app?.forms?.[formName] ?? ({} as EntityOwnerProps)
   );
 
   const clear = () => {

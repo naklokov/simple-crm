@@ -19,8 +19,8 @@ import {
   PERMISSIONS,
   TaskEntityProps,
   FORM_NAMES,
+  State,
 } from "../../constants";
-import { State } from "../../__data__/interfaces";
 import { connect } from "react-redux";
 
 import style from "./tasks.module.scss";
@@ -37,9 +37,6 @@ const {
 
 const taskDrawer = drawers.find((o) => o.code === "task");
 const completedDrawer = drawers.find((o) => o.code === "taskCompleted");
-const {
-  TASKS: { GET, GET_OWNER },
-} = PERMISSIONS;
 
 interface TaskProps {
   activeTasks: TaskEntityProps[];
@@ -94,7 +91,9 @@ export const Tasks = ({ activeTasks, setActiveTasks }: TaskProps) => {
 
   const handleTaskComplete = useCallback(
     (id: string) => {
-      completedFormUpdate(activeTasks.find((o) => o.id === id));
+      completedFormUpdate(
+        activeTasks.find((o) => o.id === id) || ({} as TaskEntityProps)
+      );
       setCompletedDrawerVisible(true);
     },
     [activeTasks]
@@ -125,7 +124,9 @@ export const Tasks = ({ activeTasks, setActiveTasks }: TaskProps) => {
   );
 
   return (
-    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER]}>
+    <PagePermissionsChecker
+      availablePermissions={[PERMISSIONS.TASKS["GET.ALL"]]}
+    >
       <div>
         <div className={style.header}>
           <TasksHeader onAddClick={handleAddClick} />

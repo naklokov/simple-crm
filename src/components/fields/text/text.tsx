@@ -12,27 +12,30 @@ export const Text = ({
   disabled = false,
   readonly = false,
   span = DEFAULT_SPAN,
-}: FieldProps) => (
-  <Col {...span} key={fieldCode}>
-    <Form.Item
-      style={{ width: "100%" }}
-      name={fieldCode}
-      label={fieldName}
-      extra={fieldDescription}
-      validateTrigger="onSubmit"
-      rules={rules}
-    >
-      {readonly ? (
-        <Readonly />
-      ) : (
-        <Input
-          autoComplete="off"
-          placeholder={placeholder}
-          disabled={disabled}
-        />
-      )}
-    </Form.Item>
-  </Col>
-);
+}: FieldProps) => {
+  const colSpan = { ...DEFAULT_SPAN, ...span };
+  return (
+    <Col {...colSpan} key={fieldCode}>
+      <Form.Item
+        style={{ width: "100%" }}
+        name={fieldCode}
+        label={fieldName}
+        extra={fieldDescription}
+        validateTrigger="onSubmit"
+        rules={rules}
+      >
+        {readonly ? (
+          <Readonly />
+        ) : (
+          <Input
+            autoComplete="off"
+            placeholder={placeholder}
+            disabled={disabled}
+          />
+        )}
+      </Form.Item>
+    </Col>
+  );
+};
 
 export default Text;

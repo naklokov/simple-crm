@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 
 import { useParams } from "react-router";
 import { useTranslation } from "react-i18next";
-import { FORM_NAMES, PERMISSIONS, QueryProps, urls } from "../../constants";
+import {
+  FORM_NAMES,
+  PERMISSIONS,
+  QueryProps,
+  urls,
+  ProfileInfoProps,
+  State,
+} from "../../constants";
 import { connect } from "react-redux";
-import { ProfileInfoProps, State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { setLoading } from "../../__data__";
 import { getClientCardMode } from "./utils";
@@ -19,18 +25,13 @@ import { PagePermissionsChecker } from "../../wrappers";
 
 import style from "./client-card.module.scss";
 
-//TODO проверить пермишены
-const {
-  CLIENTS: { GET, GET_OWNER },
-} = PERMISSIONS;
-
 interface ClientCardProps {
   profileInfo: ProfileInfoProps;
   setLoading: (loading: boolean) => void;
 }
 
 export const TABS_MAP: {
-  [key: string]: any;
+  [key: string]: (props: any) => any;
 } = {
   main: Main,
   contacts: Contacts,
@@ -79,7 +80,9 @@ export const ClientCard = ({ setLoading }: ClientCardProps) => {
   }
 
   return (
-    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER]}>
+    <PagePermissionsChecker
+      availablePermissions={[PERMISSIONS.CLIENTS["GET.ALL"]]}
+    >
       <div>
         <div className={style.header}>
           <ClientCardHeader />

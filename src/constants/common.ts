@@ -4,7 +4,7 @@ export const DATE_FORMATS = {
   TIME: "HH:mm",
 };
 
-export const DEFAULT_SPAN = { md: 8, lg: 6, xl: 6 };
+export const DEFAULT_SPAN = { xs: 24, sm: 12, md: 8, lg: 6, xl: 6 };
 export const GUTTER_FULL_WIDTH = {
   HORIZONTAL: 48,
   VERTICAL: 16,

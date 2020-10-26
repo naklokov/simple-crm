@@ -1,8 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { CommentEntityProps, urls, DATE_FORMATS } from "../../constants";
+import {
+  CommentEntityProps,
+  urls,
+  DATE_FORMATS,
+  ProfileInfoProps,
+  State,
+} from "../../constants";
 import { Comment as CommentUI, Typography, Skeleton } from "antd";
-import { ProfileInfoProps, State } from "../../__data__/interfaces";
 import {
   defaultErrorHandler,
   getFullUrl,
@@ -71,14 +76,16 @@ export const Comment = ({
   }, [userProfileId, profileInfo, commentAuthor, fetchProfile]);
 
   const handleDeleteComment = useCallback(() => {
-    onDeleteComment(id);
+    if (id) {
+      onDeleteComment(id);
+    }
   }, [comment, id, onDeleteComment]);
 
   const handleEditComment = useCallback(
     (value) => {
       setIsEdit(!isEdit);
 
-      if (isEdit) {
+      if (isEdit && id) {
         onEditComment(id, value);
       }
     },
@@ -86,12 +93,14 @@ export const Comment = ({
   );
 
   const content = getContent(isEdit, commentText, handleEditComment);
-  const actions = getActions(
-    isOwner,
-    isEdit,
-    handleEditComment,
-    handleDeleteComment
-  );
+  const actions = !isEdit
+    ? getActions({
+        hasRightDelete: isOwner?.DELETE ?? true,
+        hasRightUpdate: isOwner?.UPDATE ?? true,
+        onEdit: handleEditComment,
+        onDelete: handleDeleteComment,
+      })
+    : [];
 
   if (loading) {
     return <Skeleton active avatar paragraph={{ rows: 2 }} />;

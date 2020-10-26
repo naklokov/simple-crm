@@ -6,12 +6,10 @@ import { Link } from "react-router-dom";
 import { logout as logoutMethod } from "../../../../utils";
 import { Dispatch } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
-import { ProfileInfoProps, State } from "../../../../__data__/interfaces";
 
 import style from "./profile.module.scss";
 import { useTranslation } from "react-i18next";
-import { urls } from "../../../../constants";
-import { isEmpty } from "lodash";
+import { urls, ProfileInfoProps, State } from "../../../../constants";
 
 interface ProfileProps {
   profileInfo: ProfileInfoProps;

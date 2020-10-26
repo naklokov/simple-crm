@@ -2,8 +2,8 @@ import React, { ReactNode, useCallback, useState } from "react";
 import { Layout, Space } from "antd";
 import { connect } from "react-redux";
 import { About, Logo, Menu, Profile } from "./components";
-import { State } from "../../__data__/interfaces";
-import { ContainerWrapper, NotificationService } from "../../wrappers";
+import { State } from "../../constants";
+import { ContainerWrapper } from "../../wrappers";
 import { Loader } from "../../components";
 import style from "./authorized.module.scss";
 

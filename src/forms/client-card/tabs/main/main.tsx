@@ -7,6 +7,9 @@ import {
   QueryProps,
   FORM_NAMES,
   PERMISSIONS_SET,
+  State,
+  ProfileInfoProps,
+  EntityOwnerProps,
 } from "../../../../constants";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
@@ -21,7 +24,6 @@ import {
 import { Row, Form } from "antd";
 import { FormFooter } from "../../../../components";
 import { useParams, useHistory } from "react-router";
-import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
 import { connect } from "react-redux";
 import { Store } from "antd/lib/form/interface";
 import { useTranslation } from "react-i18next";
@@ -45,7 +47,6 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
   const { values, update } = useFormValues(FORM_NAMES.CLIENT_CARD);
 
   const initialValues = mode === "add" ? getAddMetaValues(profileInfo) : values;
-  const isOwner = values?.isOwner;
 
   const handleValuesChange = (changed: Object, allValues: Object) => {
     const isChanged = isValuesChanged(initialValues, allValues);
@@ -55,7 +56,7 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
   const onFinishAdd = async (values: Store) => {
     setSubmitLoading(true);
     try {
-      const data = { ...initialValues, ...values };
+      const data = { ...initialValues, ...values } as EntityOwnerProps;
       const entity = await addClient(data);
       update(data);
 
@@ -72,7 +73,7 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
   const onFinishEdit = async (values: Store) => {
     setSubmitLoading(true);
     try {
-      const data = { ...initialValues, ...values };
+      const data = { ...initialValues, ...values } as EntityOwnerProps;
       await editClient(id, data);
       update(data);
 
@@ -98,22 +99,23 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
         <Row
           gutter={[GUTTER_FULL_WIDTH.HORIZONTAL, GUTTER_FULL_WIDTH.VERTICAL]}
         >
-          {tab.fields?.map((field) => (
-            <ComponentPermissionsChecker
-              key={field.fieldCode}
-              availablePermissions={field.permissions}
-              mode="readonly"
-              isOwner={isOwner}
-            >
-              <FormContext.Provider value={form}>
+          <FormContext.Provider value={form}>
+            {tab.fields?.map((field) => (
+              <ComponentPermissionsChecker
+                key={field.fieldCode}
+                availablePermissions={field.permissions}
+                mode="readonly"
+                hasRight={values?.isOwner?.UPDATE}
+                field={field.fieldCode}
+              >
                 {createFormField(field)}
-              </FormContext.Provider>
-            </ComponentPermissionsChecker>
-          ))}
+              </ComponentPermissionsChecker>
+            ))}
+          </FormContext.Provider>
         </Row>
         <ComponentPermissionsChecker
-          isOwner={isOwner}
           availablePermissions={PERMISSIONS_SET.CLIENT_UPDATE}
+          hasRight={values?.isOwner?.UPDATE}
         >
           <FormFooter
             loading={submitLoading}

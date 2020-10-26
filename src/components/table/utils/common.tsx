@@ -7,7 +7,7 @@ import { columns } from "../components";
 import {
   ActionProps,
   ColumnProps,
-  EntityProps,
+  EntityOwnerProps,
   RecordType,
 } from "../../../constants";
 import { getSorterProp } from "./sorter";
@@ -61,12 +61,14 @@ export const getColumn = (
   searchedColumns: RecordType,
   permissions: string[] = []
 ) => {
-  const { columnCode, columnName } = column;
+  const { columnCode, columnName, width, fixed } = column;
 
   return {
     key: columnCode,
     title: columnName,
     dataIndex: columnCode,
+    width,
+    fixed,
     ...getSorterProp(column),
     ...getEditableProp(column, permissions),
     ...getColumnSearchProp(column, searchedColumns),
@@ -110,7 +112,7 @@ export const getActions = (
   return {
     title: t("actions.column.title"),
     key: "actions",
-    render: (text: string, entity: EntityProps) =>
+    render: (text: string, entity: EntityOwnerProps) =>
       renderActions(actions, text, entity),
   };
 };
@@ -127,7 +129,7 @@ export const getDataColumns = (
       const actions = columnActions || [];
       return {
         ...columnProps,
-        render: (text: string, entity: EntityProps) =>
+        render: (text: string, entity: EntityOwnerProps) =>
           renderActions(actions, text, entity, column),
       };
     }

@@ -87,7 +87,7 @@
     "actions.email.yes": "Да",
 
     "search.all.placeholder": "Поиск",
-    "search.all.clear": "Очистить все фильтры"
+    "search.all.clear": "Очистить фильтры"
   },
   "clientCard": {
     "button.call": "Звонок",

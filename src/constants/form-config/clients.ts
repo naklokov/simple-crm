@@ -1,20 +1,20 @@
 import { ActionProps, ColumnProps, urls } from "../index";
 import { PERMISSIONS, PERMISSIONS_SET } from "../permissions";
 
-const { CLIENTS } = PERMISSIONS;
-
 export const COLUMNS: ColumnProps[] = [
   {
     columnName: "Наименование",
     columnCode: "shortName",
     columnType: "string",
     columnDescription: "Наименование",
+    width: 300,
+    fixed: "left",
     sorter: true,
     filterable: true,
     columnActions: [
       {
         actionName: "",
-        permissions: [CLIENTS.GET, CLIENTS.GET_OWNER],
+        permissions: [],
         actionType: "href",
         href: urls.clients.path,
       },

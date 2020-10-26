@@ -20,6 +20,7 @@ import {
   QueryProps,
   FORM_NAMES,
   PERMISSIONS_SET,
+  State,
 } from "../../../../constants";
 import { useParams } from "react-router";
 import {
@@ -28,7 +29,6 @@ import {
   CompletedTaskDrawer,
 } from "../../../../drawers";
 import { setActiveTasks } from "../../../../__data__";
-import { State } from "../../../../__data__/interfaces";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
@@ -88,7 +88,9 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
 
   const handleDoneRow = useCallback(
     (id) => {
-      completedFormUpdate(tasks.find((o) => o.id === id));
+      completedFormUpdate(
+        tasks.find((o) => o.id === id) || ({} as TaskEntityProps)
+      );
       setCompletedDrawerVisible(true);
     },
     [tasks]
@@ -96,7 +98,7 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
 
   const handleViewRow = useCallback(
     (id) => {
-      viewFormUpdate(tasks.find((o) => o.id === id));
+      viewFormUpdate(tasks.find((o) => o.id === id) || ({} as TaskEntityProps));
       setViewDrawerVisible(true);
     },
     [tasks]
@@ -137,7 +139,9 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
 
   const handleTaskCompleted = useCallback(
     (id) => {
-      completedFormUpdate(tasks.find((o) => o.id === id));
+      completedFormUpdate(
+        tasks.find((o) => o.id === id) || ({} as TaskEntityProps)
+      );
       setViewDrawerVisible(false);
       setCompletedDrawerVisible(true);
     },
@@ -188,7 +192,7 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
           tabBarExtraContent={{
             left: (
               <ComponentPermissionsChecker
-                isOwner={values?.isOwner}
+                hasRight={values?.isOwner?.UPDATE}
                 availablePermissions={PERMISSIONS_SET.CLIENT_UPDATE}
               >
                 <Button
