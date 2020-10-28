@@ -1,4 +1,4 @@
-import { ActionProps, ColumnProps, urls } from "../index";
+import { ActionProps, ColumnProps, urls } from "../";
 import { PERMISSIONS, PERMISSIONS_SET } from "../permissions";
 
 export const COLUMNS: ColumnProps[] = [
@@ -7,7 +7,6 @@ export const COLUMNS: ColumnProps[] = [
     columnCode: "shortName",
     columnType: "string",
     columnDescription: "Наименование",
-    width: 300,
     fixed: "left",
     sorter: true,
     filterable: true,

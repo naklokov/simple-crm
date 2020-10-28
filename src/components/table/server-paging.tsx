@@ -1,32 +1,38 @@
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { Table } from "../../../../components";
+import { Table } from ".";
 import {
   ClientEntityProps,
   ColumnProps,
   formConfig,
   RecordType,
-  urls,
-} from "../../../../constants";
+  RsqlParamProps,
+  TableProps,
+} from "../../constants";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFiteredEntityArray,
   getSortedParams,
-} from "../../../../utils";
-import { getQueryString } from "../../utils";
+} from "../../utils";
+import { getQueryString } from "./utils";
 import { TablePaginationConfig } from "antd/lib/table";
 
-const { COLUMNS, TABLES } = formConfig.clients;
-
-interface TableProps {
-  extraHeader: JSX.Element;
-  userProfileId?: string;
+interface TableWithServerPagingProps {
+  url: string;
+  table: TableProps;
+  extraHeader?: JSX.Element;
+  extraRsqlParams?: RsqlParamProps[];
 }
 
-export const TablePersonal = ({ extraHeader, userProfileId }: TableProps) => {
-  const [t] = useTranslation("clients");
+export const TableWithServerPaging = ({
+  table,
+  extraHeader,
+  url,
+  extraRsqlParams,
+}: TableWithServerPagingProps) => {
+  const [t] = useTranslation("tableServer");
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<ClientEntityProps[]>([]);
   const [page, setPage] = useState(1);
@@ -35,8 +41,6 @@ export const TablePersonal = ({ extraHeader, userProfileId }: TableProps) => {
   const [searchedAll, setSearchedAll] = useState("");
   const [searchedColumns, setSearchedColumns] = useState<RecordType>({});
   const [total, setTotal] = useState(0);
-
-  const url = urls.clients.paging;
 
   const fetchDataSource = async () => {
     setLoading(true);
@@ -49,8 +53,8 @@ export const TablePersonal = ({ extraHeader, userProfileId }: TableProps) => {
           query: getQueryString({
             searchedAll,
             searchedColumns,
-            userProfileId,
-            columns: COLUMNS,
+            columns: table?.columns ?? [],
+            extraRsqlParams,
           }),
         },
       });
@@ -66,10 +70,8 @@ export const TablePersonal = ({ extraHeader, userProfileId }: TableProps) => {
   };
 
   useEffect(() => {
-    if (userProfileId) {
-      fetchDataSource();
-    }
-  }, [page, pageSize, sortBy, searchedAll, searchedColumns, userProfileId]);
+    fetchDataSource();
+  }, [page, pageSize, sortBy, searchedAll, searchedColumns]);
 
   const handleSearch = useCallback(
     (searchedAll: string) => {
@@ -136,8 +138,8 @@ export const TablePersonal = ({ extraHeader, userProfileId }: TableProps) => {
 
   return (
     <Table
-      _links={TABLES[0]._links}
-      columns={COLUMNS}
+      _links={table?._links ?? {}}
+      columns={table?.columns ?? []}
       extraHeader={extraHeader}
       loading={loading}
       pagination={serverPagination}
@@ -155,4 +157,4 @@ export const TablePersonal = ({ extraHeader, userProfileId }: TableProps) => {
   );
 };
 
-export default TablePersonal;
+export default TableWithServerPaging;

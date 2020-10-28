@@ -81,6 +81,7 @@ export interface TableProps {
   tableCode: string;
   columns: ColumnProps[];
   tableActions: ActionProps[];
+  _links: object;
 }
 
 export type TableSearchColumnsType = {

@@ -131,6 +131,7 @@ export const getEditableProp = (
     return {
       onCell: (record: any) => ({
         record,
+        fixed: column.fixed,
         editable: column.editable,
         dataIndex: column.columnCode,
         title: column.columnName,

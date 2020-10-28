@@ -9,11 +9,14 @@ import {
   ColumnProps,
   EntityOwnerProps,
   RecordType,
+  RsqlParamProps,
+  RSQL_OPERATORS_MAP,
 } from "../../../constants";
 import { getSorterProp } from "./sorter";
 import { getEditableProp } from "./editable";
 import { renderActions } from "./actions";
 import { getColumnSearchProp } from "./column-search";
+import { getRsqlParams } from "../../../utils";
 
 const { Dictionary, Date, Text, Number } = columns;
 
@@ -61,13 +64,12 @@ export const getColumn = (
   searchedColumns: RecordType,
   permissions: string[] = []
 ) => {
-  const { columnCode, columnName, width, fixed } = column;
+  const { columnCode, columnName, fixed } = column;
 
   return {
     key: columnCode,
     title: columnName,
     dataIndex: columnCode,
-    width,
     fixed,
     ...getSorterProp(column),
     ...getEditableProp(column, permissions),

@@ -1,7 +1,13 @@
 import React, { useCallback, useState } from "react";
 import { connect } from "react-redux";
-import { TableAll, TablePersonal } from "./components";
-import { PERMISSIONS, ProfileInfoProps, State } from "../../constants";
+import { Table } from "../../components";
+import {
+  formConfig,
+  PERMISSIONS,
+  ProfileInfoProps,
+  State,
+  urls,
+} from "../../constants";
 
 import style from "./clients.module.scss";
 import { useTranslation } from "react-i18next";
@@ -11,6 +17,7 @@ import { Radio } from "antd";
 import { RadioChangeEvent } from "antd/lib/radio";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { setTableLoading } from "../../__data__";
+import { getEqualRsql } from "../../components/table/utils";
 
 const CLIENTS_RADIO_OPTIONS = {
   MY: "myClients",
@@ -49,8 +56,10 @@ export const Clients = ({ profileInfo }: ClientsProps) => {
     </Radio.Group>
   );
 
-  const Table =
-    selectedRadio === CLIENTS_RADIO_OPTIONS.ALL ? TableAll : TablePersonal;
+  const isPersonalClients = selectedRadio === CLIENTS_RADIO_OPTIONS.ALL;
+  const userProfileRsql = getEqualRsql("userProfileId", profileInfo.id);
+
+  const { TABLES } = formConfig.clients;
 
   return (
     <PagePermissionsChecker
@@ -61,7 +70,20 @@ export const Clients = ({ profileInfo }: ClientsProps) => {
           <ClientsHeader />
         </div>
         <div className={style.container}>
-          <Table extraHeader={radioSelect} userProfileId={profileInfo.id} />
+          {isPersonalClients ? (
+            <Table.Server
+              table={TABLES[0]}
+              url={urls.clients.paging}
+              extraHeader={radioSelect}
+              extraRsqlParams={[userProfileRsql]}
+            />
+          ) : (
+            <Table.Server
+              table={TABLES[0]}
+              url={urls.clients.paging}
+              extraHeader={radioSelect}
+            />
+          )}
         </div>
       </div>
     </PagePermissionsChecker>

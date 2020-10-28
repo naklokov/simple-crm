@@ -21,6 +21,9 @@ import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect, useDispatch } from "react-redux";
 import { TablePaginationConfig } from "antd/lib/table";
 
+import TableServer from "./server-paging";
+import TableClient from "./client-paging";
+
 interface TableProps {
   dataSource: any[];
   columns?: ColumnProps[];
@@ -138,7 +141,7 @@ export const Table = ({
             components={getEditableTableBody()}
             rowClassName={() => style.editableRow}
             loading={loading || tableLoading}
-            scroll={window.isMobile ? { x: 1500 } : void 0}
+            scroll={window.isMobile ? { x: 1300 } : void 0}
           />
         </TableActionsContext.Provider>
       </SearchedColumnsContext.Provider>
@@ -152,5 +155,8 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators({ setTableLoading }, dispatch);
+
+Table.Server = TableServer;
+Table.Client = TableClient;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);

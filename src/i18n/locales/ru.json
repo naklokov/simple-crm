@@ -70,9 +70,14 @@
     "title": "Клиенты",
     "title.my": "Мои клиенты",
     "button.add.title": "＋ Добавить клиента",
-    "message.delete.success": "Клиент успешно удален",
     "radio.my": "Мои клиенты",
     "radio.all": "Все клиенты"
+  },
+  "tableServer": {
+    "message.delete.success": "Запись успешно удалена"
+  },
+  "tableClient": {
+    "message.row.save.success": "Запись успешно изменена"
   },
   "table": {
     "actions.column.title": "Действия",
@@ -110,8 +115,7 @@
   },
   "clientCardPriceList": {
     "rules.editable.price": "Введите стоимость",
-    "message.row.save.error": "Ошибка при сохранении данных прайс листа",
-    "message.row.save.success": "Позиция прайс листа успешно изменена"
+    "message.row.save.error": "Ошибка при сохранении данных прайс листа"
   },
   "contactDrawer": {
     "title.new": "Новый контакт",

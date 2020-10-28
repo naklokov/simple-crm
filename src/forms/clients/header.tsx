@@ -10,6 +10,7 @@ import { useHistory } from "react-router";
 import { getFullUrl, getItemRender } from "../../utils";
 import { Button, PageHeader } from "antd";
 import { ComponentPermissionsChecker } from "../../wrappers";
+import { QsSearch } from "../../components";
 
 export const ClientsHeader = ({ title }: { title?: string }) => {
   const [t] = useTranslation("clients");
@@ -29,9 +30,12 @@ export const ClientsHeader = ({ title }: { title?: string }) => {
     <ComponentPermissionsChecker
       availablePermissions={[PERMISSIONS.CLIENTS["ADD.ALL"]]}
     >
-      <Button type="primary" onClick={handleClickAdd}>
-        {title || t("button.add.title")}
-      </Button>
+      <React.Fragment>
+        {/* <QsSearch url="" /> */}
+        <Button type="primary" onClick={handleClickAdd}>
+          {title || t("button.add.title")}
+        </Button>
+      </React.Fragment>
     </ComponentPermissionsChecker>
   );
 

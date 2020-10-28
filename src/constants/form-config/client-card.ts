@@ -533,8 +533,6 @@ export const upper: UpperProps = {
           columnType: "string",
           columnDescription: "Наименование товара",
           sorter: true,
-          fixed: "left",
-          width: 300,
         },
         {
           columnName: "Описание",
@@ -565,7 +563,7 @@ export const upper: UpperProps = {
           format: "currency",
           sorter: true,
           editable: true,
-          fixed: "right",
+          fixed: "left",
         },
       ],
       _links: {},
