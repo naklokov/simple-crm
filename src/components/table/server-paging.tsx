@@ -50,8 +50,8 @@ export const TableWithServerPaging = ({
           page,
           pageSize,
           sortBy,
+          searchedAll,
           query: getQueryString({
-            searchedAll,
             searchedColumns,
             columns: table?.columns ?? [],
             extraRsqlParams,
@@ -71,7 +71,7 @@ export const TableWithServerPaging = ({
 
   useEffect(() => {
     fetchDataSource();
-  }, [page, pageSize, sortBy, searchedAll, searchedColumns]);
+  }, [page, pageSize, sortBy, searchedAll, searchedColumns, extraRsqlParams]);
 
   const handleSearch = useCallback(
     (searchedAll: string) => {

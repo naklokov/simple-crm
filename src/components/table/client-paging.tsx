@@ -78,7 +78,7 @@ export const TableWithClientPaging = ({
           searched,
           dataSource,
           table?.columns ?? [],
-          "itemId"
+          idValue
         );
         setFilteredDataSource(filtered);
       } else {

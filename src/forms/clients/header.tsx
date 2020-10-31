@@ -31,7 +31,6 @@ export const ClientsHeader = ({ title }: { title?: string }) => {
       availablePermissions={[PERMISSIONS.CLIENTS["ADD.ALL"]]}
     >
       <React.Fragment>
-        {/* <QsSearch url="" /> */}
         <Button type="primary" onClick={handleClickAdd}>
           {title || t("button.add.title")}
         </Button>

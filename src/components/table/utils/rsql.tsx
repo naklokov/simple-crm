@@ -24,11 +24,10 @@ export const getQueryString = ({
   searchedAll,
   searchedColumns,
   columns,
-  extraRsqlParams,
+  extraRsqlParams = [],
 }: {
   searchedAll?: string;
   searchedColumns?: RecordType;
-  userProfileId?: string;
   columns: ColumnProps[];
   extraRsqlParams?: RsqlParamProps[];
 }) => {
@@ -55,7 +54,8 @@ export const getQueryString = ({
     });
   }
 
-  if (extraRsqlParams) {
+  debugger;
+  if (extraRsqlParams?.length) {
     params.push(...extraRsqlParams);
   }
 

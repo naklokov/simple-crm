@@ -9,7 +9,7 @@ import {
 } from "../../../constants";
 import { defaultErrorHandler, getRsqlParams } from "../../../utils";
 import { connect } from "react-redux";
-import { getSearchByColumnsRsql } from "../../../forms/clients/utils";
+import { getSearchByColumnsRsql } from "../../table/utils";
 
 const { Option } = Select;
 

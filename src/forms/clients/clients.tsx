@@ -56,10 +56,16 @@ export const Clients = ({ profileInfo }: ClientsProps) => {
     </Radio.Group>
   );
 
-  const isPersonalClients = selectedRadio === CLIENTS_RADIO_OPTIONS.ALL;
-  const userProfileRsql = getEqualRsql("userProfileId", profileInfo.id);
+  const isPersonalClients = selectedRadio === CLIENTS_RADIO_OPTIONS.MY;
+  const personalClientsRsql = profileInfo.id
+    ? [getEqualRsql("userProfileId", profileInfo.id)]
+    : [];
 
   const { TABLES } = formConfig.clients;
+
+  if (!profileInfo.id) {
+    return null;
+  }
 
   return (
     <PagePermissionsChecker
@@ -75,7 +81,7 @@ export const Clients = ({ profileInfo }: ClientsProps) => {
               table={TABLES[0]}
               url={urls.clients.paging}
               extraHeader={radioSelect}
-              extraRsqlParams={[userProfileRsql]}
+              extraRsqlParams={personalClientsRsql}
             />
           ) : (
             <Table.Server

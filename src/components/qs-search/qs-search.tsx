@@ -1,8 +1,12 @@
-import { Button, Drawer } from "antd";
+import { Button, Drawer, Tooltip } from "antd";
 import React, { useCallback, useState } from "react";
 import { formConfig } from "../../constants";
 import { Table } from "../table";
 import { Icon } from "./components";
+
+import style from "./qs-search.module.scss";
+
+const title = "Поиск клиентов в Quick Sales";
 
 interface QsSearchProps {
   url: string;
@@ -20,19 +24,19 @@ export const QsSearch = ({ url }: QsSearchProps) => {
   }, [visible]);
 
   return (
-    <div>
-      {/* <Icon style={{ fontSize: "16px" }} onClick={handleOpen} /> */}
-      <Button type="primary" onClick={handleOpen}>
-        Открыть поиск в QS
-      </Button>
+    <div className={style.container}>
+      <Tooltip title={title}>
+        <Icon onClick={handleOpen} />
+      </Tooltip>
       <Drawer
-        title="Поиск компаний в Quick Sales"
+        title={title}
         placement="right"
         closable={false}
         onClose={handleClose}
         visible={visible}
       >
-        <Table.Server url="" table={formConfig.clients.TABLES[0]} />
+        {/* TODO ждём бек и сервис */}
+        {/* <Table.Server url="" table={formConfig.clients.TABLES[0]} /> */}
       </Drawer>
     </div>
   );
