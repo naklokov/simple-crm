@@ -91,6 +91,6 @@ export const TABLES = [
         href: urls.userProfiles.entity,
       },
     },
-    tableActions: ACTIONS,
+    actions: [],
   },
 ];

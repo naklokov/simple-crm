@@ -45,7 +45,6 @@ interface TableProps {
   onResetAllFilters?: () => void;
   onResetFilter?: (column: ColumnProps, clearFilters: Function) => void;
   withSearch?: boolean;
-  withTitle?: boolean;
   extraHeader?: JSX.Element;
   className?: string;
   permissions?: string[];
@@ -77,7 +76,6 @@ export const Table = ({
   onResetAllFilters = noop,
   onSearch,
   withSearch = false,
-  withTitle = true,
   extraHeader,
   onChangeTable = noop,
   permissions = [],
@@ -94,16 +92,17 @@ export const Table = ({
     }
   }, [_links]);
 
-  const title = withTitle
-    ? () => (
-        <Header
-          withSearch={withSearch}
-          onSearch={onSearch}
-          extra={extraHeader}
-          onResetAllFilters={onResetAllFilters}
-        />
-      )
-    : void 0;
+  const title =
+    withSearch || extraHeader
+      ? () => (
+          <Header
+            withSearch={withSearch}
+            onSearch={onSearch}
+            extra={extraHeader}
+            onResetAllFilters={onResetAllFilters}
+          />
+        )
+      : void 0;
 
   const dataSourceWithKeys = useMemo(
     () =>

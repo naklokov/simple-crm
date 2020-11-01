@@ -8,7 +8,7 @@ import {
 } from "../../constants";
 import { useHistory } from "react-router";
 import { getFullUrl, getItemRender } from "../../utils";
-import { Button, PageHeader } from "antd";
+import { Button, PageHeader, Space } from "antd";
 import { ComponentPermissionsChecker } from "../../wrappers";
 import { QsSearch } from "../../components";
 
@@ -27,15 +27,18 @@ export const ClientsHeader = ({ title }: { title?: string }) => {
   };
 
   const extra = (
-    <ComponentPermissionsChecker
-      availablePermissions={[PERMISSIONS.CLIENTS["ADD.ALL"]]}
-    >
-      <React.Fragment>
-        <Button type="primary" onClick={handleClickAdd}>
-          {title || t("button.add.title")}
-        </Button>
-      </React.Fragment>
-    </ComponentPermissionsChecker>
+    <Space>
+      <QsSearch url="" />
+      <ComponentPermissionsChecker
+        availablePermissions={[PERMISSIONS.CLIENTS["ADD.ALL"]]}
+      >
+        <React.Fragment>
+          <Button type="primary" onClick={handleClickAdd}>
+            {title || t("button.add.title")}
+          </Button>
+        </React.Fragment>
+      </ComponentPermissionsChecker>
+    </Space>
   );
 
   return (

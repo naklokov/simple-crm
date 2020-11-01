@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Form, Input, Col } from "antd";
 import { DEFAULT_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
+import { FormContext } from "../../../utils";
 
 export const TextArea = ({
   fieldCode,
@@ -14,7 +15,10 @@ export const TextArea = ({
   rows = 4,
   span = {},
 }: FieldProps) => {
-  const colSpan = { ...DEFAULT_SPAN, ...span };
+  const form = useContext(FormContext);
+  const value = form.getFieldValue(fieldCode);
+  const isReadonlyEmpty = readonly && !value;
+  const colSpan = isReadonlyEmpty ? DEFAULT_SPAN : { ...DEFAULT_SPAN, ...span };
   return (
     <Col {...colSpan} key={fieldCode}>
       <Form.Item

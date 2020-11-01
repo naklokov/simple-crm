@@ -38,10 +38,12 @@ export type ColumnType =
   | "boolean";
 
 export interface SpanProps {
-  md?: number;
+  xxl?: number;
   xl?: number;
   lg?: number;
+  md?: number;
   sm?: number;
+  xs?: number;
 }
 
 export type FullCalendarDateType = "DD.MM.YYYY";
@@ -80,7 +82,7 @@ export interface TableProps {
   tableDescription: string;
   tableCode: string;
   columns: ColumnProps[];
-  tableActions: ActionProps[];
+  actions: ActionProps[];
   _links: object;
 }
 

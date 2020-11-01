@@ -1,74 +1,45 @@
-import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
-import { TableProps } from "../../constants";
+import React, { useState, useCallback } from "react";
+import { TabProps } from "../../constants";
 import { Table } from ".";
-import {
-  defaultErrorHandler,
-  getUpdatedEntityArray,
-  useFetch,
-  getFullUrl,
-  defaultSuccessHandler,
-} from "../../utils";
-import { setTableLoading } from "../../__data__";
-import { connect } from "react-redux";
-import { useTranslation } from "react-i18next";
 import { getFilteredDataSource } from "./utils";
-import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
+import { noop } from "lodash";
+import { PaginationProps } from "antd/es/pagination";
 
 interface TableWithClientPagingProps {
-  table: TableProps;
-  url: string;
-  fetchParams: object;
-  idValue: string;
+  table: TabProps;
+  dataSource: any[];
   actionsPermissions: string[];
+  idValue?: string;
+  loading?: boolean;
   extraHeader?: JSX.Element;
-  setTableLoading: (loading: boolean) => void;
+  pagination?: PaginationProps;
+  onSaveRow?: (values: any) => void;
+  onViewRow?: (id: string) => void;
+  onDoneRow?: (id: string) => void;
+  onDeleteRow?: (id: string) => void;
+  withSearch?: boolean;
+  className?: any;
 }
 
 export const TableWithClientPaging = ({
   table,
-  url,
+  dataSource,
   actionsPermissions = [],
-  fetchParams = {},
   extraHeader,
+  loading,
   idValue = "id",
+  pagination = {
+    pageSize: 5,
+  },
+  onSaveRow = noop,
+  onViewRow = noop,
+  onDeleteRow = noop,
+  onDoneRow = noop,
+  className,
+  withSearch = false,
 }: TableWithClientPagingProps) => {
-  const [t] = useTranslation("tableClients");
   const [searchedAll, setSearchedAll] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState<any[]>([]);
-  const [dataSource, setDataSource] = useState<any[]>([]);
-
-  const { response, loading } = useFetch({
-    url,
-    params: fetchParams,
-  });
-
-  useEffect(() => {
-    setDataSource(response?.data ?? []);
-  }, [response]);
-
-  const handleSaveRow = useCallback(
-    async (values: any) => {
-      const fullUrl = getFullUrl(url, values[idValue]);
-      setTableLoading(true);
-      try {
-        await axios({
-          url: fullUrl,
-          method: "put",
-          data: values,
-          params: fetchParams,
-        });
-        defaultSuccessHandler(t("message.row.save.success"));
-      } catch (error) {
-        defaultErrorHandler({ error });
-      } finally {
-        setTableLoading(false);
-      }
-
-      setDataSource(getUpdatedEntityArray(values, dataSource, idValue));
-    },
-    [dataSource, fetchParams, setTableLoading, t]
-  );
 
   const handleSearch = useCallback(
     (searched: string) => {
@@ -94,23 +65,24 @@ export const TableWithClientPaging = ({
 
   return (
     <Table
+      className={className}
       onSearch={handleSearch}
       columns={table?.columns ?? []}
-      actions={table?.tableActions ?? []}
+      actions={table?.actions ?? []}
       loading={loading}
       extraHeader={extraHeader}
-      pagination={{ pageSize: 5 }}
+      pagination={pagination}
       dataSource={searchedAll ? filteredDataSource : dataSource}
-      onSaveRow={handleSaveRow}
+      onSaveRow={onSaveRow}
       permissions={actionsPermissions}
       searchAll={searchedAll}
       onResetAllFilters={handleResetAllFilters}
-      withSearch
+      withSearch={withSearch}
+      onViewRow={onViewRow}
+      onDoneRow={onDoneRow}
+      onDeleteRow={onDeleteRow}
     />
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setTableLoading }, dispatch);
-
-export default connect(null, mapDispatchToProps)(TableWithClientPaging);
+export default TableWithClientPaging;

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { About, Logo, Menu, Profile } from "./components";
 import { State } from "../../constants";
 import { ContainerWrapper } from "../../wrappers";
-import { Loader, QsSearch } from "../../components";
+import { Loader } from "../../components";
 import style from "./authorized.module.scss";
 
 const { Sider, Content, Header } = Layout;
@@ -38,7 +38,6 @@ export const Authorized = ({ children, loading }: AuthorizedProps) => {
         <Layout>
           <Header className={style.header}>
             <Space size={16} style={{ float: "right" }}>
-              <QsSearch url="" />
               <About />
               <Profile />
             </Space>

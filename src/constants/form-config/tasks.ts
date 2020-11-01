@@ -25,7 +25,7 @@ export const TASKS: TasksConfigProps = {
           codeField: "id",
           readonly: false,
           disabled: false,
-          span: { md: 24 },
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
           permissions: PERMISSIONS_SET.TASK_UPDATE,
           _links: {
@@ -42,7 +42,7 @@ export const TASKS: TasksConfigProps = {
           format: DATE_FORMATS.DATE_TIME,
           readonly: false,
           disabled: false,
-          span: { md: 24 },
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
           permissions: PERMISSIONS_SET.TASK_UPDATE,
@@ -55,7 +55,7 @@ export const TASKS: TasksConfigProps = {
           format: "textarea",
           readonly: false,
           disabled: false,
-          span: { md: 24 },
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [
             { max: 2000, message: "Превышена максимальная длина строки" },
@@ -77,7 +77,7 @@ export const TASKS: TasksConfigProps = {
           format: "textarea",
           readonly: false,
           disabled: false,
-          span: { md: 24 },
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: "Введите комментарий по выполненной задаче",
           rules: [
             { max: 2000, message: "Превышена максимальная длина строки" },

@@ -107,15 +107,15 @@ export const Contacts = ({ tab }: ContactsProps) => {
         onClose={handleCloseViewDrawer}
       />
       <div className={style.container}>
-        <Table
-          columns={tab.columns}
-          actions={tab.actions}
+        <Table.Client
+          table={tab}
           loading={loading}
           pagination={{ pageSize: 5 }}
           onViewRow={handleViewContact}
           onDeleteRow={handleDeleteContact}
           dataSource={contacts}
           extraHeader={<Header onClickAdd={handleAddContact} />}
+          actionsPermissions={[]}
         />
       </div>
     </div>
