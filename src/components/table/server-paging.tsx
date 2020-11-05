@@ -50,7 +50,6 @@ export const TableWithServerPaging = ({
           page,
           pageSize,
           sortBy,
-          searchedAll,
           query: getQueryString({
             searchedColumns,
             columns: table?.columns ?? [],

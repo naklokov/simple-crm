@@ -1,5 +1,7 @@
 import { Button, Drawer } from "antd";
 import React, { useCallback, useState } from "react";
+import { TableProps } from "../../constants";
+import { Table } from "../table";
 
 import style from "./qs-search.module.scss";
 
@@ -9,17 +11,26 @@ interface QsSearchProps {
   url: string;
 }
 
-const table = {
+const table: TableProps = {
   tableName: "Клиенты QS",
   tableDescription: "Список клиентов",
   tableCode: "clientsQS",
   columns: [
     {
-      columnName: "Наименование",
+      columnName: "Краткое наименование",
       columnCode: "shortName",
       columnType: "string",
-      columnDescription: "Наименование",
+      columnDescription: "Краткое наименование",
       fixed: "left",
+      sorter: true,
+      filterable: true,
+      columnActions: [],
+    },
+    {
+      columnName: "Полное наименование",
+      columnCode: "fullName",
+      columnType: "string",
+      columnDescription: "Полное наименование",
       sorter: true,
       filterable: true,
       columnActions: [],
@@ -30,13 +41,7 @@ const table = {
       columnType: "string",
       columnDescription: "Телефон",
       filterable: true,
-      columnActions: [
-        {
-          actionType: "call",
-          actionName: "",
-          permissions: [],
-        },
-      ],
+      columnActions: [],
       sorter: false,
     },
     {
@@ -48,14 +53,6 @@ const table = {
       sorter: true,
     },
     {
-      columnName: "Дата регистрации",
-      columnCode: "creationDate",
-      columnType: "date",
-      format: "DD.MM.YYYY",
-      sorter: true,
-      columnDescription: "Дата регистрации",
-    },
-    {
       columnName: "ИНН",
       columnCode: "inn",
       columnType: "string",
@@ -65,16 +62,14 @@ const table = {
     },
     {
       columnName: "Куратор",
-      columnCode: "userProfileId",
-      columnType: "dictionary",
-      titleField: "fullName",
-      valueField: "id",
+      columnCode: "managerName",
+      columnType: "string",
       sorter: false,
       filterable: true,
-      filterOperator: "equal",
       columnDescription: "Куратор компании",
     },
   ],
+  actions: [],
   _links: {},
 };
 
@@ -102,8 +97,7 @@ export const QsSearch = ({ url }: QsSearchProps) => {
         onClose={handleClose}
         visible={visible}
       >
-        {/* TODO ждём бек и сервис */}
-        {/* <Table.Server url="" table={table} /> */}
+        <Table.Server url={url} table={table} />
       </Drawer>
     </div>
   );

@@ -28,7 +28,7 @@ export const ClientsHeader = ({ title }: { title?: string }) => {
 
   const extra = (
     <Space>
-      <QsSearch url="" />
+      <QsSearch url="/helper/entity/clients/paging" />
       <ComponentPermissionsChecker
         availablePermissions={[PERMISSIONS.CLIENTS["ADD.ALL"]]}
       >
