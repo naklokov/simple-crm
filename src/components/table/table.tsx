@@ -56,6 +56,7 @@ interface TableProps {
   ) => void;
   searchAll?: string;
   searchedColumns?: RecordType;
+  bordered?: boolean;
 }
 
 export const Table = ({
@@ -81,6 +82,7 @@ export const Table = ({
   permissions = [],
   searchAll = "",
   searchedColumns = {},
+  bordered = false,
 }: TableProps) => {
   const [t] = useTranslation("table");
   const dispatch = useDispatch();
@@ -141,6 +143,7 @@ export const Table = ({
             rowClassName={() => style.editableRow}
             loading={loading || tableLoading}
             scroll={window.isMobile ? { x: 1300 } : void 0}
+            bordered={bordered}
           />
         </TableActionsContext.Provider>
       </SearchedColumnsContext.Provider>

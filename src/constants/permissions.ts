@@ -2,7 +2,7 @@ type Permissions = {
   [key in EntityType]: { [key in OperationTypeAdmin]: string };
 };
 
-type OperationTypeAdmin = "GET.ALL" | "ADD.ALL" | "DELETE.ALL" | "UPDATE.ALL";
+type OperationTypeAdmin = "GET.ALL" | "GET.OWNER" | "ADD.ALL" | "DELETE.ALL" | "UPDATE.ALL"
 type EntityType =
   | "CLIENTS"
   | "NAMEDITEM"
@@ -21,6 +21,7 @@ const OPERATIONS_ADMIN: OperationTypeAdmin[] = [
   "ADD.ALL",
   "DELETE.ALL",
   "GET.ALL",
+  "GET.OWNER",
   "UPDATE.ALL",
 ];
 
@@ -61,8 +62,10 @@ const createAllPermissions = (): Permissions =>
 export const PERMISSIONS = createAllPermissions();
 
 export const PERMISSIONS_SET = {
+  CLIENT_GET: [PERMISSIONS.CLIENTS['GET.ALL'], PERMISSIONS.CLIENTS["GET.OWNER"]],
   CLIENT_UPDATE: [PERMISSIONS.CLIENTS["UPDATE.ALL"]],
   CLIENT_DELETE: [PERMISSIONS.CLIENTS["DELETE.ALL"]],
+  TASK_GET: [PERMISSIONS.TASKS['GET.ALL'], PERMISSIONS.TASKS["GET.OWNER"]],
   TASK_UPDATE: [PERMISSIONS.TASKS["UPDATE.ALL"]],
   TASK_DELETE: [PERMISSIONS.TASKS["DELETE.ALL"]],
   CONTACT_UPDATE: [PERMISSIONS.CONTACTS["UPDATE.ALL"]],
