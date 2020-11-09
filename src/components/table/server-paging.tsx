@@ -24,6 +24,8 @@ interface TableWithServerPagingProps {
   table: TableProps;
   extraHeader?: JSX.Element;
   extraRsqlParams?: RsqlParamProps[];
+  withSearch?: boolean;
+  bordered?: boolean;
 }
 
 export const TableWithServerPaging = ({
@@ -31,6 +33,8 @@ export const TableWithServerPaging = ({
   extraHeader,
   url,
   extraRsqlParams,
+  withSearch = true,
+  bordered,
 }: TableWithServerPagingProps) => {
   const [t] = useTranslation("tableServer");
   const [loading, setLoading] = useState(false);
@@ -51,6 +55,7 @@ export const TableWithServerPaging = ({
           pageSize,
           sortBy,
           query: getQueryString({
+            searchedAll,
             searchedColumns,
             columns: table?.columns ?? [],
             extraRsqlParams,
@@ -151,7 +156,8 @@ export const TableWithServerPaging = ({
       searchAll={searchedAll}
       searchedColumns={searchedColumns}
       onResetAllFilters={handleResetAllFilters}
-      withSearch
+      bordered={bordered}
+      withSearch={withSearch}
     />
   );
 };

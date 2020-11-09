@@ -3,9 +3,7 @@ import { UserOutlined, CalendarOutlined } from "@ant-design/icons";
 
 import { urls, http } from ".";
 import { logo } from "../assets/img";
-import { PERMISSIONS } from "./permissions";
-
-const { CLIENTS, TASKS } = PERMISSIONS;
+import { PERMISSIONS_SET } from "./permissions";
 
 export const LOGO = logo;
 
@@ -14,14 +12,14 @@ export const MENU_ITEMS = [
     id: "clients",
     title: "Клиенты",
     url: urls.clients.path,
-    permissions: [CLIENTS["GET.ALL"]],
+    permissions: PERMISSIONS_SET.CLIENT_GET,
     icon: <UserOutlined />,
   },
   {
     id: "tasks",
     title: "Задачи",
     url: urls.tasks.path,
-    permissions: [TASKS["GET.ALL"]],
+    permissions: PERMISSIONS_SET.TASK_GET,
     icon: <CalendarOutlined />,
   },
 ];

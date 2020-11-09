@@ -54,7 +54,6 @@ export const getQueryString = ({
     });
   }
 
-  debugger;
   if (extraRsqlParams?.length) {
     params.push(...extraRsqlParams);
   }

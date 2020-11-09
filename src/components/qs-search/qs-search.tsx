@@ -21,7 +21,6 @@ const table: TableProps = {
       columnCode: "shortName",
       columnType: "string",
       columnDescription: "Краткое наименование",
-      fixed: "left",
       sorter: true,
       filterable: true,
       columnActions: [],
@@ -87,15 +86,13 @@ export const QsSearch = ({ url }: QsSearchProps) => {
   return (
     <div className={style.container}>
       <Button onClick={handleOpen}>{title}</Button>
-      {/* <Tooltip title={title}>
-        <Icon onClick={handleOpen} />
-      </Tooltip> */}
       <Drawer
         title={title}
         placement="right"
         closable={false}
         onClose={handleClose}
         visible={visible}
+        width="90%"
       >
         <Table.Server url={url} table={table} />
       </Drawer>
