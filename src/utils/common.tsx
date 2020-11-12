@@ -151,7 +151,7 @@ export const defaultErrorHandler = ({
       message.error(fullMessage);
       return;
     }
-    message.error(errorDescription);
+    message.error(errorMessage);
   }
 };
 

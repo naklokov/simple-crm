@@ -14,6 +14,10 @@ module.exports = (app) => {
     createProxyMiddleware({
       target: "http://mcpr-tech.online:8081",
       changeOrigin: true,
+      pathRewrite: {
+        "^/crm/rest/login": "/crm/login",
+        "^/crm/rest/logout": "/crm/logout",
+      },
     })
   );
 };
