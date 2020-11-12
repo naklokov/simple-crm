@@ -16,10 +16,10 @@ import { getTasksColumns } from "./utils";
 import {
   urls,
   formConfig,
-  PERMISSIONS,
   TaskEntityProps,
   FORM_NAMES,
   State,
+  PERMISSIONS_SET,
 } from "../../constants";
 import { connect } from "react-redux";
 
@@ -124,9 +124,7 @@ export const Tasks = ({ activeTasks, setActiveTasks }: TaskProps) => {
   );
 
   return (
-    <PagePermissionsChecker
-      availablePermissions={[PERMISSIONS.TASKS["GET.ALL"]]}
-    >
+    <PagePermissionsChecker availablePermissions={PERMISSIONS_SET.TASK_GET}>
       <div>
         <div className={style.header}>
           <TasksHeader onAddClick={handleAddClick} />
