@@ -1,7 +1,7 @@
 import { Button, Drawer } from "antd";
 import React, { useCallback, useState } from "react";
 import { TableProps } from "../../constants";
-import { Table } from "../table";
+import { TableQs } from "./components";
 
 import style from "./qs-search.module.scss";
 
@@ -94,7 +94,7 @@ export const QsSearch = ({ url }: QsSearchProps) => {
         visible={visible}
         width="90%"
       >
-        <Table.Server url={url} table={table} />
+        <TableQs url={url} table={table} />
       </Drawer>
     </div>
   );

@@ -8,9 +8,10 @@ import { getRsqlParams } from "../../../utils";
 
 export const getSearchByColumnsRsql = (
   columns: string[],
-  searched: string
+  searched: string,
+  entityName = "entityData"
 ) => ({
-  key: "entityData",
+  key: entityName,
   operator: RSQL_OPERATORS_MAP.LIKE,
   value: `(${columns.join(",")},"${searched.replace('"', '\\"')}")`,
 });
@@ -25,17 +26,23 @@ export const getQueryString = ({
   searchedColumns,
   columns,
   extraRsqlParams = [],
+  entityName,
 }: {
   searchedAll?: string;
   searchedColumns?: RecordType;
   columns: ColumnProps[];
   extraRsqlParams?: RsqlParamProps[];
+  entityName?: string;
 }) => {
   let params: RsqlParamProps[] = [];
 
   if (searchedAll) {
     params.push(
-      getSearchByColumnsRsql(["phone", "inn", "shortName", "city"], searchedAll)
+      getSearchByColumnsRsql(
+        ["phone", "inn", "shortName", "city"],
+        searchedAll,
+        entityName
+      )
     );
   }
 
@@ -48,7 +55,9 @@ export const getQueryString = ({
         if (filterOperator === "equal") {
           params.push(getEqualRsql(key, searchedColumns[key]));
         } else {
-          params.push(getSearchByColumnsRsql([key], searchedColumns[key]));
+          params.push(
+            getSearchByColumnsRsql([key], searchedColumns[key], entityName)
+          );
         }
       }
     });
