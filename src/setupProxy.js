@@ -10,7 +10,7 @@ module.exports = (app) => {
   );
 
   app.use(
-    "/crm",
+    "/crm/rest",
     createProxyMiddleware({
       target: "http://mcpr-tech.online:8081",
       changeOrigin: true,

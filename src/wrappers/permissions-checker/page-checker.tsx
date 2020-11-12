@@ -17,7 +17,7 @@ export const PermissionChecker = ({
 }: PageCheckerProps) => {
   if (!hasPermission(availablePermissions, allPermissions)) {
     const error: ErrorAppState = {
-      errorCode: http.HTTP_CODES.FORBIDDEN.toString(),
+      statusCode: http.HTTP_CODES.FORBIDDEN,
     };
     return <Redirect to={{ pathname: urls.error.path, state: { error } }} />;
   }

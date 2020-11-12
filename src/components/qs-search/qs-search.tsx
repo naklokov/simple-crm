@@ -89,10 +89,10 @@ export const QsSearch = ({ url }: QsSearchProps) => {
       <Drawer
         title={title}
         placement="right"
-        closable={false}
         onClose={handleClose}
         visible={visible}
         width="90%"
+        closable
       >
         <TableQs url={url} table={table} />
       </Drawer>
