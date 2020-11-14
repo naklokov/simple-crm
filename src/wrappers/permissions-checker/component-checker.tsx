@@ -1,16 +1,16 @@
-import { Tooltip } from "antd";
-import React, { ReactElement, useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { State } from "../../__data__/interfaces";
-import { checkOwner, checkAllow } from "./utils";
+import { State, EntityOwnerProps } from "../../constants";
+import { hasPermission } from "./utils";
 
 interface ComponentCheckerProps {
+  mode?: "hide" | "readonly";
   children: JSX.Element;
   availablePermissions: string[];
   allPermissions: string[];
-  mode?: "hide" | "readonly";
-  isOwner?: boolean;
+  hasRight?: boolean;
+  entity?: EntityOwnerProps;
+  field?: string;
 }
 
 export const ComponentChecker = ({
@@ -18,20 +18,11 @@ export const ComponentChecker = ({
   allPermissions,
   children,
   availablePermissions = [],
-  isOwner = true,
+  hasRight = true,
 }: ComponentCheckerProps) => {
-  const [allowed, setAllowed] = useState(true);
-  const [owner, setOwner] = useState(false);
+  const available = hasPermission(availablePermissions, allPermissions);
 
-  useEffect(() => {
-    const isAllow = checkAllow(availablePermissions, allPermissions);
-    setAllowed(isAllow);
-
-    const owner = checkOwner(availablePermissions, allPermissions, isOwner);
-    setOwner(owner);
-  }, [availablePermissions, allPermissions]);
-
-  if (allowed || owner) {
+  if (available || hasRight) {
     return <React.Fragment>{children}</React.Fragment>;
   }
 

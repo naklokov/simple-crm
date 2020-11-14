@@ -9,7 +9,7 @@ import {
   useFormValues,
 } from "../../utils";
 import isEmpty from "lodash/isEmpty";
-import { FieldProps } from "../../constants";
+import { EntityOwnerProps, FieldProps } from "../../constants";
 import { Store } from "antd/lib/form/interface";
 
 interface DrawerFormProps {
@@ -23,7 +23,7 @@ interface DrawerFormProps {
   onFinish: (values: Store) => void;
   onClose: (event?: any) => void;
   headerButtons?: React.ReactNode[];
-  initialValues?: any;
+  initialValues?: EntityOwnerProps;
 }
 
 export const DrawerForm = ({
@@ -37,7 +37,7 @@ export const DrawerForm = ({
   headerButtons,
   defaultSubmitDisabled = true,
   permissions = [],
-  initialValues = {},
+  initialValues = {} as EntityOwnerProps,
 }: DrawerFormProps) => {
   const [form] = Form.useForm();
   const [submitDisabled, setSubmitDisabled] = useState(defaultSubmitDisabled);
@@ -99,8 +99,9 @@ export const DrawerForm = ({
       afterVisibleChange={handleVisibleChange}
       visible={visible}
       footer={
+        // для добавления никогда не будет сущности initialValues, поэтому сохранение будет доступно
         <ComponentPermissionsChecker
-          isOwner={initialValues?.isOwner ?? false}
+          hasRight={initialValues.isOwner?.UPDATE}
           availablePermissions={permissions}
         >
           <FormFooter
@@ -120,18 +121,19 @@ export const DrawerForm = ({
         layout="vertical"
         initialValues={initialValues}
       >
-        {fields?.map((field) => (
-          <ComponentPermissionsChecker
-            key={field.fieldCode}
-            availablePermissions={field.permissions}
-            mode="readonly"
-            isOwner={initialValues?.isOwner}
-          >
-            <FormContext.Provider value={form}>
+        <FormContext.Provider value={form}>
+          {fields?.map((field) => (
+            // TODO подумать как оптимизировать права для ADD боковушек
+            <ComponentPermissionsChecker
+              key={field.fieldCode}
+              availablePermissions={field.permissions}
+              mode="readonly"
+              hasRight={initialValues.isOwner?.UPDATE}
+            >
               {createFormField(field)}
-            </FormContext.Provider>
-          </ComponentPermissionsChecker>
-        ))}
+            </ComponentPermissionsChecker>
+          ))}
+        </FormContext.Provider>
       </Form>
     </DrawerUI>
   );

@@ -1,6 +1,9 @@
 import moment, { Moment } from "moment-timezone";
-import { TaskEntityProps } from "../../constants/interfaces";
-import { DATE_FORMATS, RSQL_OPERATORS_MAP } from "../../constants";
+import {
+  DATE_FORMATS,
+  RSQL_OPERATORS_MAP,
+  TaskEntityProps,
+} from "../../constants";
 import { getOverdueTasks } from "../../utils";
 import { isEmpty } from "lodash";
 import { getDateWithTimezone } from "../../utils";
@@ -50,14 +53,12 @@ export const getTasksColumns = (
 
     const dates = [...Array(2)].map((o, idx) => {
       const curDate = moment(selectedDate).add(idx, "days");
-      visibleTasksId = [
-        ...visibleTasksId,
-        ...getSortedTasksByDate(tasks, curDate).map(({ id }) => id),
-      ];
+      const cards = getSortedTasksByDate(tasks, curDate);
+      visibleTasksId = [...visibleTasksId, ...cards.map(({ id }) => id)];
 
       return {
-        title: getTitle(curDate, idx, isToday, titles),
-        cards: getSortedTasksByDate(tasks, curDate),
+        cards,
+        title: `${getTitle(curDate, idx, isToday, titles)} - ${cards.length}`,
         dividerColor: DIVIDER_COLORS[idx],
       };
     });

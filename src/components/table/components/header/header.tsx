@@ -38,7 +38,7 @@ export const Header = ({
       {withSearch && (
         <React.Fragment>
           <Input.Search
-            style={{ width: "30%" }}
+            style={{ width: "25%" }}
             placeholder={t("search.all.placeholder")}
             onSearch={onSearch}
             onChange={handleChange}

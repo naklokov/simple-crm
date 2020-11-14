@@ -1,14 +1,13 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import moment from "moment-timezone";
 import { Drawer, Calendar as CalendarUI, Avatar, Badge, Button } from "antd";
 import { useTranslation } from "react-i18next";
 import { CalendarOutlined } from "@ant-design/icons";
 import { Header } from "./components";
 import { useSelector } from "react-redux";
-import { State } from "../../../../__data__/interfaces";
+import { State } from "../../../../constants";
 
 import style from "./calendar.module.scss";
-import { memoize } from "lodash";
 
 interface CalendarProps {
   onChange: (date: moment.Moment) => void;

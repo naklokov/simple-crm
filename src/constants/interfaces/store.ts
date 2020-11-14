@@ -1,4 +1,8 @@
-import { ClientEntityProps, TaskEntityProps } from "../constants";
+import {
+  ProfileInfoProps,
+  ClientEntityProps,
+  TaskEntityProps,
+} from "./entities";
 
 export interface PersistState {
   permissions: string[];
@@ -30,26 +34,6 @@ export interface ErrorAppState {
   errorCode?: string;
   errorDescription?: string;
   errorMessage?: string;
-}
-
-export interface ProfileInfoProps {
-  id?: string;
-  aboutMe?: string;
-  birthDate?: string;
-  businessId?: string;
-  creationDate?: string;
-  email?: string;
-  fullName?: string;
-  avatar?: string;
-  location?: string;
-  login?: string;
-  parentId?: string;
-  position?: string;
-  userRoleId?: string;
-  isActive?: boolean;
-  isDeleted?: boolean;
-  isLocked?: boolean;
-  isOwner?: boolean;
 }
 
 export interface UpdateFormProps {

@@ -1,10 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { ErrorAppState, State } from "../../__data__/interfaces";
+import { ErrorAppState, State, http, urls } from "../../constants";
 import { hasPermission } from "./utils";
 import { Redirect } from "react-router";
-import { urls } from "../../constants";
-import { HTTP_CODES } from "../../constants/http";
 
 interface PageCheckerProps {
   children: JSX.Element;
@@ -19,7 +17,7 @@ export const PermissionChecker = ({
 }: PageCheckerProps) => {
   if (!hasPermission(availablePermissions, allPermissions)) {
     const error: ErrorAppState = {
-      errorCode: HTTP_CODES.FORBIDDEN.toString(),
+      statusCode: http.HTTP_CODES.FORBIDDEN,
     };
     return <Redirect to={{ pathname: urls.error.path, state: { error } }} />;
   }

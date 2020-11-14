@@ -1,8 +1,7 @@
 import React from "react";
 import { Result, Button } from "antd";
 import { useTranslation } from "react-i18next";
-import { ErrorAppState } from "../../../../__data__/interfaces";
-import { http, urls } from "../../../../constants";
+import { urls, ErrorAppState } from "../../../../constants";
 
 interface ClientErrorProps {
   error: ErrorAppState;

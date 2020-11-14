@@ -17,7 +17,7 @@ export const FIELDS: FieldProps[] = [
     readonly: false,
     disabled: false,
     rules: [{ required: true, message: REQUIRED_MESSAGE }],
-    permissions: [USERPROFILES.UPDATE],
+    permissions: [USERPROFILES["UPDATE.ALL"]],
   },
   {
     fieldCode: "birthDate",
@@ -29,7 +29,7 @@ export const FIELDS: FieldProps[] = [
     disabled: false,
     withSelectBefore: true,
     rules: [{ required: true, message: REQUIRED_MESSAGE }],
-    permissions: [USERPROFILES.UPDATE],
+    permissions: [USERPROFILES["UPDATE.ALL"]],
   },
   {
     fieldCode: "position",
@@ -39,7 +39,7 @@ export const FIELDS: FieldProps[] = [
     readonly: false,
     disabled: false,
     rules: [],
-    permissions: [USERPROFILES.UPDATE],
+    permissions: [USERPROFILES["UPDATE.ALL"]],
     _links: {
       self: {
         href: urls.dictionaries.position,
@@ -59,7 +59,7 @@ export const FIELDS: FieldProps[] = [
         message: "Пожалуйста, введите корректный email",
       },
     ],
-    permissions: [USERPROFILES.UPDATE],
+    permissions: [USERPROFILES["UPDATE.ALL"]],
   },
   {
     fieldCode: "location",
@@ -69,7 +69,7 @@ export const FIELDS: FieldProps[] = [
     readonly: false,
     disabled: false,
     rules: [{ required: true, message: REQUIRED_MESSAGE }],
-    permissions: [USERPROFILES.UPDATE],
+    permissions: [USERPROFILES["UPDATE.ALL"]],
   },
   {
     fieldCode: "phone",
@@ -80,7 +80,7 @@ export const FIELDS: FieldProps[] = [
     disabled: false,
     placeholder: PHONE_PLACEHOLDER,
     rules: [phoneRule],
-    permissions: [USERPROFILES.UPDATE, USERPROFILES.UPDATE_OWNER],
+    permissions: [USERPROFILES["UPDATE.ALL"]],
   },
   {
     fieldCode: "aboutMe",
@@ -90,7 +90,7 @@ export const FIELDS: FieldProps[] = [
     placeholder: "Введите информацию о ваших увлечениях, хобби, интересах...",
     fieldDescription: "Максимум 2000 символов",
     readonly: false,
-    permissions: [USERPROFILES.UPDATE, USERPROFILES.UPDATE_OWNER],
+    permissions: [USERPROFILES["UPDATE.ALL"]],
     disabled: false,
     rules: [{ max: 2000, message: "Превышена максимальная длина строки" }],
     span: { lg: 12, xl: 10 },

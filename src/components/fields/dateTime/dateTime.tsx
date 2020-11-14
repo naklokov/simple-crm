@@ -58,8 +58,9 @@ export const DateTime = ({
   const formatFunc = (value: string) =>
     value ? getDateWithTimezone(value).format(format) : "";
 
+  const colSpan = { ...DEFAULT_SPAN, ...span };
   return (
-    <Col {...span} key={fieldCode}>
+    <Col {...colSpan} key={fieldCode}>
       <Form.Item
         name={fieldCode}
         label={fieldName}

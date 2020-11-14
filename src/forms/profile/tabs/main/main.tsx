@@ -5,7 +5,6 @@ import { FORM_NAME } from "./constansts";
 import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { setProfileInfo } from "../../../../__data__";
-import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
 import { useTranslation } from "react-i18next";
 import {
   createFormField,
@@ -19,6 +18,8 @@ import {
   formConfig,
   urls,
   PERMISSIONS,
+  State,
+  ProfileInfoProps,
 } from "../../../../constants";
 
 import style from "./main.module.scss";
@@ -35,10 +36,6 @@ interface MainProps {
   profileInfo: ProfileInfoProps;
   setProfileInfo: (profileInfo: ProfileInfoProps) => void;
 }
-
-const {
-  USERPROFILES: { UPDATE, UPDATE_OWNER },
-} = PERMISSIONS;
 
 export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
   const [form] = Form.useForm();
@@ -91,24 +88,28 @@ export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
         <Row
           gutter={[GUTTER_FULL_WIDTH.HORIZONTAL, GUTTER_FULL_WIDTH.VERTICAL]}
         >
-          {FIELDS.map((field) => (
-            <ComponentPermissionsChecker
-              isOwner={profileInfo?.isOwner}
-              availablePermissions={field.permissions}
-              mode="readonly"
-            >
-              <FormContext.Provider value={form}>
+          <FormContext.Provider value={form}>
+            {FIELDS.map((field) => (
+              <ComponentPermissionsChecker
+                hasRight={profileInfo?.isOwner?.UPDATE}
+                availablePermissions={field.permissions}
+                mode="readonly"
+              >
                 {createFormField(field)}
-              </FormContext.Provider>
-            </ComponentPermissionsChecker>
-          ))}
+              </ComponentPermissionsChecker>
+            ))}
+          </FormContext.Provider>
         </Row>
-        <FormFooter
-          permissions={[UPDATE, UPDATE_OWNER]}
-          loading={submitLoading}
-          disabled={submitDisabled}
-          onCancel={history.goBack}
-        />
+        <ComponentPermissionsChecker
+          hasRight={profileInfo?.isOwner?.UPDATE}
+          availablePermissions={[PERMISSIONS.USERPROFILES["UPDATE.ALL"]]}
+        >
+          <FormFooter
+            loading={submitLoading}
+            disabled={submitDisabled}
+            onCancel={history.goBack}
+          />
+        </ComponentPermissionsChecker>
       </Form>
     </div>
   );

@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
 import { Redirect, Route, RouteProps } from "react-router";
-import { urls } from "../../constants";
-import { State } from "../../__data__/interfaces";
+import { urls, State } from "../../constants";
 import { connect } from "react-redux";
 
 interface ProtectedRouteProps extends RouteProps {

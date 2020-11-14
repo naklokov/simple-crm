@@ -8,14 +8,10 @@ import {
   useFormValues,
   FormContext,
 } from "../../../utils";
-import { ColumnProps, FORM_NAMES } from "../../../constants";
+import { ColumnProps, FORM_NAMES, State } from "../../../constants";
 import { useTranslation } from "react-i18next";
-import {
-  checkOwner,
-  checkAllow,
-} from "../../../wrappers/permissions-checker/utils";
+import { hasPermission } from "../../../wrappers/permissions-checker/utils";
 import { useSelector } from "react-redux";
-import { State } from "../../../__data__/interfaces";
 import { TableActionsContext } from "./common";
 
 interface EditableRowProps {
@@ -54,8 +50,8 @@ const EditableCell = ({
 
   const hasPermissions = useMemo(
     () =>
-      checkAllow(permissions, allPermissions) ||
-      checkOwner(permissions, allPermissions, values?.isOwner),
+      (hasPermission(permissions, allPermissions) || values?.isOwner?.UPDATE) ??
+      true,
     [permissions, allPermissions, values?.isOwner]
   );
 
@@ -135,6 +131,7 @@ export const getEditableProp = (
     return {
       onCell: (record: any) => ({
         record,
+        fixed: column.fixed,
         editable: column.editable,
         dataIndex: column.columnCode,
         title: column.columnName,

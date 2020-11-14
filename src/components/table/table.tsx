@@ -1,11 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { Table as TableUI } from "antd";
 
-import {
-  ColumnProps,
-  ActionProps,
-  RecordType,
-} from "../../constants/interfaces";
+import { ColumnProps, ActionProps, RecordType, State } from "../../constants";
 import { useTranslation } from "react-i18next";
 import {
   getActions,
@@ -21,10 +17,12 @@ import noop from "lodash/noop";
 
 import style from "./table.module.scss";
 import { setTableLoading } from "../../__data__";
-import { State } from "../../__data__/interfaces";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect, useDispatch } from "react-redux";
 import { TablePaginationConfig } from "antd/lib/table";
+
+import TableServer from "./server-paging";
+import TableClient from "./client-paging";
 
 interface TableProps {
   dataSource: any[];
@@ -47,7 +45,6 @@ interface TableProps {
   onResetAllFilters?: () => void;
   onResetFilter?: (column: ColumnProps, clearFilters: Function) => void;
   withSearch?: boolean;
-  withTitle?: boolean;
   extraHeader?: JSX.Element;
   className?: string;
   permissions?: string[];
@@ -59,6 +56,7 @@ interface TableProps {
   ) => void;
   searchAll?: string;
   searchedColumns?: RecordType;
+  bordered?: boolean;
 }
 
 export const Table = ({
@@ -79,12 +77,12 @@ export const Table = ({
   onResetAllFilters = noop,
   onSearch,
   withSearch = false,
-  withTitle = true,
   extraHeader,
   onChangeTable = noop,
   permissions = [],
   searchAll = "",
   searchedColumns = {},
+  bordered = false,
 }: TableProps) => {
   const [t] = useTranslation("table");
   const dispatch = useDispatch();
@@ -96,16 +94,17 @@ export const Table = ({
     }
   }, [_links]);
 
-  const title = withTitle
-    ? () => (
-        <Header
-          withSearch={withSearch}
-          onSearch={onSearch}
-          extra={extraHeader}
-          onResetAllFilters={onResetAllFilters}
-        />
-      )
-    : void 0;
+  const title =
+    withSearch || extraHeader
+      ? () => (
+          <Header
+            withSearch={withSearch}
+            onSearch={onSearch}
+            extra={extraHeader}
+            onResetAllFilters={onResetAllFilters}
+          />
+        )
+      : void 0;
 
   const dataSourceWithKeys = useMemo(
     () =>
@@ -143,6 +142,8 @@ export const Table = ({
             components={getEditableTableBody()}
             rowClassName={() => style.editableRow}
             loading={loading || tableLoading}
+            scroll={window.isMobile ? { x: 1300 } : void 0}
+            bordered={bordered}
           />
         </TableActionsContext.Provider>
       </SearchedColumnsContext.Provider>
@@ -156,5 +157,8 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators({ setTableLoading }, dispatch);
+
+Table.Server = TableServer;
+Table.Client = TableClient;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);

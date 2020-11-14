@@ -1,17 +1,29 @@
 import React from "react";
 import { Delete, Edit, Editor } from "./components";
 
-export const getActions = (
-  isOwner: boolean,
-  isEdit: boolean,
-  onEdit: (value?: string) => void,
-  onDelete: () => void
-) => {
-  if (!isOwner || isEdit) {
-    return [];
+interface CommentActionsProps {
+  hasRightUpdate: boolean;
+  hasRightDelete: boolean;
+  onEdit: (value?: string) => void;
+  onDelete: () => void;
+}
+
+export const getActions = ({
+  hasRightUpdate,
+  hasRightDelete,
+  onEdit,
+  onDelete,
+}: CommentActionsProps) => {
+  let actions = [];
+  if (hasRightUpdate) {
+    actions.push(<Edit onEdit={onEdit} />);
   }
 
-  return [<Edit onEdit={onEdit} />, <Delete onDelete={onDelete} />];
+  if (hasRightDelete) {
+    actions.push(<Delete onDelete={onDelete} />);
+  }
+
+  return actions;
 };
 
 export const getContent = (

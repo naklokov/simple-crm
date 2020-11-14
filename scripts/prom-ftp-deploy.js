@@ -2,9 +2,9 @@ var FtpDeploy = require("ftp-deploy");
 var ftpDeploy = new FtpDeploy();
 
 var config = {
-  user: "front",
+  user: "prom",
   // Password optional, prompted if none given
-  password: "front123",
+  password: "prom123",
   // external
   host: "176.212.190.167",
   // internal

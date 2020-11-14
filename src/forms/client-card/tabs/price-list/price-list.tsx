@@ -6,6 +6,9 @@ import {
   ClientEntityProps,
   QueryProps,
   PERMISSIONS_SET,
+  ProfileInfoProps,
+  State,
+  formConfig,
 } from "../../../../constants";
 import { Table } from "../../../../components";
 import {
@@ -16,12 +19,10 @@ import {
   defaultSuccessHandler,
 } from "../../../../utils";
 import { useParams } from "react-router";
-import { ProfileInfoProps, State } from "../../../../__data__/interfaces";
 import { setTableLoading } from "../../../../__data__";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { getFilteredDataSource } from "../../../../components/table/utils";
 
 interface ContactsProps {
   profileInfo: ProfileInfoProps;
@@ -31,13 +32,11 @@ interface ContactsProps {
 }
 
 export const PriceList = ({
-  tab,
   profileInfo: { id: userProfileId },
+  tab,
   setTableLoading,
 }: ContactsProps) => {
   const [t] = useTranslation("clientCardPriceList");
-  const [searchedAll, setSearchedAll] = useState("");
-  const [filteredPositions, setFilteredPositions] = useState<any[]>([]);
   const [positions, setPositions] = useState<any[]>([]);
   const { id: clientId } = useParams<QueryProps>();
   const params = {
@@ -72,40 +71,14 @@ export const PriceList = ({
     [positions, params, setTableLoading, t]
   );
 
-  const handleSearch = useCallback(
-    (searched: string) => {
-      setSearchedAll(searched);
-      if (searched) {
-        const filtered = getFilteredDataSource(
-          searched,
-          positions,
-          tab.columns,
-          "itemId"
-        );
-        setFilteredPositions(filtered);
-      } else {
-        setFilteredPositions([]);
-      }
-    },
-    [filteredPositions, positions]
-  );
-
-  const handleResetAllFilters = useCallback(() => {
-    setSearchedAll("");
-  }, []);
-
   return (
-    <Table
-      onSearch={handleSearch}
-      columns={tab.columns}
-      actions={tab.actions}
+    <Table.Client
+      idValue="itemId"
+      table={tab}
       loading={loading}
-      pagination={{ pageSize: 5 }}
-      dataSource={searchedAll ? filteredPositions : positions}
+      dataSource={positions}
       onSaveRow={handleSaveRow}
-      permissions={PERMISSIONS_SET.CLIENT_UPDATE}
-      searchAll={searchedAll}
-      onResetAllFilters={handleResetAllFilters}
+      actionsPermissions={PERMISSIONS_SET.CLIENT_UPDATE}
       withSearch
     />
   );

@@ -1,13 +1,10 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Select } from "antd";
-import { Option } from "antd/lib/mentions";
 import { SearchFooter } from ".";
 import { WithTranslation, withTranslation } from "react-i18next";
-import { ColumnProps } from "../../../../constants";
-import { TableActionsContext } from "../../utils";
+import { ColumnProps, State } from "../../../../constants";
 import { flow } from "lodash";
 import { connect } from "react-redux";
-import { State } from "../../../../__data__/interfaces";
 
 interface DictionarySearchProps extends WithTranslation {
   column: ColumnProps;

@@ -46,8 +46,9 @@ export const Dictionary = ({
   const formatFunc = (value: string) =>
     options.find((o) => o.valueCode === value)?.value ?? "";
 
+  const colSpan = { ...DEFAULT_SPAN, ...span };
   return (
-    <Col {...span} key={fieldCode}>
+    <Col {...colSpan} key={fieldCode}>
       <Form.Item
         name={fieldCode}
         style={{ width: "100%" }}

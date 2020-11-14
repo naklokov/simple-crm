@@ -1,10 +1,15 @@
 import React, { useCallback, useState } from "react";
 import { connect } from "react-redux";
-import { TableAll, TablePersonal } from "./components";
-import { PERMISSIONS } from "../../constants";
+import { Table } from "../../components";
+import {
+  formConfig,
+  PERMISSIONS,
+  ProfileInfoProps,
+  State,
+  urls,
+} from "../../constants";
 
 import style from "./clients.module.scss";
-import { ProfileInfoProps, State } from "../../__data__/interfaces";
 import { useTranslation } from "react-i18next";
 import ClientsHeader from "./header";
 import { PagePermissionsChecker } from "../../wrappers";
@@ -12,11 +17,7 @@ import { Radio } from "antd";
 import { RadioChangeEvent } from "antd/lib/radio";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { setTableLoading } from "../../__data__";
-
-// TODO проверить пермишены
-const {
-  CLIENTS: { GET, GET_OWNER },
-} = PERMISSIONS;
+import { getEqualRsql } from "../../components/table/utils";
 
 const CLIENTS_RADIO_OPTIONS = {
   MY: "myClients",
@@ -55,17 +56,40 @@ export const Clients = ({ profileInfo }: ClientsProps) => {
     </Radio.Group>
   );
 
-  const Table =
-    selectedRadio === CLIENTS_RADIO_OPTIONS.ALL ? TableAll : TablePersonal;
+  const isPersonalClients = selectedRadio === CLIENTS_RADIO_OPTIONS.MY;
+  const personalClientsRsql = profileInfo.id
+    ? [getEqualRsql("userProfileId", profileInfo.id)]
+    : [];
+
+  const { TABLES } = formConfig.clients;
+
+  if (!profileInfo.id) {
+    return null;
+  }
 
   return (
-    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER]}>
+    <PagePermissionsChecker
+      availablePermissions={[PERMISSIONS.CLIENTS["GET.ALL"]]}
+    >
       <div>
         <div className={style.header}>
           <ClientsHeader />
         </div>
         <div className={style.container}>
-          <Table extraHeader={radioSelect} userProfileId={profileInfo.id} />
+          {isPersonalClients ? (
+            <Table.Server
+              table={TABLES[0]}
+              url={urls.clients.paging}
+              extraHeader={radioSelect}
+              extraRsqlParams={personalClientsRsql}
+            />
+          ) : (
+            <Table.Server
+              table={TABLES[0]}
+              url={urls.clients.paging}
+              extraHeader={radioSelect}
+            />
+          )}
         </div>
       </div>
     </PagePermissionsChecker>

@@ -1,4 +1,5 @@
-import { ColumnProps, ColumnType } from "../../../constants/interfaces";
+import { ColumnProps, ColumnType } from "../../../constants";
+import { getDateWithTimezone } from "../../../utils";
 
 const getSorterFunction = (
   columnCode: string,
@@ -6,6 +7,13 @@ const getSorterFunction = (
 ): ((a: any, b: any) => any) => {
   if (columnType === "number") {
     return (a: any, b: any) => a?.[columnCode] - b?.[columnCode];
+  }
+
+  if (columnType === "date") {
+    return (a: any, b: any) =>
+      getDateWithTimezone(a?.[columnCode]).diff(
+        getDateWithTimezone(b?.[columnCode])
+      );
   }
 
   return (a: any, b: any) => {

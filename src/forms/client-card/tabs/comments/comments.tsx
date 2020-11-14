@@ -15,9 +15,14 @@ import {
   useFetch,
   getRsqlParams,
 } from "../../../../utils";
-import { urls, CommentEntityProps, QueryProps } from "../../../../constants";
+import {
+  urls,
+  CommentEntityProps,
+  QueryProps,
+  State,
+  ProfileInfoProps,
+} from "../../../../constants";
 import { getPostData } from "./utils";
-import { State, ProfileInfoProps } from "../../../../__data__/interfaces";
 
 import style from "./comments.module.scss";
 

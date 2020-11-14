@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { State, ProfileInfoProps } from "../../__data__/interfaces";
 import { Header } from "./components";
 
 import style from "./profile.module.scss";
 
 import { TABS_CONTENT, TABS_MAP } from "./constansts";
 import { PagePermissionsChecker } from "../../wrappers";
-import { PERMISSIONS } from "../../constants";
+import { PERMISSIONS, State, ProfileInfoProps } from "../../constants";
 
 interface ProfileProps {
   profileInfo: ProfileInfoProps;
@@ -21,12 +20,11 @@ export const Profile = ({ profileInfo }: ProfileProps) => {
   };
 
   const Form = TABS_MAP[activeTab];
-  const {
-    USERPROFILES: { GET, GET_OWNER },
-  } = PERMISSIONS;
 
   return (
-    <PagePermissionsChecker availablePermissions={[GET, GET_OWNER]}>
+    <PagePermissionsChecker
+      availablePermissions={[PERMISSIONS.USERPROFILES["GET.ALL"]]}
+    >
       <div className={style.container}>
         <Header onChangeTab={handleChangeTab} />
         <Form />

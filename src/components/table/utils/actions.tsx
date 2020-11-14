@@ -1,5 +1,5 @@
 import React from "react";
-import { ActionProps, ColumnProps, EntityProps } from "../../../constants";
+import { ActionProps, ColumnProps, EntityOwnerProps } from "../../../constants";
 import { getFullUrl } from "../../../utils";
 import { Delete, View, Call, Email, Link } from "../components";
 import { ComponentPermissionsChecker } from "../../../wrappers";
@@ -7,39 +7,48 @@ import { Space } from "antd";
 import { Done } from "../components/actions";
 
 const getActionComponent = (
-  id: string,
+  entity: EntityOwnerProps,
   text: string,
   action: ActionProps,
-  column?: ColumnProps,
-  isOwner?: boolean
+  column?: ColumnProps
 ) => {
-  const fullHref = getFullUrl(action.href, id);
+  const fullHref = getFullUrl(action.href, entity.id);
   switch (action.actionType) {
     case "delete":
       return (
         <Delete
-          key={id}
+          key={entity.id}
           href={fullHref}
           title={action.actionName}
-          id={id}
-          isOwner={isOwner}
+          id={entity.id}
+          hasRight={entity?.isOwner?.DELETE ?? true}
         />
       );
     case "done":
       return (
-        <Done key={id} title={action.actionName} id={id} isOwner={isOwner} />
+        <Done
+          key={entity.id}
+          title={action.actionName}
+          id={entity.id}
+          hasRight={entity?.isOwner?.UPDATE ?? true}
+        />
       );
     case "view":
-      return <View key={id} title={action.actionName} id={id} />;
+      return <View key={entity.id} title={action.actionName} id={entity.id} />;
     case "call":
-      return <Call key={id} phone={text} column={column} />;
+      return <Call key={entity.id} phone={text} column={column} />;
     case "email":
-      return <Email key={id} mail={text} column={column} />;
+      return <Email key={entity.id} mail={text} column={column} />;
     case "href":
-      return <Link key={id} title={text} href={fullHref} column={column} />;
+      return (
+        <Link key={entity.id} title={text} href={fullHref} column={column} />
+      );
     default:
       return (
-        <a key={id} href="/">{`Неизвестное событие ${action.actionType}`}</a>
+        <a
+          key={entity.id}
+          href="/"
+        >{`Неизвестное событие ${action.actionType}`}</a>
       );
   }
 };
@@ -47,7 +56,7 @@ const getActionComponent = (
 export const renderActions = (
   actions: ActionProps[],
   text: string,
-  entity: EntityProps,
+  entity: EntityOwnerProps,
   column?: ColumnProps
 ) => (
   <React.Fragment>
@@ -57,7 +66,7 @@ export const renderActions = (
         availablePermissions={action.permissions}
       >
         <Space size="middle">
-          {getActionComponent(entity.id, text, action, column, entity?.isOwner)}
+          {getActionComponent(entity, text, action, column)}
         </Space>
       </ComponentPermissionsChecker>
     ))}

@@ -20,6 +20,9 @@ import {
   QueryProps,
   FORM_NAMES,
   PERMISSIONS_SET,
+  State,
+  TableProps,
+  TASK_STATUSES,
 } from "../../../../constants";
 import { useParams } from "react-router";
 import {
@@ -28,23 +31,18 @@ import {
   CompletedTaskDrawer,
 } from "../../../../drawers";
 import { setActiveTasks } from "../../../../__data__";
-import { State } from "../../../../__data__/interfaces";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 
 const { TabPane } = Tabs;
 
-const {
-  clientCard: {
-    lower: { drawers },
-  },
-} = formConfig;
-
-const completedDrawer = drawers.find(
+const completedDrawer = formConfig.clientCard.lower.drawers.find(
   (drawer) => drawer.code === "taskCompleted"
 );
-const taskDrawer = drawers.find((drawer) => drawer.code === "task");
+const taskDrawer = formConfig.clientCard.lower.drawers.find(
+  (drawer) => drawer.code === "task"
+);
 
 interface TasksProps {
   tab: TabProps;
@@ -53,7 +51,6 @@ interface TasksProps {
 }
 
 export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
-  const [t] = useTranslation("clientCardTasks");
   const [tasks, setTasks] = useState<TaskEntityProps[]>([]);
   const { id: clientId } = useParams<QueryProps>();
   const [loading, setLoading] = useState(false);
@@ -88,7 +85,9 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
 
   const handleDoneRow = useCallback(
     (id) => {
-      completedFormUpdate(tasks.find((o) => o.id === id));
+      completedFormUpdate(
+        tasks.find((o) => o.id === id) || ({} as TaskEntityProps)
+      );
       setCompletedDrawerVisible(true);
     },
     [tasks]
@@ -96,7 +95,7 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
 
   const handleViewRow = useCallback(
     (id) => {
-      viewFormUpdate(tasks.find((o) => o.id === id));
+      viewFormUpdate(tasks.find((o) => o.id === id) || ({} as TaskEntityProps));
       setViewDrawerVisible(true);
     },
     [tasks]
@@ -137,7 +136,9 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
 
   const handleTaskCompleted = useCallback(
     (id) => {
-      completedFormUpdate(tasks.find((o) => o.id === id));
+      completedFormUpdate(
+        tasks.find((o) => o.id === id) || ({} as TaskEntityProps)
+      );
       setViewDrawerVisible(false);
       setCompletedDrawerVisible(true);
     },
@@ -156,12 +157,25 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
     [tasks, activeTasks]
   );
 
-  const notCompletedSortedTasks = tasks
-    .filter(({ taskStatus }) => taskStatus === "NOT_COMPLETED")
-    .sort(
-      (a: TaskEntityProps, b: TaskEntityProps) =>
-        moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
-    );
+  const sortedTasks = useMemo(
+    () =>
+      tasks.sort(
+        (a: TaskEntityProps, b: TaskEntityProps) =>
+          moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
+      ),
+    [tasks]
+  );
+
+  const activeTasksTable = {
+    ...tab,
+    columns:
+      tab.columns?.filter(({ columnCode }) => columnCode !== "note") ?? [],
+  };
+
+  const completedTasksTable = {
+    ...tab,
+    actions: [],
+  };
 
   return (
     <div>
@@ -188,7 +202,7 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
           tabBarExtraContent={{
             left: (
               <ComponentPermissionsChecker
-                isOwner={values?.isOwner}
+                hasRight={values?.isOwner?.UPDATE}
                 availablePermissions={PERMISSIONS_SET.CLIENT_UPDATE}
               >
                 <Button
@@ -201,28 +215,29 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
           }}
         >
           <TabPane tab="Активные" key="active">
-            <Table
+            <Table.Client
               className={style.table}
-              columns={tab.columns}
-              actions={tab.actions}
+              table={activeTasksTable as TabProps}
               loading={loading}
               pagination={{ pageSize: 3 }}
-              dataSource={notCompletedSortedTasks}
+              dataSource={sortedTasks.filter(
+                ({ taskStatus }) => taskStatus === TASK_STATUSES.NOT_COMPLETED
+              )}
               onViewRow={handleViewRow}
               onDoneRow={handleDoneRow}
-              withTitle={false}
+              actionsPermissions={[]}
             />
           </TabPane>
           <TabPane tab="Выполненные" key="done">
-            <Table
+            <Table.Client
               className={style.table}
-              columns={tab.columns}
+              table={completedTasksTable as TabProps}
               loading={loading}
               pagination={{ pageSize: 3 }}
-              dataSource={tasks.filter(
-                ({ taskStatus }) => taskStatus === "COMPLETED"
+              dataSource={sortedTasks.filter(
+                ({ taskStatus }) => taskStatus === TASK_STATUSES.COMPLETED
               )}
-              withTitle={false}
+              actionsPermissions={[]}
             />
           </TabPane>
         </Tabs>

@@ -7,9 +7,10 @@ import {
   FORM_NAMES,
   QueryProps,
   urls,
+  State,
+  CLIENT_NEW_ID,
 } from "../../constants";
 import { connect } from "react-redux";
-import { State } from "../../__data__/interfaces";
 import { useHistory, useParams } from "react-router";
 import { PageHeader } from "antd";
 import {
@@ -31,6 +32,7 @@ export const ClientCardHeader = ({ client }: ClientCardHeaderProps) => {
   const [t] = useTranslation("clientCard");
   const history = useHistory();
   const { id } = useParams<QueryProps>();
+  const isNew = id === CLIENT_NEW_ID;
 
   const { shortName, phone, isOwner } = client;
   const title = shortName || t("title.new");
@@ -61,11 +63,11 @@ export const ClientCardHeader = ({ client }: ClientCardHeaderProps) => {
 
   let extra: ReactNode[] = [];
 
-  if (phone) {
+  if (phone && !isNew) {
     extra = [...extra, <Call key="call" onClick={handleCall} />];
   }
 
-  if (id) {
+  if (id && !isNew) {
     extra = [...extra, <Delete key="delete" onClick={handleDelete} />];
   }
 

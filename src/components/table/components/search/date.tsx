@@ -1,15 +1,11 @@
-import React, { useCallback } from "react";
+import React from "react";
 import moment from "moment-timezone";
-import { DatePicker, Select } from "antd";
-import { Option } from "antd/lib/mentions";
+import { DatePicker } from "antd";
 import { SearchFooter } from ".";
 import { WithTranslation, withTranslation } from "react-i18next";
-import { ColumnProps } from "../../../../constants";
-import { TableActionsContext } from "../../utils";
+import { ColumnProps, State } from "../../../../constants";
 import { flow } from "lodash";
 import { connect } from "react-redux";
-import { State } from "../../../../__data__/interfaces";
-import { getDateWithTimezone } from "../../../../utils";
 
 interface DateSearchProps extends WithTranslation {
   column: ColumnProps;

@@ -1,6 +1,6 @@
 import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
-import { PERMISSIONS, PERMISSIONS_SET } from "../permissions";
+import { PERMISSIONS_SET } from "../permissions";
 import { DATE_FORMATS } from "../common";
 import { phoneRule, vatRule } from "../../utils";
 
@@ -34,7 +34,7 @@ export const lower: LowerProps = {
           format: DATE_FORMATS.DATE_TIME,
           readonly: false,
           disabled: false,
-          span: { md: 24 },
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
           permissions: PERMISSIONS_SET.TASK_UPDATE,
@@ -47,7 +47,7 @@ export const lower: LowerProps = {
           format: "textarea",
           readonly: false,
           disabled: false,
-          span: { md: 24 },
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [
             { max: 2000, message: "Превышена максимальная длина строки" },
@@ -69,7 +69,7 @@ export const lower: LowerProps = {
           format: "textarea",
           readonly: false,
           disabled: false,
-          span: { md: 24 },
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: "Введите комментарий по выполненной задаче",
           rules: [
             { max: 2000, message: "Превышена максимальная длина строки" },
@@ -150,7 +150,7 @@ export const upper: UpperProps = {
           type: "string",
           readonly: false,
           disabled: false,
-          span: { md: 24 },
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
           permissions: PERMISSIONS_SET.CONTACT_UPDATE,
@@ -162,7 +162,7 @@ export const upper: UpperProps = {
           type: "phone",
           readonly: false,
           disabled: false,
-          span: { md: 24 },
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PHONE_PLACEHOLDER,
           rules: [{ required: true, message: REQUIRED_MESSAGE }, phoneRule],
           permissions: PERMISSIONS_SET.CONTACT_UPDATE,
@@ -171,10 +171,10 @@ export const upper: UpperProps = {
           fieldCode: "email",
           fieldName: "Email",
           fieldDescription: "",
-          type: "string",
+          type: "email",
           readonly: false,
           disabled: false,
-          span: { md: 24 },
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [
             {
@@ -191,7 +191,7 @@ export const upper: UpperProps = {
           type: "string",
           readonly: false,
           disabled: false,
-          span: { md: 24 },
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
           permissions: PERMISSIONS_SET.CONTACT_UPDATE,
@@ -204,7 +204,7 @@ export const upper: UpperProps = {
           format: "textarea",
           readonly: false,
           disabled: false,
-          span: { md: 24 },
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
           rows: 2,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
@@ -271,7 +271,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          type: "string",
+          type: "email",
           rules: [
             {
               type: "email",
@@ -309,7 +309,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          type: "string",
+          type: "href",
           rules: [],
           permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
@@ -321,7 +321,7 @@ export const upper: UpperProps = {
           format: "textarea",
           disabled: false,
           readonly: false,
-          // span: { lg: 12, xl: 10 },
+          span: { lg: 12, xl: 12 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
           permissions: PERMISSIONS_SET.CLIENT_UPDATE,
@@ -331,12 +331,12 @@ export const upper: UpperProps = {
           fieldName: "Дата регистрации",
           fieldDescription: "",
           type: "date",
-          readonly: false,
+          readonly: true,
           placeholder: PLACEHOLDER_DEFAULT,
-          disabled: false,
+          disabled: true,
           format: "DD.MM.yyyy",
           rules: [],
-          permissions: [PERMISSIONS.CLIENTS.UPDATE],
+          permissions: [],
         },
       ],
       _links: {
@@ -563,6 +563,7 @@ export const upper: UpperProps = {
           format: "currency",
           sorter: true,
           editable: true,
+          fixed: "left",
         },
       ],
       _links: {},

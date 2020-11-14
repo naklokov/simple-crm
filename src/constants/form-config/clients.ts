@@ -1,7 +1,5 @@
-import { ActionProps, ColumnProps, urls } from "../index";
+import { ActionProps, ColumnProps, urls } from "../";
 import { PERMISSIONS, PERMISSIONS_SET } from "../permissions";
-
-const { CLIENTS } = PERMISSIONS;
 
 export const COLUMNS: ColumnProps[] = [
   {
@@ -9,12 +7,13 @@ export const COLUMNS: ColumnProps[] = [
     columnCode: "shortName",
     columnType: "string",
     columnDescription: "Наименование",
+    fixed: "left",
     sorter: true,
     filterable: true,
     columnActions: [
       {
         actionName: "",
-        permissions: [CLIENTS.GET, CLIENTS.GET_OWNER],
+        permissions: [],
         actionType: "href",
         href: urls.clients.path,
       },
@@ -92,6 +91,6 @@ export const TABLES = [
         href: urls.userProfiles.entity,
       },
     },
-    tableActions: ACTIONS,
+    actions: [],
   },
 ];

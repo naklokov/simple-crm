@@ -8,7 +8,6 @@ import {
   FieldProps,
   QueryProps,
   FORM_NAMES,
-  PERMISSIONS_SET,
   PERMISSIONS,
 } from "../../constants";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
@@ -43,7 +42,7 @@ export const AddContact = ({ fields, visible, onClose }: AddContactProps) => {
 
   return (
     <DrawerForm
-      permissions={[PERMISSIONS.CONTACTS.ADD]}
+      permissions={[PERMISSIONS.CONTACTS["ADD.ALL"]]}
       title={t("title.new")}
       fields={fields}
       name={FORM_NAMES.CONTACT_ADD}

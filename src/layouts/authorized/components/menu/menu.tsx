@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Menu as MenuUI } from "antd";
 
-import { MENU_ITEMS } from "../../../../constants/layouts";
+import { MENU_ITEMS, State } from "../../../../constants";
 import { getSelectedKeyByUrl } from "./utils";
 import { Link, useLocation } from "react-router-dom";
 import { filterArrayByPermissions } from "../../../../wrappers";
-import { State } from "../../../../__data__/interfaces";
 import { connect } from "react-redux";
 
 const { Item } = MenuUI;
