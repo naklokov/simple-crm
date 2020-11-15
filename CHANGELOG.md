@@ -1,6 +1,6 @@
 # Список обновлений
 
-## [0.0.2](https://bitbucket.org/olivje_group/olivje.crm.pl/commits/fa8625d7bc66580664283ae21fb291657baf3db5)
+## [0.0.2](https://bitbucket.org/olivje_group/olivje.crm.pl/commits/35b6302a580e2f638f42ce3d68c333815da5dcb2)
 
 #### 14.11.2020
 
