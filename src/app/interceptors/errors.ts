@@ -23,9 +23,10 @@ export const errorsInterceptor = (
   errorStore: ErrorAppState
 ) => (errorResponse: ErrorResponceProps) => {
   try {
-    let originalRequest = errorResponse.config;
+    const { _retry, method, url } = errorResponse?.config ?? {};
     const statusCode = errorResponse?.response?.status;
-    const error: ErrorProps = errorResponse?.response?.data ?? {};
+    const errorInfo: ErrorProps = errorResponse?.response?.data ?? {};
+    const error = { ...errorInfo, url, method };
 
     if (NODE_ENV === "development") {
       console.error(`[ERROR] Response with statusCode: ${statusCode}`, error);
@@ -33,11 +34,11 @@ export const errorsInterceptor = (
 
     if (statusCode === HTTP_CODES.UNAUTHORIZED) {
       logout(dispatch);
-      return Promise.reject(errorResponse);
+      return Promise.reject(error);
     }
 
     const hasError = errorStore?.statusCode;
-    if (ERROR_SCREEN_CODES.includes(statusCode) && !originalRequest._retry) {
+    if (ERROR_SCREEN_CODES.includes(statusCode) && !_retry) {
       if (!hasError) {
         dispatch(setError({ statusCode, ...error }));
       }
@@ -45,6 +46,6 @@ export const errorsInterceptor = (
     return Promise.reject(error);
   } catch (error) {
     defaultErrorHandler({ error, defaultErrorMessage: DEFAULT_ERROR_MESSAGE });
-    return Promise.reject(errorResponse);
+    return Promise.reject(error);
   }
 };
