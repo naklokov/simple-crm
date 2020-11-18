@@ -16,6 +16,9 @@ export const RSQL_OPERATORS_MAP = {
   LIKE: "=JLIKE=",
   EQUAL: "==",
   FIELD_EQUAL: "=JEQ=",
+  DATE_BEFORE: "=DATEBEFORE=",
+  DATE_AFTER: "=DATEAFTER=",
+  DATE_BETWEEN: "=DATEBTWN=",
 };
 
 export const TASK_STATUSES = {

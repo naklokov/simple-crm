@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useState } from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { Layout, Space } from "antd";
 import { connect } from "react-redux";
 import { About, Logo, Menu, Profile } from "./components";
@@ -6,6 +6,7 @@ import { State } from "../../constants";
 import { ContainerWrapper } from "../../wrappers";
 import { Loader } from "../../components";
 import style from "./authorized.module.scss";
+import { useNotificationService } from "../../utils";
 
 const { Sider, Content, Header } = Layout;
 
@@ -21,9 +22,10 @@ export const Authorized = ({ children, loading }: AuthorizedProps) => {
     setCollapsed(!collapsed);
   }, [collapsed]);
 
+  useNotificationService();
+
   return (
     <ContainerWrapper>
-      {/* <NotificationService> */}
       <Layout className={style.main}>
         <Sider
           collapsible
@@ -46,7 +48,6 @@ export const Authorized = ({ children, loading }: AuthorizedProps) => {
           <Content className={style.content}>{children}</Content>
         </Layout>
       </Layout>
-      {/* </NotificationService> */}
     </ContainerWrapper>
   );
 };

@@ -12,7 +12,7 @@ module.exports = (app) => {
   app.use(
     "/crm/rest",
     createProxyMiddleware({
-      target: "http://mcpr-tech.online:8081",
+      target: "http://mcpr-tech.online:8080",
       changeOrigin: true,
       pathRewrite: {
         "^/crm/rest/login": "/crm/login",
