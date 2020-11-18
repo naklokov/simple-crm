@@ -13,7 +13,7 @@ export const getSearchByColumnsRsql = (
 ) => ({
   key: entityName,
   operator: RSQL_OPERATORS_MAP.LIKE,
-  value: `(${columns.join(",")},"${searched.replace('"', '\\"')}")`,
+  value: `(${columns.join(",")},"${searched.replaceAll('"', '\\"')}")`,
 });
 
 export const getEqualRsql = (key: string, id: string) => ({
