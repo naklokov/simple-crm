@@ -132,18 +132,22 @@ export const defaultErrorHandler = ({
 }: DefaultErrorHandlerProps) => {
   const {
     errorCode = "",
-    errorDescription,
-    errorMessage = defaultErrorMessage,
+    errorDescription = defaultErrorMessage,
+    errorMessage,
+    method,
+    url,
   } = error;
 
-  const fullMessage = errorDescription
-    ? `${errorMessage}: ${errorDescription}`
-    : errorMessage;
+  const fullMessage = errorMessage
+    ? `${errorDescription}: ${errorMessage}`
+    : errorDescription;
 
   logger.error({
     value: errorCode,
     message: fullMessage,
     username,
+    url,
+    method,
   });
 
   if (errorDescription) {
