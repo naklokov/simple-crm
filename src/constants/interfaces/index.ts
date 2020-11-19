@@ -23,4 +23,6 @@ export interface ErrorProps {
   errorDescription?: string;
   errorCode?: string;
   errorMessage?: string;
+  method?: string;
+  url?: string;
 }

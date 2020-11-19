@@ -21,24 +21,26 @@ interface LoggerProps {
   message: string;
   username?: string;
   value?: string | number;
+  url?: string;
+  method?: string;
 }
 
 export const getFullMessage = ({
   message,
   value,
+  method,
+  url,
   username = usernameFromCookie,
 }: LoggerProps) => {
-  let fullMessage = message;
+  const fullMessageArgs = [
+    message,
+    value,
+    method?.toUpperCase(),
+    url,
+    username,
+  ];
 
-  if (value) {
-    fullMessage += ` ${value}`;
-  }
-
-  if (username) {
-    fullMessage += ` (${username})`;
-  }
-
-  return fullMessage;
+  return fullMessageArgs.filter((o) => !!o).join(" | ");
 };
 
 const sendRemote = (
