@@ -1,5 +1,13 @@
 # Список обновлений
 
+## [0.0.3](https://bitbucket.org/olivje_group/olivje.crm.pl/commits/35b6302a580e2f638f42ce3d68c333815da5dcb2)
+
+#### 19.11.2020
+
+- _fix_: Экранировать все двойные кавычки в строке OLVE-341
+
+- _fix_: Добавить в запись лога метод и url OLVE-344
+
 ## [0.0.2](https://bitbucket.org/olivje_group/olivje.crm.pl/commits/35b6302a580e2f638f42ce3d68c333815da5dcb2)
 
 #### 14.11.2020
