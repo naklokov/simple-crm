@@ -99,6 +99,7 @@ export interface ColumnProps {
   titleField?: string;
   valueField?: string;
   format?: ColumnFormatType;
+  ellipsis?: boolean;
   width?: number;
   fixed?: FixedPositionType;
   sorter: any;
