@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   GUTTER_FULL_WIDTH,
   ModeType,
@@ -9,7 +10,7 @@ import {
   PERMISSIONS_SET,
   State,
   ProfileInfoProps,
-  EntityOwnerProps,
+  ClientEntityProps,
 } from "../../../../constants";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
@@ -27,9 +28,10 @@ import { useParams, useHistory } from "react-router";
 import { connect } from "react-redux";
 import { Store } from "antd/lib/form/interface";
 import { useTranslation } from "react-i18next";
-import { getAddMetaValues, addClient, editClient } from "../../utils";
+import { getAddMetaValues } from "../../utils";
 
 import style from "./main.module.scss";
+import { AxiosResponse } from "axios";
 
 interface MainProps {
   mode: ModeType;
@@ -55,13 +57,16 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
 
   const onFinishAdd = async (values: Store) => {
     setSubmitLoading(true);
+    const url = urls.clients.entity;
     try {
-      const data = { ...initialValues, ...values } as EntityOwnerProps;
-      const entity = await addClient(data);
-      update(data);
+      const response: AxiosResponse<ClientEntityProps> = await axios.post(url, {
+        ...initialValues,
+        ...values,
+      });
+      update(response?.data ?? {});
 
       defaultSuccessHandler(t("message.success"));
-      history.replace(getFullUrl(urls.clients.path, entity.id));
+      history.replace(getFullUrl(urls.clients.path, response?.data?.id));
       setSubmitDisabled(true);
     } catch (error) {
       defaultErrorHandler({ error });
@@ -72,10 +77,13 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
 
   const onFinishEdit = async (values: Store) => {
     setSubmitLoading(true);
+    const url = getFullUrl(urls.clientCard.entity, id);
     try {
-      const data = { ...initialValues, ...values } as EntityOwnerProps;
-      await editClient(id, data);
-      update(data);
+      const response: AxiosResponse<ClientEntityProps> = await axios.put(url, {
+        ...initialValues,
+        ...values,
+      });
+      update(response?.data ?? {});
 
       defaultSuccessHandler(t("message.success"));
       setSubmitDisabled(true);
