@@ -3,7 +3,7 @@ import { Form, Col } from "antd";
 import MaskedInput from "react-text-mask";
 import {
   BASE_PHONE_MASK,
-  DEFAULT_SPAN,
+  DEFAULT_FIELD_SPAN,
   FieldProps,
   FULL_PHONE_MASK,
 } from "../../../constants";
@@ -24,7 +24,7 @@ export const Phone = ({
   placeholder,
   disabled = false,
   readonly = false,
-  span = DEFAULT_SPAN,
+  span = DEFAULT_FIELD_SPAN,
 }: FieldProps) => {
   const form = useContext(FormContext);
   const [mask, setMask] = useState(getMask(form.getFieldValue(fieldCode)));
@@ -44,9 +44,8 @@ export const Phone = ({
 
   const formatFunc = (value: string) => getConformedValue(value);
 
-  const colSpan = { ...DEFAULT_SPAN, ...span };
   return (
-    <Col {...colSpan} key={fieldCode}>
+    <Col {...span} key={fieldCode}>
       <Form.Item
         style={{ width: "100%" }}
         name={fieldCode}

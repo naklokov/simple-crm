@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
 import {
-  DEFAULT_SPAN,
+  DEFAULT_FIELD_SPAN,
   FieldProps,
   ProfileInfoProps,
   State,
@@ -28,7 +28,7 @@ export const Entity = ({
   placeholder = "Выберите значение",
   disabled = false,
   _links,
-  span = DEFAULT_SPAN,
+  span = DEFAULT_FIELD_SPAN,
   profileInfo,
 }: DictionaryComponentProps) => {
   const [options, setOptions] = useState<any>([]);
@@ -59,9 +59,8 @@ export const Entity = ({
     }
   }, []);
 
-  const colSpan = { ...DEFAULT_SPAN, ...span };
   return (
-    <Col {...colSpan} key={fieldCode}>
+    <Col {...span} key={fieldCode}>
       <Form.Item
         name={fieldCode}
         label={fieldName}

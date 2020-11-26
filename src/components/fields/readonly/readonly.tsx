@@ -3,6 +3,8 @@ import { Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { noop } from "lodash";
 
+const { Link, Paragraph } = Typography;
+
 interface ReadonlyProps {
   value?: string;
   format?: (value: string) => string;
@@ -11,8 +13,6 @@ interface ReadonlyProps {
 }
 
 const DEFAULT_FORMAT = (value: string) => value;
-
-const { Link, Paragraph } = Typography;
 
 export const Readonly = ({
   value = "",

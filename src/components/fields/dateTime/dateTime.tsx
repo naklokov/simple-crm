@@ -1,7 +1,11 @@
 import React from "react";
 import moment from "moment-timezone";
 import { Col, Form, DatePicker } from "antd";
-import { DATE_FORMATS, DEFAULT_SPAN, FieldProps } from "../../../constants";
+import {
+  DATE_FORMATS,
+  DEFAULT_FIELD_SPAN,
+  FieldProps,
+} from "../../../constants";
 import { getDateWithTimezone } from "../../../utils";
 import { Readonly } from "../readonly";
 
@@ -49,7 +53,7 @@ export const DateTime = ({
   disabled = false,
   readonly = false,
   withSelectBefore = false,
-  span = DEFAULT_SPAN,
+  span = DEFAULT_FIELD_SPAN,
 }: FieldProps) => {
   const showTime = /hh:mm/gi.test(format)
     ? { hideDisabledOptions: true }
@@ -58,9 +62,8 @@ export const DateTime = ({
   const formatFunc = (value: string) =>
     value ? getDateWithTimezone(value).format(format) : "";
 
-  const colSpan = { ...DEFAULT_SPAN, ...span };
   return (
-    <Col {...colSpan} key={fieldCode}>
+    <Col {...span} key={fieldCode}>
       <Form.Item
         name={fieldCode}
         label={fieldName}
