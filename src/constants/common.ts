@@ -40,7 +40,11 @@ export const FORM_NAMES = {
   TASK_VIEW: "taskView",
 };
 
-export const BASE_PHONE_MASK = [
+export const PHONE_TRIM_START_CHARS = ["7", "8"];
+
+export const BASE_PHONE_LENGTH = 11;
+
+export const PHONE_MASK = [
   "+",
   "7",
   " ",
@@ -61,4 +65,4 @@ export const BASE_PHONE_MASK = [
   /\d/,
 ];
 
-export const FULL_PHONE_MASK = [...BASE_PHONE_MASK, ",", " ", /\d/, /\d/, /\d/];
+export const PHONE_MASK_WITH_CODE = [...PHONE_MASK, ",", " ", /\d/, /\d/, /\d/];

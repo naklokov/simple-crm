@@ -1,6 +1,12 @@
 import React from "react";
 import { fields } from "../components";
-import { BASE_PHONE_MASK, FieldProps, FULL_PHONE_MASK } from "../constants";
+import {
+  PHONE_MASK_WITH_CODE,
+  FieldProps,
+  PHONE_MASK,
+  BASE_PHONE_LENGTH,
+  PHONE_TRIM_START_CHARS,
+} from "../constants";
 import isEqual from "lodash/isEqual";
 import some from "lodash/some";
 import { conformToMask } from "react-text-mask";
@@ -71,10 +77,14 @@ export const getClearPhone = (value: string) => value?.replace(/\D/g, "") ?? "";
 export const getNormalizePhone = (value: string) =>
   value?.replace(/[^\d\+\,]/g, "") ?? "";
 
+export const isNeedReplaceFirstChar = (phone: string) =>
+  PHONE_TRIM_START_CHARS.includes(phone[0]) &&
+  phone.length === BASE_PHONE_LENGTH;
+
 export const getMask = (value: string) => {
   const clearValue = getClearPhone(value);
-  const withoutCode = clearValue.length <= 11;
-  return withoutCode ? BASE_PHONE_MASK : FULL_PHONE_MASK;
+  const withoutCode = clearValue.length <= BASE_PHONE_LENGTH;
+  return withoutCode ? PHONE_MASK : PHONE_MASK_WITH_CODE;
 };
 
 export const getConformedValue = (value: string) => {
