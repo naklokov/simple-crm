@@ -323,7 +323,6 @@ export const upper: UpperProps = {
           format: "textarea",
           disabled: false,
           readonly: false,
-          span: { lg: 12, xl: 12 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
           permissions: PERMISSIONS_SET.CLIENT_UPDATE,
