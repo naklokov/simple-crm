@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import isEmpty from "lodash/isEmpty";
 import { Col, Form, Select } from "antd";
 import { Dispatch } from "@reduxjs/toolkit";
-import { DictionaryProps, DEFAULT_SPAN, FieldProps } from "../../../constants";
+import {
+  DictionaryProps,
+  FieldProps,
+  DEFAULT_FIELD_SPAN,
+} from "../../../constants";
 import { useFetch } from "../../../utils";
 import { setLoading } from "../../../__data__";
 import { connect } from "react-redux";
@@ -23,7 +27,7 @@ export const Dictionary = ({
   disabled = false,
   readonly = false,
   _links,
-  span = DEFAULT_SPAN,
+  span = DEFAULT_FIELD_SPAN,
   setLoading,
 }: DictionaryComponentProps) => {
   const [dictionary, setDictionary] = useState<DictionaryProps>({});
@@ -46,9 +50,8 @@ export const Dictionary = ({
   const formatFunc = (value: string) =>
     options.find((o) => o.valueCode === value)?.value ?? "";
 
-  const colSpan = { ...DEFAULT_SPAN, ...span };
   return (
-    <Col {...colSpan} key={fieldCode}>
+    <Col {...span} key={fieldCode}>
       <Form.Item
         name={fieldCode}
         style={{ width: "100%" }}

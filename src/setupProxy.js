@@ -4,7 +4,7 @@ module.exports = (app) => {
   app.use(
     "/helper",
     createProxyMiddleware({
-      target: "http://mcpr-tech.online:8088",
+      target: "http://77.222.60.155:8088",
       changeOrigin: true,
     })
   );
@@ -12,7 +12,7 @@ module.exports = (app) => {
   app.use(
     "/crm/rest",
     createProxyMiddleware({
-      target: "http://mcpr-tech.online:8081",
+      target: "http://77.222.60.155:8080",
       changeOrigin: true,
       pathRewrite: {
         "^/crm/rest/login": "/crm/login",
