@@ -11,7 +11,7 @@ var config = {
   // host: "176.212.190.167",
   port: 21,
   localRoot: "build/",
-  remoteRoot: "/nginx/www/crm",
+  remoteRoot: "/nginx-pl/www/crm",
   include: ["*", "**/*"], // this would upload everything except dot files
   // include: ["*.php", "dist/*", ".*"],
   // e.g. exclude sourcemaps, and ALL files in node_modules (including dot files)
