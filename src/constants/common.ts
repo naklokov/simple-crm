@@ -4,7 +4,7 @@ export const DATE_FORMATS = {
   TIME: "HH:mm",
 };
 
-export const DEFAULT_SPAN = { xs: 24, sm: 12, md: 8, lg: 6, xl: 6 };
+export const DEFAULT_FIELD_SPAN = { xs: 24, sm: 12, md: 8, lg: 6, xl: 6 };
 export const GUTTER_FULL_WIDTH = {
   HORIZONTAL: 48,
   VERTICAL: 16,
@@ -40,7 +40,11 @@ export const FORM_NAMES = {
   TASK_VIEW: "taskView",
 };
 
-export const BASE_PHONE_MASK = [
+export const PHONE_TRIM_START_CHARS = ["7", "8"];
+
+export const BASE_PHONE_LENGTH = 11;
+
+export const PHONE_MASK = [
   "+",
   "7",
   " ",
@@ -61,4 +65,4 @@ export const BASE_PHONE_MASK = [
   /\d/,
 ];
 
-export const FULL_PHONE_MASK = [...BASE_PHONE_MASK, ",", " ", /\d/, /\d/, /\d/];
+export const PHONE_MASK_WITH_CODE = [...PHONE_MASK, ",", " ", /\d/, /\d/, /\d/];

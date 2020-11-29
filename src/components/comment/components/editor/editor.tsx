@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useCallback, useRef, useEffect } from "react";
 import { Input, Form, Button } from "antd";
-import TextAreaLib from "antd/lib/input/TextArea";
 import { useTranslation } from "react-i18next";
 import { handlePressEnter } from "../../../../utils";
+import { TextAreaRef } from "antd/lib/input/TextArea";
 
 const { TextArea } = Input;
 
@@ -13,7 +13,7 @@ interface EditableTextProps {
 
 export const Editor = ({ initialValue, onFinish }: EditableTextProps) => {
   const [t] = useTranslation("comment");
-  const inputRef = useRef<TextAreaLib>(null);
+  const inputRef = useRef<TextAreaRef>(null);
   const [form] = Form.useForm();
 
   useEffect(() => {

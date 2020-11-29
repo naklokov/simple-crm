@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Form, Input, Col, Tooltip } from "antd";
-import { DEFAULT_SPAN, FieldProps } from "../../../constants";
+import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
 import { MailOutlined } from "@ant-design/icons";
 import { checkEmail } from "../../../utils";
@@ -18,7 +18,7 @@ export const Email = ({
   placeholder,
   disabled = false,
   readonly = false,
-  span = DEFAULT_SPAN,
+  span = DEFAULT_FIELD_SPAN,
 }: FieldProps) => {
   const [t] = useTranslation("fields");
   const [value, setValue] = useState("");
@@ -32,9 +32,16 @@ export const Email = ({
     window.location.assign(getEmailLink(value));
   }, [value]);
 
-  const colSpan = { ...DEFAULT_SPAN, ...span };
+  const actionIcon = checkEmail(value) ? (
+    <Tooltip title={t("email.tooltip")}>
+      <MailOutlined onClick={handleSend} className={style.icon} />
+    </Tooltip>
+  ) : (
+    <div />
+  );
+
   return (
-    <Col {...colSpan} key={fieldCode}>
+    <Col {...span} key={fieldCode}>
       <Form.Item
         style={{ width: "100%" }}
         name={fieldCode}
@@ -48,15 +55,7 @@ export const Email = ({
           <Readonly type="href" onClickLink={handleSend} />
         ) : (
           <Input
-            suffix={
-              checkEmail(value) ? (
-                <Tooltip title={t("email.tooltip")}>
-                  <MailOutlined onClick={handleSend} className={style.icon} />
-                </Tooltip>
-              ) : (
-                <div />
-              )
-            }
+            suffix={actionIcon}
             autoComplete="off"
             placeholder={placeholder}
             disabled={disabled}

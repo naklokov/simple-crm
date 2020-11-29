@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Form, Input, Col, Tooltip } from "antd";
-import { DEFAULT_SPAN, FieldProps } from "../../../constants";
+import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
 import { LinkOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
@@ -16,13 +16,13 @@ export const Href = ({
   placeholder,
   disabled = false,
   readonly = false,
-  span = DEFAULT_SPAN,
+  span = DEFAULT_FIELD_SPAN,
 }: FieldProps) => {
   const [t] = useTranslation("fields");
   const [value, setValue] = useState("");
 
   const getPrefixedUrl = (value: string) =>
-    /^(http|https|www):/.test(value) ? value : "http://" + value;
+    /^(http|https|www):/.test(value) ? value : `http://${value}`;
 
   const handleValueProps = useCallback((input: string) => {
     setValue(input);
@@ -34,9 +34,16 @@ export const Href = ({
     openUrlTargetBlank(url);
   }, [value]);
 
-  const colSpan = { ...DEFAULT_SPAN, ...span };
+  const actionIcon = value ? (
+    <Tooltip title={t("href.tooltip")}>
+      <LinkOutlined onClick={handleClick} className={style.icon} />
+    </Tooltip>
+  ) : (
+    <div />
+  );
+
   return (
-    <Col {...colSpan} key={fieldCode}>
+    <Col {...span} key={fieldCode}>
       <Form.Item
         style={{ width: "100%" }}
         name={fieldCode}
@@ -50,15 +57,7 @@ export const Href = ({
           <Readonly type="href" onClickLink={handleClick} />
         ) : (
           <Input
-            suffix={
-              !!value ? (
-                <Tooltip title={t("href.tooltip")}>
-                  <LinkOutlined onClick={handleClick} className={style.icon} />
-                </Tooltip>
-              ) : (
-                <div />
-              )
-            }
+            suffix={actionIcon}
             autoComplete="off"
             placeholder={placeholder}
             disabled={disabled}

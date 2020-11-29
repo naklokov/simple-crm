@@ -115,6 +115,7 @@
   },
   "clientCardPriceList": {
     "rules.editable.price": "Введите стоимость",
+    "message.row.save.success": "Запись успешно изменена",
     "message.row.save.error": "Ошибка при сохранении данных прайс листа"
   },
   "contactDrawer": {
