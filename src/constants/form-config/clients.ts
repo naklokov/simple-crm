@@ -8,6 +8,7 @@ export const COLUMNS: ColumnProps[] = [
     columnType: "string",
     columnDescription: "Наименование",
     fixed: "left",
+    width: "30%",
     sorter: true,
     filterable: true,
     columnActions: [
@@ -38,6 +39,7 @@ export const COLUMNS: ColumnProps[] = [
     columnName: "Город",
     columnCode: "city",
     columnType: "string",
+    width: "15%",
     columnDescription: "Город",
     filterable: true,
     sorter: true,
