@@ -100,7 +100,7 @@ export interface ColumnProps {
   valueField?: string;
   format?: ColumnFormatType;
   ellipsis?: boolean;
-  width?: number;
+  width?: string;
   fixed?: FixedPositionType;
   sorter: any;
   filterable?: boolean;
