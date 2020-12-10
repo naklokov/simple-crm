@@ -1,98 +1,160 @@
-import { ActionProps, ColumnProps, urls } from "../";
-import { PERMISSIONS, PERMISSIONS_SET } from "../permissions";
+import { urls } from "../";
+import { TabProps } from "../interfaces";
 
-export const COLUMNS: ColumnProps[] = [
-  {
-    columnName: "Наименование",
-    columnCode: "shortName",
-    columnType: "string",
-    columnDescription: "Наименование",
-    fixed: "left",
-    width: "30%",
-    sorter: true,
-    filterable: true,
-    columnActions: [
-      {
-        actionName: "",
-        permissions: [],
-        actionType: "href",
-        href: urls.clients.path,
-      },
-    ],
-  },
-  {
-    columnName: "Телефон",
-    columnCode: "phone",
-    columnType: "string",
-    columnDescription: "Телефон",
-    filterable: true,
-    columnActions: [
-      {
-        actionType: "call",
-        actionName: "",
-        permissions: [],
-      },
-    ],
-    sorter: false,
-  },
-  {
-    columnName: "Город",
-    columnCode: "city",
-    columnType: "string",
-    width: "15%",
-    columnDescription: "Город",
-    filterable: true,
-    sorter: true,
-  },
-  {
-    columnName: "Дата регистрации",
-    columnCode: "creationDate",
-    columnType: "date",
-    format: "DD.MM.YYYY",
-    sorter: true,
-    columnDescription: "Дата регистрации",
-  },
-  {
-    columnName: "ИНН",
-    columnCode: "inn",
-    columnType: "string",
-    columnDescription: "ИНН",
-    filterable: true,
-    sorter: false,
-  },
-  {
-    columnName: "Куратор",
-    columnCode: "userProfileId",
-    columnType: "dictionary",
-    titleField: "fullName",
-    valueField: "id",
-    sorter: false,
-    filterable: true,
-    filterOperator: "equal",
-    columnDescription: "Куратор компании",
-  },
-];
-
-export const ACTIONS: ActionProps[] = [
-  {
-    actionName: "Удалить",
-    actionType: "delete",
-    permissions: PERMISSIONS_SET.CLIENT_DELETE,
-    href: urls.clients.entity,
-  },
-];
-
-export const TABLES = [
-  {
-    tableName: "Клиенты",
-    tableDescription: "Список клиентов",
-    tableCode: "clientsTable",
-    columns: COLUMNS,
-    _links: {
-      userProfileId: {
-        href: urls.userProfiles.entity,
+export const CLIENTS: { tabs: TabProps[] } = {
+  tabs: [
+    {
+      tabCode: "clientsPersonal",
+      tabName: "Мои клиенты",
+      tabDescription: "",
+      type: "table",
+      actions: [],
+      columns: [
+        {
+          columnName: "Наименование",
+          columnCode: "shortName",
+          columnType: "string",
+          columnDescription: "Наименование",
+          width: "30%",
+          sorter: true,
+          filterable: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        },
+        {
+          columnName: "Телефон",
+          columnCode: "phone",
+          columnType: "string",
+          columnDescription: "Телефон",
+          filterable: true,
+          columnActions: [
+            {
+              actionType: "call",
+              actionName: "",
+              permissions: [],
+            },
+          ],
+          sorter: false,
+        },
+        {
+          columnName: "Город",
+          columnCode: "city",
+          columnType: "string",
+          width: "15%",
+          columnDescription: "Город",
+          filterable: true,
+          sorter: true,
+        },
+        {
+          columnName: "Дата регистрации",
+          columnCode: "creationDate",
+          columnType: "date",
+          format: "DD.MM.YYYY",
+          sorter: true,
+          columnDescription: "Дата регистрации",
+        },
+        {
+          columnName: "ИНН",
+          columnCode: "inn",
+          columnType: "string",
+          columnDescription: "ИНН",
+          filterable: true,
+          sorter: false,
+        },
+      ],
+      _links: {
+        userProfileId: {
+          href: urls.userProfiles.entity,
+        },
       },
     },
-    actions: [],
-  },
-];
+    {
+      tabCode: "clientsAll",
+      tabName: "Все клиенты",
+      tabDescription: "",
+      type: "table",
+      actions: [],
+      columns: [
+        {
+          columnName: "Наименование",
+          columnCode: "shortName",
+          columnType: "string",
+          columnDescription: "Наименование",
+          width: "30%",
+          sorter: true,
+          filterable: true,
+          columnActions: [
+            {
+              actionName: "",
+              permissions: [],
+              actionType: "href",
+              href: urls.clients.path,
+            },
+          ],
+        },
+        {
+          columnName: "Телефон",
+          columnCode: "phone",
+          columnType: "string",
+          columnDescription: "Телефон",
+          filterable: true,
+          columnActions: [
+            {
+              actionType: "call",
+              actionName: "",
+              permissions: [],
+            },
+          ],
+          sorter: false,
+        },
+        {
+          columnName: "Город",
+          columnCode: "city",
+          columnType: "string",
+          width: "15%",
+          columnDescription: "Город",
+          filterable: true,
+          sorter: true,
+        },
+        {
+          columnName: "Дата регистрации",
+          columnCode: "creationDate",
+          columnType: "date",
+          format: "DD.MM.YYYY",
+          sorter: true,
+          columnDescription: "Дата регистрации",
+        },
+        {
+          columnName: "ИНН",
+          columnCode: "inn",
+          columnType: "string",
+          columnDescription: "ИНН",
+          filterable: true,
+          sorter: false,
+        },
+        {
+          columnName: "Куратор",
+          columnCode: "userProfileId",
+          columnType: "dictionary",
+          titleField: "fullName",
+          valueField: "id",
+          sorter: false,
+          filterable: true,
+          filterOperator: "equal",
+          columnDescription: "Куратор компании",
+        },
+      ],
+      _links: {
+        userProfileId: {
+          href: urls.userProfiles.entity,
+        },
+      },
+    },
+  ],
+};

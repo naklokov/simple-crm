@@ -1,71 +1,55 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { Table } from "../../components";
+import { Table, Tabs } from "../../components";
 import {
   formConfig,
   PERMISSIONS,
   ProfileInfoProps,
   State,
   urls,
+  TabProps,
 } from "../../constants";
 
 import style from "./clients.module.scss";
-import { useTranslation } from "react-i18next";
 import ClientsHeader from "./header";
 import { PagePermissionsChecker } from "../../wrappers";
-import { Radio } from "antd";
-import { RadioChangeEvent } from "antd/lib/radio";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { setTableLoading } from "../../__data__";
-import { getEqualRsql } from "../../components/table/utils";
-
-const CLIENTS_RADIO_OPTIONS = {
-  MY: "myClients",
-  ALL: "allClients",
-};
+import { getPersonalClientsRsql } from "./utils";
 
 interface ClientsProps {
   title?: string;
   profileInfo: ProfileInfoProps;
 }
 
+const {
+  CLIENTS: { tabs: TABS },
+} = formConfig.clients;
+
 export const Clients = ({ profileInfo }: ClientsProps) => {
-  const [t] = useTranslation("clients");
-  const [selectedRadio, setSelectedRadio] = useState(CLIENTS_RADIO_OPTIONS.MY);
+  const personalClientsRsql = getPersonalClientsRsql(profileInfo?.id);
 
-  const handleChangeRadio = useCallback(
-    (e: RadioChangeEvent) => {
-      const { value } = e.target;
-      setSelectedRadio(value);
-    },
-    [selectedRadio]
-  );
-
-  const radioSelect = (
-    <Radio.Group
-      style={{ float: "right" }}
-      value={selectedRadio}
-      onChange={handleChangeRadio}
-    >
-      <Radio.Button value={CLIENTS_RADIO_OPTIONS.MY}>
-        {t("radio.my")}
-      </Radio.Button>
-      <Radio.Button value={CLIENTS_RADIO_OPTIONS.ALL}>
-        {t("radio.all")}
-      </Radio.Button>
-    </Radio.Group>
-  );
-
-  const isPersonalClients = selectedRadio === CLIENTS_RADIO_OPTIONS.MY;
-  const personalClientsRsql = profileInfo.id
-    ? [getEqualRsql("userProfileId", profileInfo.id)]
-    : [];
-
-  const { TABLES } = formConfig.clients;
-
-  if (!profileInfo.id) {
-    return null;
-  }
+  const TABS_MAP: {
+    [key: string]: (props: any) => any;
+  } = {
+    clientsPersonal: ({ tab }: { tab: TabProps }) => (
+      <Table.Server
+        columns={tab?.columns}
+        actions={tab?.actions}
+        _links={tab?._links}
+        url={urls.clients.paging}
+        extraRsqlParams={personalClientsRsql}
+      />
+    ),
+    clientsAll: ({ tab }: { tab: TabProps }) => (
+      <Table.Server
+        columns={tab?.columns}
+        actions={tab?.actions}
+        _links={tab?._links}
+        url={urls.clients.paging}
+      />
+    ),
+  };
 
   return (
     <PagePermissionsChecker
@@ -76,20 +60,7 @@ export const Clients = ({ profileInfo }: ClientsProps) => {
           <ClientsHeader />
         </div>
         <div className={style.container}>
-          {isPersonalClients ? (
-            <Table.Server
-              table={TABLES[0]}
-              url={urls.clients.paging}
-              extraHeader={radioSelect}
-              extraRsqlParams={personalClientsRsql}
-            />
-          ) : (
-            <Table.Server
-              table={TABLES[0]}
-              url={urls.clients.paging}
-              extraHeader={radioSelect}
-            />
-          )}
+          <Tabs theme={{ tabs: style.tabs }} tabsMap={TABS_MAP} tabs={TABS} />
         </div>
       </div>
     </PagePermissionsChecker>

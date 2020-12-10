@@ -1,9 +1,11 @@
 import React, { useCallback, useState } from "react";
-import { Input, Button } from "antd";
+import cn from "classnames";
+import { Input, Button, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import noop from "lodash/noop";
 
 import style from "./header.module.scss";
+import { ClearOutlined } from "@ant-design/icons";
 
 interface HeaderProps {
   withSearch?: boolean;
@@ -36,19 +38,31 @@ export const Header = ({
   return (
     <div className={style.container}>
       {withSearch && (
-        <React.Fragment>
+        <div className={style.search}>
           <Input.Search
-            style={{ width: "25%" }}
+            className={cn(style.search, {
+              [style.searchWide]: !window.isMobile,
+            })}
             placeholder={t("search.all.placeholder")}
             onSearch={onSearch}
             onChange={handleChange}
             value={value}
             enterButton
           />
-          <Button className={style.clear} onClick={handleClear}>
-            {t("search.all.clear")}
-          </Button>
-        </React.Fragment>
+          {window.isMobile ? (
+            <Tooltip title={t("search.all.clear")}>
+              <Button
+                icon={<ClearOutlined />}
+                className={style.clear}
+                onClick={handleClear}
+              />
+            </Tooltip>
+          ) : (
+            <Button className={style.clear} onClick={handleClear}>
+              {t("search.all.clear")}
+            </Button>
+          )}
+        </div>
       )}
       {extra}
     </div>

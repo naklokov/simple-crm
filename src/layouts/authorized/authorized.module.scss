@@ -11,8 +11,7 @@
   position: -webkit-sticky !important;
   position: sticky !important;
   top: 0;
-  filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.15)) !important;
-  height: 100vh;
+  min-height: 100vh;
   margin-right: 1px;
 }
 
@@ -25,7 +24,6 @@
 }
 
 .subheader {
-  margin-top: 1px;
   background-color: var(--background-color-form) !important;
 }
 

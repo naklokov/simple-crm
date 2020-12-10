@@ -1,11 +1,7 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
+import cn from "classnames";
 import { Tabs as TabsUI, Tooltip } from "antd";
-import {
-  ClientEntityProps,
-  ModeType,
-  TabPositionType,
-  TabProps,
-} from "../../constants";
+import { ModeType, TabPositionType, TabProps } from "../../constants";
 
 import style from "./tabs.module.scss";
 import { useTranslation } from "react-i18next";
@@ -18,31 +14,34 @@ import {
 
 const { TabPane } = TabsUI;
 
+interface TabsThemeProps {
+  tabs?: string;
+  form?: string;
+}
+
 interface TabsProps {
-  className?: any;
   mainTab?: string;
   mode?: ModeType;
   tabs: TabProps[];
-  position: TabPositionType;
-  client?: ClientEntityProps;
-  formsMap: { [key: string]: (props: any) => JSX.Element };
+  position?: TabPositionType;
+  tabsMap: { [key: string]: (props: any) => JSX.Element };
+  theme?: TabsThemeProps;
 }
 
 export const Tabs = ({
   mode = "view",
   mainTab = "",
   tabs,
-  formsMap,
-  className,
+  tabsMap,
+  theme = {},
   position,
-  client,
   ...props
 }: TabsProps) => {
   const queryParam = getPositionQueryParam(position);
   const history = useHistory();
   const [t] = useTranslation("tabs");
   const activeTab = getActiveQueryTab(tabs);
-  const Form = formsMap[activeTab.tabCode];
+  const Form = tabsMap[activeTab.tabCode];
 
   const handleChange = useCallback((id) => {
     setActiveQueryTab(id, queryParam, history);
@@ -52,9 +51,9 @@ export const Tabs = ({
     currentTab !== mainTab && mode === "add";
 
   return (
-    <div className={className}>
+    <div>
       <TabsUI
-        className={style.tabs}
+        className={cn(style.tabs, theme.tabs)}
         defaultActiveKey={activeTab.tabCode}
         activeKey={activeTab.tabCode}
         onChange={handleChange}
@@ -79,8 +78,8 @@ export const Tabs = ({
           return <TabPane key={tabCode} tab={tabName} />;
         })}
       </TabsUI>
-      <div className={style.form}>
-        <Form tab={activeTab} client={client} mode={mode} {...props} />
+      <div className={cn(style.form, theme.form)}>
+        <Form tab={activeTab} mode={mode} {...props} />
       </div>
     </div>
   );

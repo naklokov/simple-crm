@@ -137,6 +137,10 @@ export interface FieldProps {
   _links?: LinksType;
 }
 
+export interface TabPaneFormProps {
+  tab: TabProps;
+}
+
 export interface RsqlParamProps {
   key: string;
   operator?: string;

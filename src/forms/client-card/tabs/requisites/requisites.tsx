@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import {
   GUTTER_FULL_WIDTH,
-  TabProps,
   QueryProps,
   FORM_NAMES,
   PERMISSIONS_SET,
@@ -10,6 +9,7 @@ import {
   State,
   urls,
   ClientEntityProps,
+  TabPaneFormProps,
 } from "../../../../constants";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
@@ -32,8 +32,7 @@ import style from "./requisites.module.scss";
 import { connect } from "react-redux";
 import { AxiosResponse } from "axios";
 
-interface RequisitesProps {
-  tab: TabProps;
+interface RequisitesProps extends TabPaneFormProps {
   profileInfo: ProfileInfoProps;
 }
 
