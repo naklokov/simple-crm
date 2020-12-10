@@ -16,6 +16,7 @@ import { Header } from "./components";
 import noop from "lodash/noop";
 
 import style from "./table.module.scss";
+
 import { setTableLoading } from "../../__data__";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect, useDispatch } from "react-redux";
@@ -62,7 +63,7 @@ interface TableProps {
 export const Table = ({
   _links,
   columns,
-  className = style.table,
+  className,
   dataSource,
   actions,
   loading,
@@ -92,7 +93,7 @@ export const Table = ({
       const { self, ...links } = _links;
       fetchDictionaries(links, dispatch);
     }
-  }, [_links]);
+  }, [_links, dispatch]);
 
   const title =
     withSearch || extraHeader
@@ -142,7 +143,7 @@ export const Table = ({
             components={getEditableTableBody()}
             rowClassName={() => style.editableRow}
             loading={loading || tableLoading}
-            scroll={window.isMobile ? { x: 1300 } : void 0}
+            scroll={{ x: true }}
             bordered={bordered}
           />
         </TableActionsContext.Provider>

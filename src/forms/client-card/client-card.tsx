@@ -23,8 +23,6 @@ import { isEmpty } from "lodash";
 import { ClientCardHeader } from ".";
 import { PagePermissionsChecker } from "../../wrappers";
 
-import style from "./client-card.module.scss";
-
 interface ClientCardProps {
   profileInfo: ProfileInfoProps;
   setLoading: (loading: boolean) => void;
@@ -83,26 +81,24 @@ export const ClientCard = ({ setLoading }: ClientCardProps) => {
     <PagePermissionsChecker
       availablePermissions={[PERMISSIONS.CLIENTS["GET.ALL"]]}
     >
-      <div>
-        <div className={style.header}>
-          <ClientCardHeader />
-        </div>
+      <React.Fragment>
+        <ClientCardHeader />
         <Tabs
           mainTab={upper.tabs[0].tabName}
           position="upper"
           mode={mode}
           tabs={upper.tabs}
-          formsMap={TABS_MAP}
+          tabsMap={TABS_MAP}
         />
         {mode === "view" && (
           <Tabs
             position="lower"
             mode={mode}
             tabs={lower.tabs}
-            formsMap={TABS_MAP}
+            tabsMap={TABS_MAP}
           />
         )}
-      </div>
+      </React.Fragment>
     </PagePermissionsChecker>
   );
 };

@@ -11,6 +11,7 @@ import {
   State,
   ProfileInfoProps,
   ClientEntityProps,
+  TabPaneFormProps,
 } from "../../../../constants";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
@@ -33,9 +34,8 @@ import { getAddMetaValues } from "../../utils";
 import style from "./main.module.scss";
 import { AxiosResponse } from "axios";
 
-interface MainProps {
+interface MainProps extends TabPaneFormProps {
   mode: ModeType;
-  tab: TabProps;
   profileInfo: ProfileInfoProps;
 }
 

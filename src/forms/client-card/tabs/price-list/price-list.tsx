@@ -2,13 +2,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import {
   urls,
-  TabProps,
   ClientEntityProps,
   QueryProps,
   PERMISSIONS_SET,
   ProfileInfoProps,
   State,
-  formConfig,
+  TabPaneFormProps,
 } from "../../../../constants";
 import { Table } from "../../../../components";
 import {
@@ -24,10 +23,11 @@ import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-interface ContactsProps {
+import style from "./price-list.module.scss";
+
+interface ContactsProps extends TabPaneFormProps {
   profileInfo: ProfileInfoProps;
   clients: ClientEntityProps[];
-  tab: TabProps;
   setTableLoading: (loading: boolean) => void;
 }
 
@@ -74,6 +74,7 @@ export const PriceList = ({
   return (
     <Table.Client
       idValue="itemId"
+      className={style.table}
       table={tab}
       loading={loading}
       dataSource={positions}

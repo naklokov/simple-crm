@@ -1,7 +1,4 @@
-import {
-  ColumnProps,
-  RecordType,
-  RsqlParamProps,
-  RSQL_OPERATORS_MAP,
-} from "../../constants";
-import { getRsqlParams } from "../../utils";
+import { getEqualRsql } from "../../components/table/utils";
+
+export const getPersonalClientsRsql = (userProfileId?: string) =>
+  userProfileId ? [getEqualRsql("userProfileId", userProfileId)] : [];

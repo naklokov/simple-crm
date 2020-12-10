@@ -2,12 +2,13 @@
 @import "../../assets/styles/colors";
 @import "../../assets/styles/common";
 
+.tabs {
+  border-radius: var(--form-border-radius);
+  background-color: var(--background-color-form);
+}
+
 .container {
   border-radius: var(--form-border-radius);
   margin: var(--offset-md2);
   background-color: var(--background-color-form);
-}
-
-.header {
-  margin-top: 1px;
 }

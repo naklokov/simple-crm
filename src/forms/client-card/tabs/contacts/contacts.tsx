@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
   urls,
-  TabProps,
   formConfig,
   QueryProps,
   FORM_NAMES,
+  TabPaneFormProps,
 } from "../../../../constants";
 import { Table } from "../../../../components";
 import {
@@ -30,11 +30,7 @@ const {
 
 const drawer = drawers.find(({ code }) => code === "contact");
 
-interface ContactsProps {
-  tab: TabProps;
-}
-
-export const Contacts = ({ tab }: ContactsProps) => {
+export const Contacts = ({ tab }: TabPaneFormProps) => {
   const [t] = useTranslation("clientCardContacts");
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
@@ -108,6 +104,7 @@ export const Contacts = ({ tab }: ContactsProps) => {
       />
       <div className={style.container}>
         <Table.Client
+          className={style.table}
           table={tab}
           loading={loading}
           pagination={{ pageSize: 5 }}

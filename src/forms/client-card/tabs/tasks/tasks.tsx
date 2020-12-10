@@ -6,7 +6,6 @@ import {
   useFetch,
   useFormValues,
 } from "../../../../utils";
-import { useTranslation } from "react-i18next";
 import { Tabs, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
@@ -21,8 +20,8 @@ import {
   FORM_NAMES,
   PERMISSIONS_SET,
   State,
-  TableProps,
   TASK_STATUSES,
+  TabPaneFormProps,
 } from "../../../../constants";
 import { useParams } from "react-router";
 import {
@@ -44,8 +43,7 @@ const taskDrawer = formConfig.clientCard.lower.drawers.find(
   (drawer) => drawer.code === "task"
 );
 
-interface TasksProps {
-  tab: TabProps;
+interface TasksProps extends TabPaneFormProps {
   activeTasks: TaskEntityProps[];
   setActiveTasks: (tasks: TaskEntityProps[]) => void;
 }
@@ -216,7 +214,6 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
         >
           <TabPane tab="Активные" key="active">
             <Table.Client
-              className={style.table}
               table={activeTasksTable as TabProps}
               loading={loading}
               pagination={{ pageSize: 3 }}
@@ -230,7 +227,6 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
           </TabPane>
           <TabPane tab="Выполненные" key="done">
             <Table.Client
-              className={style.table}
               table={completedTasksTable as TabProps}
               loading={loading}
               pagination={{ pageSize: 3 }}

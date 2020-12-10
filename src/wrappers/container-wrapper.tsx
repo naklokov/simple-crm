@@ -43,7 +43,6 @@ export const ContainerWrapper = ({
   setProfileInfo,
 }: ContainerWrapperProps) => {
   const [tasksLoading, setTasksLoading] = useState(false);
-  const [clientsLoading, setClientsLoading] = useState(false);
   const { response: profileResponse, loading: profileLoading } = useFetch({
     url: urls.profile.entity,
   });
@@ -91,16 +90,9 @@ export const ContainerWrapper = ({
   }, [profileInfo.id]);
 
   useEffect(() => {
-    const isLoaded =
-      profileLoading || permissionsLoading || tasksLoading || clientsLoading;
+    const isLoaded = profileLoading || permissionsLoading || tasksLoading;
     setLoading(isLoaded);
-  }, [
-    profileLoading,
-    permissionsLoading,
-    tasksLoading,
-    clientsLoading,
-    setLoading,
-  ]);
+  }, [profileLoading, permissionsLoading, tasksLoading, setLoading]);
 
   if (error.statusCode) {
     return (
