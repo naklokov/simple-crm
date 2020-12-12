@@ -60,6 +60,7 @@ module.exports = {
   },
   dictionaries: {
     position: "/crm/rest/dictionary/position",
+    activityFields: '/crm/rest/dictionary/ACTIVITY_FIELDS',
     userProfiles: "/crm/rest/dictionary/userProfiles",
   },
 };
