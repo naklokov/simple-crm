@@ -2,21 +2,21 @@ import React from "react";
 import { Select } from "antd";
 import { SearchFooter } from ".";
 import { WithTranslation, withTranslation } from "react-i18next";
-import { ColumnProps, State, DictionaryProps } from "../../../../constants";
+import { ColumnProps, State } from "../../../../constants";
 import { flow } from "lodash";
 import { connect } from "react-redux";
 
-interface DictionarySearchProps extends WithTranslation {
+interface EntitySearchProps extends WithTranslation {
   column: ColumnProps;
   setSelectedKeys: any;
   setRef: any;
   selectedKeys: any;
   confirm: string;
   clearFilters: any;
-  dictionaries: { [key: string]: DictionaryProps };
+  dictionaries: any;
 }
 
-export const DictionarySearch = ({
+export const EntitySearch = ({
   t,
   setSelectedKeys,
   column,
@@ -25,23 +25,29 @@ export const DictionarySearch = ({
   confirm,
   clearFilters,
   dictionaries,
-}: DictionarySearchProps) => {
-  const options =
-    dictionaries?.[column.columnCode]?.dictionaryValueEntities ?? [];
+}: EntitySearchProps) => {
+  const options = dictionaries?.[column.columnCode] ?? [];
   return (
     <div style={{ padding: 8 }}>
       <Select
+        showSearch
         style={{ width: 190, display: "block", marginBottom: 8 }}
-        placeholder={t("placeholder.dictionary")}
+        placeholder={t("placeholder.entity")}
+        optionFilterProp="children"
         value={selectedKeys[0]}
         onChange={(value) => {
           setSelectedKeys([value]);
         }}
+        filterOption={(input, option) =>
+          option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
       >
-        {options.map(({ value, valueCode }) => {
+        {options.map((o: any) => {
+          const value = o?.[column?.valueField ?? ""];
+          const title = o?.[column?.titleField ?? ""];
           return (
-            <Select.Option key={valueCode} value={valueCode}>
-              {value}
+            <Select.Option key={value} value={value}>
+              {title}
             </Select.Option>
           );
         })}
@@ -63,4 +69,4 @@ const mapStateToProps = (state: State) => ({
 export default flow([
   connect(mapStateToProps),
   withTranslation(["columnSearch"]),
-])(DictionarySearch);
+])(EntitySearch);

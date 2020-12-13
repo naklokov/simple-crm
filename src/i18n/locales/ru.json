@@ -196,7 +196,8 @@
   },
   "columnSearch": {
     "placeholder.text": "Введите текст для поиска",
-    "placeholder.dictionary": "Введите значение для поиска",
+    "placeholder.entity": "Введите значение для поиска",
+    "placeholder.dictionary": "Выберите значение из списка",
     "placeholder.date": "Выберите дату",
     "search": "Поиск",
     "reset": "Сброс"
