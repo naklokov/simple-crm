@@ -61,7 +61,7 @@ interface TableProps {
 }
 
 export const Table = ({
-  _links,
+  _links = {},
   columns,
   className,
   dataSource,
@@ -89,10 +89,8 @@ export const Table = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (_links) {
-      const { self, ...links } = _links;
-      fetchDictionaries(links, dispatch);
-    }
+    const { self, ...links } = _links;
+    fetchDictionaries(links, dispatch);
   }, [_links, dispatch]);
 
   const title =

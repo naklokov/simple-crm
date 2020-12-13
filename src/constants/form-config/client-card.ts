@@ -559,16 +559,16 @@ export const upper: UpperProps = {
           sorter: false,
         },
         {
-          columnName: "Единица измерения",
-          columnCode: "positionUnit",
-          columnType: "dictionary",
+          columnName: "Примечание",
+          columnCode: "note",
+          columnType: "string",
           columnDescription: "Описание товара",
           sorter: false,
         },
         {
-          columnName: "Примечание",
-          columnCode: "note",
-          columnType: "string",
+          columnName: "Единица измерения",
+          columnCode: "positionUnit",
+          columnType: "dictionary",
           columnDescription: "Описание товара",
           sorter: false,
         },
@@ -582,7 +582,11 @@ export const upper: UpperProps = {
           editable: true,
         },
       ],
-      _links: {},
+      _links: {
+        positionUnit: {
+          href: urls.dictionaries.positionUnit,
+        },
+      },
     },
   ],
 };

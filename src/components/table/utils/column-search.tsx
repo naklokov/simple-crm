@@ -1,9 +1,16 @@
 import React from "react";
-import { TextSearch, DictionarySearch, DateSearch } from "../components";
+import {
+  TextSearch,
+  EntitySearch,
+  DictionarySearch,
+  DateSearch,
+} from "../components";
 import { ColumnType, ColumnProps, RecordType } from "../../../constants";
 
 const getSearch = (columnType: ColumnType) => {
   switch (columnType) {
+    case "entity":
+      return EntitySearch;
     case "dictionary":
       return DictionarySearch;
     case "date":

@@ -67,10 +67,21 @@ export const CLIENTS: { tabs: TabProps[] } = {
           filterable: true,
           sorter: false,
         },
+        {
+          columnName: "Тип деятельности",
+          columnCode: "activityField",
+          columnType: "dictionary",
+          columnDescription: "Тип деятельности клиента",
+          sorter: false,
+          filterable: true,
+        },
       ],
       _links: {
         userProfileId: {
           href: urls.userProfiles.entity,
+        },
+        activityField: {
+          href: urls.dictionaries.activityFields,
         },
       },
     },
@@ -139,9 +150,17 @@ export const CLIENTS: { tabs: TabProps[] } = {
           sorter: false,
         },
         {
+          columnName: "Тип деятельности",
+          columnCode: "activityField",
+          columnType: "dictionary",
+          columnDescription: "Тип деятельности клиента",
+          sorter: false,
+          filterable: true,
+        },
+        {
           columnName: "Куратор",
           columnCode: "userProfileId",
-          columnType: "dictionary",
+          columnType: "entity",
           titleField: "fullName",
           valueField: "id",
           sorter: false,
@@ -153,6 +172,9 @@ export const CLIENTS: { tabs: TabProps[] } = {
       _links: {
         userProfileId: {
           href: urls.userProfiles.entity,
+        },
+        activityField: {
+          href: urls.dictionaries.activityFields,
         },
       },
     },
