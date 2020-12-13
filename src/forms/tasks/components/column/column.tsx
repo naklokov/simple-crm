@@ -43,7 +43,7 @@ export const Column = ({
       {cards
         .filter((card, idx) => idx < visibleCount)
         .map((card) => (
-          <div className={style.card}>
+          <div className={style.card} key={card.id}>
             <Card
               key={card.id}
               id={card.id}

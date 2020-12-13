@@ -316,6 +316,22 @@ export const upper: UpperProps = {
           permissions: PERMISSIONS_SET.CLIENT_UPDATE,
         },
         {
+          fieldCode: "activityField",
+          fieldName: "Тип деятельности",
+          fieldDescription: "",
+          type: "dictionary",
+          disabled: false,
+          readonly: false,
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          _links: {
+            self: {
+              href: urls.dictionaries.activityFields,
+            },
+          },
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+        },
+        {
           fieldCode: "note",
           fieldName: "Примечание",
           fieldDescription: "",
@@ -542,17 +558,17 @@ export const upper: UpperProps = {
           columnDescription: "Описание товара",
           sorter: false,
         },
-        // {
-        //   columnName: "Единица измерения",
-        //   columnCode: "positionUnit",
-        //   columnType: "dictionary",
-        //   columnDescription: "Описание товара",
-        //   sorter: false,
-        // },
         {
           columnName: "Примечание",
           columnCode: "note",
           columnType: "string",
+          columnDescription: "Описание товара",
+          sorter: false,
+        },
+        {
+          columnName: "Единица измерения",
+          columnCode: "positionUnit",
+          columnType: "dictionary",
           columnDescription: "Описание товара",
           sorter: false,
         },
@@ -564,10 +580,13 @@ export const upper: UpperProps = {
           format: "currency",
           sorter: true,
           editable: true,
-          fixed: "left",
         },
       ],
-      _links: {},
+      _links: {
+        positionUnit: {
+          href: urls.dictionaries.positionUnit,
+        },
+      },
     },
   ],
 };

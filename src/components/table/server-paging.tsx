@@ -3,12 +3,11 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { Table } from ".";
 import {
+  ActionProps,
   ClientEntityProps,
   ColumnProps,
-  formConfig,
   RecordType,
   RsqlParamProps,
-  TableProps,
 } from "../../constants";
 import {
   defaultErrorHandler,
@@ -21,20 +20,24 @@ import { TablePaginationConfig } from "antd/lib/table";
 
 interface TableWithServerPagingProps {
   url: string;
-  table: TableProps;
+  columns?: ColumnProps[];
+  actions?: ActionProps[];
   extraHeader?: JSX.Element;
   extraRsqlParams?: RsqlParamProps[];
   withSearch?: boolean;
   bordered?: boolean;
+  _links?: object;
 }
 
 export const TableWithServerPaging = ({
-  table,
+  columns = [],
+  actions = [],
   extraHeader,
   url,
   extraRsqlParams,
   withSearch = true,
   bordered,
+  _links = {},
 }: TableWithServerPagingProps) => {
   const [t] = useTranslation("tableServer");
   const [loading, setLoading] = useState(false);
@@ -57,7 +60,7 @@ export const TableWithServerPaging = ({
           query: getQueryString({
             searchedAll,
             searchedColumns,
-            columns: table?.columns ?? [],
+            columns: columns ?? [],
             extraRsqlParams,
           }),
         },
@@ -142,8 +145,9 @@ export const TableWithServerPaging = ({
 
   return (
     <Table
-      _links={table?._links ?? {}}
-      columns={table?.columns ?? []}
+      _links={_links}
+      actions={actions}
+      columns={columns}
       extraHeader={extraHeader}
       loading={loading}
       pagination={serverPagination}

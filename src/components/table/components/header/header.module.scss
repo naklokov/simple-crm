@@ -8,6 +8,16 @@
   width: 30% !important;
 }
 
+.search {
+  display: flex;
+
+  &Wide {
+    max-width: 25%;
+    min-width: 150px;
+    flex: 1;
+  }
+}
+
 .clear {
   margin-left: var(--offset-md);
 }

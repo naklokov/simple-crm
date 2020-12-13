@@ -125,10 +125,8 @@ export const Tasks = ({ activeTasks, setActiveTasks }: TaskProps) => {
 
   return (
     <PagePermissionsChecker availablePermissions={PERMISSIONS_SET.TASK_GET}>
-      <div>
-        <div className={style.header}>
-          <TasksHeader onAddClick={handleAddClick} />
-        </div>
+      <React.Fragment>
+        <TasksHeader onAddClick={handleAddClick} />
         <AddTaskDrawer
           fields={taskDrawer?.fields ?? []}
           onClose={handleCloseAddDrawer}
@@ -156,7 +154,7 @@ export const Tasks = ({ activeTasks, setActiveTasks }: TaskProps) => {
           </Col>
           <Calendar onChange={handleChangeDate} />
         </Row>
-      </div>
+      </React.Fragment>
     </PagePermissionsChecker>
   );
 };

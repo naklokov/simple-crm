@@ -1,40 +1,23 @@
 import React, { useContext } from "react";
 import { connect } from "react-redux";
-import { State, ColumnProps, RecordType } from "../../../../../constants";
+import { ColumnProps, RecordType, State } from "../../../../../constants";
 import { HighlightTextWrapper } from "../../../../../wrappers";
 import { SearchedAllContext, SearchedColumnsContext } from "../../../utils";
 
-interface DictionaryProps {
+interface EntityProps {
   value: string;
   column: ColumnProps;
   dictionaries: any;
 }
 
-export const Dictionary = ({
-  value,
-  column,
-  dictionaries,
-}: DictionaryProps) => {
+export const Entity = ({ value, column, dictionaries }: EntityProps) => {
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
 
-  const { columnCode } = column;
-  const dictionary = dictionaries?.[columnCode];
-
-  if (!dictionary) {
-    return null;
-  }
-
-  const {
-    dictionaryValueEntities,
-    dictionaryName,
-    dictionaryDescription,
-  } = dictionary;
-
-  debugger;
-  const text =
-    dictionaryValueEntities?.find((o: any) => o.valueCode === value)?.value ??
-    "";
+  const { columnCode, valueField = "", titleField = "" } = column;
+  const options = dictionaries?.[columnCode] ?? [];
+  const option = options?.find((o: any) => o[valueField] === value);
+  const text = option?.[titleField] ?? "";
 
   return (
     <HighlightTextWrapper
@@ -48,4 +31,4 @@ const mapStateToProps = (state: State) => ({
   dictionaries: state?.data?.dictionaries,
 });
 
-export default connect(mapStateToProps)(Dictionary);
+export default connect(mapStateToProps)(Entity);

@@ -69,6 +69,7 @@ export const TableWithClientPaging = ({
       onSearch={handleSearch}
       columns={table?.columns ?? []}
       actions={table?.actions ?? []}
+      _links={table?._links ?? {}}
       loading={loading}
       extraHeader={extraHeader}
       pagination={pagination}

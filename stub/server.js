@@ -10,7 +10,6 @@ const {
   restorePassword,
   profile,
   dictionaries: dictionariesUrls,
-  clients,
 } = require("../src/constants/urls");
 
 const {

@@ -100,7 +100,7 @@ export interface ColumnProps {
   valueField?: string;
   format?: ColumnFormatType;
   ellipsis?: boolean;
-  width?: number;
+  width?: string;
   fixed?: FixedPositionType;
   sorter: any;
   filterable?: boolean;
@@ -135,6 +135,10 @@ export interface FieldProps {
   permissions: string[];
   placeholder?: string;
   _links?: LinksType;
+}
+
+export interface TabPaneFormProps {
+  tab: TabProps;
 }
 
 export interface RsqlParamProps {

@@ -21,12 +21,13 @@ import {
   QueryProps,
   State,
   ProfileInfoProps,
+  TabPaneFormProps,
 } from "../../../../constants";
 import { getPostData } from "./utils";
 
 import style from "./comments.module.scss";
 
-interface CommentsProps {
+interface CommentsProps extends TabPaneFormProps {
   profileInfo: ProfileInfoProps;
 }
 

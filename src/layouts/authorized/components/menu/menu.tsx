@@ -24,7 +24,11 @@ export const Menu = ({ permissions }: MenuProps) => {
   }, [location]);
 
   return (
-    <MenuUI mode="inline" selectedKeys={[selectedKey]}>
+    <MenuUI
+      mode="inline"
+      selectedKeys={[selectedKey]}
+      style={{ border: "none" }}
+    >
       {itemsByPermissions.map(({ id, icon, title, url }) => (
         <Item key={id} icon={icon}>
           <Link to={url}>{title}</Link>

@@ -9,16 +9,13 @@ import {
   ColumnProps,
   EntityOwnerProps,
   RecordType,
-  RsqlParamProps,
-  RSQL_OPERATORS_MAP,
 } from "../../../constants";
 import { getSorterProp } from "./sorter";
 import { getEditableProp } from "./editable";
 import { renderActions } from "./actions";
 import { getColumnSearchProp } from "./column-search";
-import { getRsqlParams } from "../../../utils";
 
-const { Dictionary, Date, Text, Number } = columns;
+const { Entity, Date, Text, Number, Dictionary } = columns;
 
 export const SearchedAllContext = React.createContext("");
 export const SearchedColumnsContext = React.createContext<RecordType>({});
@@ -36,6 +33,8 @@ const getRenderProp = (column: ColumnProps) => ({
     const { format, columnType } = column;
 
     switch (columnType) {
+      case "entity":
+        return <Entity value={text} column={column} />;
       case "dictionary":
         return <Dictionary value={text} column={column} />;
       case "date":
@@ -64,13 +63,14 @@ export const getColumn = (
   searchedColumns: RecordType,
   permissions: string[] = []
 ) => {
-  const { columnCode, columnName, fixed, ellipsis } = column;
+  const { columnCode, columnName, fixed, ellipsis, width } = column;
 
   return {
     key: columnCode,
     title: columnName,
     dataIndex: columnCode,
     fixed,
+    width,
     ellipsis,
     ...getSorterProp(column),
     ...getEditableProp(column, permissions),
