@@ -5,7 +5,9 @@
   margin: 0 var(--offset-sm) var(--offset-sm) var(--offset-sm);
 }
 
+// TODO Переделать на прижатый к правому краю button и плавающий
 .button {
-  margin: 0 0 var(--offset-sm) 0;
-  float: right;
+  display: block !important;
+  margin-left: auto;
+  margin-right: 0;
 }

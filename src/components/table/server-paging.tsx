@@ -162,6 +162,10 @@ export const TableWithServerPaging = ({
       onResetAllFilters={handleResetAllFilters}
       bordered={bordered}
       withSearch={withSearch}
+      total={{
+        title: t("total.title"),
+        count: total,
+      }}
     />
   );
 };
