@@ -109,15 +109,17 @@ export const getActions = (
   t: (value: string) => string
 ) => {
   if (isEmpty(actions)) {
-    return {};
+    return [];
   }
 
-  return {
-    title: t("actions.column.title"),
-    key: "actions",
-    render: (text: string, entity: EntityOwnerProps) =>
-      renderActions(actions, text, entity),
-  };
+  return [
+    {
+      title: t("actions.column.title"),
+      key: "actions",
+      render: (text: string, entity: EntityOwnerProps) =>
+        renderActions(actions, text, entity),
+    },
+  ];
 };
 
 export const getDataColumns = (

@@ -1,0 +1,13 @@
+@import "../../../../assets/styles/offsets";
+.total {
+  text-align: right;
+}
+
+.title {
+  display: inline;
+}
+
+.count {
+  display: inline;
+  margin-left: var(--offset-md);
+}

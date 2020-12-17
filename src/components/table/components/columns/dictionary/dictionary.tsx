@@ -31,7 +31,6 @@ export const Dictionary = ({
     dictionaryDescription,
   } = dictionary;
 
-  debugger;
   const text =
     dictionaryValueEntities?.find((o: any) => o.valueCode === value)?.value ??
     "";
