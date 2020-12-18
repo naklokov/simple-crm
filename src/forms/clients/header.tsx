@@ -10,7 +10,6 @@ import { useHistory } from "react-router";
 import { getFullUrl, getItemRender } from "../../utils";
 import { Button, PageHeader, Space } from "antd";
 import { ComponentPermissionsChecker } from "../../wrappers";
-import { QsSearch } from "../../components";
 
 export const ClientsHeader = ({ title }: { title?: string }) => {
   const [t] = useTranslation("clients");
@@ -28,7 +27,6 @@ export const ClientsHeader = ({ title }: { title?: string }) => {
 
   const extra = (
     <Space>
-      <QsSearch url="/helper/entity/clients/paging" />
       <ComponentPermissionsChecker
         availablePermissions={[PERMISSIONS.CLIENTS["ADD.ALL"]]}
       >
