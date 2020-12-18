@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useContext } from "react";
 import moment from "moment-timezone";
 import { DatePicker } from "antd";
 import { SearchFooter } from ".";
@@ -6,6 +6,7 @@ import { WithTranslation, withTranslation } from "react-i18next";
 import { ColumnProps, State } from "../../../../constants";
 import { flow } from "lodash";
 import { connect } from "react-redux";
+import { TableActionsContext } from "../../utils";
 
 interface DateSearchProps extends WithTranslation {
   column: ColumnProps;
@@ -26,6 +27,19 @@ export const DateSearch = ({
   clearFilters,
 }: DateSearchProps) => {
   const showTime = /hh:mm/gi.test(column?.format ?? "");
+  const [searched] = selectedKeys;
+  const { onSearchColumn } = useContext(TableActionsContext);
+
+  const handleChange = useCallback(
+    (value: moment.Moment | null) => {
+      setSelectedKeys([value?.toISOString()]);
+    },
+    [setSelectedKeys]
+  );
+
+  const handleSearch = useCallback(() => {
+    onSearchColumn(searched, confirm, column);
+  }, [selectedKeys, confirm, column]);
 
   return (
     <div style={{ padding: 8 }}>
@@ -36,15 +50,12 @@ export const DateSearch = ({
         format={column.format}
         placeholder={t("placeholder.date")}
         showTime={showTime}
-        value={selectedKeys[0] ? moment(selectedKeys[0]) : null}
-        onChange={(value) => {
-          setSelectedKeys([value?.toISOString()]);
-        }}
+        value={searched ? moment(searched) : null}
+        onChange={handleChange}
       />
       <SearchFooter
-        selectedKeys={selectedKeys}
+        onSearch={handleSearch}
         column={column}
-        confirm={confirm}
         clearFilters={clearFilters}
       />
     </div>

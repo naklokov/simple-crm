@@ -105,10 +105,10 @@ export const TableQs = ({
   );
 
   const handleSearchColumn = useCallback(
-    (selectedKeys: string[], confirm: any, column: ColumnProps) => {
+    (searched: string, confirm: any, column: ColumnProps) => {
       const updated = {
         ...searchedColumns,
-        [column.columnCode]: selectedKeys[0],
+        [column.columnCode]: searched,
       };
 
       setSearchedColumns(updated);

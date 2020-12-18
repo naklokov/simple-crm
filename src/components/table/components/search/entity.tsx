@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useCallback, useContext } from "react";
 import { Select } from "antd";
 import { SearchFooter } from ".";
 import { WithTranslation, withTranslation } from "react-i18next";
 import { ColumnProps, State } from "../../../../constants";
 import { flow } from "lodash";
 import { connect } from "react-redux";
+import { TableActionsContext } from "../../utils";
 
 interface EntitySearchProps extends WithTranslation {
   column: ColumnProps;
@@ -20,13 +21,26 @@ export const EntitySearch = ({
   t,
   setSelectedKeys,
   column,
-  setRef,
   selectedKeys,
   confirm,
   clearFilters,
   dictionaries,
 }: EntitySearchProps) => {
   const options = dictionaries?.[column.columnCode] ?? [];
+  const { onSearchColumn } = useContext(TableActionsContext);
+  const [searched] = selectedKeys;
+
+  const handleChange = useCallback(
+    (value: string) => {
+      setSelectedKeys([value]);
+    },
+    [setSelectedKeys]
+  );
+
+  const handleSearch = useCallback(() => {
+    onSearchColumn(searched, confirm, column);
+  }, [selectedKeys, confirm, column]);
+
   return (
     <div style={{ padding: 8 }}>
       <Select
@@ -35,9 +49,7 @@ export const EntitySearch = ({
         placeholder={t("placeholder.entity")}
         optionFilterProp="children"
         value={selectedKeys[0]}
-        onChange={(value) => {
-          setSelectedKeys([value]);
-        }}
+        onChange={handleChange}
         filterOption={(input, option) =>
           option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
@@ -53,9 +65,8 @@ export const EntitySearch = ({
         })}
       </Select>
       <SearchFooter
-        selectedKeys={selectedKeys}
+        onSearch={handleSearch}
         column={column}
-        confirm={confirm}
         clearFilters={clearFilters}
       />
     </div>
