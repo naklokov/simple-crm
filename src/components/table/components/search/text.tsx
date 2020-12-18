@@ -1,5 +1,5 @@
 import { Input } from "antd";
-import React from "react";
+import React, { useCallback, useContext } from "react";
 import { WithTranslation, withTranslation } from "react-i18next";
 import { SearchFooter } from ".";
 
@@ -23,29 +23,40 @@ export const TextSearch = ({
   selectedKeys,
   confirm,
   clearFilters,
-}: TextSearchProps) => (
-  <TableActionsContext.Consumer>
-    {({ onSearchColumn }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={setRef}
-          placeholder={t("placeholder.text")}
-          value={selectedKeys[0]}
-          onChange={(e) => {
-            setSelectedKeys(e.target.value ? [e.target.value] : []);
-          }}
-          onPressEnter={() => onSearchColumn(selectedKeys, confirm, column)}
-          style={{ width: 188, marginBottom: 8, display: "block" }}
-        />
-        <SearchFooter
-          column={column}
-          confirm={confirm}
-          selectedKeys={selectedKeys}
-          clearFilters={clearFilters}
-        />
-      </div>
-    )}
-  </TableActionsContext.Consumer>
-);
+}: TextSearchProps) => {
+  const { onSearchColumn } = useContext(TableActionsContext);
+  const [searched] = selectedKeys;
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+      setSelectedKeys(value ? [value] : []);
+    },
+    [setSelectedKeys]
+  );
+
+  const handleSearch = useCallback(() => {
+    const trimmed = searched.trim();
+    onSearchColumn(trimmed, confirm, column);
+  }, [selectedKeys, confirm, column]);
+
+  return (
+    <div style={{ padding: 8 }}>
+      <Input
+        ref={setRef}
+        placeholder={t("placeholder.text")}
+        value={searched}
+        onChange={handleChange}
+        onPressEnter={handleSearch}
+        style={{ width: 188, marginBottom: 8, display: "block" }}
+      />
+      <SearchFooter
+        onSearch={handleSearch}
+        column={column}
+        clearFilters={clearFilters}
+      />
+    </div>
+  );
+};
 
 export default withTranslation(["columnSearch"])(TextSearch);

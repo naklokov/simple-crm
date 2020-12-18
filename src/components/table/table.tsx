@@ -39,7 +39,7 @@ interface TableProps {
   onDoneRow?: (record: any) => void;
   onSearch?: (inputSearch: string) => void;
   onSearchColumn?: (
-    selectedKeys: string[],
+    searched: string,
     confirm: any,
     column: ColumnProps
   ) => void;
