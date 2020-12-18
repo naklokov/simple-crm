@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useContext } from "react";
 import { Button, Space } from "antd";
 import { WithTranslation, withTranslation } from "react-i18next";
 import { SearchOutlined } from "@ant-design/icons";
@@ -7,25 +7,23 @@ import { ColumnProps } from "../../../../constants";
 
 interface FooterProps extends WithTranslation {
   column: ColumnProps;
-  selectedKeys: any;
-  confirm: any;
   clearFilters: any;
+  onSearch: () => void;
 }
 
-export const Footer = ({
-  column,
-  selectedKeys,
-  clearFilters,
-  confirm,
-  t,
-}: FooterProps) => {
+export const Footer = ({ column, clearFilters, t, onSearch }: FooterProps) => {
+  const { onResetFilter } = useContext(TableActionsContext);
+  const handleResetFilter = useCallback(() => {
+    onResetFilter(column, clearFilters);
+  }, [column, clearFilters]);
+
   return (
     <TableActionsContext.Consumer>
       {({ onSearchColumn, onResetFilter }) => (
         <Space>
           <Button
             type="primary"
-            onClick={() => onSearchColumn(selectedKeys, confirm, column)}
+            onClick={onSearch}
             icon={<SearchOutlined />}
             size="small"
             style={{ width: 90 }}
@@ -33,7 +31,7 @@ export const Footer = ({
             {t("search")}
           </Button>
           <Button
-            onClick={() => onResetFilter(column, clearFilters)}
+            onClick={handleResetFilter}
             size="small"
             style={{ width: 90 }}
           >

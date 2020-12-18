@@ -28,6 +28,15 @@ export const Header = ({
     setValue("");
   }, [onSearch]);
 
+  const handleSearch = useCallback(
+    (searched: string) => {
+      const trimmed = searched.trim();
+      setValue(trimmed);
+      onSearch(trimmed);
+    },
+    [onSearch]
+  );
+
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setValue(event.target.value);
@@ -44,7 +53,7 @@ export const Header = ({
               [style.searchWide]: !window.isMobile,
             })}
             placeholder={t("search.all.placeholder")}
-            onSearch={onSearch}
+            onSearch={handleSearch}
             onChange={handleChange}
             value={value}
             enterButton
