@@ -5,6 +5,7 @@ import * as formConfig from "./form-config";
 export * from "./interfaces";
 export * from "./common";
 export * from "./permissions";
+export * from "./phone";
 export * from "./layouts";
 
 export { urls, http, formConfig };

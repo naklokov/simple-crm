@@ -3,6 +3,7 @@ import { urls } from "../index";
 import { PERMISSIONS_SET } from "../permissions";
 import { DATE_FORMATS } from "../common";
 import { phoneRule, vatRule } from "../../utils";
+import { PHONE_PLACEHOLDER } from "../phone";
 
 interface UpperProps {
   tabs: TabProps[];
@@ -17,7 +18,6 @@ interface LowerProps {
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
 const EMAIL_MESSAGE = "Пожалуйста, введите корректный email";
 const PLACEHOLDER_DEFAULT = "Введите значение";
-const PHONE_PLACEHOLDER = "+7 (___) ___-__-__";
 
 export const lower: LowerProps = {
   drawers: [

@@ -127,11 +127,11 @@ export const getDataColumns = (
   searchedColumns: RecordType,
   permissions?: string[]
 ) =>
-  columns.map(({ columnActions, ...column }) => {
+  columns.map((column) => {
     const columnProps = getColumn(column, searchedColumns, permissions);
 
-    if (!isEmpty(columnActions)) {
-      const actions = columnActions || [];
+    if (!isEmpty(column.columnActions)) {
+      const actions = column.columnActions || [];
       return {
         ...columnProps,
         render: (text: string, entity: EntityOwnerProps) =>

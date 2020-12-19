@@ -18,28 +18,20 @@ export const Footer = ({ column, clearFilters, t, onSearch }: FooterProps) => {
   }, [column, clearFilters]);
 
   return (
-    <TableActionsContext.Consumer>
-      {({ onSearchColumn, onResetFilter }) => (
-        <Space>
-          <Button
-            type="primary"
-            onClick={onSearch}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            {t("search")}
-          </Button>
-          <Button
-            onClick={handleResetFilter}
-            size="small"
-            style={{ width: 90 }}
-          >
-            {t("reset")}
-          </Button>
-        </Space>
-      )}
-    </TableActionsContext.Consumer>
+    <Space>
+      <Button
+        type="primary"
+        onClick={onSearch}
+        icon={<SearchOutlined />}
+        size="small"
+        style={{ width: 90 }}
+      >
+        {t("search")}
+      </Button>
+      <Button onClick={handleResetFilter} size="small" style={{ width: 90 }}>
+        {t("reset")}
+      </Button>
+    </Space>
   );
 };
 
