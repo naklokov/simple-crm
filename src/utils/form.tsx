@@ -1,15 +1,9 @@
 import React from "react";
 import { fields } from "../components";
-import {
-  PHONE_MASK_WITH_CODE,
-  FieldProps,
-  PHONE_MASK,
-  BASE_PHONE_LENGTH,
-  PHONE_TRIM_START_CHARS,
-} from "../constants";
+import { FieldProps } from "../constants";
 import isEqual from "lodash/isEqual";
 import some from "lodash/some";
-import { conformToMask } from "react-text-mask";
+import { getNormalizePhone } from "./phone";
 
 interface EntityWithId {
   [key: string]: any;
@@ -72,26 +66,6 @@ export const getUpdatedEntityArray = <T extends EntityWithId>(
 export const getFiteredEntityArray = (id: string, array: any[]) =>
   array.filter((o) => o.id !== id);
 
-export const getClearPhone = (value: string) => value?.replace(/\D/g, "") ?? "";
-
-export const getNormalizePhone = (value: string) =>
-  value?.replace(/[^\d\+\,]/g, "") ?? "";
-
-export const isNeedReplaceFirstChar = (phone: string) =>
-  PHONE_TRIM_START_CHARS.includes(phone[0]) &&
-  phone.length === BASE_PHONE_LENGTH;
-
-export const getMask = (value: string) => {
-  const clearValue = getClearPhone(value);
-  const withoutCode = clearValue.length <= BASE_PHONE_LENGTH;
-  return withoutCode ? PHONE_MASK : PHONE_MASK_WITH_CODE;
-};
-
-export const getConformedValue = (value: string) => {
-  const mask = getMask(value);
-  return conformToMask(value, mask, { guide: false })?.conformedValue ?? "";
-};
-
 export const vatRule = {
   validator: (_: any, value: string) => {
     // может быть пустым
@@ -123,8 +97,8 @@ export const phoneRule = {
 };
 
 export const checkPhone = (value: string) => {
-  const clearPhone = getClearPhone(value);
-  return clearPhone.length > 10;
+  const normalizePhone = getNormalizePhone(value);
+  return normalizePhone.length > 11;
 };
 
 export const checkINN = (value: any) => {
