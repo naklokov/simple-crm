@@ -108,10 +108,10 @@ export const TableWithServerPaging = ({
   );
 
   const handleSearchColumn = useCallback(
-    (selectedKeys: string[], confirm: any, column: ColumnProps) => {
+    (searched: string, confirm: any, column: ColumnProps) => {
       const updated = {
         ...searchedColumns,
-        [column.columnCode]: selectedKeys[0],
+        [column.columnCode]: searched,
       };
 
       setSearchedColumns(updated);
@@ -162,6 +162,10 @@ export const TableWithServerPaging = ({
       onResetAllFilters={handleResetAllFilters}
       bordered={bordered}
       withSearch={withSearch}
+      total={{
+        title: t("total.title"),
+        count: total,
+      }}
     />
   );
 };

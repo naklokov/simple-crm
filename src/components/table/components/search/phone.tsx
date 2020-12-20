@@ -1,12 +1,13 @@
-import { Input } from "antd";
 import React, { useCallback, useContext } from "react";
 import { WithTranslation, withTranslation } from "react-i18next";
 import { SearchFooter } from ".";
 
-import { ColumnProps } from "../../../../constants";
+import { ColumnProps, PHONE_PLACEHOLDER } from "../../../../constants";
+import { getNormalizePhone } from "../../../../utils";
+import { PhoneInput } from "../../../phone-input";
 import { TableActionsContext } from "../../utils";
 
-interface TextSearchProps extends WithTranslation {
+interface PhoneSearchProps extends WithTranslation {
   column: ColumnProps;
   setRef: (ref: any) => void;
   setSelectedKeys: any;
@@ -15,15 +16,14 @@ interface TextSearchProps extends WithTranslation {
   clearFilters: any;
 }
 
-export const TextSearch = ({
-  t,
+export const PhoneSearch = ({
   setSelectedKeys,
   column,
   setRef,
   selectedKeys,
   confirm,
   clearFilters,
-}: TextSearchProps) => {
+}: PhoneSearchProps) => {
   const { onSearchColumn } = useContext(TableActionsContext);
   const [searched] = selectedKeys;
 
@@ -36,20 +36,20 @@ export const TextSearch = ({
   );
 
   const handleSearch = useCallback(() => {
-    const trimmed = searched.trim();
-    onSearchColumn(trimmed, confirm, column);
-  }, [selectedKeys, confirm, column]);
+    const normalizePhone = getNormalizePhone(searched);
+    onSearchColumn(normalizePhone, confirm, column);
+  }, [confirm, column, searched]);
 
   return (
     <div style={{ padding: 8 }}>
-      <Input
-        ref={setRef}
-        placeholder={t("placeholder.text")}
-        value={searched}
-        onChange={handleChange}
-        onPressEnter={handleSearch}
+      <PhoneInput
         style={{ width: 188, marginBottom: 8, display: "block" }}
+        value={searched}
+        // ref={setRef}
+        onChange={handleChange}
+        placeholder={PHONE_PLACEHOLDER}
       />
+
       <SearchFooter
         onSearch={handleSearch}
         column={column}
@@ -59,4 +59,4 @@ export const TextSearch = ({
   );
 };
 
-export default withTranslation(["columnSearch"])(TextSearch);
+export default withTranslation(["columnSearch"])(PhoneSearch);

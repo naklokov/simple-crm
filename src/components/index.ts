@@ -8,6 +8,6 @@ export { LoginHeader } from "./login-header";
 export { Table } from "./table";
 export { Tabs } from "./tabs";
 export { Comment } from "./comment";
-export { QsSearch } from "./qs-search";
+export { PhoneInput } from "./phone-input";
 
 export { fields };

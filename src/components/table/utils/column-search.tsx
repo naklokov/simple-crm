@@ -4,11 +4,24 @@ import {
   EntitySearch,
   DictionarySearch,
   DateSearch,
+  PhoneSearch,
 } from "../components";
-import { ColumnType, ColumnProps, RecordType } from "../../../constants";
+import {
+  ColumnProps,
+  RecordType,
+  ActionProps,
+  ActionType,
+} from "../../../constants";
 
-const getSearch = (columnType: ColumnType) => {
-  switch (columnType) {
+const checkColumnActionType = (column: ColumnProps, actionType: ActionType) =>
+  column.columnActions?.some((o: ActionProps) => o.actionType === "call");
+
+const getSearch = (column: ColumnProps) => {
+  if (checkColumnActionType(column, "call")) {
+    return PhoneSearch;
+  }
+
+  switch (column.columnType) {
     case "entity":
       return EntitySearch;
     case "dictionary":
@@ -36,7 +49,7 @@ export const getColumnSearchProp = (
     const handleSaveRef = (passedRef: HTMLInputElement) => {
       searchInput = passedRef;
     };
-    const Search = getSearch(column.columnType);
+    const Search = getSearch(column);
     return {
       filteredValue: searchedColumns?.[column.columnCode]
         ? [searchedColumns[column.columnCode]]

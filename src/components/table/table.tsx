@@ -12,7 +12,7 @@ import {
   SearchedColumnsContext,
   TableActionsContext,
 } from "./utils";
-import { Header } from "./components";
+import { Header, TotalRow } from "./components";
 import noop from "lodash/noop";
 
 import style from "./table.module.scss";
@@ -39,7 +39,7 @@ interface TableProps {
   onDoneRow?: (record: any) => void;
   onSearch?: (inputSearch: string) => void;
   onSearchColumn?: (
-    selectedKeys: string[],
+    searched: string,
     confirm: any,
     column: ColumnProps
   ) => void;
@@ -58,6 +58,10 @@ interface TableProps {
   searchAll?: string;
   searchedColumns?: RecordType;
   bordered?: boolean;
+  total?: {
+    title: string;
+    count: number;
+  };
 }
 
 export const Table = ({
@@ -84,6 +88,7 @@ export const Table = ({
   searchAll = "",
   searchedColumns = {},
   bordered = false,
+  total,
 }: TableProps) => {
   const [t] = useTranslation("table");
   const dispatch = useDispatch();
@@ -104,6 +109,8 @@ export const Table = ({
           />
         )
       : void 0;
+
+  const footer = total ? () => <TotalRow {...total} /> : void 0;
 
   const dataSourceWithKeys = useMemo(
     () =>
@@ -134,7 +141,7 @@ export const Table = ({
             title={title}
             columns={[
               ...getDataColumns(columns, searchedColumns, permissions),
-              getActions(actions, t),
+              ...getActions(actions, t),
             ]}
             dataSource={dataSourceWithKeys}
             pagination={{ ...pagination }}
@@ -143,6 +150,7 @@ export const Table = ({
             loading={loading || tableLoading}
             scroll={{ x: true }}
             bordered={bordered}
+            footer={footer}
           />
         </TableActionsContext.Provider>
       </SearchedColumnsContext.Provider>

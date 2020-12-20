@@ -5,4 +5,5 @@ export * from "./common";
 export * from "./form";
 export * from "./hooks";
 export * from "./tasks";
+export * from "./phone";
 export { logger, storage };
