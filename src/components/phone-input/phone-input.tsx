@@ -7,9 +7,10 @@ import {
   isNeedReplaceFirstChar,
 } from "../../utils";
 import {
-  BASE_PHONE_LENGTH,
+  NORMALIZE_PHONE_LENGTH,
   PHONE_MASK,
   PHONE_MASK_WITH_CODE,
+  RU_PHONE_CODE,
 } from "../../constants";
 
 interface PhoneInputProps {
@@ -34,8 +35,11 @@ export const PhoneInput = ({
   const handleChange = useCallback((event) => {
     const normalizeValue = getNormalizePhone(event.target.value);
 
-    // до ввода 11 символа показываем маску без запятой для доп кода
-    const withoutAdditionalCode = normalizeValue.length < BASE_PHONE_LENGTH - 1;
+    const nextMask = getMask(normalizeValue);
+
+    // до ввода 12 символа показываем маску без запятой для доп кода
+    const withoutAdditionalCode =
+      normalizeValue.length < NORMALIZE_PHONE_LENGTH;
     setMask(withoutAdditionalCode ? PHONE_MASK : PHONE_MASK_WITH_CODE);
 
     onChange(event);
@@ -48,12 +52,14 @@ export const PhoneInput = ({
 
   const handlePipe = useCallback(
     (conformedValue: string, config: any) => {
-      const clearPhone = config.rawValue;
+      const normalizePhone = getNormalizePhone(config.rawValue);
 
-      // удаляем 8 при копипасте номера
-      if (isNeedReplaceFirstChar(clearPhone)) {
-        const phoneWithoutFirstChar = config.rawValue.substring(1);
-        return conformToMask(phoneWithoutFirstChar, mask, config)
+      // заменяем не кошерные первые символы кода ("7", "8") на кошерную "+7"
+      if (isNeedReplaceFirstChar(normalizePhone)) {
+        const phoneWithReplacedCode =
+          RU_PHONE_CODE + normalizePhone.substring(1);
+        debugger;
+        return conformToMask(phoneWithReplacedCode, mask, config)
           .conformedValue;
       }
 

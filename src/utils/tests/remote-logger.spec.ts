@@ -8,9 +8,9 @@ import { urls } from "../../constants";
 
 test("test getFullMessage", () => {
   expect(getFullMessage({ message })).toBe(message);
-  expect(getFullMessage({ message, value })).toBe(`${message} ${value}`);
+  expect(getFullMessage({ message, value })).toBe(`${message} | ${value}`);
   expect(getFullMessage({ message, value, username })).toBe(
-    `${message} ${value} (${username})`
+    `${message} | ${value} | ${username}`
   );
 });
 

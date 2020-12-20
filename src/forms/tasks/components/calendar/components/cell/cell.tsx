@@ -9,6 +9,10 @@ interface CellProps {
 export const Cell = ({ date, onClick }: CellProps) => {
   const day = date.date();
 
+  if (!onClick) {
+    return null;
+  }
+
   return (
     <div
       onTouchStart={onClick}
