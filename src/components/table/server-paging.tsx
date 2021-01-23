@@ -15,7 +15,7 @@ import {
   getFiteredEntityArray,
   getSortedParams,
 } from "../../utils";
-import { getQueryString } from "./utils";
+import { getServerPagingRsql } from "./utils";
 import { TablePaginationConfig } from "antd/lib/table";
 
 interface TableWithServerPagingProps {
@@ -57,7 +57,7 @@ export const TableWithServerPaging = ({
           page,
           pageSize,
           sortBy,
-          query: getQueryString({
+          query: getServerPagingRsql({
             searchedAll,
             searchedColumns,
             columns: columns ?? [],

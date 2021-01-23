@@ -6,22 +6,24 @@ import {
 } from "../../../constants";
 import { getRsqlParams } from "../../../utils";
 
-export const getSearchByColumnsRsql = (
-  columns: string[],
+export const getLikeRsql = (
+  keys: string[],
   searched: string,
   entityName = "entityData"
 ) => ({
   key: entityName,
   operator: RSQL_OPERATORS_MAP.LIKE,
-  value: `(${columns.join(",")},"${searched.replaceAll('"', '\\"')}")`,
+  value: `(${keys.join(",")},"${searched
+    .replaceAll('"', '\\"')
+    .toLowerCase()}")`,
 });
 
-export const getEqualRsql = (key: string, id: string) => ({
+export const getEqualRsql = (key: string, value: string) => ({
   key,
-  value: id,
+  value,
 });
 
-export const getQueryString = ({
+export const getServerPagingRsql = ({
   searchedAll,
   searchedColumns,
   columns,
@@ -38,7 +40,7 @@ export const getQueryString = ({
 
   if (searchedAll) {
     params.push(
-      getSearchByColumnsRsql(
+      getLikeRsql(
         ["phone", "inn", "shortName", "city"],
         searchedAll,
         entityName
@@ -55,9 +57,7 @@ export const getQueryString = ({
         if (filterOperator === "equal") {
           params.push(getEqualRsql(key, searchedColumns[key]));
         } else {
-          params.push(
-            getSearchByColumnsRsql([key], searchedColumns[key], entityName)
-          );
+          params.push(getLikeRsql([key], searchedColumns[key], entityName));
         }
       }
     });

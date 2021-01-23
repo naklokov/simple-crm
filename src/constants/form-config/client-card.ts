@@ -1,6 +1,6 @@
 import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
-import { PERMISSIONS_SET } from "../permissions";
+import { PERMISSIONS, PERMISSIONS_SET } from "../permissions";
 import { DATE_FORMATS } from "../common";
 import { phoneRule, vatRule } from "../../utils";
 import { PHONE_PLACEHOLDER } from "../phone";
@@ -231,7 +231,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "city",
@@ -242,7 +242,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "address",
@@ -253,7 +253,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "phone",
@@ -264,7 +264,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PHONE_PLACEHOLDER,
           rules: [{ required: true, message: REQUIRED_MESSAGE }, phoneRule],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "email",
@@ -280,7 +280,7 @@ export const upper: UpperProps = {
               message: EMAIL_MESSAGE,
             },
           ],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "inn",
@@ -291,7 +291,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [vatRule],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "fullName",
@@ -302,7 +302,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "webPage",
@@ -313,7 +313,7 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           type: "href",
           rules: [],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "activityField",
@@ -329,7 +329,7 @@ export const upper: UpperProps = {
               href: urls.dictionaries.activityFields,
             },
           },
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "creationDate",
@@ -354,7 +354,23 @@ export const upper: UpperProps = {
           span: { xl: 12, md: 12, lg: 12, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
+        },
+        {
+          fieldCode: "userProfileId",
+          fieldName: "Куратор",
+          type: "entity",
+          titleField: "fullName",
+          codeField: "id",
+          readonly: false,
+          disabled: false,
+          rules: [],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE_DEPARTMENT,
+          _links: {
+            self: {
+              href: urls.userProfiles.entity,
+            },
+          },
         },
       ],
       _links: {
@@ -452,7 +468,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "kpp",
@@ -463,7 +479,7 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           type: "string",
           rules: [],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "legalAddress",
@@ -474,7 +490,7 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           type: "string",
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "servicingBank",
@@ -485,7 +501,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "checkingAccount",
@@ -496,7 +512,7 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           type: "string",
           rules: [],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "correspondentAccount",
@@ -507,7 +523,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "chiefFio",
@@ -518,7 +534,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "headPosition",
@@ -529,7 +545,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [],
-          permissions: PERMISSIONS_SET.CLIENT_UPDATE,
+          permissions: [],
         },
       ],
       _links: {

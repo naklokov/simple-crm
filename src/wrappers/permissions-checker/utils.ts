@@ -3,7 +3,13 @@ import isEmpty from "lodash/isEmpty";
 export const hasPermission = (available: string[], all: string[]) =>
   isEmpty(available) ||
   isEmpty(all) ||
-  all.some((permission) => available.includes(permission));
+  available.some((permission) => all.includes(permission));
+
+export const isCanShow = (
+  availablePermissions: string[],
+  allPermissions: string[],
+  hasRight: boolean
+) => hasPermission(availablePermissions, allPermissions) && hasRight;
 
 // метод фильтра массива элементов по пропсу permissions.
 // штука временная до той поры, пока бек не начнёт нам сам передавать эти массивы полей

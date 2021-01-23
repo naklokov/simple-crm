@@ -19,6 +19,7 @@ const {
   Entity,
   Email,
   Href,
+  EntityPersonal,
 } = fields;
 
 export const isValuesChanged = (
@@ -49,6 +50,8 @@ export const createFormField = (field: FieldProps): JSX.Element => {
       return <Dictionary {...field} />;
     case "entity":
       return <Entity {...field} />;
+    case "entity-personal":
+      return <EntityPersonal {...field} />;
     default:
       return <div />;
   }

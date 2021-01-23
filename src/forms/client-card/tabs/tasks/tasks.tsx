@@ -199,10 +199,7 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
         <Tabs
           tabBarExtraContent={{
             left: (
-              <ComponentPermissionsChecker
-                hasRight={values?.isOwner?.UPDATE}
-                availablePermissions={PERMISSIONS_SET.CLIENT_UPDATE}
-              >
+              <ComponentPermissionsChecker hasRight={values?.isOwner?.UPDATE}>
                 <Button
                   icon={<PlusOutlined />}
                   onClick={handleAddClick}

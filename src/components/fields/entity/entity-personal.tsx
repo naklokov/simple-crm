@@ -1,18 +1,28 @@
-import React, { useState, useCallback, useEffect, useContext } from "react";
+import React, { useState, useCallback, useContext, useEffect } from "react";
 import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
-import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
+import {
+  DEFAULT_FIELD_SPAN,
+  FieldProps,
+  ProfileInfoProps,
+  State,
+} from "../../../constants";
 import {
   defaultErrorHandler,
   FormContext,
   getRsqlParams,
 } from "../../../utils";
+import { connect } from "react-redux";
 import { getEqualRsql, getLikeRsql } from "../../table/utils";
 import { Readonly } from "../readonly";
 
 const { Option } = Select;
 
-// TODO сделать readonly
+interface DictionaryComponentProps extends FieldProps {
+  profileInfo: ProfileInfoProps;
+}
+
+// TODO костыль до первого запроса (первый запрос)
 export const Entity = ({
   fieldCode,
   rules,
@@ -22,19 +32,23 @@ export const Entity = ({
   fieldDescription,
   placeholder = "Выберите значение",
   disabled = false,
-  _links,
   readonly = false,
+  _links,
   span = DEFAULT_FIELD_SPAN,
-}: FieldProps) => {
+  profileInfo,
+}: DictionaryComponentProps) => {
   const form = useContext(FormContext);
   const [options, setOptions] = useState<any>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const initialValue = form.getFieldValue(fieldCode);
-    const initialQuery = getRsqlParams([getEqualRsql(codeField, initialValue)]);
+    const initialQuery = getRsqlParams([
+      { key: "userProfileId", value: profileInfo.id },
+      getEqualRsql(codeField, initialValue),
+    ]);
     fetchEntity(initialQuery);
-  }, []);
+  }, [profileInfo]);
 
   const fetchEntity = async (query: string) => {
     try {
@@ -53,10 +67,15 @@ export const Entity = ({
 
   const handleSearch = useCallback(
     (value) => {
-      const searchedQuery = getRsqlParams([getLikeRsql([titleField], value)]);
-      fetchEntity(searchedQuery);
+      if (profileInfo.id) {
+        const searchedQuery = getRsqlParams([
+          { key: "userProfileId", value: profileInfo.id },
+          getLikeRsql([titleField], value),
+        ]);
+        fetchEntity(searchedQuery);
+      }
     },
-    [titleField]
+    [titleField, profileInfo]
   );
 
   const formatFunc = (value: string) =>
@@ -77,6 +96,7 @@ export const Entity = ({
         ) : (
           <Select
             showSearch
+            defaultActiveFirstOption={false}
             filterOption={false}
             onSearch={handleSearch}
             placeholder={placeholder}
@@ -97,4 +117,8 @@ export const Entity = ({
   );
 };
 
-export default Entity;
+const mapStateToProps = (state: State) => ({
+  profileInfo: state?.data?.profileInfo,
+});
+
+export default connect(mapStateToProps)(Entity);
