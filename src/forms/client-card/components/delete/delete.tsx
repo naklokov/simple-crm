@@ -14,10 +14,7 @@ export const Delete = ({ onClick }: DeleteProps) => {
   const [t] = useTranslation("clientCard");
   const { values } = useFormValues(FORM_NAMES.CLIENT_CARD);
   return (
-    <ComponentPermissionsChecker
-      availablePermissions={PERMISSIONS_SET.CLIENT_DELETE}
-      hasRight={values?.isOwner?.DELETE}
-    >
+    <ComponentPermissionsChecker hasRight={values?.isOwner?.DELETE}>
       <Popconfirm
         title={t("confirm.delete")}
         onConfirm={onClick}

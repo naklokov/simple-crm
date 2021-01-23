@@ -121,10 +121,7 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
             ))}
           </FormContext.Provider>
         </Row>
-        <ComponentPermissionsChecker
-          availablePermissions={PERMISSIONS_SET.CLIENT_UPDATE}
-          hasRight={values?.isOwner?.UPDATE}
-        >
+        <ComponentPermissionsChecker hasRight={values?.isOwner?.UPDATE}>
           <FormFooter
             loading={submitLoading}
             disabled={submitDisabled}

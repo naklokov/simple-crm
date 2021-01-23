@@ -2,7 +2,7 @@ import { PhoneTwoTone } from "@ant-design/icons";
 import { Button, Popconfirm } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FORM_NAMES, PERMISSIONS_SET } from "../../../../constants";
+import { FORM_NAMES } from "../../../../constants";
 import { useFormValues } from "../../../../utils";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 
@@ -15,10 +15,7 @@ export const Call = ({ onClick }: CallProps) => {
   const { values } = useFormValues(FORM_NAMES.CLIENT_CARD);
 
   return (
-    <ComponentPermissionsChecker
-      availablePermissions={PERMISSIONS_SET.CLIENT_UPDATE}
-      hasRight={values?.isOwner?.UPDATE}
-    >
+    <ComponentPermissionsChecker hasRight={values?.isOwner?.UPDATE}>
       <Popconfirm
         title={t("confirm.call")}
         onConfirm={onClick}

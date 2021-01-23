@@ -96,10 +96,7 @@ export const Requisites = ({ tab }: RequisitesProps) => {
             ))}
           </FormContext.Provider>
         </Row>
-        <ComponentPermissionsChecker
-          availablePermissions={PERMISSIONS_SET.CLIENT_UPDATE}
-          hasRight={clientValues?.isOwner?.UPDATE}
-        >
+        <ComponentPermissionsChecker hasRight={clientValues?.isOwner?.UPDATE}>
           <FormFooter
             loading={submitLoading}
             disabled={submitDisabled}

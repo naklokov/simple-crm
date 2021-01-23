@@ -20,7 +20,7 @@ export const TASKS: TasksConfigProps = {
           fieldCode: "clientId",
           fieldName: "Компания",
           fieldDescription: "Компания связанная с задачей",
-          type: "entity",
+          type: "entity-personal",
           titleField: "shortName",
           codeField: "id",
           readonly: false,

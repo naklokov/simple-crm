@@ -8,7 +8,7 @@ import { PaginationProps } from "antd/es/pagination";
 interface TableWithClientPagingProps {
   table: TabProps;
   dataSource: any[];
-  actionsPermissions: string[];
+  actionsPermissions?: string[];
   idValue?: string;
   loading?: boolean;
   extraHeader?: JSX.Element;
