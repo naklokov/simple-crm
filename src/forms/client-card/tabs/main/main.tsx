@@ -3,11 +3,9 @@ import axios from "axios";
 import {
   GUTTER_FULL_WIDTH,
   ModeType,
-  TabProps,
   urls,
   QueryProps,
   FORM_NAMES,
-  PERMISSIONS_SET,
   State,
   ProfileInfoProps,
   ClientEntityProps,

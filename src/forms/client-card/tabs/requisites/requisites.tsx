@@ -4,7 +4,6 @@ import {
   GUTTER_FULL_WIDTH,
   QueryProps,
   FORM_NAMES,
-  PERMISSIONS_SET,
   ProfileInfoProps,
   State,
   urls,

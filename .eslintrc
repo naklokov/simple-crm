@@ -15,6 +15,7 @@
   },
   "rules": {
     "object-curly-spacing": ["warn", "always"],
+    "no-debugger": "error",
     "no-unused-vars": [
       "warn",
       {

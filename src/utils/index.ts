@@ -6,4 +6,5 @@ export * from "./form";
 export * from "./hooks";
 export * from "./tasks";
 export * from "./phone";
+export * from "./rsql";
 export { logger, storage };

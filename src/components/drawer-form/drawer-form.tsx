@@ -42,6 +42,7 @@ export const DrawerForm = ({
   const [form] = Form.useForm();
   const [submitDisabled, setSubmitDisabled] = useState(defaultSubmitDisabled);
   const { clear } = useFormValues(name);
+  debugger;
 
   const handleValuesChange = useCallback(
     (changed: Object, allValues: Object) => {
@@ -56,7 +57,7 @@ export const DrawerForm = ({
       clear();
       onClose(event);
     },
-    [onClose]
+    [onClose, clear]
   );
 
   const handleFinish = useCallback(
@@ -65,7 +66,7 @@ export const DrawerForm = ({
       clear();
       onFinish(data);
     },
-    [initialValues, onClose, onFinish]
+    [initialValues, onClose, onFinish, clear]
   );
 
   const handleVisibleChange = useCallback(
@@ -76,7 +77,7 @@ export const DrawerForm = ({
 
       setSubmitDisabled(defaultSubmitDisabled);
     },
-    [visible]
+    [visible, defaultSubmitDisabled, form]
   );
 
   if (isEmpty(fields)) {

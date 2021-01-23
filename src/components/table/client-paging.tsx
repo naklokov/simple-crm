@@ -56,7 +56,7 @@ export const TableWithClientPaging = ({
         setFilteredDataSource([]);
       }
     },
-    [filteredDataSource, dataSource]
+    [filteredDataSource, dataSource, idValue, table]
   );
 
   const handleResetAllFilters = useCallback(() => {

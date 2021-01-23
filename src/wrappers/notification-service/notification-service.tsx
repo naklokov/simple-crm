@@ -68,7 +68,7 @@ export const NotificationService = ({ children }: NotificationServiceProps) => {
       }
       setCurrentShow(false);
     }
-  }, [currentShow, tasks]);
+  }, [currentShow, tasks, renderCurrentTask]);
 
   // эффект для отрисовки просроченных задач при инициализации приложения
   useEffect(() => {
@@ -76,7 +76,7 @@ export const NotificationService = ({ children }: NotificationServiceProps) => {
       renderOverdueNotification();
       setOverdueShowed(true);
     }
-  }, [tasks, overdueShowed]);
+  }, [tasks, overdueShowed, renderOverdueNotification]);
 
   // эффект таймер для запуска отрисовки задач ежеминутно
   useEffect(() => {

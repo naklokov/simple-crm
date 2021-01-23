@@ -81,13 +81,13 @@ export const ContainerWrapper = ({
     if (!isEmpty(permissionsResponse?.data?.permissions)) {
       console.log("PERMISSIONS", permissionsResponse?.data?.permissions);
     }
-  }, [profileResponse, permissionsResponse]);
+  }, [profileResponse, permissionsResponse, setProfileInfo, setPermissions]);
 
   useEffect(() => {
     if (profileInfo.id) {
       fetchTasks(profileInfo.id);
     }
-  }, [profileInfo.id]);
+  }, [profileInfo.id, fetchTasks]);
 
   useEffect(() => {
     const isLoaded = profileLoading || permissionsLoading || tasksLoading;

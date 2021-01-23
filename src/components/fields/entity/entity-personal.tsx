@@ -11,9 +11,10 @@ import {
   defaultErrorHandler,
   FormContext,
   getRsqlParams,
+  getEqualRsql,
+  getLikeRsql,
 } from "../../../utils";
 import { connect } from "react-redux";
-import { getEqualRsql, getLikeRsql } from "../../table/utils";
 import { Readonly } from "../readonly";
 
 const { Option } = Select;
