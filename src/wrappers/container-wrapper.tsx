@@ -87,7 +87,7 @@ export const ContainerWrapper = ({
     if (profileInfo.id) {
       fetchTasks(profileInfo.id);
     }
-  }, [profileInfo.id, fetchTasks]);
+  }, [profileInfo.id]);
 
   useEffect(() => {
     const isLoaded = profileLoading || permissionsLoading || tasksLoading;

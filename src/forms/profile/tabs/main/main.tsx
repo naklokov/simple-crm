@@ -100,10 +100,7 @@ export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
             ))}
           </FormContext.Provider>
         </Row>
-        <ComponentPermissionsChecker
-          hasRight={profileInfo?.isOwner?.UPDATE}
-          availablePermissions={[PERMISSIONS.USERPROFILES["UPDATE.ALL"]]}
-        >
+        <ComponentPermissionsChecker hasRight={profileInfo?.isOwner?.UPDATE}>
           <FormFooter
             loading={submitLoading}
             disabled={submitDisabled}

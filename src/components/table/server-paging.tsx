@@ -77,15 +77,7 @@ export const TableWithServerPaging = ({
 
   useEffect(() => {
     fetchDataSource();
-  }, [
-    page,
-    pageSize,
-    sortBy,
-    searchedAll,
-    searchedColumns,
-    extraRsqlParams,
-    fetchDataSource,
-  ]);
+  }, [page, pageSize, sortBy, searchedAll, searchedColumns, extraRsqlParams]);
 
   const handleSearch = useCallback((searchedAll: string) => {
     setPage(1);

@@ -64,7 +64,6 @@ export const CompleteTask = ({
       submitLoading={loading}
       onFinish={onFinish}
       defaultSubmitDisabled={false}
-      permissions={PERMISSIONS_SET.TASK_UPDATE}
     />
   );
 };

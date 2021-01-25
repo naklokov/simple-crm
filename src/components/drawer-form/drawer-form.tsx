@@ -42,7 +42,6 @@ export const DrawerForm = ({
   const [form] = Form.useForm();
   const [submitDisabled, setSubmitDisabled] = useState(defaultSubmitDisabled);
   const { clear } = useFormValues(name);
-  debugger;
 
   const handleValuesChange = useCallback(
     (changed: Object, allValues: Object) => {
