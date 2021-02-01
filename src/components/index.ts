@@ -9,5 +9,6 @@ export { Table } from "./table";
 export { Tabs } from "./tabs";
 export { Comment } from "./comment";
 export { PhoneInput } from "./phone-input";
+export { AddUser } from './add-user'
 
 export { fields };
