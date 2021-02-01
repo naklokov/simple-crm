@@ -1,0 +1,12 @@
+@import "../../assets/styles/offsets";
+@import "../../assets/styles/colors";
+
+.container {
+  cursor: pointer;
+  margin-top: var(--offset-sm);
+}
+
+.icon {
+  font-size: 24px;
+  color: var(--primary-color) !important;
+}
