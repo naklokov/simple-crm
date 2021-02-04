@@ -163,16 +163,18 @@
   },
   "tasks": {
     "button.add.title": "＋ Добавить задачу",
+    "overdue.title": "Просроченные",
     "title": "Задачи",
-    "today": "Сегодня",
-    "tommorow": "Завтра",
-    "overdue": "Просроченные",
+    "today.title": "Сегодня",
+    "tommorow.title": "Завтра",
     "card.title": "Задача",
     "calendar.title": "Выберите дату",
     "message.success.delete": "Задача удалена",
     "tasks.drawer.button.close": "Закрыть",
     "button.now": "Сейчас",
-    "button.load.more": "Загрузить ещё"
+    "button.load.more": "Загрузить ещё",
+    "list.empty": "Нет задач",
+    "spin.loading": "Загрузка..."
   },
   "card": {
     "delete.confirm": "Вы хотите удалить задачу?",

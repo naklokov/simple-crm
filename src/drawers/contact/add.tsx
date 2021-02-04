@@ -3,13 +3,7 @@ import axios from "axios";
 import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import {
-  urls,
-  FieldProps,
-  QueryProps,
-  FORM_NAMES,
-  PERMISSIONS,
-} from "../../constants";
+import { urls, FieldProps, QueryProps, FORM_NAMES } from "../../constants";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 import { useParams } from "react-router";
 

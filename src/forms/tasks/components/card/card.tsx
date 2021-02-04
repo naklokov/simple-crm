@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ClockCircleTwoTone } from "@ant-design/icons";
 import { Card as CardUI, Popconfirm, Skeleton, Typography } from "antd";
@@ -8,42 +8,45 @@ import {
   getFullUrl,
 } from "../../../../utils";
 import {
-  DATE_FORMATS,
   TASK_TYPES_MAP,
-  TaskTypeType,
   urls,
   ClientEntityProps,
+  TaskEntityProps,
+  DATE_FORMATS,
 } from "../../../../constants";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { stringify } from "query-string";
+import { ClientsPersonalContext } from "../../../../components/table/utils";
+
+const { Paragraph, Text } = Typography;
 
 interface CardProps {
-  id: string;
-  clientId: string;
   title?: string;
-  taskType: TaskTypeType;
-  taskDescription?: string;
-  format?: string;
-  onComplete: (id: string) => void;
-  onDelete: (id: string) => void;
-  date?: string;
+  task: TaskEntityProps;
+  onComplete: (task: TaskEntityProps) => void;
+  onDelete: (task: TaskEntityProps) => void;
+  dateFormat?: string;
 }
 
 export const Card = ({
-  id,
-  clientId,
-  date,
-  taskType,
-  taskDescription,
+  task,
+  dateFormat = DATE_FORMATS.TIME,
   onDelete,
   onComplete,
-  format = DATE_FORMATS.TIME,
   title = "",
 }: CardProps) => {
   const [t] = useTranslation("card");
   const [client, setClient] = useState({} as ClientEntityProps);
   const [loading, setLoading] = useState(false);
+  const cachingClients = useContext(ClientsPersonalContext);
+
+  const {
+    clientId,
+    taskEndDate: date,
+    taskDescription: description,
+    taskType: type,
+  } = task;
 
   const fetchClient = async () => {
     try {
@@ -60,24 +63,29 @@ export const Card = ({
   };
 
   useEffect(() => {
-    fetchClient();
+    const cachingClient = cachingClients.find(({ id }) => id === clientId);
+    if (cachingClient) {
+      setClient(cachingClient);
+    } else {
+      fetchClient();
+    }
   }, []);
 
   const extra = date ? (
     <div>
       <ClockCircleTwoTone />
-      <span style={{ marginLeft: "4px" }}>
-        {getDateWithTimezone(date).format(format)}
-      </span>
+      <Text strong style={{ marginLeft: "4px" }}>
+        {getDateWithTimezone(date).format(dateFormat)}
+      </Text>
     </div>
   ) : null;
 
   const handleComplete = useCallback(() => {
-    onComplete(id);
+    onComplete(task);
   }, [onComplete]);
 
   const handleDelete = useCallback(() => {
-    onDelete(id);
+    onDelete(task);
   }, [onDelete]);
 
   const actions = [
@@ -109,12 +117,18 @@ export const Card = ({
   const cardTitle = loading ? titleSkeleton : titleContent;
 
   return (
-    <CardUI title={cardTitle} extra={extra} size="small" actions={actions}>
-      <strong>{TASK_TYPES_MAP[taskType]}</strong>
-      {taskDescription && (
-        <Typography.Paragraph ellipsis={{ rows: 2, expandable: true }}>
-          {taskDescription}
-        </Typography.Paragraph>
+    <CardUI
+      style={{ width: "100%" }}
+      title={cardTitle}
+      extra={extra}
+      size="small"
+      actions={actions}
+    >
+      <strong>{TASK_TYPES_MAP[type]}</strong>
+      {description && (
+        <Paragraph ellipsis={{ rows: 2, expandable: true }}>
+          {description}
+        </Paragraph>
       )}
     </CardUI>
   );
