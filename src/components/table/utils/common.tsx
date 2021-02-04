@@ -11,6 +11,7 @@ import {
   EntityOwnerProps,
   RecordType,
   RsqlParamProps,
+  ClientEntityProps,
 } from "../../../constants";
 import { getSorterProp } from "./sorter";
 import { getEditableProp } from "./editable";
@@ -29,6 +30,10 @@ export const TableActionsContext = React.createContext({
   onSearchColumn: noop,
   onResetFilter: noop,
 });
+
+export const ClientsPersonalContext = React.createContext<ClientEntityProps[]>(
+  []
+);
 
 const getRenderProp = (column: ColumnProps) => ({
   render: (text: string, record: any) => {

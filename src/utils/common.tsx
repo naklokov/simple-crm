@@ -12,7 +12,6 @@ import {
   setLoading,
   setPermissions,
   setProfileInfo,
-  setActiveTasks,
 } from "../__data__";
 import { message } from "antd";
 import { Link } from "react-router-dom";
@@ -34,7 +33,6 @@ const clearReduxStore = (dispatch: Dispatch) => {
   dispatch(setClients([]));
   dispatch(setProfileInfo({}));
   dispatch(setPermissions([]));
-  dispatch(setActiveTasks([]));
 };
 
 export const checkAuthCookie = () =>
@@ -139,7 +137,7 @@ export const defaultErrorHandler = ({
   }
 };
 
-export const getDateWithTimezone = (date?: string) => {
+export const getDateWithTimezone = (date?: moment.Moment | string) => {
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
   return moment.utc(date).tz(tz);
 };

@@ -10,10 +10,7 @@ import {
 } from "../../../utils";
 import { ColumnProps, FORM_NAMES, State } from "../../../constants";
 import { useTranslation } from "react-i18next";
-import {
-  hasPermission,
-  isCanShow,
-} from "../../../wrappers/permissions-checker/utils";
+import { isCanShow } from "../../../wrappers/permissions-checker/utils";
 import { useSelector } from "react-redux";
 import { TableActionsContext } from "./common";
 

@@ -18,7 +18,6 @@ import {
   TaskEntityProps,
   QueryProps,
   FORM_NAMES,
-  PERMISSIONS_SET,
   State,
   TASK_STATUSES,
   TabPaneFormProps,
@@ -29,7 +28,6 @@ import {
   ViewTaskDrawer,
   CompletedTaskDrawer,
 } from "../../../../drawers";
-import { setActiveTasks } from "../../../../__data__";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
@@ -43,12 +41,7 @@ const taskDrawer = formConfig.clientCard.lower.drawers.find(
   (drawer) => drawer.code === "task"
 );
 
-interface TasksProps extends TabPaneFormProps {
-  activeTasks: TaskEntityProps[];
-  setActiveTasks: (tasks: TaskEntityProps[]) => void;
-}
-
-export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
+export const Tasks = ({ tab }: TabPaneFormProps) => {
   const [tasks, setTasks] = useState<TaskEntityProps[]>([]);
   const { id: clientId } = useParams<QueryProps>();
   const [loading, setLoading] = useState(false);
@@ -105,10 +98,9 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
 
       if (task) {
         setTasks([...tasks, task]);
-        setActiveTasks([...activeTasks, task]);
       }
     },
-    [tasks, activeTasks]
+    [tasks]
   );
 
   const handleCloseViewDrawer = useCallback(
@@ -117,19 +109,17 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
 
       if (task) {
         setTasks(getUpdatedEntityArray(task, tasks));
-        setActiveTasks(getUpdatedEntityArray(task, activeTasks));
       }
     },
-    [tasks, activeTasks]
+    [tasks]
   );
 
   const handleTaskDelete = useCallback(
     (id) => {
       setViewDrawerVisible(false);
       setTasks(tasks.filter((task) => task.id !== id));
-      setActiveTasks(activeTasks.filter((task) => task.id !== id));
     },
-    [tasks, activeTasks]
+    [tasks]
   );
 
   const handleTaskCompleted = useCallback(
@@ -140,7 +130,7 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
       setViewDrawerVisible(false);
       setCompletedDrawerVisible(true);
     },
-    [tasks, activeTasks]
+    [tasks]
   );
 
   const handleCloseCompletedDrawer = useCallback(
@@ -149,10 +139,9 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
 
       if (task) {
         setTasks(getUpdatedEntityArray(task, tasks));
-        setActiveTasks(getUpdatedEntityArray(task, activeTasks));
       }
     },
-    [tasks, activeTasks]
+    [tasks]
   );
 
   const sortedTasks = useMemo(
@@ -239,11 +228,4 @@ export const Tasks = ({ tab, setActiveTasks, activeTasks }: TasksProps) => {
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  activeTasks: state?.data?.activeTasks,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setActiveTasks }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Tasks);
+export default Tasks;

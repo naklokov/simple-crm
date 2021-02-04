@@ -51,6 +51,7 @@ module.exports = {
   tasks: {
     path: "/main/tasks",
     entity: "/crm/rest/entity/tasks",
+    paging: "/crm/rest/entity/tasks/paging",
   },
   deals: {
     path: "/deals",

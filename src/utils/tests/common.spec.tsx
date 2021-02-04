@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { checkAuthCookie, isValuesChanged, logout } from "..";
 import { COOKIES } from "../../constants/http";
-import { urls } from "../../constants";
+import { DATE_FORMATS, urls } from "../../constants";
 import {
   callTel,
   clearCookie,
@@ -75,13 +75,9 @@ test("logout", () => {
     3,
     getAction("persist/setPermissions", [])
   );
-  expect(dispatchSpy).toHaveBeenNthCalledWith(
-    4,
-    getAction("data/setActiveTasks", [])
-  );
 
   expect(dispatchSpy).toHaveBeenNthCalledWith(
-    5,
+    4,
     getAction("app/setLoading", true)
   );
 });
@@ -115,7 +111,9 @@ test("callTel", () => {
   expect(assignSpy).toHaveBeenNthCalledWith(2, "tel:+78889996655,2211");
 });
 
-xtest("getDateWithTimezone", () => {
-  const dateWithoutTimezone = "2011-02-01T15:00:00";
-  expect(getDateWithTimezone(dateWithoutTimezone)).toBe("2011-02-01T18:00:00");
+test("getDateWithTimezone", () => {
+  const dateWithoutTimezone = "2021-02-04T23:00:19.172";
+  expect(
+    getDateWithTimezone(dateWithoutTimezone).format(DATE_FORMATS.DATE_TIME)
+  ).toBe("05.02.2021 02:00");
 });

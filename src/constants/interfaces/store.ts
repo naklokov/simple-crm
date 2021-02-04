@@ -19,7 +19,6 @@ export interface AppState {
 export interface DataState {
   dictionaries: object;
   clients: ClientEntityProps[];
-  activeTasks: TaskEntityProps[];
   profileInfo: ProfileInfoProps;
 }
 
