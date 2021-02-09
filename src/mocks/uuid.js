@@ -1,5 +1,5 @@
 jest.mock("uuid", () => {
   return {
-    v4: jest.fn(() => 1),
+    v4: jest.fn(() => "1"),
   };
 });
