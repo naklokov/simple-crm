@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Divider, Spin, Typography, List, Empty } from "antd";
+import { Divider, Typography, List, Empty } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card } from "..";
@@ -8,24 +8,21 @@ import style from "./column.module.scss";
 import { TaskEntityProps, urls } from "../../../../constants";
 import InfiniteScroll from "react-infinite-scroller";
 import { defaultErrorHandler } from "../../../../utils";
+import { ColumnTaskProps, INFINITY_SCROLL_STEP } from "../../constants";
 
-const LOADING_STEP = 5;
-
-interface ColumnProps {
-  title: string;
-  query: string;
-  dateFormat: string;
-  dividerColor?: string;
+interface ColumnProps extends ColumnTaskProps {
   onComplete: (task: TaskEntityProps) => void;
   onDelete: (task: TaskEntityProps) => void;
-  reloadKey: string;
 }
+
+const FIELD = `taskEndDate`;
 
 export const Column = ({
   title,
   query,
   dateFormat,
   dividerColor = "#ffffff",
+  titleType,
   onComplete,
   onDelete,
   reloadKey = "",
@@ -38,9 +35,10 @@ export const Column = ({
 
   const fetchTasks = async ({ pageSize }: any) => {
     setLoading(true);
+    const sortBy = `${FIELD}:asc`;
     try {
       const response = await axios.get(urls.tasks.paging, {
-        params: { query, pageSize },
+        params: { query, pageSize, sortBy },
       });
 
       setTasks(response?.data?.rows ?? []);
@@ -61,16 +59,16 @@ export const Column = ({
       return;
     }
 
-    fetchTasks({ pageSize: tasks.length + LOADING_STEP });
+    fetchTasks({ pageSize: tasks.length + INFINITY_SCROLL_STEP });
   }, [tasks, count]);
 
   useEffect(() => {
-    fetchTasks({ pageSize: LOADING_STEP });
+    fetchTasks({ pageSize: INFINITY_SCROLL_STEP });
   }, [reloadKey]);
 
   return (
     <div className={style.container}>
-      <Typography.Title level={5} className={style.title}>
+      <Typography.Title type={titleType} level={5} className={style.title}>
         {`${title} - ${count}`}
       </Typography.Title>
       <Divider
