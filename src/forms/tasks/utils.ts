@@ -22,6 +22,7 @@ import {
   ColumnTaskProps,
   DIVIDER_COLORS,
   TitleTypeType,
+  TASK_DATE_FIELD_CODE,
 } from "./constants";
 
 const checkOverdue = (date: string) =>
@@ -35,7 +36,7 @@ const getExtraRsql = (profileInfoId: string): RsqlParamProps[] => [
 const getDateRsql = (date: string, profileInfoId: string) =>
   getRsqlParams([
     ...getExtraRsql(profileInfoId),
-    getDateFieldIsBetweenRsql(date, "taskEndDate"),
+    getDateFieldIsBetweenRsql(date, TASK_DATE_FIELD_CODE),
   ]);
 
 const getTommorowRsql = (selectedDate: string, profileInfoId: string) => {
@@ -43,7 +44,7 @@ const getTommorowRsql = (selectedDate: string, profileInfoId: string) => {
 
   return getRsqlParams([
     ...getExtraRsql(profileInfoId),
-    getDateFieldIsBetweenRsql(date, "taskEndDate"),
+    getDateFieldIsBetweenRsql(date, TASK_DATE_FIELD_CODE),
   ]);
 };
 
@@ -54,7 +55,7 @@ const getOverdueRsql = (selectedDate: string, profileInfoId: string) => {
     .toISOString();
   return getRsqlParams([
     ...getExtraRsql(profileInfoId),
-    getDateFieldIsBeforeRsql(date, "taskEndDate"),
+    getDateFieldIsBeforeRsql(date, TASK_DATE_FIELD_CODE),
   ]);
 };
 
@@ -134,7 +135,6 @@ export const checkDaysEqual = (date: string, comparedDate?: string) =>
 
 export const getUpdatedColumns = (columns: ColumnTaskProps[], date: string) =>
   columns.map((column) => {
-    debugger;
     if (column.date && checkDaysEqual(column.date, date)) {
       return {
         ...column,

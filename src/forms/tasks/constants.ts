@@ -12,4 +12,5 @@ export interface ColumnTaskProps {
 
 export const DIVIDER_COLORS = ["#FAAD14", "#1890FF", "#B6232C"];
 export const TASK_STATUS_FIELD_CODE = "taskStatus";
-export const INFINITY_SCROLL_STEP = 5;
+export const TASK_DATE_FIELD_CODE = "taskEndDate";
+export const INFINITY_SCROLL_STEP = 10;

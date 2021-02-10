@@ -56,7 +56,6 @@ test("getUpdatedColumns", () => {
     columns,
     moment().subtract(1, "days").toISOString()
   );
-  console.log("updatedOverdue", updatedOverdue);
   expect(updatedOverdue[0].reloadKey).toBe("111");
   expect(updatedOverdue[1].reloadKey).toBe("1");
   expect(updatedOverdue[2].reloadKey).toBe("333");
@@ -186,30 +185,37 @@ test("useColumns today mode", () => {
 
   const { result } = renderHook(() => useColumns(selectedDate));
 
+  const firstDate = moment(selectedDate);
   expect(result.current.columns[0]).toEqual({
-    date: selectedDate,
+    date: firstDate.toISOString(),
     dateFormat: DATE_FORMATS.TIME,
-    query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,\"NOT_COMPLETED\");entityData=JDATEBTWN=(taskEndDate,\"2021-02-08T21:00:00.000Z\",\"2021-02-09T20:59:59.999Z\")`,
+    query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,\"NOT_COMPLETED\");entityData=JDATEBTWN=(taskEndDate,\"${firstDate
+      .startOf("day")
+      .toISOString()}\",\"${firstDate.endOf("day").toISOString()}\")`,
     dividerColor: DIVIDER_COLORS[0],
     reloadKey: "1",
     title: "today.title",
     titleType: void 0,
   });
 
+  const secondDate = moment(selectedDate).add(1, "days");
   expect(result.current.columns[1]).toEqual({
-    date: moment(selectedDate).add(1, "days").toISOString(),
+    date: secondDate.toISOString(),
     dateFormat: DATE_FORMATS.TIME,
-    query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,\"NOT_COMPLETED\");entityData=JDATEBTWN=(taskEndDate,\"2021-02-09T21:00:00.000Z\",\"2021-02-10T20:59:59.999Z\")`,
+    query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,\"NOT_COMPLETED\");entityData=JDATEBTWN=(taskEndDate,\"${secondDate
+      .startOf("day")
+      .toISOString()}\",\"${secondDate.endOf("day").toISOString()}\")`,
     dividerColor: DIVIDER_COLORS[1],
     reloadKey: "1",
     title: "tommorow.title",
     titleType: void 0,
   });
 
+  const thirdDate = moment(selectedDate).subtract(1, "days").endOf("day");
   expect(result.current.columns[2]).toEqual({
     date: null,
     dateFormat: DATE_FORMATS.DATE_TIME,
-    query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,\"NOT_COMPLETED\");entityData=JDATEBEFORE=(taskEndDate,\"2021-02-08T20:59:59.999Z\")`,
+    query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,\"NOT_COMPLETED\");entityData=JDATEBEFORE=(taskEndDate,\"${thirdDate.toISOString()}\")`,
     dividerColor: DIVIDER_COLORS[2],
     reloadKey: "1",
     title: "overdue.title",

@@ -8,7 +8,6 @@ import { Calendar, Column } from "./components";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
-  getDateWithTimezone,
   getFullUrl,
   useFetchPersonalClients,
   useFormValues,

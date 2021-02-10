@@ -8,14 +8,16 @@ import style from "./column.module.scss";
 import { TaskEntityProps, urls } from "../../../../constants";
 import InfiniteScroll from "react-infinite-scroller";
 import { defaultErrorHandler } from "../../../../utils";
-import { ColumnTaskProps, INFINITY_SCROLL_STEP } from "../../constants";
+import {
+  ColumnTaskProps,
+  INFINITY_SCROLL_STEP,
+  TASK_DATE_FIELD_CODE,
+} from "../../constants";
 
 interface ColumnProps extends ColumnTaskProps {
   onComplete: (task: TaskEntityProps) => void;
   onDelete: (task: TaskEntityProps) => void;
 }
-
-const FIELD = `taskEndDate`;
 
 export const Column = ({
   title,
@@ -35,7 +37,7 @@ export const Column = ({
 
   const fetchTasks = async ({ pageSize }: any) => {
     setLoading(true);
-    const sortBy = `${FIELD}:asc`;
+    const sortBy = `${TASK_DATE_FIELD_CODE}:asc`;
     try {
       const response = await axios.get(urls.tasks.paging, {
         params: { query, pageSize, sortBy },
