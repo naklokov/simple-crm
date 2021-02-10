@@ -1,0 +1,23 @@
+style: bitbucket
+template: CHANGELOG.tpl.md
+info:
+  title: CHANGELOG
+  repository_url: https://bitbucket.org/olivje_group/olivje.crm.pl
+options:
+  commits:
+     filters:
+       Type:
+         - feature
+         - fix
+  commit_groups:
+    title_maps:
+      feature: Новый функционал
+      fix: Исправление дефектов
+  header:
+    pattern: "^(\\w*)\\:\\s(.*)$"
+    pattern_maps:
+      - Type
+      - Subject
+  notes:
+    keywords:
+      - BREAKING CHANGE
