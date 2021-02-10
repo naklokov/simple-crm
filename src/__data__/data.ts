@@ -4,7 +4,6 @@ const dataSlide = createSlice({
   name: "data",
   initialState: {
     dictionaries: {},
-    activeTasks: [],
     profileInfo: {},
     clients: [],
   },
@@ -15,9 +14,6 @@ const dataSlide = createSlice({
     setProfileInfo(state, action) {
       state.profileInfo = action.payload;
     },
-    setActiveTasks(state, action) {
-      state.activeTasks = action.payload;
-    },
     setClients: (state, action) => {
       state.clients = action.payload;
     },
@@ -27,7 +23,6 @@ const dataSlide = createSlice({
 export const {
   setDictionaries,
   setProfileInfo,
-  setActiveTasks,
   setClients,
 } = dataSlide.actions;
 

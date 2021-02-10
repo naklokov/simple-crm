@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import { isEmpty } from "lodash";
 import moment from "moment-timezone";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { getOverdueTasks } from "../../utils";
 import { notification } from "antd";
 import { getCurrentTasks } from "./utils";
@@ -24,7 +23,7 @@ export const NotificationService = ({ children }: NotificationServiceProps) => {
   const [overdueShowed, setOverdueShowed] = useState(false);
   const [currentShow, setCurrentShow] = useState(false);
 
-  const tasks = useSelector((state: State) => state?.data?.activeTasks);
+  const tasks = [] as TaskEntityProps[];
 
   const renderCurrentTask = (task: TaskEntityProps) => {
     const message = <strong>{TASK_TYPES_MAP[task.taskType]}</strong>;
@@ -68,7 +67,7 @@ export const NotificationService = ({ children }: NotificationServiceProps) => {
       }
       setCurrentShow(false);
     }
-  }, [currentShow, tasks]);
+  }, [currentShow, tasks, renderCurrentTask]);
 
   // эффект для отрисовки просроченных задач при инициализации приложения
   useEffect(() => {
@@ -76,7 +75,7 @@ export const NotificationService = ({ children }: NotificationServiceProps) => {
       renderOverdueNotification();
       setOverdueShowed(true);
     }
-  }, [tasks, overdueShowed]);
+  }, [tasks, overdueShowed, renderOverdueNotification]);
 
   // эффект таймер для запуска отрисовки задач ежеминутно
   useEffect(() => {

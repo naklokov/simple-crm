@@ -35,8 +35,6 @@ export const PhoneInput = ({
   const handleChange = useCallback((event) => {
     const normalizeValue = getNormalizePhone(event.target.value);
 
-    const nextMask = getMask(normalizeValue);
-
     // до ввода 12 символа показываем маску без запятой для доп кода
     const withoutAdditionalCode =
       normalizeValue.length < NORMALIZE_PHONE_LENGTH;
@@ -58,7 +56,7 @@ export const PhoneInput = ({
       if (isNeedReplaceFirstChar(normalizePhone)) {
         const phoneWithReplacedCode =
           RU_PHONE_CODE + normalizePhone.substring(1);
-        debugger;
+
         return conformToMask(phoneWithReplacedCode, mask, config)
           .conformedValue;
       }

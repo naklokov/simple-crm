@@ -13,9 +13,8 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFiteredEntityArray,
-  getSortedParams,
 } from "../../utils";
-import { getQueryString } from "./utils";
+import { getServerPagingRsql, getSortedParams } from "./utils";
 import { TablePaginationConfig } from "antd/lib/table";
 
 interface TableWithServerPagingProps {
@@ -57,7 +56,7 @@ export const TableWithServerPaging = ({
           page,
           pageSize,
           sortBy,
-          query: getQueryString({
+          query: getServerPagingRsql({
             searchedAll,
             searchedColumns,
             columns: columns ?? [],
@@ -80,32 +79,26 @@ export const TableWithServerPaging = ({
     fetchDataSource();
   }, [page, pageSize, sortBy, searchedAll, searchedColumns, extraRsqlParams]);
 
-  const handleSearch = useCallback(
-    (searchedAll: string) => {
-      setPage(1);
-      setSearchedAll(searchedAll);
-    },
-    [dataSource]
-  );
+  const handleSearch = useCallback((searchedAll: string) => {
+    setPage(1);
+    setSearchedAll(searchedAll);
+  }, []);
 
   const handleDelete = useCallback(
     (id) => {
       defaultSuccessHandler(t("message.delete.success"));
       setDataSource(getFiteredEntityArray(id, dataSource));
     },
-    [dataSource]
+    [dataSource, t]
   );
 
-  const handleChangeTable = useCallback(
-    (paginationParams, filters, sorter) => {
-      const { current, pageSize } = paginationParams;
-      const sortBy = getSortedParams(sorter);
-      setSortBy(sortBy);
-      setPage(current);
-      setPageSize(pageSize);
-    },
-    [dataSource]
-  );
+  const handleChangeTable = useCallback((paginationParams, filters, sorter) => {
+    const { current, pageSize } = paginationParams;
+    const sortBy = getSortedParams(sorter);
+    setSortBy(sortBy);
+    setPage(current);
+    setPageSize(pageSize);
+  }, []);
 
   const handleSearchColumn = useCallback(
     (searched: string, confirm: any, column: ColumnProps) => {

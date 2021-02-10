@@ -19,6 +19,7 @@ const {
   Entity,
   Email,
   Href,
+  EntityPersonal,
 } = fields;
 
 export const isValuesChanged = (
@@ -49,6 +50,8 @@ export const createFormField = (field: FieldProps): JSX.Element => {
       return <Dictionary {...field} />;
     case "entity":
       return <Entity {...field} />;
+    case "entity-personal":
+      return <EntityPersonal {...field} />;
     default:
       return <div />;
   }
@@ -106,9 +109,9 @@ export const checkINN = (value: any) => {
 
   var inn = value.match(/(\d)/g);
 
-  if (inn.length == 10) {
+  if (inn.length === 10) {
     return (
-      inn[9] ==
+      inn[9] ===
       String(
         ((2 * inn[0] +
           4 * inn[1] +
@@ -123,9 +126,9 @@ export const checkINN = (value: any) => {
           10
       )
     );
-  } else if (inn.length == 12) {
+  } else if (inn.length === 12) {
     return (
-      inn[10] ==
+      inn[10] ===
         String(
           ((7 * inn[0] +
             2 * inn[1] +
@@ -140,7 +143,7 @@ export const checkINN = (value: any) => {
             11) %
             10
         ) &&
-      inn[11] ==
+      inn[11] ===
         String(
           ((3 * inn[0] +
             7 * inn[1] +

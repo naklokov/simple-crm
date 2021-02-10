@@ -66,7 +66,6 @@ export const AddTask = ({
       visible={visible}
       submitLoading={loading}
       onFinish={onFinish}
-      permissions={[PERMISSIONS.TASKS["ADD.ALL"]]}
     />
   );
 };

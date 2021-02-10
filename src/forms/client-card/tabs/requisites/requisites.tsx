@@ -4,7 +4,6 @@ import {
   GUTTER_FULL_WIDTH,
   QueryProps,
   FORM_NAMES,
-  PERMISSIONS_SET,
   ProfileInfoProps,
   State,
   urls,
@@ -96,10 +95,7 @@ export const Requisites = ({ tab }: RequisitesProps) => {
             ))}
           </FormContext.Provider>
         </Row>
-        <ComponentPermissionsChecker
-          availablePermissions={PERMISSIONS_SET.CLIENT_UPDATE}
-          hasRight={clientValues?.isOwner?.UPDATE}
-        >
+        <ComponentPermissionsChecker hasRight={clientValues?.isOwner?.UPDATE}>
           <FormFooter
             loading={submitLoading}
             disabled={submitDisabled}

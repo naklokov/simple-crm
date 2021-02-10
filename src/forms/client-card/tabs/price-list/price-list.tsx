@@ -4,7 +4,6 @@ import {
   urls,
   ClientEntityProps,
   QueryProps,
-  PERMISSIONS_SET,
   ProfileInfoProps,
   State,
   TabPaneFormProps,
@@ -79,7 +78,6 @@ export const PriceList = ({
       loading={loading}
       dataSource={positions}
       onSaveRow={handleSaveRow}
-      actionsPermissions={PERMISSIONS_SET.CLIENT_UPDATE}
       withSearch
     />
   );

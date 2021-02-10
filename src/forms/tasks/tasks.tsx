@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import moment from "moment-timezone";
 import axios from "axios";
-import { Col, List, Row } from "antd";
+import { Col, Row } from "antd";
 import { TasksHeader } from ".";
 import { Calendar, Column } from "./components";
 
@@ -9,27 +9,23 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFullUrl,
-  getFiteredEntityArray,
+  useFetchPersonalClients,
   useFormValues,
 } from "../../utils";
-import { getTasksColumns } from "./utils";
+import { useColumns } from "./utils";
 import {
   urls,
   formConfig,
-  TaskEntityProps,
-  FORM_NAMES,
-  State,
   PERMISSIONS_SET,
+  FORM_NAMES,
+  TaskEntityProps,
 } from "../../constants";
-import { connect } from "react-redux";
 
 import style from "./tasks.module.scss";
 import { useTranslation } from "react-i18next";
 import { AddTaskDrawer, CompletedTaskDrawer } from "../../drawers";
 import { PagePermissionsChecker } from "../../wrappers";
-import { bindActionCreators } from "@reduxjs/toolkit";
-import { setActiveTasks } from "../../__data__";
-import { Dispatch } from "@reduxjs/toolkit";
+import { ClientsPersonalContext } from "../../components/table/utils";
 
 const {
   TASKS: { drawers },
@@ -38,89 +34,68 @@ const {
 const taskDrawer = drawers.find((o) => o.code === "task");
 const completedDrawer = drawers.find((o) => o.code === "taskCompleted");
 
-interface TaskProps {
-  activeTasks: TaskEntityProps[];
-  setActiveTasks: (tasks: TaskEntityProps[]) => void;
-}
-
-export const Tasks = ({ activeTasks, setActiveTasks }: TaskProps) => {
+export const Tasks = () => {
   const [t] = useTranslation("tasks");
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
-  const [listLoading, setListLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(moment().toISOString());
   const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
+  const { columns, reload } = useColumns(selectedDate);
+
+  const personalClients = useFetchPersonalClients();
 
   const { update: completedFormUpdate } = useFormValues(
     FORM_NAMES.TASK_COMPLETED
   );
 
-  const fetchDelete = async (id: string) => {
-    setListLoading(true);
+  const fetchDelete = async (id: string, date: string) => {
     try {
       const url = getFullUrl(urls.tasks.entity, id);
       await axios.delete(url);
+      reload(date);
       defaultSuccessHandler(t("message.success.delete"));
     } catch (error) {
       defaultErrorHandler({ error });
-    } finally {
-      setListLoading(false);
     }
   };
 
-  const handleChangeDate = useCallback(
-    (date: moment.Moment) => {
-      setSelectedDate(date.toISOString());
-    },
-    [selectedDate]
-  );
+  const handleChangeDate = useCallback((date: moment.Moment) => {
+    setSelectedDate(date.toISOString());
+  }, []);
 
   const handleCloseAddDrawer = useCallback(
     (event, task) => {
       setAddDrawerVisible(false);
-
       if (task) {
-        setActiveTasks([...activeTasks, task]);
+        reload(task.taskEndDate);
       }
     },
-    [activeTasks]
-  );
-
-  const handleAddClick = useCallback(() => {
-    setAddDrawerVisible(true);
-  }, [addDrawerVisible]);
-
-  const handleTaskComplete = useCallback(
-    (id: string) => {
-      completedFormUpdate(
-        activeTasks.find((o) => o.id === id) || ({} as TaskEntityProps)
-      );
-      setCompletedDrawerVisible(true);
-    },
-    [activeTasks]
-  );
-
-  const handleTaskDelete = useCallback(
-    (id: string) => {
-      fetchDelete(id);
-      setActiveTasks(activeTasks.filter((task) => task.id !== id));
-    },
-    [activeTasks]
+    [reload]
   );
 
   const handleCloseCompletedDrawer = useCallback(
     (event, task) => {
       setCompletedDrawerVisible(false);
-
       if (task) {
-        setActiveTasks(getFiteredEntityArray(task.id, activeTasks));
+        reload(task.taskEndDate);
       }
     },
-    [activeTasks]
+    [reload]
   );
 
-  const dataSource = useMemo(
-    () => getTasksColumns(selectedDate, activeTasks, t),
-    [selectedDate, activeTasks, t]
+  const handleAddClick = useCallback(() => {
+    setAddDrawerVisible(true);
+  }, []);
+
+  const handleTaskComplete = useCallback((task: TaskEntityProps) => {
+    completedFormUpdate(task);
+    setCompletedDrawerVisible(true);
+  }, []);
+
+  const handleTaskDelete = useCallback(
+    (task: TaskEntityProps) => {
+      fetchDelete(task.id, task.taskEndDate);
+    },
+    [reload]
   );
 
   return (
@@ -134,24 +109,21 @@ export const Tasks = ({ activeTasks, setActiveTasks }: TaskProps) => {
         />
         <CompletedTaskDrawer
           fields={completedDrawer?.fields ?? []}
-          visible={completedDrawerVisible}
           onClose={handleCloseCompletedDrawer}
+          visible={completedDrawerVisible}
         />
         <Row className={style.container}>
-          <Col flex="auto">
-            <List
-              loading={listLoading}
-              grid={{ column: 3 }}
-              dataSource={dataSource}
-              renderItem={(column) => (
+          {columns.map((column) => (
+            <ClientsPersonalContext.Provider value={personalClients}>
+              <Col span={8}>
                 <Column
+                  {...column}
                   onDelete={handleTaskDelete}
                   onComplete={handleTaskComplete}
-                  {...column}
                 />
-              )}
-            />
-          </Col>
+              </Col>
+            </ClientsPersonalContext.Provider>
+          ))}
           <Calendar onChange={handleChangeDate} />
         </Row>
       </React.Fragment>
@@ -159,11 +131,4 @@ export const Tasks = ({ activeTasks, setActiveTasks }: TaskProps) => {
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  activeTasks: state?.data?.activeTasks,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setActiveTasks }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Tasks);
+export default Tasks;

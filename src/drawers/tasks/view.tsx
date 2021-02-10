@@ -125,13 +125,11 @@ export const ViewTask = ({
       headerButtons={[
         <ComponentPermissionsChecker
           key="dropdown"
-          availablePermissions={PERMISSIONS_SET.TASK_UPDATE}
           hasRight={values.isOwner?.UPDATE}
         >
           <DropdownMenu />
         </ComponentPermissionsChecker>,
       ]}
-      permissions={PERMISSIONS_SET.TASK_UPDATE}
     />
   );
 };

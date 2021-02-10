@@ -10,7 +10,7 @@ import {
 } from "../../../utils";
 import { ColumnProps, FORM_NAMES, State } from "../../../constants";
 import { useTranslation } from "react-i18next";
-import { hasPermission } from "../../../wrappers/permissions-checker/utils";
+import { isCanShow } from "../../../wrappers/permissions-checker/utils";
 import { useSelector } from "react-redux";
 import { TableActionsContext } from "./common";
 
@@ -48,18 +48,16 @@ const EditableCell = ({
     (state: State) => state?.persist?.permissions
   );
 
-  const hasPermissions = useMemo(
-    () =>
-      (hasPermission(permissions, allPermissions) || values?.isOwner?.UPDATE) ??
-      true,
+  const canShow = useMemo(
+    () => isCanShow(permissions, allPermissions, values?.isOwner?.UPDATE),
     [permissions, allPermissions, values?.isOwner]
   );
 
   useEffect(() => {
-    if (editing && hasPermissions) {
+    if (editing && canShow) {
       inputRef?.current?.focus?.() ?? noop();
     }
-  }, [editing, hasPermissions]);
+  }, [editing, canShow]);
 
   const toggleEdit = () => {
     setEditing(!editing);
@@ -85,7 +83,7 @@ const EditableCell = ({
 
   let childNode = children;
 
-  if (editable && hasPermissions) {
+  if (editable && canShow) {
     childNode = editing ? (
       <Form.Item
         style={{ margin: 0 }}

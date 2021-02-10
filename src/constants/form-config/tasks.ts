@@ -1,4 +1,3 @@
-import { PERMISSIONS, PERMISSIONS_SET } from "../permissions";
 import { DATE_FORMATS } from "../common";
 import { urls, DrawerProps } from "..";
 
@@ -20,14 +19,14 @@ export const TASKS: TasksConfigProps = {
           fieldCode: "clientId",
           fieldName: "Компания",
           fieldDescription: "Компания связанная с задачей",
-          type: "entity",
+          type: "entity-personal",
           titleField: "shortName",
           codeField: "id",
           readonly: false,
           disabled: false,
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: PERMISSIONS_SET.TASK_UPDATE,
+          permissions: [],
           _links: {
             self: {
               href: urls.clients.entity,
@@ -45,7 +44,7 @@ export const TASKS: TasksConfigProps = {
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: PERMISSIONS_SET.TASK_UPDATE,
+          permissions: [],
         },
         {
           fieldCode: "taskDescription",
@@ -60,7 +59,7 @@ export const TASKS: TasksConfigProps = {
           rules: [
             { max: 2000, message: "Превышена максимальная длина строки" },
           ],
-          permissions: PERMISSIONS_SET.TASK_UPDATE,
+          permissions: [],
         },
       ],
     },
@@ -82,7 +81,7 @@ export const TASKS: TasksConfigProps = {
           rules: [
             { max: 2000, message: "Превышена максимальная длина строки" },
           ],
-          permissions: PERMISSIONS_SET.TASK_UPDATE,
+          permissions: [],
         },
       ],
     },

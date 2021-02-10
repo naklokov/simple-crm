@@ -48,7 +48,6 @@ export const ViewContact = ({
 
   return (
     <DrawerForm
-      permissions={PERMISSIONS_SET.CONTACT_UPDATE}
       title={title}
       fields={fields}
       initialValues={values}

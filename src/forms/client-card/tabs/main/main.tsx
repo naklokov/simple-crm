@@ -3,11 +3,9 @@ import axios from "axios";
 import {
   GUTTER_FULL_WIDTH,
   ModeType,
-  TabProps,
   urls,
   QueryProps,
   FORM_NAMES,
-  PERMISSIONS_SET,
   State,
   ProfileInfoProps,
   ClientEntityProps,
@@ -121,10 +119,7 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
             ))}
           </FormContext.Provider>
         </Row>
-        <ComponentPermissionsChecker
-          availablePermissions={PERMISSIONS_SET.CLIENT_UPDATE}
-          hasRight={values?.isOwner?.UPDATE}
-        >
+        <ComponentPermissionsChecker hasRight={values?.isOwner?.UPDATE}>
           <FormFooter
             loading={submitLoading}
             disabled={submitDisabled}

@@ -26,6 +26,21 @@ interface DrawerFormProps {
   initialValues?: EntityOwnerProps;
 }
 
+/**
+ * Боковая форма с полями ввода
+ *
+ * @param {array} fields - Конфигурация полей ввода
+ * @param {string} name - Наименование формы для хранения данных в контексте
+ * @param {string} title - Текстовый заголовок формы
+ * @param {boolean} visible - Признак видимости формы
+ * @param {boolean} submitLoading - Признак отображения loader на кнопке "Сохранить"
+ * @param {function} onClose - Callback при нажатии кнопки "Отмена"
+ * @param {function} onFinish - Callback при нажатии кнопки "Сохранить"
+ * @param {array} headerButtons - Массив дополнительных кнопок в заголовке
+ * @param {boolean} defaultSubmitDisabled - Признак disable кнопки "Сохранить" при открытии боковой формы
+ * @param {array} permissions - Разрешения для отображения кнопки "Сохранить"
+ * @param {object} initialValues - Начальные значения полей ввода
+ */
 export const DrawerForm = ({
   fields,
   name,
@@ -56,7 +71,7 @@ export const DrawerForm = ({
       clear();
       onClose(event);
     },
-    [onClose]
+    [onClose, clear]
   );
 
   const handleFinish = useCallback(
@@ -65,7 +80,7 @@ export const DrawerForm = ({
       clear();
       onFinish(data);
     },
-    [initialValues, onClose, onFinish]
+    [initialValues, onClose, onFinish, clear]
   );
 
   const handleVisibleChange = useCallback(
@@ -76,7 +91,7 @@ export const DrawerForm = ({
 
       setSubmitDisabled(defaultSubmitDisabled);
     },
-    [visible]
+    [visible, defaultSubmitDisabled, form]
   );
 
   if (isEmpty(fields)) {

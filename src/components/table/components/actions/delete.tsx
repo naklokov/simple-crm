@@ -2,7 +2,6 @@ import React, { useCallback, useContext } from "react";
 import axios from "axios";
 import { Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
-import noop from "lodash/noop";
 
 import { defaultErrorHandler } from "../../../../utils";
 import { connect } from "react-redux";
@@ -46,7 +45,7 @@ export const Delete = ({
 
   const handleDelete = useCallback(() => {
     fetchDelete();
-  }, [onDeleteRow, id, href]);
+  }, [onDeleteRow, id, href, fetchDelete]);
 
   if (!hasRight) {
     return null;

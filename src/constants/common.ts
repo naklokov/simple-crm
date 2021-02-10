@@ -12,12 +12,6 @@ export const GUTTER_FULL_WIDTH = {
 
 export const CLIENT_NEW_ID = "new";
 
-export const RSQL_OPERATORS_MAP = {
-  LIKE: "=JLIKE=",
-  EQUAL: "==",
-  FIELD_EQUAL: "=JEQ=",
-};
-
 export const TASK_STATUSES = {
   COMPLETED: "COMPLETED",
   NOT_COMPLETED: "NOT_COMPLETED",
@@ -38,4 +32,16 @@ export const FORM_NAMES = {
   TASK_ADD: "taskAdd",
   TASK_COMPLETED: "taskCompleted",
   TASK_VIEW: "taskView",
+};
+
+export const RSQL_OPERATORS_MAP = {
+  LIKE: "=JLIKE=",
+  EQUAL: "==",
+  FIELD_EQUAL: "=JEQ=",
+  DATE_IS_BETWEEN: "=DATEBTWN=",
+  DATE_IS_BEFORE: "=DATEBEFORE=",
+  DATE_IS_AFTER: "=DATEAFTER=",
+  DATE_FIELD_IS_BETWEEN: "=JDATEBTWN=",
+  DATE_FIELD_IS_BEFORE: "=JDATEBEFORE=",
+  DATE_FIELD_IS_AFTER: "=JDATEAFTER=",
 };

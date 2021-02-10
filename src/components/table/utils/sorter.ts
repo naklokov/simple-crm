@@ -1,5 +1,25 @@
+import { SortOrder } from "antd/lib/table/interface";
 import { ColumnProps, ColumnType } from "../../../constants";
 import { getDateWithTimezone } from "../../../utils";
+
+const ORDER_MAP = {
+  ascend: "asc",
+  descend: "desc",
+};
+
+export const getSortedParams = ({
+  field,
+  order,
+}: {
+  field: string;
+  order: SortOrder;
+}) => {
+  if (order) {
+    return `${field}:${ORDER_MAP[order]}`;
+  }
+
+  return "";
+};
 
 const getSorterFunction = (
   columnCode: string,

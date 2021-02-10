@@ -18,10 +18,7 @@ export const Header = ({ onClickAdd }: HeaderProps) => {
 
   return (
     // завязка на UPDATE клиента, т.к. контакт привязывается конкретно к клиенту
-    <ComponentPermissionsChecker
-      availablePermissions={PERMISSIONS_SET.CLIENT_UPDATE}
-      hasRight={values?.isOwner?.UPDATE}
-    >
+    <ComponentPermissionsChecker hasRight={values?.isOwner?.UPDATE}>
       <Button type="primary" className={style.button} onClick={onClickAdd}>
         {t("title.add")}
       </Button>

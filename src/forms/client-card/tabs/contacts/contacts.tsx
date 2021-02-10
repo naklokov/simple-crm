@@ -55,10 +55,10 @@ export const Contacts = ({ tab }: TabPaneFormProps) => {
 
   const handleViewContact = useCallback(
     (id) => {
-      viewFormUpdate(contacts.find((o) => o.id == id));
+      viewFormUpdate(contacts.find((o) => o.id === id));
       setViewDrawerVisible(true);
     },
-    [contacts]
+    [contacts, viewFormUpdate]
   );
 
   const handleDeleteContact = useCallback(
@@ -66,7 +66,7 @@ export const Contacts = ({ tab }: TabPaneFormProps) => {
       defaultSuccessHandler(t("message.delete.success"));
       setContacts(getFiteredEntityArray(id, contacts));
     },
-    [contacts]
+    [contacts, t]
   );
 
   const handleCloseAddDrawer = useCallback(

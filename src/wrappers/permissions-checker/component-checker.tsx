@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import { connect } from "react-redux";
 import { State, EntityOwnerProps } from "../../constants";
-import { hasPermission } from "./utils";
+import { isCanShow } from "./utils";
 
 interface ComponentCheckerProps {
   mode?: "hide" | "readonly";
   children: JSX.Element;
-  availablePermissions: string[];
+  availablePermissions?: string[];
   allPermissions: string[];
   hasRight?: boolean;
   entity?: EntityOwnerProps;
@@ -20,9 +20,12 @@ export const ComponentChecker = ({
   availablePermissions = [],
   hasRight = true,
 }: ComponentCheckerProps) => {
-  const available = hasPermission(availablePermissions, allPermissions);
+  const canShow = useMemo(
+    () => isCanShow(availablePermissions, allPermissions, hasRight),
+    [availablePermissions, allPermissions, hasRight]
+  );
 
-  if (available || hasRight) {
+  if (canShow) {
     return <React.Fragment>{children}</React.Fragment>;
   }
 
