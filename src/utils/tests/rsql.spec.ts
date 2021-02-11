@@ -7,17 +7,30 @@ import {
   getDateIsBeforeRsql,
   getDateIsBetweenRsql,
   getFieldEqualRsql,
-} from "..";
+  getEqualRsql,
+  getSearchRsql,
+  getLikeRsql,
+} from "../rsql";
 import { RSQL_OPERATORS_MAP } from "../../constants";
-import { getEqualRsql, getLikeRsql } from "../rsql";
 
 test("getLikeRsql", () => {
   const keys = ["id", "name"];
-  const searched = "КаЛина красная ";
-  expect(getLikeRsql(keys, searched)).toEqual({
+  const searched = "123ghbdtnпривет !\"\"'' ";
+  const entity = "someKey";
+  expect(getLikeRsql(keys, searched, entity)).toEqual({
+    key: entity,
+    operator: RSQL_OPERATORS_MAP.LIKE,
+    value: `(id,name,\"${searched}\")`,
+  });
+});
+
+test("getSearchRsql", () => {
+  const keys = ["id", "name"];
+  const searched = ' "КаЛина 123 \' ?!@ красная"""    ';
+  expect(getSearchRsql(keys, searched)).toEqual({
     key: "entityData",
     operator: RSQL_OPERATORS_MAP.LIKE,
-    value: `(id,name,\"калина красная \")`,
+    value: '(id,name,"\\"калина 123 \' ?!@ красная\\"\\"\\"")',
   });
 });
 

@@ -7,7 +7,7 @@ import {
   FormContext,
   getRsqlParams,
   getEqualRsql,
-  getLikeRsql,
+  getSearchRsql,
 } from "../../../utils";
 import { Readonly } from "../readonly";
 
@@ -54,7 +54,7 @@ export const Entity = ({
 
   const handleSearch = useCallback(
     (value) => {
-      const searchedQuery = getRsqlParams([getLikeRsql([titleField], value)]);
+      const searchedQuery = getRsqlParams([getSearchRsql([titleField], value)]);
       fetchEntity(searchedQuery);
     },
     [titleField]
