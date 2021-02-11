@@ -3,7 +3,7 @@ import isEmpty from "lodash/isEmpty";
 import pick from "lodash/pick";
 import noop from "lodash/noop";
 import { columns } from "../components";
-import { getLikeRsql, getRsqlParams, getEqualRsql } from "../../../utils";
+import { getSearchRsql, getRsqlParams, getEqualRsql } from "../../../utils";
 
 import {
   ActionProps,
@@ -166,7 +166,7 @@ export const getServerPagingRsql = ({
 
   if (searchedAll) {
     params.push(
-      getLikeRsql(
+      getSearchRsql(
         ["phone", "inn", "shortName", "city"],
         searchedAll,
         entityName
@@ -183,7 +183,7 @@ export const getServerPagingRsql = ({
         if (filterOperator === "equal") {
           params.push(getEqualRsql(key, searchedColumns[key]));
         } else {
-          params.push(getLikeRsql([key], searchedColumns[key], entityName));
+          params.push(getSearchRsql([key], searchedColumns[key], entityName));
         }
       }
     });

@@ -10,14 +10,23 @@ export const getRsqlParams = (params: RsqlParamProps[]) => {
   return queries.filter((o) => !!o).join(";");
 };
 
-export const getLikeRsql = (
+export const getSearchRsql = (
   keys: string[],
   searched: string,
+  entityName = "entityData"
+) => {
+  const value = searched.replace(/"/g, '\\"').trim().toLowerCase();
+  return getLikeRsql(keys, value, entityName);
+};
+
+export const getLikeRsql = (
+  keys: string[],
+  value: string,
   entityName = "entityData"
 ) => ({
   key: entityName,
   operator: RSQL_OPERATORS_MAP.LIKE,
-  value: `(${keys.join(",")},"${searched.replace(/"/g, '"').toLowerCase()}")`,
+  value: `(${keys.join(",")},"${value}")`,
 });
 
 export const getDateIsBetweenRsql = (
