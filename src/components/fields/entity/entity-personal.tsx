@@ -12,7 +12,7 @@ import {
   FormContext,
   getRsqlParams,
   getEqualRsql,
-  getLikeRsql,
+  getSearchRsql,
 } from "../../../utils";
 import { connect } from "react-redux";
 import { Readonly } from "../readonly";
@@ -71,7 +71,7 @@ export const Entity = ({
       if (profileInfo.id) {
         const searchedQuery = getRsqlParams([
           { key: "userProfileId", value: profileInfo.id },
-          getLikeRsql([titleField], value),
+          getSearchRsql([titleField], value),
         ]);
         fetchEntity(searchedQuery);
       }
