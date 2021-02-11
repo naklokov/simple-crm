@@ -1,4 +1,14 @@
 
+<a name="0.0.8"></a>
+## [0.0.8](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.0.8..0.0.7)
+
+> 2021-02-11
+
+### Исправление дефектов
+
+* Исправить метод формирования RSQL поиска, добавив в него экранирование кавычек [OLVE-511]
+
+
 <a name="0.0.7"></a>
 ## [0.0.7](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.0.7..0.0.6)
 
