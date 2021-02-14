@@ -1,3 +1,6 @@
+import React, { ReactNode } from "react";
+import { PhoneColored } from "../assets/icons";
+
 export const DATE_FORMATS = {
   DATE: "DD.MM.YYYY",
   DATE_TIME: "DD.MM.YYYY HH:mm",
@@ -21,8 +24,12 @@ export const TASK_TYPES = {
   CALL: "CALL",
 };
 
-export const TASK_TYPES_MAP = {
+export const TASK_TYPES_MAP: { [key: string]: string } = {
   CALL: "Звонок",
+};
+
+export const TASKS_TYPES_ICONS_MAP: { [key: string]: ReactNode } = {
+  CALL: <PhoneColored />,
 };
 
 export const FORM_NAMES = {

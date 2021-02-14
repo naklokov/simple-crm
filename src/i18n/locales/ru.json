@@ -191,8 +191,10 @@
   },
   "notification": {
     "overdue.message.title": "Внимание",
-    "overdue.message.description": "У вас {{length}} просроченных задач",
-    "link.to.tasks": "Перейти к списку задач"
+    "overdue.tasks.description.prev": "У вас ",
+    "overdue.tasks.count.link.one": "{{count}} просроченная задача",
+    "overdue.tasks.count.link.some": "{{count}} просроченные задачи",
+    "overdue.tasks.count.link.many": "{{count}} просроченных задач"
   },
   "readonly": {
     "empty": "Не указан(о/а)"

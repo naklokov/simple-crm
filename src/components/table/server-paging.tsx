@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { Table } from ".";
@@ -16,7 +16,6 @@ import {
 } from "../../utils";
 import { getServerPagingRsql, getSortedParams } from "./utils";
 import { TablePaginationConfig } from "antd/lib/table";
-
 interface TableWithServerPagingProps {
   url: string;
   columns?: ColumnProps[];
@@ -65,9 +64,8 @@ export const TableWithServerPaging = ({
         },
       });
 
-      const { totalCount, rows } = response?.data ?? {};
-      setDataSource(rows);
-      setTotal(totalCount);
+      setDataSource(response?.data?.rows ?? []);
+      setTotal(response?.data?.totalCount ?? 0);
     } catch (error) {
       defaultErrorHandler({ error });
     } finally {

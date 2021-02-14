@@ -4,60 +4,17 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
+import { DATE_FORMATS, EntityOwnerProps, State } from "../../constants";
 import {
-  DATE_FORMATS,
-  EntityOwnerProps,
-  RsqlParamProps,
-  State,
-  TASK_STATUSES,
-} from "../../constants";
-import {
-  getDateFieldIsBetweenRsql,
-  getFieldEqualRsql,
-  getDateFieldIsBeforeRsql,
-  getRsqlParams,
+  getDateRsql,
+  getDateWithTimezone,
+  getOverdueRsql,
+  getTommorowRsql,
 } from "../../utils";
-import {
-  TASK_STATUS_FIELD_CODE,
-  ColumnTaskProps,
-  DIVIDER_COLORS,
-  TitleTypeType,
-  TASK_DATE_FIELD_CODE,
-} from "./constants";
+import { ColumnTaskProps, DIVIDER_COLORS, TitleTypeType } from "./constants";
 
 const checkOverdue = (date: string) =>
   moment(date).isBefore(moment().subtract(1, "days").endOf("day"));
-
-const getExtraRsql = (profileInfoId: string): RsqlParamProps[] => [
-  { key: "userProfileId", value: profileInfoId },
-  getFieldEqualRsql(TASK_STATUSES.NOT_COMPLETED, TASK_STATUS_FIELD_CODE),
-];
-
-const getDateRsql = (date: string, profileInfoId: string) =>
-  getRsqlParams([
-    ...getExtraRsql(profileInfoId),
-    getDateFieldIsBetweenRsql(date, TASK_DATE_FIELD_CODE),
-  ]);
-
-const getTommorowRsql = (selectedDate: string, profileInfoId: string) => {
-  const date = moment(selectedDate).add(1, "days").toISOString();
-
-  return getRsqlParams([
-    ...getExtraRsql(profileInfoId),
-    getDateFieldIsBetweenRsql(date, TASK_DATE_FIELD_CODE),
-  ]);
-};
-
-const getOverdueRsql = (selectedDate: string, profileInfoId: string) => {
-  const date = moment(selectedDate)
-    .subtract(1, "days")
-    .endOf("day")
-    .toISOString();
-  return getRsqlParams([
-    ...getExtraRsql(profileInfoId),
-    getDateFieldIsBeforeRsql(date, TASK_DATE_FIELD_CODE),
-  ]);
-};
 
 const getColumn = (
   date: string | null,
@@ -128,10 +85,7 @@ const getDateViewColumns = (selectedDate: string, profileInfoId: string) => {
 };
 
 export const checkDaysEqual = (date: string, comparedDate?: string) =>
-  moment(date).isBetween(
-    moment(comparedDate).startOf("day"),
-    moment(comparedDate).endOf("day")
-  );
+  getDateWithTimezone(date).isSame(comparedDate, "day");
 
 export const getUpdatedColumns = (columns: ColumnTaskProps[], date: string) =>
   columns.map((column) => {

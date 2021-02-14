@@ -1,7 +1,4 @@
-import React from "react";
 import { isValuesChanged } from "../form";
-
-// TODO пиши тесты
 
 const prev = {
   id: 1,
