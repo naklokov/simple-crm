@@ -137,7 +137,7 @@ export const defaultErrorHandler = ({
   }
 };
 
-export const getDateWithTimezone = (date?: moment.Moment | string) => {
+export const getDateWithTimezone = (date?: string) => {
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
   return moment.utc(date).tz(tz);
 };

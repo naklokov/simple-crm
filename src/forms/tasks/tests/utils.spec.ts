@@ -2,7 +2,7 @@ import moment from "moment-timezone";
 import * as redux from "react-redux";
 import { renderHook } from "@testing-library/react-hooks";
 import * as uuid from "uuid";
-import { DATE_FORMATS, TASK_STATUSES } from "../../../constants";
+import { DATE_FORMATS } from "../../../constants";
 
 import { useColumns, checkDaysEqual, getUpdatedColumns } from "../utils";
 import { ColumnTaskProps, DIVIDER_COLORS } from "../constants";
@@ -47,6 +47,21 @@ test("checkDaysEqual", () => {
   expect(checkDaysEqual(currentIso, day1)).toBe(true);
   expect(checkDaysEqual(currentIso, day2)).toBe(true);
   expect(checkDaysEqual(currentIso, day3)).toBe(false);
+});
+
+test("checkDaysEqual near midnight", () => {
+  const date = "2021-02-10T22:05:18.939";
+  const compareDate = "2021-02-11T14:38:24.295Z";
+  expect(checkDaysEqual(date, compareDate)).toBe(true);
+});
+
+test("checkDaysEqual correct check today", () => {
+  const todayEvening = moment().startOf("day").toISOString();
+  const todayMorning = moment().endOf("day").toISOString();
+  const notToday = moment().endOf("day").add(1, "hours").toISOString();
+  expect(checkDaysEqual(todayEvening)).toBe(true);
+  expect(checkDaysEqual(todayMorning)).toBe(true);
+  expect(checkDaysEqual(notToday)).toBe(false);
 });
 
 test("getUpdatedColumns", () => {

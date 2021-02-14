@@ -71,7 +71,7 @@ export const ClientCard = ({ setLoading }: ClientCardProps) => {
     return () => {
       clear();
     };
-  }, []);
+  }, [clientId]);
 
   if (isClientEmpty) {
     return <Loader />;

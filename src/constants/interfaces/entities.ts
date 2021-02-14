@@ -76,4 +76,11 @@ export interface TaskEntityProps extends EntityOwnerProps {
   taskType: TaskTypeType;
   taskEndDate: string;
   format?: string;
+  updateDate: string;
+  parentId?: string;
+  isOwner: {
+    DELETE: boolean;
+    UPDATE: boolean;
+  };
+  _links: object;
 }

@@ -6,20 +6,21 @@ import {
   TaskEntityProps,
   urls,
 } from "../../../../constants";
-import { getFullUrl, useFetch } from "../../../../utils";
+import { getFullUrl, useFetch } from "../../..";
 
-interface CurrentDescriptionProps {
+interface ActiveNotificationProps {
+  id: string;
   task: TaskEntityProps;
   history: any;
-  notificationKey: string;
 }
 
-export const CurrentDescription = ({
+export const ActiveNotification = ({
+  id,
   task,
   history,
-  notificationKey,
-}: CurrentDescriptionProps) => {
+}: ActiveNotificationProps) => {
   const [t] = useTranslation("notification");
+
   const [client, setClient] = useState({} as ClientEntityProps);
   const { loading, response } = useFetch({
     url: getFullUrl(urls.clients.entity, task.clientId),
@@ -32,8 +33,8 @@ export const CurrentDescription = ({
   }, [response]);
 
   const handleClickCurrent = useCallback(() => {
-    notification.close(notificationKey);
-    history.push(getFullUrl(urls.clients.path, task.clientId));
+    notification.close(id);
+    history?.push(getFullUrl(urls.clients.path, task.clientId));
   }, [history]);
 
   const titleSkeleton = (
@@ -58,4 +59,4 @@ export const CurrentDescription = ({
   );
 };
 
-export default CurrentDescription;
+export default ActiveNotification;

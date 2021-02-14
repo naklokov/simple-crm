@@ -1,26 +1,28 @@
 import { Button, Typography, notification } from "antd";
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { TaskEntityProps, urls } from "../../../../constants";
+import { urls } from "../../../../constants";
 
-interface OverdueDescriptionProps {
-  tasks: TaskEntityProps[];
+interface OverdueNotificationProps {
+  id: string;
+  total: number;
   history: any;
 }
 
-export const OverdueDescription = ({
-  tasks,
+export const OverdueNotification = ({
+  id,
+  total,
   history,
-}: OverdueDescriptionProps) => {
+}: OverdueNotificationProps) => {
   const [t] = useTranslation("notification");
 
   const handleClickOverdue = useCallback(() => {
-    notification.close("overdue");
-    history.push(urls.tasks.path);
+    notification.close(id);
+    history?.push(urls.tasks.path);
   }, [history]);
 
   const description = t("overdue.message.description", {
-    length: tasks.length,
+    length: total,
   });
 
   return (
@@ -37,4 +39,4 @@ export const OverdueDescription = ({
   );
 };
 
-export default OverdueDescription;
+export default OverdueNotification;

@@ -114,7 +114,10 @@ export const Tasks = () => {
         />
         <Row className={style.container}>
           {columns.map((column) => (
-            <ClientsPersonalContext.Provider value={personalClients}>
+            <ClientsPersonalContext.Provider
+              key={column.title}
+              value={personalClients}
+            >
               <Col span={8}>
                 <Column
                   {...column}
