@@ -27,7 +27,6 @@ export const useNotificationService = () => {
       );
 
       showNotification({ title, content, id, type: "warning" });
-      play();
     }
   }, [overdueTasksTotal]);
 
