@@ -5,14 +5,14 @@ import { useTranslation } from "react-i18next";
 import { Card } from "..";
 
 import style from "./column.module.scss";
-import { TaskEntityProps, urls } from "../../../../constants";
+import {
+  TaskEntityProps,
+  TASK_DATE_FIELD_CODE,
+  urls,
+} from "../../../../constants";
 import InfiniteScroll from "react-infinite-scroller";
 import { defaultErrorHandler } from "../../../../utils";
-import {
-  ColumnTaskProps,
-  INFINITY_SCROLL_STEP,
-  TASK_DATE_FIELD_CODE,
-} from "../../constants";
+import { ColumnTaskProps, INFINITY_SCROLL_STEP } from "../../constants";
 
 interface ColumnProps extends ColumnTaskProps {
   onComplete: (task: TaskEntityProps) => void;

@@ -25,6 +25,10 @@ export const TASK_TYPES_MAP = {
   CALL: "Звонок",
 };
 
+export const TASK_STATUS_FIELD_CODE = "taskStatus";
+
+export const TASK_DATE_FIELD_CODE = "taskEndDate";
+
 export const FORM_NAMES = {
   CLIENT_CARD: "clientCard",
   CONTACT_VIEW: "contactView",

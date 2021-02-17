@@ -10,6 +10,7 @@ import {
   RsqlParamProps,
   State,
   TASK_STATUSES,
+  TASK_STATUS_FIELD_CODE,
 } from "../../constants";
 import {
   getDateFieldIsBetweenRsql,
@@ -17,26 +18,23 @@ import {
   getDateFieldIsBeforeRsql,
   getRsqlParams,
 } from "../../utils";
-import {
-  TASK_STATUS_FIELD_CODE,
-  ColumnTaskProps,
-  DIVIDER_COLORS,
-  TitleTypeType,
-  TASK_DATE_FIELD_CODE,
-} from "./constants";
+import { ColumnTaskProps, DIVIDER_COLORS, TitleTypeType } from "./constants";
 
 const checkOverdue = (date: string) =>
   moment(date).isBefore(moment().subtract(1, "days").endOf("day"));
 
 const getExtraRsql = (profileInfoId: string): RsqlParamProps[] => [
   { key: "userProfileId", value: profileInfoId },
-  getFieldEqualRsql(TASK_STATUSES.NOT_COMPLETED, TASK_STATUS_FIELD_CODE),
+  getFieldEqualRsql({
+    searched: TASK_STATUSES.NOT_COMPLETED,
+    fieldCode: TASK_STATUS_FIELD_CODE,
+  }),
 ];
 
 const getDateRsql = (date: string, profileInfoId: string) =>
   getRsqlParams([
     ...getExtraRsql(profileInfoId),
-    getDateFieldIsBetweenRsql(date, TASK_DATE_FIELD_CODE),
+    getDateFieldIsBetweenRsql({ date }),
   ]);
 
 const getTommorowRsql = (selectedDate: string, profileInfoId: string) => {
@@ -44,7 +42,7 @@ const getTommorowRsql = (selectedDate: string, profileInfoId: string) => {
 
   return getRsqlParams([
     ...getExtraRsql(profileInfoId),
-    getDateFieldIsBetweenRsql(date, TASK_DATE_FIELD_CODE),
+    getDateFieldIsBetweenRsql({ date }),
   ]);
 };
 
@@ -55,7 +53,7 @@ const getOverdueRsql = (selectedDate: string, profileInfoId: string) => {
     .toISOString();
   return getRsqlParams([
     ...getExtraRsql(profileInfoId),
-    getDateFieldIsBeforeRsql(date, TASK_DATE_FIELD_CODE),
+    getDateFieldIsBeforeRsql({ date }),
   ]);
 };
 
