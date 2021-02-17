@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { v4 as uuidV4 } from "uuid";
 import moment from "moment-timezone";
 import {
   getRsqlParams,
@@ -18,6 +19,7 @@ import {
 } from "../../../../constants";
 import { useSelector } from "react-redux";
 import { CELL_COLORS } from "../../constants";
+import { memoize } from "lodash";
 
 type BadgeMapType = { [key: string]: number };
 
@@ -48,10 +50,15 @@ export const getCellColor = (
 
 export const useBadgeMap = (date: string) => {
   const [map, setMap] = useState<BadgeMapType>({});
+  const [reloadKey, setReloadKey] = useState("");
   const [loading, setLoading] = useState(false);
   const profileInfo = useSelector(
     (state: State) => state?.data?.profileInfo ?? ({} as EntityOwnerProps)
   );
+
+  const reload = useCallback(() => {
+    setReloadKey(uuidV4());
+  }, []);
 
   const fetchTasks = async () => {
     setLoading(true);
@@ -64,6 +71,7 @@ export const useBadgeMap = (date: string) => {
           unitOfTime: "month",
         }),
       ]);
+      debugger;
       const response = await axios.get(urls.tasks.entity, {
         params: { query },
       });
@@ -83,7 +91,7 @@ export const useBadgeMap = (date: string) => {
     if (profileInfo.id) {
       fetchTasks();
     }
-  }, [profileInfo, date]);
+  }, [profileInfo, date, reloadKey]);
 
-  return { map, loading };
+  return { map, loading, reload };
 };

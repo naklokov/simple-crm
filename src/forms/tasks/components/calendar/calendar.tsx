@@ -23,7 +23,7 @@ export const Calendar = ({ selectedDate, onChange }: CalendarProps) => {
   const [t] = useTranslation("tasks");
   const [visible, setVisible] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(selectedDate);
-  const { map: badgeMap, loading } = useBadgeMap(selectedMonth);
+  const { map: badgeMap, loading, reload } = useBadgeMap(selectedMonth);
 
   let isChangePanel = false;
   const renderCell = useCallback(
@@ -45,8 +45,9 @@ export const Calendar = ({ selectedDate, onChange }: CalendarProps) => {
   }, []);
 
   const handleOpen = useCallback(() => {
+    reload();
     setVisible(true);
-  }, []);
+  }, [reload]);
 
   const handleClose = useCallback(() => {
     setVisible(false);

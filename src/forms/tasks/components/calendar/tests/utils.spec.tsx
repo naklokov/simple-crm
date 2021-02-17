@@ -48,14 +48,34 @@ test("useBadgeMap", async () => {
 
   const { result } = renderHook(() => useBadgeMap(selectedDate));
 
-  expect(result.current).toEqual({ map: {}, loading: true });
+  expect(result.current.loading).toBe(true);
+  expect(result.current.map).toEqual({});
   await act(async () => {});
 
-  expect(result.current).toEqual({
-    map: {
-      "15.12.2020": 2,
-      "22.12.2020": 1,
-    },
-    loading: false,
+  expect(result.current.loading).toBe(false);
+  expect(result.current.map).toEqual({
+    "15.12.2020": 2,
+    "22.12.2020": 1,
+  });
+
+  mock.reset();
+  mock
+    .onGet(urls.tasks.entity)
+    .reply(200, [...TASKS_ENTITY_STUB, ...TASKS_ENTITY_STUB]);
+
+  act(() => {
+    result.current.reload();
+  });
+  expect(result.current.loading).toBe(true);
+  expect(result.current.map).toEqual({
+    "15.12.2020": 2,
+    "22.12.2020": 1,
+  });
+
+  await act(async () => {});
+  expect(result.current.loading).toBe(false);
+  expect(result.current.map).toEqual({
+    "15.12.2020": 4,
+    "22.12.2020": 2,
   });
 });
