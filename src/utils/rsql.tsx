@@ -1,5 +1,9 @@
 import moment, { unitOfTime } from "moment-timezone";
-import { RsqlParamProps, RSQL_OPERATORS_MAP } from "../constants";
+import {
+  RsqlParamProps,
+  RSQL_OPERATORS_MAP,
+  TASK_DATE_FIELD_CODE,
+} from "../constants";
 
 export const getRsqlParams = (params: RsqlParamProps[]) => {
   const queries = params.map(
@@ -52,12 +56,17 @@ export const getDateAfterRsql = (date: string) => ({
   value: date,
 });
 
-export const getDateFieldBetweenRsql = (
-  date: string,
-  fieldCode: string,
-  unitOfTime: unitOfTime.StartOf = "day",
-  entityName = "entityData"
-) => ({
+export const getDateFieldBetweenRsql = ({
+  date,
+  fieldCode = TASK_DATE_FIELD_CODE,
+  entityName = "entityData",
+  unitOfTime = "day",
+}: {
+  date: string;
+  fieldCode?: string;
+  entityName?: string;
+  unitOfTime?: unitOfTime.StartOf;
+}) => ({
   key: entityName,
   operator: RSQL_OPERATORS_MAP.DATE_FIELD_IS_BETWEEN,
   value: `(${fieldCode},"${moment(date)
@@ -65,31 +74,43 @@ export const getDateFieldBetweenRsql = (
     .toISOString()}","${moment(date).endOf(unitOfTime).toISOString()}")`,
 });
 
-export const getDateFieldBeforeRsql = (
-  date: string,
-  fieldCode: string,
-  entityName = "entityData"
-) => ({
+export const getDateFieldBeforeRsql = ({
+  date,
+  fieldCode = TASK_DATE_FIELD_CODE,
+  entityName = "entityData",
+}: {
+  date: string;
+  fieldCode?: string;
+  entityName?: string;
+}) => ({
   key: entityName,
   operator: RSQL_OPERATORS_MAP.DATE_FIELD_IS_BEFORE,
   value: `(${fieldCode},"${date}")`,
 });
 
-export const getDateFieldAfterRsql = (
-  date: string,
-  fieldCode: string,
-  entityName = "entityData"
-) => ({
+export const getDateFieldAfterRsql = ({
+  date,
+  fieldCode = TASK_DATE_FIELD_CODE,
+  entityName = "entityData",
+}: {
+  date: string;
+  fieldCode?: string;
+  entityName?: string;
+}) => ({
   key: entityName,
   operator: RSQL_OPERATORS_MAP.DATE_FIELD_IS_AFTER,
   value: `(${fieldCode},"${date}")`,
 });
 
-export const getFieldEqualRsql = (
-  searched: string | number,
-  fieldCode: string,
-  entityName = "entityData"
-) => ({
+export const getFieldEqualRsql = ({
+  searched,
+  fieldCode,
+  entityName = "entityData",
+}: {
+  searched: string | number;
+  fieldCode: string;
+  entityName?: string;
+}) => ({
   key: entityName,
   operator: RSQL_OPERATORS_MAP.FIELD_EQUAL,
   value: `(${fieldCode},"${searched}")`,

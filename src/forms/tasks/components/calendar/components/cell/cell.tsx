@@ -1,26 +1,25 @@
 import React from "react";
 import moment from "moment-timezone";
+import { Badge } from "antd";
 
 interface CellProps {
   date: moment.Moment;
-  onClick: () => void;
+  color?: string;
+  count?: number;
 }
 
-export const Cell = ({ date, onClick }: CellProps) => {
+export const Cell = ({ date, color = "black", count = 0 }: CellProps) => {
   const day = date.date();
 
-  if (!onClick) {
-    return null;
-  }
-
   return (
-    <div
-      onTouchStart={onClick}
-      onClick={onClick}
+    <Badge
       className="ant-picker-cell-inner ant-picker-calendar-date"
+      size="small"
+      count={count}
+      style={{ zIndex: 2 }}
     >
-      {day}
-    </div>
+      <span style={{ color }}>{day}</span>
+    </Badge>
   );
 };
 

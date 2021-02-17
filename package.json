@@ -1,13 +1,13 @@
 {
   "name": "olivje.crm.pl",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "homepage": "http://localhost:3000",
   "author": {
     "name": "klokov-na"
   },
   "private": true,
   "dependencies": {
-    "@ant-design/icons": "4.5.0",
+    "@ant-design/icons": "^4.5.0",
     "@reduxjs/toolkit": "1.4.0",
     "@types/axios": "0.14.0",
     "@types/classnames": "2.2.11",
