@@ -1,9 +1,24 @@
 import moment from "moment-timezone";
-import { DATE_FORMATS, TaskEntityProps, TASK_STATUSES } from "../constants";
+import {
+  DATE_FORMATS,
+  RsqlParamProps,
+  TaskEntityProps,
+  TASK_STATUSES,
+  TASK_STATUS_FIELD_CODE,
+} from "../constants";
+import { getFieldEqualRsql } from "./rsql";
 
 const filterOverdueNotCompleted = (task: TaskEntityProps) =>
   moment().isAfter(task.taskEndDate) &&
   task.taskStatus !== TASK_STATUSES.COMPLETED;
+
+export const getExtraRsql = (profileInfoId: string): RsqlParamProps[] => [
+  { key: "userProfileId", value: profileInfoId },
+  getFieldEqualRsql({
+    searched: TASK_STATUSES.NOT_COMPLETED,
+    fieldCode: TASK_STATUS_FIELD_CODE,
+  }),
+];
 
 export const getOverdueTasks = (
   tasks: TaskEntityProps[],
