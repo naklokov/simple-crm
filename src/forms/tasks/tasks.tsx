@@ -124,8 +124,8 @@ export const Tasks = () => {
               </Col>
             </ClientsPersonalContext.Provider>
           ))}
-          <Calendar onChange={handleChangeDate} />
         </Row>
+        <Calendar selectedDate={selectedDate} onChange={handleChangeDate} />
       </React.Fragment>
     </PagePermissionsChecker>
   );
