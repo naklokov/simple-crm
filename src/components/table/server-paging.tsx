@@ -13,6 +13,7 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFiteredEntityArray,
+  pluralize,
 } from "../../utils";
 import { getServerPagingRsql, getSortedParams } from "./utils";
 import { TablePaginationConfig } from "antd/lib/table";
@@ -128,10 +129,16 @@ export const TableWithServerPaging = ({
     setSearchedColumns({});
   }, []);
 
+  const totalText = pluralize(total, [
+    t("total.title.one", { total }),
+    t("total.title.some", { total }),
+    t("total.title.many", { total }),
+  ]);
   const serverPagination: TablePaginationConfig = {
     pageSize,
     current: page,
     total,
+    showTotal: () => totalText,
   };
 
   return (
@@ -153,10 +160,6 @@ export const TableWithServerPaging = ({
       onResetAllFilters={handleResetAllFilters}
       bordered={bordered}
       withSearch={withSearch}
-      total={{
-        title: t("total.title"),
-        count: total,
-      }}
     />
   );
 };

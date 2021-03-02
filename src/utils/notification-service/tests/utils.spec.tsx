@@ -3,15 +3,19 @@ import { renderHook, act } from "@testing-library/react-hooks";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import * as redux from "react-redux";
+import { History } from "history";
 import {
+  getActiveTasksProps,
   showNotification,
+  updateNotificationStatus,
   useActiveDateTime,
   useActiveTasks,
   useOverdueTasksTotal,
 } from "../utils";
 import { notification } from "antd";
-import { urls } from "../../../constants";
+import { NotificationProps, TaskEntityProps, urls } from "../../../constants";
 import { TASKS_ENTITY_STUB, TASKS_PAGING_STUB } from "./stubs";
+import { NotificationWarning } from "../../../assets/icons";
 
 const mock = new MockAdapter(axios);
 
@@ -20,37 +24,35 @@ jest.mock("moment-timezone", () => () =>
   jest.requireActual("moment")("2020-01-01T00:00:00.000Z")
 );
 
-test("showNotification warning", () => {
-  const warningSpy = jest.spyOn(notification, "warning");
-  const title = "Заголовок";
-  const id = "123";
-  const content = <div />;
-
-  showNotification({ title, content, id, type: "warning" });
-  expect(warningSpy).toHaveBeenCalledWith({
-    key: id,
-    message: title,
-    description: content,
-    duration: 0,
-    placement: "bottomRight",
-  });
-});
-
-test("showNotification default", () => {
-  const infoSpy = jest.spyOn(notification, "info");
+test("showNotification with default props", () => {
+  jest.resetAllMocks();
+  const notificationOpenSpy = jest.spyOn(notification, "open");
   const title = "Заголовок";
   const content = <div />;
-  const icon = <img />;
+  const icon = (
+    <div style={{ marginTop: "4px" }}>
+      <NotificationWarning />
+    </div>
+  );
 
   showNotification({ title, content, icon });
-  expect(infoSpy).toHaveBeenCalledWith({
-    key: "1",
-    message: title,
-    icon,
-    description: content,
-    duration: 0,
-    placement: "bottomRight",
-  });
+  expect(notificationOpenSpy).toHaveBeenCalledTimes(1);
+});
+
+test("showNotification overdue", () => {
+  jest.resetAllMocks();
+  const notificationOpenSpy = jest.spyOn(notification, "open");
+  const id = "123";
+  const title = "Просроченные";
+  const content = <div />;
+  const icon = (
+    <div style={{ marginTop: "4px" }}>
+      <img />
+    </div>
+  );
+
+  showNotification({ id, title, content, icon });
+  expect(notificationOpenSpy).toHaveBeenCalledTimes(1);
 });
 
 test("useOverdueTasksTotal", async () => {
@@ -88,4 +90,50 @@ test("useActiveTasks", async () => {
   await act(async () => {});
 
   expect(result.current).toEqual(TASKS_ENTITY_STUB);
+});
+
+test("updateNotificationStatus change notifications", () => {
+  const notifications: NotificationProps[] = [
+    {
+      id: "123",
+      content: <div />,
+      title: "hello",
+      status: "unread",
+    },
+    {
+      id: "345",
+      content: <div />,
+      title: "by",
+      status: "read",
+    },
+  ];
+
+  expect(updateNotificationStatus("123", notifications, "read")).toStrictEqual([
+    {
+      ...notifications[0],
+      status: "read",
+    },
+    notifications[1],
+  ]);
+});
+
+test("updateNotificationStatus don't change notifications", () => {
+  const notifications: NotificationProps[] = [
+    {
+      id: "123",
+      content: <div />,
+      title: "hello",
+      status: "unread",
+    },
+    {
+      id: "345",
+      content: <div />,
+      title: "by",
+      status: "read",
+    },
+  ];
+
+  expect(
+    updateNotificationStatus("123", notifications, "unread")
+  ).toStrictEqual(notifications);
 });

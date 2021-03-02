@@ -35,6 +35,10 @@ export const TASK_STATUS_FIELD_CODE = "taskStatus";
 
 export const TASK_DATE_FIELD_CODE = "taskEndDate";
 
+export const TASKS_SHOW_LIMIT = 1;
+
+export const TASKS_ACTIVE_DURATION = 5; // секунд
+
 export const FORM_NAMES = {
   CLIENT_CARD: "clientCard",
   CONTACT_VIEW: "contactView",
@@ -55,3 +59,5 @@ export const RSQL_OPERATORS_MAP = {
   DATE_FIELD_IS_BEFORE: "=JDATEBEFORE=",
   DATE_FIELD_IS_AFTER: "=JDATEAFTER=",
 };
+
+export const TOOLTIP_SHOW_DELAY = 1;

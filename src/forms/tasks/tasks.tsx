@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import moment from "moment-timezone";
 import axios from "axios";
-import { Col, Row } from "antd";
+import { BackTop, Button, Col, Row } from "antd";
 import { TasksHeader } from ".";
 import { Calendar, Column } from "./components";
 
@@ -17,6 +17,7 @@ import {
   urls,
   formConfig,
   PERMISSIONS_SET,
+  PERMISSIONS,
   FORM_NAMES,
   TaskEntityProps,
 } from "../../constants";
@@ -24,8 +25,12 @@ import {
 import style from "./tasks.module.scss";
 import { useTranslation } from "react-i18next";
 import { AddTaskDrawer, CompletedTaskDrawer } from "../../drawers";
-import { PagePermissionsChecker } from "../../wrappers";
+import {
+  ComponentPermissionsChecker,
+  PagePermissionsChecker,
+} from "../../wrappers";
 import { ClientsPersonalContext } from "../../components/table/utils";
+import { CalendarOutlined } from "@ant-design/icons";
 
 const {
   TASKS: { drawers },
@@ -98,10 +103,28 @@ export const Tasks = () => {
     [reload]
   );
 
+  const extra = (
+    <>
+      <Calendar
+        title={t("calendar.title")}
+        icon={<CalendarOutlined />}
+        selectedDate={selectedDate}
+        onChange={handleChangeDate}
+      />
+      <ComponentPermissionsChecker
+        availablePermissions={[PERMISSIONS.TASKS["ADD.ALL"]]}
+      >
+        <Button type="primary" onClick={handleAddClick}>
+          {t("button.add.title")}
+        </Button>
+      </ComponentPermissionsChecker>
+    </>
+  );
+
   return (
     <PagePermissionsChecker availablePermissions={PERMISSIONS_SET.TASK_GET}>
       <React.Fragment>
-        <TasksHeader onAddClick={handleAddClick} />
+        <TasksHeader extra={extra} />
         <AddTaskDrawer
           fields={taskDrawer?.fields ?? []}
           onClose={handleCloseAddDrawer}
@@ -127,8 +150,8 @@ export const Tasks = () => {
               </Col>
             </ClientsPersonalContext.Provider>
           ))}
-          <Calendar selectedDate={selectedDate} onChange={handleChangeDate} />
         </Row>
+        <BackTop />
       </React.Fragment>
     </PagePermissionsChecker>
   );
