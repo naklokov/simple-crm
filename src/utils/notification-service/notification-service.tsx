@@ -1,51 +1,82 @@
-import React, { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import moment from "moment-timezone";
 import {
   showNotification,
-  useActiveTasks,
   useOverdueTasksTotal,
+  useActiveTasks,
+  getMoreActiveTasksProps,
+  getActiveTasksProps,
+  getOverdueTasksProps,
 } from "./utils";
-import { TASKS_TYPES_ICONS_MAP } from "../../constants";
-import { v4 as uuidv4 } from "uuid";
-import { ActiveContent, OverdueContent, Title } from "./components";
+import { NotificationProps, TASKS_SHOW_LIMIT } from "../../constants";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
-import { play } from "../sounds";
+import { play as playSound } from "../sounds";
+import { TASKS_ENTITY_STUB } from "./tests/stubs";
 
-export const useNotificationService = () => {
-  const [t] = useTranslation("notification");
+export const useNotificationService = (onClickLink: (id: string) => void) => {
+  const [t] = useTranslation("notifications");
   const history = useHistory();
+  const [notifications, setNotifications] = useState<NotificationProps[]>([]);
 
   const activeTasks = useActiveTasks();
   const overdueTasksTotal = useOverdueTasksTotal();
 
+  const addNotification = useCallback(
+    (notification: NotificationProps) => {
+      setNotifications((prevNotifications) => [
+        { ...notification, status: "unread" },
+        ...prevNotifications,
+      ]);
+    },
+    [notifications]
+  );
+
+  // обработка просроченных задач
   useEffect(() => {
     if (overdueTasksTotal) {
-      const id = uuidv4();
-      const title = <strong>{t("overdue.message.title")}</strong>;
-      const content = (
-        <OverdueContent id={id} total={overdueTasksTotal} history={history} />
+      const props = getOverdueTasksProps(
+        overdueTasksTotal,
+        onClickLink,
+        history,
+        t
       );
 
-      showNotification({ title, content, id, type: "warning" });
+      showNotification(props);
+      addNotification({
+        ...props,
+        dateTime: moment().toISOString(),
+      });
     }
   }, [overdueTasksTotal]);
 
+  // обработка задач на текущее время
   useEffect(() => {
+    const isMoreTasks = activeTasks.length > TASKS_SHOW_LIMIT;
+
     activeTasks.map((task) => {
-      const {
-        taskType: type,
-        taskDescription: description,
-        taskEndDate: date,
-        clientId,
-      } = task;
+      const props = getActiveTasksProps(task, onClickLink, history);
 
-      const id = uuidv4();
-      const icon = TASKS_TYPES_ICONS_MAP[type];
-      const title = <Title id={id} clientId={clientId} history={history} />;
-      const content = <ActiveContent description={description} date={date} />;
+      addNotification({
+        ...props,
+        dateTime: task.taskEndDate,
+        clientId: task.clientId,
+      });
 
-      showNotification({ title, content, id, icon });
-      play();
+      if (!isMoreTasks) {
+        showNotification(props);
+      }
     });
-  }, [activeTasks]);
+
+    if (isMoreTasks) {
+      const props = getMoreActiveTasksProps(activeTasks.length, t);
+      showNotification(props);
+    }
+
+    if (activeTasks.length) {
+      playSound();
+    }
+  }, [activeTasks, onClickLink]);
+
+  return { notifications, setNotifications };
 };

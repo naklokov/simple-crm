@@ -70,7 +70,6 @@ export const useBadgeMap = (date: string) => {
           unitOfTime: "month",
         }),
       ]);
-      debugger;
       const response = await axios.get(urls.tasks.entity, {
         params: { query },
       });

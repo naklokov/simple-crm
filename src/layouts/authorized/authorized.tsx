@@ -4,9 +4,8 @@ import { connect } from "react-redux";
 import { About, Logo, Menu, Profile } from "./components";
 import { State } from "../../constants";
 import { ContainerWrapper } from "../../wrappers";
-import { AddUser, Loader } from "../../components";
+import { AddUser, Loader, Notifications } from "../../components";
 import style from "./authorized.module.scss";
-import { useNotificationService } from "../../utils/notification-service";
 
 const { Sider, Content, Header } = Layout;
 
@@ -17,7 +16,6 @@ interface AuthorizedProps {
 
 export const Authorized = ({ children, loading }: AuthorizedProps) => {
   const [collapsed, setCollapsed] = useState(false);
-  useNotificationService();
   useEffect(() => {
     return () => {
       notification.destroy();
@@ -43,9 +41,10 @@ export const Authorized = ({ children, loading }: AuthorizedProps) => {
         </Sider>
         <Layout>
           <Header className={style.header}>
-            <Space size={16} style={{ float: "right" }}>
+            <Space size={16} align="center" style={{ float: "right" }}>
               <AddUser />
               <About />
+              <Notifications />
               <Profile />
             </Space>
           </Header>

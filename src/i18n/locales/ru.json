@@ -74,7 +74,9 @@
     "radio.all": "Все клиенты"
   },
   "tableServer": {
-    "total.title": "Всего клиентов",
+    "total.title.one": "Всего {{total}} клиенто",
+    "total.title.some": "Всего {{total}} клиента",
+    "total.title.many": "Всего {{total}} клиентов",
     "message.delete.success": "Запись успешно удалена"
   },
   "tableClient": {
@@ -168,7 +170,8 @@
     "today.title": "Сегодня",
     "tommorow.title": "Завтра",
     "card.title": "Задача",
-    "calendar.title": "Выберите дату",
+    "calendar.title": "Календарь",
+    "calendar.drawer.title": "Выберите дату",
     "message.success.delete": "Задача удалена",
     "tasks.drawer.button.close": "Закрыть",
     "button.now": "Сейчас",
@@ -189,12 +192,24 @@
     "email": "support@resurs62.ru",
     "button.cancel": "Отмена"
   },
-  "notification": {
-    "overdue.message.title": "Внимание",
+  "notifications": {
+    "tooltip": "Просмотр уведомлений",
+    "popover.title": "Уведомления",
+    "popover.hide.all": "Прочитать всё",
+    "info.message.title": "Информация",
+    "warning.message.title": "Внимание",
     "overdue.tasks.description.prev": "У вас ",
     "overdue.tasks.count.link.one": "{{count}} просроченная задача",
     "overdue.tasks.count.link.some": "{{count}} просроченные задачи",
-    "overdue.tasks.count.link.many": "{{count}} просроченных задач"
+    "overdue.tasks.count.link.many": "{{count}} просроченных задач",
+    "actions.read": "Прочитать",
+    "actions.delete": "Удалить",
+    "list.notifications.unread.empty": "Нет новых уведомлений",
+    "list.notifications.read.empty": "Нет прочитанных уведомлений",
+    "active.more.content.one": "У вас {{count}} новое уведомление",
+    "active.more.content.some": "У вас {{count}} новых уведомления",
+    "active.more.content.many": "У вас {{count}} новых уведомлений",
+    "collapse.title.read": "Прочитанные ({{count}})"
   },
   "readonly": {
     "empty": "Не указан(о/а)"

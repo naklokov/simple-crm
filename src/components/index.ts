@@ -9,6 +9,9 @@ export { Table } from "./table";
 export { Tabs } from "./tabs";
 export { Comment } from "./comment";
 export { PhoneInput } from "./phone-input";
-export { AddUser } from './add-user'
+export { AddUser } from "./add-user";
+export { Notifications } from "./notifications";
+export { ButtonLayout } from "./button-layout";
+export { ExtendedText } from "./extended-text";
 
 export { fields };

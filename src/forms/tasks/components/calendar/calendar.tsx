@@ -1,25 +1,24 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { ReactNode, useCallback, useState } from "react";
 import moment from "moment-timezone";
-import {
-  Drawer,
-  Calendar as CalendarUI,
-  Avatar,
-  Badge,
-  Button,
-  Spin,
-} from "antd";
+import { Drawer, Calendar as CalendarUI, Button, Spin } from "antd";
 import { useTranslation } from "react-i18next";
-import { CalendarOutlined } from "@ant-design/icons";
 import { Cell, Header } from "./components";
 import { getCellColor, useBadgeMap } from "./utils";
 import { DATE_FORMATS } from "../../../../constants";
 
 interface CalendarProps {
+  title: string;
+  icon: ReactNode;
   selectedDate: string;
   onChange: (date: moment.Moment) => void;
 }
 
-export const Calendar = ({ selectedDate, onChange }: CalendarProps) => {
+export const Calendar = ({
+  title,
+  icon,
+  selectedDate,
+  onChange,
+}: CalendarProps) => {
   const [t] = useTranslation("tasks");
   const [visible, setVisible] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(selectedDate);
@@ -67,25 +66,12 @@ export const Calendar = ({ selectedDate, onChange }: CalendarProps) => {
   );
 
   return (
-    <div>
-      {!visible && (
-        <div onClick={handleOpen}>
-          <Avatar
-            shape="square"
-            size={64}
-            style={{
-              cursor: "pointer",
-              position: "fixed",
-              right: "0",
-              bottom: "5%",
-              backgroundColor: "#1890ff",
-            }}
-            icon={<CalendarOutlined />}
-          />
-        </div>
-      )}
+    <>
+      <Button onClick={handleOpen} icon={icon}>
+        {title}
+      </Button>
       <Drawer
-        title={t("calendar.title")}
+        title={t("calendar.drawer.title")}
         placement="right"
         closable={true}
         onClose={handleClose}
@@ -108,7 +94,7 @@ export const Calendar = ({ selectedDate, onChange }: CalendarProps) => {
           />
         </Spin>
       </Drawer>
-    </div>
+    </>
   );
 };
 

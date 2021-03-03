@@ -21,7 +21,7 @@ const getActionComponent = (
           href={fullHref}
           title={action.actionName}
           id={entity.id}
-          hasRight={entity?.isOwner?.DELETE ?? true}
+          hasRight={entity?.isOwner?.DELETE}
         />
       );
     case "done":
@@ -30,7 +30,7 @@ const getActionComponent = (
           key={entity.id}
           title={action.actionName}
           id={entity.id}
-          hasRight={entity?.isOwner?.UPDATE ?? true}
+          hasRight={entity?.isOwner?.UPDATE}
         />
       );
     case "view":

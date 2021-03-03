@@ -97,7 +97,7 @@ export const TASKS_PAGING_STUB: {
   totalCount: 3,
 };
 
-export const TASKS_ENTITY_STUB = [
+export const TASKS_ENTITY_STUB: TaskEntityProps[] = [
   {
     _links: {
       clientId: {

@@ -16,6 +16,8 @@
 }
 
 .header {
+  position: relative;
+  top: "50%";
   margin-bottom: 1px;
   padding: 0 var(--offset-md2) !important;
   height: var(--authorize-header-height) !important;

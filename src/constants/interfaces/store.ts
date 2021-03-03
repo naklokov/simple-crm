@@ -1,8 +1,4 @@
-import {
-  ProfileInfoProps,
-  ClientEntityProps,
-  TaskEntityProps,
-} from "./entities";
+import { ProfileInfoProps, ClientEntityProps } from "./entities";
 
 export interface PersistState {
   permissions: string[];
