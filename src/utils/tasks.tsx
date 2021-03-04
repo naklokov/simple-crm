@@ -1,16 +1,16 @@
 import moment from "moment-timezone";
 import {
-  DATE_FORMATS,
   RsqlParamProps,
-  TaskEntityProps,
+  TASK_DATE_FIELD_CODE,
   TASK_STATUSES,
   TASK_STATUS_FIELD_CODE,
 } from "../constants";
-import { getFieldEqualRsql } from "./rsql";
-
-const filterOverdueNotCompleted = (task: TaskEntityProps) =>
-  moment().isAfter(task.taskEndDate) &&
-  task.taskStatus !== TASK_STATUSES.COMPLETED;
+import {
+  getDateFieldBeforeRsql,
+  getDateFieldBetweenRsql,
+  getFieldEqualRsql,
+  getRsqlParams,
+} from "./rsql";
 
 export const getExtraRsql = (profileInfoId: string): RsqlParamProps[] => [
   { key: "userProfileId", value: profileInfoId },
@@ -20,16 +20,41 @@ export const getExtraRsql = (profileInfoId: string): RsqlParamProps[] => [
   }),
 ];
 
-export const getOverdueTasks = (
-  tasks: TaskEntityProps[],
-  visibleTasksId: string[] = []
+export const getTasksSorted = (order: "asc" | "desc" = "asc") =>
+  `${TASK_DATE_FIELD_CODE}:${order}`;
+
+export const getDateRsql = (
+  date: string,
+  profileInfoId: string,
+  unitOfTime?: moment.unitOfTime.StartOf
 ) =>
-  tasks
-    .filter(filterOverdueNotCompleted)
-    // оставляем в "просроченных" все задачи кроме тех, которые уже видны в других колонках
-    .filter(({ id }) => !visibleTasksId.includes(id))
-    .sort(
-      (a: TaskEntityProps, b: TaskEntityProps) =>
-        moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
-    )
-    .map((task) => ({ ...task, format: DATE_FORMATS.DATE_TIME }));
+  getRsqlParams([
+    ...getExtraRsql(profileInfoId),
+    getDateFieldBetweenRsql({
+      date,
+      unitOfTime,
+    }),
+  ]);
+
+export const getTommorowRsql = (
+  selectedDate: string,
+  profileInfoId: string
+) => {
+  const date = moment(selectedDate).add(1, "days").toISOString();
+
+  return getRsqlParams([
+    ...getExtraRsql(profileInfoId),
+    getDateFieldBetweenRsql({ date }),
+  ]);
+};
+
+export const getOverdueRsql = (selectedDate: string, profileInfoId: string) => {
+  const date = moment(selectedDate)
+    .subtract(1, "days")
+    .endOf("day")
+    .toISOString();
+  return getRsqlParams([
+    ...getExtraRsql(profileInfoId),
+    getDateFieldBeforeRsql({ date }),
+  ]);
+};

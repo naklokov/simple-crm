@@ -1,7 +1,14 @@
 import Cookies from "js-cookie";
 import { http, urls } from "../../../constants";
+import { History } from "history";
 
 const { COOKIES } = http;
+
+interface PathnameState {
+  from: {
+    pathname: string;
+  };
+}
 
 export const storeRememberMeParams = () => {
   const rememberMe = Cookies.get(COOKIES.REMEMBER_ME);
@@ -12,6 +19,5 @@ export const storeRememberMeParams = () => {
   }
 };
 
-// TODO исправить на корректный тип у history
-export const getPrevUrl = (history: any) =>
+export const getPrevUrl = (history: History<PathnameState>) =>
   history?.location?.state?.from?.pathname ?? urls.main.path;

@@ -9,7 +9,12 @@ import { connect } from "react-redux";
 
 import style from "./profile.module.scss";
 import { useTranslation } from "react-i18next";
-import { urls, ProfileInfoProps, State } from "../../../../constants";
+import {
+  urls,
+  ProfileInfoProps,
+  State,
+  TOOLTIP_SHOW_DELAY,
+} from "../../../../constants";
 
 interface ProfileProps {
   profileInfo: ProfileInfoProps;
@@ -36,7 +41,10 @@ export const Profile = ({ profileInfo, logout }: ProfileProps) => {
   return (
     <div className={style.container}>
       <Link to={urls.profile.path}>
-        <Tooltip title={t("tooltip.edit.profile")}>
+        <Tooltip
+          mouseEnterDelay={TOOLTIP_SHOW_DELAY}
+          title={t("tooltip.edit.profile")}
+        >
           <Avatar src={avatar} icon={<UserOutlined />} />
         </Tooltip>
       </Link>

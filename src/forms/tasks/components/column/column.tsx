@@ -5,13 +5,9 @@ import { useTranslation } from "react-i18next";
 import { Card } from "..";
 
 import style from "./column.module.scss";
-import {
-  TaskEntityProps,
-  TASK_DATE_FIELD_CODE,
-  urls,
-} from "../../../../constants";
+import { TaskEntityProps, urls } from "../../../../constants";
 import InfiniteScroll from "react-infinite-scroller";
-import { defaultErrorHandler } from "../../../../utils";
+import { defaultErrorHandler, getTasksSorted } from "../../../../utils";
 import { ColumnTaskProps, INFINITY_SCROLL_STEP } from "../../constants";
 
 interface ColumnProps extends ColumnTaskProps {
@@ -37,8 +33,8 @@ export const Column = ({
 
   const fetchTasks = async ({ pageSize }: any) => {
     setLoading(true);
-    const sortBy = `${TASK_DATE_FIELD_CODE}:asc`;
     try {
+      const sortBy = getTasksSorted();
       const response = await axios.get(urls.tasks.paging, {
         params: { query, pageSize, sortBy },
       });

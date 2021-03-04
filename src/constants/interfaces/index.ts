@@ -1,6 +1,23 @@
+import { ReactNode } from "react";
+
 export * from "./entities";
 export * from "./form";
 export * from "./store";
+
+export type NotificationType = "CALL";
+
+export type NotificationStatusType = "read" | "unread";
+
+export interface NotificationProps {
+  id: string;
+  status?: NotificationStatusType;
+  icon?: ReactNode;
+  type?: NotificationType;
+  title: ReactNode | string;
+  content: ReactNode | string;
+  dateTime?: string;
+  clientId?: string;
+}
 
 export interface DictionaryProps {
   id?: string;

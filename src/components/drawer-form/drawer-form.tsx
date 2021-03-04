@@ -138,7 +138,6 @@ export const DrawerForm = ({
       >
         <FormContext.Provider value={form}>
           {fields?.map((field) => (
-            // TODO подумать как оптимизировать права для ADD боковушек
             <ComponentPermissionsChecker
               key={field.fieldCode}
               availablePermissions={field.permissions}
