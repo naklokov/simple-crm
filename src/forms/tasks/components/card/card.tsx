@@ -1,7 +1,18 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { ClockCircleTwoTone } from "@ant-design/icons";
-import { Card as CardUI, Popconfirm, Skeleton, Typography } from "antd";
+import {
+  CheckOutlined,
+  ClockCircleTwoTone,
+  DeleteOutlined,
+  FormOutlined,
+} from "@ant-design/icons";
+import {
+  Card as CardUI,
+  Popconfirm,
+  Skeleton,
+  Tooltip,
+  Typography,
+} from "antd";
 import {
   defaultErrorHandler,
   getDateWithTimezone,
@@ -26,6 +37,7 @@ interface CardProps {
   task: TaskEntityProps;
   onComplete: (task: TaskEntityProps) => void;
   onDelete: (task: TaskEntityProps) => void;
+  onView: (task: TaskEntityProps) => void;
   dateFormat?: string;
 }
 
@@ -34,6 +46,7 @@ export const Card = ({
   dateFormat = DATE_FORMATS.TIME,
   onDelete,
   onComplete,
+  onView,
   title = "",
 }: CardProps) => {
   const [t] = useTranslation("card");
@@ -80,23 +93,30 @@ export const Card = ({
     </div>
   ) : null;
 
+  const handleView = useCallback(() => {
+    onView(task);
+  }, [onView, task]);
+
   const handleComplete = useCallback(() => {
     onComplete(task);
-  }, [onComplete]);
+  }, [onComplete, task]);
 
   const handleDelete = useCallback(() => {
     onDelete(task);
-  }, [onDelete]);
+  }, [onDelete, task]);
 
   const actions = [
-    <span onClick={handleComplete}>{t("action.complete")}</span>,
-    <Popconfirm
-      title={t("delete.confirm")}
-      onConfirm={handleDelete}
-      placement="topLeft"
-    >
-      <span>{t("action.delete")}</span>
-    </Popconfirm>,
+    <Tooltip mouseEnterDelay={1} title={t("tooltip.complete")}>
+      <CheckOutlined onClick={handleComplete} />
+    </Tooltip>,
+    <Tooltip mouseEnterDelay={1} title={t("tooltip.view")}>
+      <FormOutlined onClick={handleView} />
+    </Tooltip>,
+    <Tooltip mouseEnterDelay={1} title={t("tooltip.delete")}>
+      <Popconfirm title={t("delete.confirm")} onConfirm={handleDelete}>
+        <DeleteOutlined />
+      </Popconfirm>
+    </Tooltip>,
   ];
 
   const titleContent = (

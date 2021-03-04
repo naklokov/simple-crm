@@ -19,7 +19,6 @@ import {
 } from "../../../../constants";
 import { useSelector } from "react-redux";
 import { CELL_COLORS } from "../../constants";
-import { memoize } from "lodash";
 
 type BadgeMapType = { [key: string]: number };
 
@@ -71,7 +70,7 @@ export const useBadgeMap = (date: string) => {
           unitOfTime: "month",
         }),
       ]);
-      debugger;
+
       const response = await axios.get(urls.tasks.entity, {
         params: { query },
       });

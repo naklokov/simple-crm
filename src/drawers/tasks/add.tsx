@@ -5,27 +5,25 @@ import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
 import {
   urls,
-  FieldProps,
   TASK_STATUSES,
   TASK_TYPES,
   QueryProps,
   FORM_NAMES,
-  PERMISSIONS,
   ProfileInfoProps,
   State,
+  DrawerFormProps,
+  TaskEntityProps,
 } from "../../constants";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 import { useParams } from "react-router";
 import { connect } from "react-redux";
 
-interface AddTaskProps {
-  fields: FieldProps[];
-  visible: boolean;
+interface AddTaskProps extends DrawerFormProps {
   profileInfo: ProfileInfoProps;
-  onClose: (event: any, entity?: Store) => void;
 }
 
 export const AddTask = ({
+  title,
   fields,
   visible,
   onClose,
@@ -49,7 +47,8 @@ export const AddTask = ({
         ...values,
       });
       defaultSuccessHandler(t("message.success.add"));
-      onClose(void 0, responce?.data);
+
+      onClose<TaskEntityProps>(responce?.data ?? {});
     } catch (error) {
       defaultErrorHandler({ error });
     } finally {
@@ -59,7 +58,7 @@ export const AddTask = ({
 
   return (
     <DrawerForm
-      title={t("title.new")}
+      title={title}
       fields={fields}
       name={FORM_NAMES.TASK_ADD}
       onClose={onClose}

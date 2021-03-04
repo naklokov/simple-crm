@@ -12,8 +12,8 @@ export const TASKS: TasksConfigProps = {
   drawers: [
     {
       code: "task",
-      name: "Задача",
-      description: "Форма для просмотра и добавления задачи",
+      name: "Новая задача",
+      description: "Форма для добавления задачи",
       fields: [
         {
           fieldCode: "clientId",
@@ -33,6 +33,41 @@ export const TASKS: TasksConfigProps = {
             },
           },
         },
+        {
+          fieldCode: "taskEndDate",
+          fieldName: "Дата и время",
+          fieldDescription: "",
+          type: "date",
+          format: DATE_FORMATS.DATE_TIME,
+          readonly: false,
+          disabled: false,
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          permissions: [],
+        },
+        {
+          fieldCode: "taskDescription",
+          fieldName: "Описание",
+          fieldDescription: "",
+          type: "string",
+          format: "textarea",
+          readonly: false,
+          disabled: false,
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [
+            { max: 2000, message: "Превышена максимальная длина строки" },
+          ],
+          permissions: [],
+        },
+      ],
+    },
+    {
+      code: "taskView",
+      name: "Просмотр задачи",
+      description: "Форма для просмотра задачи",
+      fields: [
         {
           fieldCode: "taskEndDate",
           fieldName: "Дата и время",
