@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { Table } from ".";
@@ -13,10 +13,10 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFiteredEntityArray,
+  pluralize,
 } from "../../utils";
 import { getServerPagingRsql, getSortedParams } from "./utils";
 import { TablePaginationConfig } from "antd/lib/table";
-
 interface TableWithServerPagingProps {
   url: string;
   columns?: ColumnProps[];
@@ -65,9 +65,8 @@ export const TableWithServerPaging = ({
         },
       });
 
-      const { totalCount, rows } = response?.data ?? {};
-      setDataSource(rows);
-      setTotal(totalCount);
+      setDataSource(response?.data?.rows ?? []);
+      setTotal(response?.data?.totalCount ?? 0);
     } catch (error) {
       defaultErrorHandler({ error });
     } finally {
@@ -130,10 +129,16 @@ export const TableWithServerPaging = ({
     setSearchedColumns({});
   }, []);
 
+  const totalText = pluralize(total, [
+    t("total.title.one", { total }),
+    t("total.title.some", { total }),
+    t("total.title.many", { total }),
+  ]);
   const serverPagination: TablePaginationConfig = {
     pageSize,
     current: page,
     total,
+    showTotal: () => totalText,
   };
 
   return (
@@ -155,10 +160,6 @@ export const TableWithServerPaging = ({
       onResetAllFilters={handleResetAllFilters}
       bordered={bordered}
       withSearch={withSearch}
-      total={{
-        title: t("total.title"),
-        count: total,
-      }}
     />
   );
 };

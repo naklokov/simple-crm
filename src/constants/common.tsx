@@ -1,3 +1,6 @@
+import React, { ReactNode } from "react";
+import { PhoneColored } from "../assets/icons";
+
 export const DATE_FORMATS = {
   DATE: "DD.MM.YYYY",
   DATE_TIME: "DD.MM.YYYY HH:mm",
@@ -21,13 +24,20 @@ export const TASK_TYPES = {
   CALL: "CALL",
 };
 
-export const TASK_TYPES_MAP = {
+export const TASK_TYPES_MAP: { [key: string]: string } = {
   CALL: "Звонок",
 };
 
+export const TASKS_TYPES_ICONS_MAP: { [key: string]: ReactNode } = {
+  CALL: <PhoneColored />,
+};
 export const TASK_STATUS_FIELD_CODE = "taskStatus";
 
 export const TASK_DATE_FIELD_CODE = "taskEndDate";
+
+export const TASKS_SHOW_LIMIT = 3;
+
+export const TASKS_ACTIVE_DURATION = 5; // секунд
 
 export const FORM_NAMES = {
   CLIENT_CARD: "clientCard",
@@ -49,3 +59,5 @@ export const RSQL_OPERATORS_MAP = {
   DATE_FIELD_IS_BEFORE: "=JDATEBEFORE=",
   DATE_FIELD_IS_AFTER: "=JDATEAFTER=",
 };
+
+export const TOOLTIP_SHOW_DELAY = 1;

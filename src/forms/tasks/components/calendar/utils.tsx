@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { v4 as uuidV4 } from "uuid";
 import moment from "moment-timezone";
 import {
   getRsqlParams,
-  getDateFieldIsBetweenRsql,
+  getDateFieldBetweenRsql,
   getExtraRsql,
   defaultErrorHandler,
   getDateWithTimezone,
@@ -64,13 +64,12 @@ export const useBadgeMap = (date: string) => {
     try {
       const query = getRsqlParams([
         ...getExtraRsql(profileInfo.id),
-        getDateFieldIsBetweenRsql({
+        getDateFieldBetweenRsql({
           date,
           fieldCode: TASK_DATE_FIELD_CODE,
           unitOfTime: "month",
         }),
       ]);
-
       const response = await axios.get(urls.tasks.entity, {
         params: { query },
       });

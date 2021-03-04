@@ -1,15 +1,15 @@
 import moment from "moment-timezone";
 import {
-  getDateFieldIsAfterRsql,
-  getDateFieldIsBeforeRsql,
-  getDateFieldIsBetweenRsql,
-  getDateIsAfterRsql,
-  getDateIsBeforeRsql,
-  getDateIsBetweenRsql,
+  getDateAfterRsql,
+  getDateBeforeRsql,
+  getDateBetweenRsql,
   getFieldEqualRsql,
   getEqualRsql,
   getSearchRsql,
   getLikeRsql,
+  getDateFieldBetweenRsql,
+  getDateFieldBeforeRsql,
+  getDateFieldAfterRsql,
 } from "../rsql";
 import { RSQL_OPERATORS_MAP } from "../../constants";
 
@@ -37,7 +37,7 @@ test("getSearchRsql", () => {
 test("getDateIsBetweenRsql", () => {
   const date = moment().toISOString();
 
-  expect(getDateIsBetweenRsql(date)).toEqual({
+  expect(getDateBetweenRsql(date)).toEqual({
     key: "date",
     operator: RSQL_OPERATORS_MAP.DATE_IS_BETWEEN,
     value: `${moment(date).startOf("day").toISOString()},${moment(date)
@@ -49,7 +49,7 @@ test("getDateIsBetweenRsql", () => {
 test("getDateIsBeforeRsql", () => {
   const date = moment().toISOString();
 
-  expect(getDateIsBeforeRsql(date)).toEqual({
+  expect(getDateBeforeRsql(date)).toEqual({
     key: "date",
     operator: RSQL_OPERATORS_MAP.DATE_IS_BEFORE,
     value: date,
@@ -59,7 +59,7 @@ test("getDateIsBeforeRsql", () => {
 test("getDateIsAfterRsql", () => {
   const date = moment().toISOString();
 
-  expect(getDateIsAfterRsql(date)).toEqual({
+  expect(getDateAfterRsql(date)).toEqual({
     key: "date",
     operator: RSQL_OPERATORS_MAP.DATE_IS_AFTER,
     value: date,
@@ -70,7 +70,7 @@ test("getDateFieldIsBetweenRsql", () => {
   const date = moment().toISOString();
   const fieldCode = "kakayatoData";
 
-  expect(getDateFieldIsBetweenRsql({ date, fieldCode })).toEqual({
+  expect(getDateFieldBetweenRsql({ date, fieldCode })).toEqual({
     key: "entityData",
     operator: RSQL_OPERATORS_MAP.DATE_FIELD_IS_BETWEEN,
     value: `(${fieldCode},\"${moment(date)
@@ -83,7 +83,7 @@ test("getDateFieldIsBeforeRsql", () => {
   const date = moment().toISOString();
   const fieldCode = "kakayatoData";
 
-  expect(getDateFieldIsBeforeRsql({ date, fieldCode })).toEqual({
+  expect(getDateFieldBeforeRsql({ date, fieldCode })).toEqual({
     key: "entityData",
     operator: RSQL_OPERATORS_MAP.DATE_FIELD_IS_BEFORE,
     value: `(${fieldCode},\"${date}\")`,
@@ -94,7 +94,7 @@ test("getDateFieldIsAfterRsql", () => {
   const date = moment().toISOString();
   const fieldCode = "kakayatoData";
 
-  expect(getDateFieldIsAfterRsql({ date, fieldCode })).toEqual({
+  expect(getDateFieldAfterRsql({ date, fieldCode })).toEqual({
     key: "entityData",
     operator: RSQL_OPERATORS_MAP.DATE_FIELD_IS_AFTER,
     value: `(${fieldCode},\"${date}\")`,

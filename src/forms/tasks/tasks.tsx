@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import moment from "moment-timezone";
 import axios from "axios";
-import { Col, Row } from "antd";
+import { BackTop, Button, Col, Row } from "antd";
 import { TasksHeader } from ".";
 import { Calendar, Column } from "./components";
 
@@ -9,11 +9,16 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFullUrl,
-  useFetchPersonalClients,
   useFormValues,
 } from "../../utils";
 import { useColumns } from "./utils";
-import { urls, formConfig, PERMISSIONS_SET, FORM_NAMES } from "../../constants";
+import {
+  urls,
+  formConfig,
+  PERMISSIONS_SET,
+  FORM_NAMES,
+  PERMISSIONS,
+} from "../../constants";
 
 import style from "./tasks.module.scss";
 import { useTranslation } from "react-i18next";
@@ -22,9 +27,12 @@ import {
   CompletedTaskDrawer,
   ViewTaskDrawer,
 } from "../../drawers";
-import { PagePermissionsChecker } from "../../wrappers";
-import { ClientsPersonalContext } from "../../components/table/utils";
+import {
+  ComponentPermissionsChecker,
+  PagePermissionsChecker,
+} from "../../wrappers";
 import { isEmpty } from "lodash";
+import { CalendarOutlined } from "@ant-design/icons";
 
 const {
   TASKS: { drawers },
@@ -41,8 +49,6 @@ export const Tasks = () => {
   const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
   const { columns, reload } = useColumns(selectedDate);
-
-  const personalClients = useFetchPersonalClients();
 
   const { update: completedFormUpdate } = useFormValues(
     FORM_NAMES.TASK_COMPLETED
@@ -117,10 +123,28 @@ export const Tasks = () => {
     [reload]
   );
 
+  const extra = (
+    <>
+      <Calendar
+        title={t("calendar.title")}
+        icon={<CalendarOutlined />}
+        selectedDate={selectedDate}
+        onChange={handleChangeDate}
+      />
+      <ComponentPermissionsChecker
+        availablePermissions={[PERMISSIONS.TASKS["ADD.ALL"]]}
+      >
+        <Button type="primary" onClick={handleAddClick}>
+          {t("button.add.title")}
+        </Button>
+      </ComponentPermissionsChecker>
+    </>
+  );
+
   return (
     <PagePermissionsChecker availablePermissions={PERMISSIONS_SET.TASK_GET}>
       <React.Fragment>
-        <TasksHeader onAddClick={handleAddClick} />
+        <TasksHeader extra={extra} />
         <AddTaskDrawer
           title={taskDrawer?.name ?? ""}
           fields={taskDrawer?.fields ?? []}
@@ -141,19 +165,17 @@ export const Tasks = () => {
         />
         <Row className={style.container}>
           {columns.map((column) => (
-            <ClientsPersonalContext.Provider value={personalClients}>
-              <Col span={8}>
-                <Column
-                  {...column}
-                  onView={handleTaskView}
-                  onDelete={handleTaskDelete}
-                  onComplete={handleTaskComplete}
-                />
-              </Col>
-            </ClientsPersonalContext.Provider>
+            <Col span={8}>
+              <Column
+                {...column}
+                onView={handleTaskView}
+                onDelete={handleTaskDelete}
+                onComplete={handleTaskComplete}
+              />
+            </Col>
           ))}
         </Row>
-        <Calendar selectedDate={selectedDate} onChange={handleChangeDate} />
+        <BackTop />
       </React.Fragment>
     </PagePermissionsChecker>
   );

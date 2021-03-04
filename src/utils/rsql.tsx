@@ -33,7 +33,7 @@ export const getLikeRsql = (
   value: `(${keys.join(",")},"${value}")`,
 });
 
-export const getDateIsBetweenRsql = (
+export const getDateBetweenRsql = (
   date: string,
   unitOfTime: unitOfTime.StartOf = "day"
 ) => ({
@@ -44,19 +44,19 @@ export const getDateIsBetweenRsql = (
     .toISOString()}`,
 });
 
-export const getDateIsBeforeRsql = (date: string) => ({
+export const getDateBeforeRsql = (date: string) => ({
   key: "date",
   operator: RSQL_OPERATORS_MAP.DATE_IS_BEFORE,
   value: date,
 });
 
-export const getDateIsAfterRsql = (date: string) => ({
+export const getDateAfterRsql = (date: string) => ({
   key: "date",
   operator: RSQL_OPERATORS_MAP.DATE_IS_AFTER,
   value: date,
 });
 
-export const getDateFieldIsBetweenRsql = ({
+export const getDateFieldBetweenRsql = ({
   date,
   fieldCode = TASK_DATE_FIELD_CODE,
   entityName = "entityData",
@@ -74,7 +74,7 @@ export const getDateFieldIsBetweenRsql = ({
     .toISOString()}","${moment(date).endOf(unitOfTime).toISOString()}")`,
 });
 
-export const getDateFieldIsBeforeRsql = ({
+export const getDateFieldBeforeRsql = ({
   date,
   fieldCode = TASK_DATE_FIELD_CODE,
   entityName = "entityData",
@@ -88,7 +88,7 @@ export const getDateFieldIsBeforeRsql = ({
   value: `(${fieldCode},"${date}")`,
 });
 
-export const getDateFieldIsAfterRsql = ({
+export const getDateFieldAfterRsql = ({
   date,
   fieldCode = TASK_DATE_FIELD_CODE,
   entityName = "entityData",

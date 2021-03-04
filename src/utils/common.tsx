@@ -137,7 +137,7 @@ export const defaultErrorHandler = ({
   }
 };
 
-export const getDateWithTimezone = (date?: moment.Moment | string) => {
+export const getDateWithTimezone = (date?: string) => {
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
   return moment.utc(date).tz(tz);
 };
@@ -187,4 +187,25 @@ export const checkMobile = () => {
       check = true;
   })(navigator.userAgent || navigator.vendor);
   return check;
+};
+
+/**
+ * Метод склонения существительного в зависимости от числа
+ * @param count Число для склонения
+ * @param text_forms Набор склонений [one, some, many]
+ */
+export const pluralize = (count: number, vars: string[]) => {
+  const number = Math.abs(count) % 100;
+  var n1 = number % 10;
+  if (count > 10 && count < 20) {
+    return vars[2];
+  }
+  if (n1 > 1 && n1 < 5) {
+    return vars[1];
+  }
+  if (n1 == 1) {
+    return vars[0];
+  }
+
+  return vars[2];
 };

@@ -1,0 +1,12 @@
+@import "../../assets/styles/offsets";
+@import "../../assets/styles/common";
+
+.container {
+  display: inline-block;
+  cursor: pointer;
+  margin-top: var(--offset-sm);
+
+  &:hover {
+    opacity: var(--hover-opacity);
+  }
+}

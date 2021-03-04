@@ -1,31 +1,20 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { PERMISSIONS, BREADCRUMB_ROUTES } from "../../constants";
+import { BREADCRUMB_ROUTES } from "../../constants";
 import { getItemRender } from "../../utils";
-import { Button, PageHeader } from "antd";
-import { ComponentPermissionsChecker } from "../../wrappers";
-
-const { TASKS } = PERMISSIONS;
+import { PageHeader } from "antd";
 
 interface TasksHeaderProps {
-  onAddClick: () => void;
+  extra: ReactNode;
 }
 
-export const TasksHeader = ({ onAddClick }: TasksHeaderProps) => {
+export const TasksHeader = ({ extra }: TasksHeaderProps) => {
   const [t] = useTranslation("tasks");
 
   const breadcrumb = {
     routes: BREADCRUMB_ROUTES.TASKS,
     itemRender: getItemRender,
   };
-
-  const extra = (
-    <ComponentPermissionsChecker availablePermissions={[TASKS["ADD.ALL"]]}>
-      <Button type="primary" onClick={onAddClick}>
-        {t("button.add.title")}
-      </Button>
-    </ComponentPermissionsChecker>
-  );
 
   return (
     <PageHeader

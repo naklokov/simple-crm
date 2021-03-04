@@ -1,10 +1,10 @@
-import React, { ReactNode, useCallback, useState } from "react";
-import { Layout, Space } from "antd";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
+import { Layout, notification, Space } from "antd";
 import { connect } from "react-redux";
 import { About, Logo, Menu, Profile } from "./components";
 import { State } from "../../constants";
 import { ContainerWrapper } from "../../wrappers";
-import { AddUser, Loader } from "../../components";
+import { AddUser, Loader, Notifications } from "../../components";
 import style from "./authorized.module.scss";
 
 const { Sider, Content, Header } = Layout;
@@ -16,6 +16,11 @@ interface AuthorizedProps {
 
 export const Authorized = ({ children, loading }: AuthorizedProps) => {
   const [collapsed, setCollapsed] = useState(false);
+  useEffect(() => {
+    return () => {
+      notification.destroy();
+    };
+  }, []);
 
   const handleCollapseMenu = useCallback(() => {
     setCollapsed(!collapsed);
@@ -23,7 +28,6 @@ export const Authorized = ({ children, loading }: AuthorizedProps) => {
 
   return (
     <ContainerWrapper>
-      {/* <NotificationService> */}
       <Layout className={style.main}>
         <Sider
           collapsible
@@ -37,9 +41,10 @@ export const Authorized = ({ children, loading }: AuthorizedProps) => {
         </Sider>
         <Layout>
           <Header className={style.header}>
-            <Space size={16} style={{ float: "right" }}>
+            <Space size={16} align="center" style={{ float: "right" }}>
               <AddUser />
               <About />
+              <Notifications />
               <Profile />
             </Space>
           </Header>
@@ -47,7 +52,6 @@ export const Authorized = ({ children, loading }: AuthorizedProps) => {
           <Content className={style.content}>{children}</Content>
         </Layout>
       </Layout>
-      {/* </NotificationService> */}
     </ContainerWrapper>
   );
 };
