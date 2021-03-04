@@ -6,6 +6,7 @@ import Modal from "antd/lib/modal/Modal";
 import style from "./about.module.scss";
 import { useTranslation } from "react-i18next";
 import { Tooltip, Typography } from "antd";
+import { ButtonLayout } from "../../../../components";
 
 const { Paragraph, Title } = Typography;
 
@@ -22,12 +23,10 @@ export const About = () => {
   }, []);
 
   return (
-    <div>
-      <div className={style.container} onClick={handleClick}>
-        <Tooltip title={t("tooltip")}>
-          <QuestionCircleOutlined className={style.icon} />
-        </Tooltip>
-      </div>
+    <>
+      <ButtonLayout onClick={handleClick} tooltip={t("tooltip")}>
+        <QuestionCircleOutlined className={style.icon} />
+      </ButtonLayout>
       <Modal visible={visible} onCancel={handleCancel} footer={null} centered>
         <Title level={5}>{t("title")}</Title>
         <br />
@@ -42,7 +41,7 @@ export const About = () => {
           </a>
         </Paragraph>
       </Modal>
-    </div>
+    </>
   );
 };
 

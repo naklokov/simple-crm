@@ -13,7 +13,6 @@ import { Readonly } from "../readonly";
 
 const { Option } = Select;
 
-// TODO сделать readonly
 export const Entity = ({
   fieldCode,
   rules,

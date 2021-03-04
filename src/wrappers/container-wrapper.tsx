@@ -2,10 +2,11 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import { State, ProfileInfoProps, ErrorAppState, urls } from "../constants";
-import { useFetch } from "../utils";
+import { useFetch, useFetchPersonalClients } from "../utils";
 import { setLoading, setProfileInfo, setPermissions } from "../__data__";
 import { Redirect } from "react-router";
 import { isEmpty } from "lodash";
+import { ClientsPersonalContext } from "../components/table/utils";
 
 interface ContainerWrapperProps {
   children: ReactNode;
@@ -35,6 +36,8 @@ export const ContainerWrapper = ({
     url: urls.profile.permissions,
   });
 
+  const personalClients = useFetchPersonalClients();
+
   useEffect(() => {
     setProfileInfo(profileResponse?.data ?? {});
     setPermissions(permissionsResponse?.data?.permissions ?? []);
@@ -60,7 +63,11 @@ export const ContainerWrapper = ({
     );
   }
 
-  return <React.Fragment>{children}</React.Fragment>;
+  return (
+    <ClientsPersonalContext.Provider value={personalClients}>
+      {children}
+    </ClientsPersonalContext.Provider>
+  );
 };
 
 const mapStateToProps = (state: State) => ({

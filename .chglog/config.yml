@@ -5,14 +5,18 @@ info:
   repository_url: https://bitbucket.org/olivje_group/olivje.crm.pl
 options:
   commits:
-     filters:
-       Type:
-         - feature
-         - fix
+    filters:
+      Type:
+        - feature
+        - fix
+        - test
+        - chore
   commit_groups:
     title_maps:
-      feature: Новый функционал
-      fix: Исправление дефектов
+      feature: Features
+      fix: Bug Fixes
+      test: Tests writing
+      chore: Minor fixes
   header:
     pattern: "^(\\w*)\\:\\s(.*)$"
     pattern_maps:

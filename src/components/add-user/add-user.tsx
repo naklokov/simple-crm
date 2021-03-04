@@ -16,6 +16,7 @@ import { Store } from "antd/es/form/interface";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 
 import style from "./add-user.module.scss";
+import { ButtonLayout } from "../button-layout";
 
 const AddUser = () => {
   const [visible, setVisible] = useState(false);
@@ -51,13 +52,12 @@ const AddUser = () => {
   return (
     <ComponentPermissionsChecker
       availablePermissions={[PERMISSIONS.USERPROFILES["ADD.ALL"]]}
+      hasRight={false}
     >
-      <div>
-        <div className={style.container} onClick={handleClick}>
-          <Tooltip title={TITLE}>
-            <UserAddOutlined className={style.icon} />
-          </Tooltip>
-        </div>
+      <>
+        <ButtonLayout tooltip={TITLE} onClick={handleClick}>
+          <UserAddOutlined className={style.icon} />
+        </ButtonLayout>
         <DrawerForm
           fields={FIELDS}
           name={NAME}
@@ -68,7 +68,7 @@ const AddUser = () => {
           permissions={[PERMISSIONS.USERPROFILES["ADD.ALL"]]}
           submitLoading={submitLoading}
         />
-      </div>
+      </>
     </ComponentPermissionsChecker>
   );
 };

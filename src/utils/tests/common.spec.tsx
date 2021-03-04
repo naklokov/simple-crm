@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import axios from "axios";
-import { checkAuthCookie, isValuesChanged, logout } from "..";
+import { checkAuthCookie, logout } from "..";
 import { COOKIES } from "../../constants/http";
 import { DATE_FORMATS, urls } from "../../constants";
 import {
@@ -9,6 +9,7 @@ import {
   fillTemplate,
   getDateWithTimezone,
   getFullUrl,
+  pluralize,
 } from "../common";
 
 const getAction = (type: string, payload: any) => ({
@@ -116,4 +117,18 @@ test("getDateWithTimezone", () => {
   expect(
     getDateWithTimezone(dateWithoutTimezone).format(DATE_FORMATS.DATE_TIME)
   ).toBe("05.02.2021 02:00");
+});
+
+test("pluralize", () => {
+  const one = "арбуз";
+  const some = "арбуза";
+  const many = "арбузов";
+  const vars = [one, some, many];
+
+  expect(pluralize(1, vars)).toBe(one);
+  expect(pluralize(101, vars)).toBe(one);
+  expect(pluralize(2, vars)).toBe(some);
+  expect(pluralize(102, vars)).toBe(some);
+  expect(pluralize(10, vars)).toBe(many);
+  expect(pluralize(100, vars)).toBe(many);
 });
