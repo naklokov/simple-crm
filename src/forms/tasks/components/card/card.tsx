@@ -1,7 +1,19 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import cn from "classnames";
 import axios from "axios";
-import { ClockCircleTwoTone } from "@ant-design/icons";
-import { Card as CardUI, Popconfirm, Skeleton, Typography } from "antd";
+import {
+  CheckOutlined,
+  ClockCircleTwoTone,
+  DeleteOutlined,
+  FormOutlined,
+} from "@ant-design/icons";
+import {
+  Card as CardUI,
+  Popconfirm,
+  Skeleton,
+  Tooltip,
+  Typography,
+} from "antd";
 import {
   defaultErrorHandler,
   getDateWithTimezone,
@@ -13,11 +25,14 @@ import {
   ClientEntityProps,
   TaskEntityProps,
   DATE_FORMATS,
+  TOOLTIP_SHOW_DELAY,
 } from "../../../../constants";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { stringify } from "query-string";
 import { ClientsPersonalContext } from "../../../../components/table/utils";
+
+import style from "./card.module.scss";
 
 const { Paragraph, Text } = Typography;
 
@@ -26,6 +41,7 @@ interface CardProps {
   task: TaskEntityProps;
   onComplete: (task: TaskEntityProps) => void;
   onDelete: (task: TaskEntityProps) => void;
+  onView: (task: TaskEntityProps) => void;
   dateFormat?: string;
 }
 
@@ -34,6 +50,7 @@ export const Card = ({
   dateFormat = DATE_FORMATS.TIME,
   onDelete,
   onComplete,
+  onView,
   title = "",
 }: CardProps) => {
   const [t] = useTranslation("card");
@@ -80,23 +97,36 @@ export const Card = ({
     </div>
   ) : null;
 
+  const handleView = useCallback(() => {
+    onView(task);
+  }, [onView, task]);
+
   const handleComplete = useCallback(() => {
     onComplete(task);
-  }, [onComplete]);
+  }, [onComplete, task]);
 
   const handleDelete = useCallback(() => {
     onDelete(task);
-  }, [onDelete]);
+  }, [onDelete, task]);
 
   const actions = [
-    <span onClick={handleComplete}>{t("action.complete")}</span>,
-    <Popconfirm
-      title={t("delete.confirm")}
-      onConfirm={handleDelete}
-      placement="topLeft"
-    >
-      <span>{t("action.delete")}</span>
-    </Popconfirm>,
+    <Tooltip mouseEnterDelay={TOOLTIP_SHOW_DELAY} title={t("tooltip.complete")}>
+      <CheckOutlined
+        className={cn(style.complete, style.hovered)}
+        onClick={handleComplete}
+      />
+    </Tooltip>,
+    <Tooltip mouseEnterDelay={TOOLTIP_SHOW_DELAY} title={t("tooltip.view")}>
+      <FormOutlined
+        className={cn(style.view, style.hovered)}
+        onClick={handleView}
+      />
+    </Tooltip>,
+    <Tooltip mouseEnterDelay={TOOLTIP_SHOW_DELAY} title={t("tooltip.delete")}>
+      <Popconfirm title={t("delete.confirm")} onConfirm={handleDelete}>
+        <DeleteOutlined className={cn(style.delete, style.hovered)} />
+      </Popconfirm>
+    </Tooltip>,
   ];
 
   const titleContent = (
