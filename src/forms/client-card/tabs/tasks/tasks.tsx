@@ -65,7 +65,7 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
 
   const tasks: TaskEntityProps[] = response?.data ?? [];
 
-  const fetchDelete = async (id: string, date: string) => {
+  const fetchDelete = async (id: string) => {
     try {
       const url = getFullUrl(urls.tasks.entity, id);
       await axios.delete(url);
@@ -77,8 +77,8 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
   };
 
   const handleDeleteRow = useCallback(
-    (task) => {
-      fetchDelete(task.id, task.taskEndDate);
+    (id: string) => {
+      fetchDelete(id);
     },
     [reload]
   );

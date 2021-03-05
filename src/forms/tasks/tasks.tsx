@@ -98,11 +98,10 @@ export const Tasks = () => {
 
   const handleCloseCompleteDrawer = useCallback(
     (task) => {
+      setCompletedDrawerVisible(false);
       if (!isEmpty(task)) {
         reload(task.taskEndDate);
       }
-      setViewDrawerVisible(false);
-      setCompletedDrawerVisible(true);
     },
     [reload]
   );

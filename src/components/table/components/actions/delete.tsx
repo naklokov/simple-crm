@@ -12,40 +12,16 @@ import { TableActionsContext } from "../../utils";
 
 interface DeleteProps {
   id: string;
-  setTableLoading: (loading: boolean) => void;
-  onDelete?: (id: string) => void;
   title?: string;
-  href?: string;
   hasRight?: boolean;
 }
 
-export const Delete = ({
-  id,
-  title = "",
-  href,
-  setTableLoading,
-  hasRight = true,
-}: DeleteProps) => {
+export const Delete = ({ id, title = "", hasRight = true }: DeleteProps) => {
   const [t] = useTranslation("table");
   const { onDeleteRow } = useContext(TableActionsContext);
-
-  const fetchDelete = async () => {
-    if (href) {
-      try {
-        setTableLoading(true);
-        await axios.delete(href);
-        onDeleteRow(id);
-      } catch (error) {
-        defaultErrorHandler({ error });
-      } finally {
-        setTableLoading(false);
-      }
-    }
-  };
-
-  const handleDelete = useCallback(() => {
-    fetchDelete();
-  }, [onDeleteRow, id, href, fetchDelete]);
+  const handleClick = useCallback(() => {
+    onDeleteRow(id);
+  }, [id, onDeleteRow]);
 
   if (!hasRight) {
     return null;
@@ -54,7 +30,7 @@ export const Delete = ({
   return (
     <Popconfirm
       title={t("actions.delete.confirm")}
-      onConfirm={handleDelete}
+      onConfirm={handleClick}
       placement="left"
     >
       <Button style={{ padding: 0 }} type="link">

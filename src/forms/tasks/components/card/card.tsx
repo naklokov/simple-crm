@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import cn from "classnames";
 import axios from "axios";
 import {
   CheckOutlined,
@@ -24,11 +25,14 @@ import {
   ClientEntityProps,
   TaskEntityProps,
   DATE_FORMATS,
+  TOOLTIP_SHOW_DELAY,
 } from "../../../../constants";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { stringify } from "query-string";
 import { ClientsPersonalContext } from "../../../../components/table/utils";
+
+import style from "./card.module.scss";
 
 const { Paragraph, Text } = Typography;
 
@@ -106,15 +110,21 @@ export const Card = ({
   }, [onDelete, task]);
 
   const actions = [
-    <Tooltip mouseEnterDelay={1} title={t("tooltip.complete")}>
-      <CheckOutlined onClick={handleComplete} />
+    <Tooltip mouseEnterDelay={TOOLTIP_SHOW_DELAY} title={t("tooltip.complete")}>
+      <CheckOutlined
+        className={cn(style.complete, style.hovered)}
+        onClick={handleComplete}
+      />
     </Tooltip>,
-    <Tooltip mouseEnterDelay={1} title={t("tooltip.view")}>
-      <FormOutlined onClick={handleView} />
+    <Tooltip mouseEnterDelay={TOOLTIP_SHOW_DELAY} title={t("tooltip.view")}>
+      <FormOutlined
+        className={cn(style.view, style.hovered)}
+        onClick={handleView}
+      />
     </Tooltip>,
-    <Tooltip mouseEnterDelay={1} title={t("tooltip.delete")}>
+    <Tooltip mouseEnterDelay={TOOLTIP_SHOW_DELAY} title={t("tooltip.delete")}>
       <Popconfirm title={t("delete.confirm")} onConfirm={handleDelete}>
-        <DeleteOutlined />
+        <DeleteOutlined className={cn(style.delete, style.hovered)} />
       </Popconfirm>
     </Tooltip>,
   ];

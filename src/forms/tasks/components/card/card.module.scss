@@ -1,0 +1,21 @@
+@import "../../../../assets/styles/colors";
+
+.complete {
+  color: var(--success-color) !important;
+}
+
+.view {
+  color: var(--text-color-secondary) !important;
+}
+
+.delete {
+  color: var(--error-color) !important;
+}
+
+.hovered {
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+  }
+}
