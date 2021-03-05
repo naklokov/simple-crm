@@ -56,6 +56,7 @@ export const CLIENTS: { tabs: TabProps[] } = {
           columnCode: "creationDate",
           columnType: "date",
           format: "DD.MM.YYYY",
+          filterable: true,
           sorter: true,
           columnDescription: "Дата регистрации",
         },
