@@ -128,8 +128,6 @@
     "message.success.edit": "Контакт успешно отредактирован"
   },
   "tasksDrawer": {
-    "title.new": "Новая задача",
-    "title.completed": "Выполнить задачу",
     "additional.action.complete.title": "Выполнить",
     "additional.action.remove.title": "Удалить",
     "message.success.add": "Задача успешно добавлена",
@@ -177,9 +175,13 @@
     "button.now": "Сейчас",
     "button.load.more": "Загрузить ещё",
     "list.empty": "Нет задач",
-    "spin.loading": "Загрузка..."
+    "spin.loading": "Загрузка...",
+    "drawer.add.title": "Новая задача"
   },
   "card": {
+    "tooltip.complete": "Выполнить задачу",
+    "tooltip.view": "Просмотр задачи",
+    "tooltip.delete": "Удалить задачу",
     "delete.confirm": "Вы хотите удалить задачу?",
     "action.complete": "Выполнить",
     "action.delete": "Удалить"

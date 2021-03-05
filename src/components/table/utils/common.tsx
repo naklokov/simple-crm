@@ -114,7 +114,7 @@ export const getFilteredDataSource = (
 export const getActions = (
   actions: ActionProps[] = [],
   t: (value: string) => string
-) => {
+): any => {
   if (isEmpty(actions)) {
     return [];
   }

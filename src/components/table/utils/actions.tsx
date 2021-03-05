@@ -18,7 +18,6 @@ const getActionComponent = (
       return (
         <Delete
           key={entity.id}
-          href={fullHref}
           title={action.actionName}
           id={entity.id}
           hasRight={entity?.isOwner?.DELETE}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { v4 as uuidV4 } from "uuid";
 import axios, { AxiosResponse } from "axios";
 import { defaultErrorHandler } from "./common";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,13 +16,20 @@ interface FetchProps {
   params?: object;
 }
 
-export const useFetch = (
-  { url, method = "get", data = {}, params = {} }: FetchProps,
-  reloadKey: string = ""
-) => {
+export const useFetch = ({
+  url,
+  method = "get",
+  data = {},
+  params = {},
+}: FetchProps) => {
   const [response, setResponse] = useState<AxiosResponse<any>>();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [reloadKey, setReloadKey] = useState(uuidV4());
+
+  const reload = () => {
+    setReloadKey(uuidV4());
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +47,7 @@ export const useFetch = (
     fetchData();
   }, [reloadKey]);
 
-  return { response, loading, error };
+  return { response, loading, error, reload };
 };
 
 interface FormReturnProps {

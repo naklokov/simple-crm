@@ -13,6 +13,7 @@ import { ColumnTaskProps, INFINITY_SCROLL_STEP } from "../../constants";
 interface ColumnProps extends ColumnTaskProps {
   onComplete: (task: TaskEntityProps) => void;
   onDelete: (task: TaskEntityProps) => void;
+  onView: (task: TaskEntityProps) => void;
 }
 
 export const Column = ({
@@ -23,6 +24,7 @@ export const Column = ({
   titleType,
   onComplete,
   onDelete,
+  onView,
   reloadKey = "",
 }: ColumnProps) => {
   const [t] = useTranslation("tasks");
@@ -91,6 +93,7 @@ export const Column = ({
                 task={task}
                 dateFormat={dateFormat}
                 title={t("card.title")}
+                onView={onView}
                 onComplete={onComplete}
                 onDelete={onDelete}
               />

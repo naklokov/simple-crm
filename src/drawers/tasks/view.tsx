@@ -1,98 +1,31 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import { urls, FieldProps, FORM_NAMES, PERMISSIONS_SET } from "../../constants";
+import {
+  urls,
+  FORM_NAMES,
+  DrawerFormProps,
+  TaskEntityProps,
+} from "../../constants";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFullUrl,
   useFormValues,
 } from "../../utils";
-import { Dropdown, Button, Menu, Popconfirm } from "antd";
-import { EllipsisOutlined } from "@ant-design/icons";
-import { connect } from "react-redux";
-import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
-import { setTableLoading } from "../../__data__";
-import { ComponentPermissionsChecker } from "../../wrappers";
 import { isEmpty } from "lodash";
-
-interface ViewTaskProps {
-  fields: FieldProps[];
-  visible: boolean;
-  title: string;
-  setTableLoading: (loading: boolean) => void;
-  onClose: (event: any, entity?: Store) => void;
-  onDelete: (id: string) => void;
-  onCompleted: (id: string) => void;
-}
 
 export const ViewTask = ({
   fields,
   visible,
   onClose,
-  setTableLoading,
-  onDelete,
-  onCompleted,
   title,
-}: ViewTaskProps) => {
+}: DrawerFormProps) => {
   const [t] = useTranslation("tasksDrawer");
   const { values } = useFormValues(FORM_NAMES.TASK_VIEW);
   const [loading, setLoading] = useState(false);
-
-  const fetchDelete = async () => {
-    setTableLoading(true);
-    try {
-      const url = getFullUrl(urls.tasks.entity, values.id);
-      await axios.delete(url);
-      defaultSuccessHandler(t("message.success.delete"));
-      onDelete(values.id);
-    } catch (error) {
-      defaultErrorHandler({ error });
-    } finally {
-      setTableLoading(false);
-    }
-  };
-
-  const handleCompleted = useCallback(
-    (event: React.MouseEvent) => {
-      onCompleted(values.id);
-      event.preventDefault();
-    },
-    [values.id, onCompleted]
-  );
-
-  const menu = (
-    <Menu>
-      <Menu.Item>
-        <a target="_blank" rel="noopener noreferrer" onClick={handleCompleted}>
-          {t("additional.action.complete.title")}
-        </a>
-      </Menu.Item>
-      <Menu.Item>
-        <Popconfirm
-          title={t("confirm.delete")}
-          onConfirm={fetchDelete}
-          placement="left"
-        >
-          <a target="_blank" rel="noopener noreferrer">
-            {t("additional.action.remove.title")}
-          </a>
-        </Popconfirm>
-      </Menu.Item>
-    </Menu>
-  );
-
-  const DropdownMenu = () => {
-    return (
-      <Dropdown key="more" overlay={menu} trigger={["click", "hover"]}>
-        <Button style={{ padding: "0 8px" }}>
-          <EllipsisOutlined />
-        </Button>
-      </Dropdown>
-    );
-  };
 
   const onFinish = async (data: Store) => {
     try {
@@ -100,7 +33,8 @@ export const ViewTask = ({
       const url = getFullUrl(urls.tasks.entity, data.id);
       const responce = await axios.put(url, data);
       defaultSuccessHandler(t("message.success.edit"));
-      onClose(void 0, responce?.data);
+
+      onClose<TaskEntityProps>(responce?.data ?? {});
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {
@@ -122,19 +56,8 @@ export const ViewTask = ({
       submitLoading={loading}
       initialValues={values}
       onFinish={onFinish}
-      headerButtons={[
-        <ComponentPermissionsChecker
-          key="dropdown"
-          hasRight={values.isOwner?.UPDATE}
-        >
-          <DropdownMenu />
-        </ComponentPermissionsChecker>,
-      ]}
     />
   );
 };
 
-const mapDispathToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setTableLoading }, dispatch);
-
-export default connect(null, mapDispathToProps)(ViewTask);
+export default ViewTask;

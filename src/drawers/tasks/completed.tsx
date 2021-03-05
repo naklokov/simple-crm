@@ -3,7 +3,13 @@ import axios from "axios";
 import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import { urls, FieldProps, TASK_STATUSES, FORM_NAMES } from "../../constants";
+import {
+  urls,
+  TASK_STATUSES,
+  FORM_NAMES,
+  DrawerFormProps,
+  TaskEntityProps,
+} from "../../constants";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
@@ -12,17 +18,12 @@ import {
 } from "../../utils";
 import { isEmpty } from "lodash";
 
-interface CompleteTaskProps {
-  fields: FieldProps[];
-  visible: boolean;
-  onClose: (event: any, entity?: Store) => void;
-}
-
 export const CompleteTask = ({
+  title,
   fields,
   visible,
   onClose,
-}: CompleteTaskProps) => {
+}: DrawerFormProps) => {
   const [t] = useTranslation("tasksDrawer");
   const [loading, setLoading] = useState(false);
   const metaCompletedInfo = {
@@ -36,7 +37,8 @@ export const CompleteTask = ({
       const url = getFullUrl(urls.tasks.entity, values.id);
       const responce = await axios.put(url, { ...data, ...metaCompletedInfo });
       defaultSuccessHandler(t("message.success.completed"));
-      onClose(void 0, responce?.data);
+
+      onClose<TaskEntityProps>(responce?.data ?? {});
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {
@@ -50,7 +52,7 @@ export const CompleteTask = ({
 
   return (
     <DrawerForm
-      title={t("title.completed")}
+      title={title}
       fields={fields}
       name={FORM_NAMES.TASK_COMPLETED}
       onClose={onClose}
