@@ -209,3 +209,16 @@ export const pluralize = (count: number, vars: string[]) => {
 
   return vars[2];
 };
+
+/**
+ * Метод записи переменной в буфер обмена
+ * @param str Значение копируемое в буфер обмена
+ */
+export const copyToClipboard = (str: string) => {
+  const el = document.createElement("textarea");
+  el.value = str;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+};

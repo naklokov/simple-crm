@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import { Button, Popconfirm } from "antd";
+import { Popconfirm, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { HighlightTextWrapper } from "../../../../wrappers";
 import { SearchedAllContext, SearchedColumnsContext } from "../../utils";
@@ -25,7 +25,7 @@ export const Email = ({ mail, column }: EmailProps) => {
       onConfirm={handleCall}
       placement="left"
     >
-      <Button style={{ padding: 0 }} type="link">
+      <Typography.Link style={{ padding: 0 }}>
         <HighlightTextWrapper
           text={mail}
           searched={[
@@ -33,7 +33,7 @@ export const Email = ({ mail, column }: EmailProps) => {
             searchedColumns?.[column?.columnCode ?? ""] ?? "",
           ]}
         />
-      </Button>
+      </Typography.Link>
     </Popconfirm>
   );
 };
