@@ -26,19 +26,19 @@ export const ComponentChecker = ({
   );
 
   if (canShow) {
-    return <React.Fragment>{children}</React.Fragment>;
+    return <>{children}</>;
   }
 
   if (mode === "readonly") {
     return (
-      <React.Fragment>
+      <>
         {React.cloneElement(children, {
           readonly: true,
           rules: [],
           placeholder: "",
           style: { pointerEvents: "none" },
         })}
-      </React.Fragment>
+      </>
     );
   }
 

@@ -52,7 +52,6 @@ const AddUser = () => {
   return (
     <ComponentPermissionsChecker
       availablePermissions={[PERMISSIONS.USERPROFILES["ADD.ALL"]]}
-      hasRight={false}
     >
       <>
         <ButtonLayout tooltip={TITLE} onClick={handleClick}>
