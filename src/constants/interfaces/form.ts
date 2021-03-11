@@ -61,12 +61,18 @@ export type TabPositionType = "lower" | "upper" | undefined;
 export type FixedPositionType = "left" | "right";
 
 // Интерфейсы
-
 export interface DrawerProps {
   code: string;
   name: string;
   description: string;
   fields: FieldProps[];
+}
+
+export interface DrawerFormProps {
+  title: string;
+  fields: FieldProps[];
+  visible: boolean;
+  onClose: <T>(values: T) => void;
 }
 
 export interface TabProps {

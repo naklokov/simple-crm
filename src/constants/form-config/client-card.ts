@@ -1,6 +1,6 @@
 import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
-import { PERMISSIONS, PERMISSIONS_SET } from "../permissions";
+import { PERMISSIONS_SET } from "../permissions";
 import { DATE_FORMATS } from "../common";
 import { phoneRule, vatRule } from "../../utils";
 import { PHONE_PLACEHOLDER } from "../phone";
@@ -94,13 +94,18 @@ export const lower: LowerProps = {
       type: "table",
       actions: [
         {
+          actionName: "Выполнить",
+          actionType: "done",
+          permissions: [],
+        },
+        {
           actionName: "Просмотр",
           actionType: "view",
           permissions: [],
         },
         {
-          actionName: "Выполнить",
-          actionType: "done",
+          actionName: "Удалить",
+          actionType: "delete",
           permissions: [],
         },
       ],

@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Typography, Dropdown, Menu, Skeleton, Tooltip } from "antd";
+import { Avatar, Typography, Dropdown, Menu, Tooltip } from "antd";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
@@ -48,7 +48,7 @@ export const Profile = ({ profileInfo, logout }: ProfileProps) => {
           <Avatar src={avatar} icon={<UserOutlined />} />
         </Tooltip>
       </Link>
-      <Dropdown overlay={menu}>
+      <Dropdown overlay={menu} trigger={["click"]}>
         <div className={style.dropdownContainer}>
           <Typography.Text strong>{fullName}</Typography.Text>
           <DownOutlined />

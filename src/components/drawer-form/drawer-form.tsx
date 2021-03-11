@@ -66,13 +66,10 @@ export const DrawerForm = ({
     [setSubmitDisabled, initialValues]
   );
 
-  const handleClose = useCallback(
-    (event) => {
-      clear();
-      onClose(event);
-    },
-    [onClose, clear]
-  );
+  const handleClose = useCallback(() => {
+    clear();
+    onClose({});
+  }, [onClose, clear]);
 
   const handleFinish = useCallback(
     (values: Store) => {
