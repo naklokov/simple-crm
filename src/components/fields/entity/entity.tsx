@@ -27,21 +27,15 @@ export const Entity = ({
   span = DEFAULT_FIELD_SPAN,
 }: FieldProps) => {
   const form = useContext(FormContext);
-  const [options, setOptions] = useState<any>([]);
+  const [options, setOptions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const initialValue = form.getFieldValue(fieldCode);
-    const initialQuery = getRsqlParams([getEqualRsql(codeField, initialValue)]);
-    fetchEntity(initialQuery);
-  }, []);
-
-  const fetchEntity = async (query: string) => {
+  const fetchEntity = async (params: object) => {
     try {
       setLoading(true);
       const url = _links?.self.href ?? "";
       const response = await axios.get(url, {
-        params: { query },
+        params,
       });
       setOptions(response?.data ?? []);
     } catch (error) {
@@ -51,14 +45,20 @@ export const Entity = ({
     }
   };
 
+  useEffect(() => {
+    const initialValue = form.getFieldValue(fieldCode);
+    const query = getRsqlParams([getEqualRsql(codeField, initialValue)]);
+    const params = initialValue ? { query } : {};
+    fetchEntity(params);
+  }, []);
+
   const handleSearch = useCallback(
     (value) => {
-      const searchedQuery = getRsqlParams([getSearchRsql([titleField], value)]);
-      fetchEntity(searchedQuery);
+      const query = getRsqlParams([getSearchRsql([titleField], value)]);
+      fetchEntity({ query });
     },
-    [titleField]
+    [fetchEntity, titleField]
   );
-
   const formatFunc = (value: string) =>
     options.find((o: any) => o[codeField] === value)?.[titleField] ?? "";
 
@@ -85,7 +85,7 @@ export const Entity = ({
             notFoundContent={loading ? <Spin size="small" /> : null}
             showArrow={false}
           >
-            {options.map((o: any) => (
+            {options.map((o) => (
               <Option key={o[codeField]} value={o[codeField]}>
                 {o[titleField]}
               </Option>
