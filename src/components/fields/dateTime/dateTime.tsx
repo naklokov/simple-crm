@@ -83,8 +83,8 @@ export const DateTime = ({
             disabled={disabled}
             showTime={showTime}
             inputReadOnly={readonly}
-            disabledDate={!withSelectBefore ? getDisabledDate : void 0}
-            disabledTime={!withSelectBefore ? getDisabledTime : void 0}
+            disabledDate={!withSelectBefore ? getDisabledDate : undefined}
+            disabledTime={!withSelectBefore ? getDisabledTime : undefined}
           />
         )}
       </Form.Item>

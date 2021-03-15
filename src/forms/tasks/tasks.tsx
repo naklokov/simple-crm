@@ -2,6 +2,9 @@ import React, { useCallback, useState } from "react";
 import moment from "moment-timezone";
 import axios from "axios";
 import { BackTop, Button, Col, Row } from "antd";
+import { useTranslation } from "react-i18next";
+import { isEmpty } from "lodash";
+import { CalendarOutlined } from "@ant-design/icons";
 import { TasksHeader } from ".";
 import { Calendar, Column } from "./components";
 
@@ -21,7 +24,6 @@ import {
 } from "../../constants";
 
 import style from "./tasks.module.scss";
-import { useTranslation } from "react-i18next";
 import {
   AddTaskDrawer,
   CompletedTaskDrawer,
@@ -31,8 +33,6 @@ import {
   ComponentPermissionsChecker,
   PagePermissionsChecker,
 } from "../../wrappers";
-import { isEmpty } from "lodash";
-import { CalendarOutlined } from "@ant-design/icons";
 
 const {
   TASKS: { drawers },
@@ -142,7 +142,7 @@ export const Tasks = () => {
 
   return (
     <PagePermissionsChecker availablePermissions={PERMISSIONS_SET.TASK_GET}>
-      <React.Fragment>
+      <>
         <TasksHeader extra={extra} />
         <AddTaskDrawer
           title={taskDrawer?.name ?? ""}
@@ -164,7 +164,7 @@ export const Tasks = () => {
         />
         <Row className={style.container}>
           {columns.map((column) => (
-            <Col span={8}>
+            <Col span={8} key={column.title}>
               <Column
                 {...column}
                 onView={handleTaskView}
@@ -175,7 +175,7 @@ export const Tasks = () => {
           ))}
         </Row>
         <BackTop />
-      </React.Fragment>
+      </>
     </PagePermissionsChecker>
   );
 };

@@ -11,7 +11,7 @@ interface DateProps {
   column: ColumnProps;
 }
 
-export const Date = ({ value, format, column }: DateProps) => {
+export const Date: React.FC<DateProps> = ({ value, format, column }) => {
   const formattedDate = format
     ? getDateWithTimezone(value).format(format)
     : value;

@@ -1,6 +1,11 @@
 import React, { useState, useCallback, useMemo } from "react";
 import axios from "axios";
 import moment from "moment-timezone";
+import { Tabs, Button } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { isEmpty } from "lodash";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
@@ -9,8 +14,6 @@ import {
   useFetch,
   useFormValues,
 } from "../../../../utils";
-import { Tabs, Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 
 import style from "./tasks.module.scss";
 import { Table } from "../../../../components";
@@ -24,15 +27,12 @@ import {
   TASK_STATUSES,
   TabPaneFormProps,
 } from "../../../../constants";
-import { useParams } from "react-router";
 import {
   AddTaskDrawer,
   ViewTaskDrawer,
   CompletedTaskDrawer,
 } from "../../../../drawers";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
-import { useTranslation } from "react-i18next";
-import { isEmpty } from "lodash";
 
 const { TabPane } = Tabs;
 
@@ -63,7 +63,9 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
     params: { query },
   });
 
-  const tasks: TaskEntityProps[] = response?.data ?? [];
+  const tasks: TaskEntityProps[] = useMemo(() => response?.data ?? [], [
+    response,
+  ]);
 
   const fetchDelete = async (id: string) => {
     try {

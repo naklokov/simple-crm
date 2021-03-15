@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   urls,
   formConfig,
@@ -15,12 +17,10 @@ import {
   defaultSuccessHandler,
   useFormValues,
 } from "../../../../utils";
-import { useParams } from "react-router";
 import { Header } from "./header";
 import { AddContactDrawer, ViewContactDrawer } from "../../../../drawers";
 
 import style from "./contacts.module.scss";
-import { useTranslation } from "react-i18next";
 
 const {
   clientCard: {

@@ -1,5 +1,24 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import { Row, Form } from "antd";
+import { useParams } from "react-router-dom";
+import { Store } from "antd/lib/form/interface";
+import { useTranslation } from "react-i18next";
+import { useForm } from "antd/lib/form/Form";
+
+import { connect } from "react-redux";
+import style from "./requisites.module.scss";
+import { FormFooter } from "../../../../components";
+import {
+  createFormField,
+  isValuesChanged,
+  defaultErrorHandler,
+  defaultSuccessHandler,
+  useFormValues,
+  FormContext,
+  getFullUrl,
+} from "../../../../utils";
+import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
   GUTTER_FULL_WIDTH,
   QueryProps,
@@ -10,26 +29,6 @@ import {
   ClientEntityProps,
   TabPaneFormProps,
 } from "../../../../constants";
-import { ComponentPermissionsChecker } from "../../../../wrappers";
-import {
-  createFormField,
-  isValuesChanged,
-  defaultErrorHandler,
-  defaultSuccessHandler,
-  useFormValues,
-  FormContext,
-  getFullUrl,
-} from "../../../../utils";
-import { Row, Form } from "antd";
-import { FormFooter } from "../../../../components";
-import { useParams } from "react-router";
-import { Store } from "antd/lib/form/interface";
-import { useTranslation } from "react-i18next";
-import { useForm } from "antd/lib/form/Form";
-
-import style from "./requisites.module.scss";
-import { connect } from "react-redux";
-import { AxiosResponse } from "axios";
 
 interface RequisitesProps extends TabPaneFormProps {
   profileInfo: ProfileInfoProps;
@@ -75,7 +74,7 @@ export const Requisites = ({ tab }: RequisitesProps) => {
         onValuesChange={handleValuesChange}
         onFinish={onFinish}
         layout="vertical"
-        name={"clientCardRequisites"}
+        name="clientCardRequisites"
         form={form}
         initialValues={clientValues}
       >

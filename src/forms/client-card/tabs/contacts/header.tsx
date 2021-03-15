@@ -1,8 +1,8 @@
 import React from "react";
-import { Button, Space } from "antd";
-import { ComponentPermissionsChecker } from "../../../../wrappers";
-import { FORM_NAMES, PERMISSIONS_SET } from "../../../../constants";
+import { Button } from "antd";
 import { useTranslation } from "react-i18next";
+import { ComponentPermissionsChecker } from "../../../../wrappers";
+import { FORM_NAMES } from "../../../../constants";
 
 import style from "./contacts.module.scss";
 import { useFormValues } from "../../../../utils";

@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { Badge, Popover, Collapse, Typography } from "antd";
+import { BellOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 import {
   useNotificationService,
   updateNotificationStatus,
 } from "../../utils/notification-service";
 import { ButtonLayout } from "../button-layout";
-import { BellOutlined } from "@ant-design/icons";
-import { useTranslation } from "react-i18next";
 import { ButtonSecondary, NotificationList } from "./components";
 
 const { Panel } = Collapse;

@@ -1,5 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
+import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
+import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 import {
   urls,
   ClientEntityProps,
@@ -16,11 +20,7 @@ import {
   getFullUrl,
   defaultSuccessHandler,
 } from "../../../../utils";
-import { useParams } from "react-router";
-import { setTableLoading } from "../../../../__data__";
-import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
-import { connect } from "react-redux";
-import { useTranslation } from "react-i18next";
+import { setTableLoading as setTableLoadingAction } from "../../../../__data__";
 
 import style from "./price-list.module.scss";
 
@@ -30,18 +30,21 @@ interface ContactsProps extends TabPaneFormProps {
   setTableLoading: (loading: boolean) => void;
 }
 
-export const PriceList = ({
+export const PriceList: React.FC<ContactsProps> = ({
   profileInfo: { id: userProfileId },
   tab,
   setTableLoading,
-}: ContactsProps) => {
+}) => {
   const [t] = useTranslation("clientCardPriceList");
   const [positions, setPositions] = useState<any[]>([]);
   const { id: clientId } = useParams<QueryProps>();
-  const params = {
-    clientId,
-    userProfileId,
-  };
+  const params = useMemo(
+    () => ({
+      clientId,
+      userProfileId,
+    }),
+    [clientId, userProfileId]
+  );
 
   const { response, loading } = useFetch({
     url: urls.priceList.entity,
@@ -88,6 +91,6 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setTableLoading }, dispatch);
+  bindActionCreators({ setTableLoading: setTableLoadingAction }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(PriceList);

@@ -1,5 +1,15 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import { Comment as CommentUI, Typography, Skeleton } from "antd";
+import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import { noop, isEmpty } from "lodash";
+import { Avatar } from "../avatar";
+import {
+  defaultErrorHandler,
+  getFullUrl,
+  getDateWithTimezone,
+} from "../../utils";
 import {
   CommentEntityProps,
   urls,
@@ -7,16 +17,6 @@ import {
   ProfileInfoProps,
   State,
 } from "../../constants";
-import { Comment as CommentUI, Typography, Skeleton } from "antd";
-import {
-  defaultErrorHandler,
-  getFullUrl,
-  getDateWithTimezone,
-} from "../../utils";
-import { useTranslation } from "react-i18next";
-import { Avatar } from "../avatar";
-import { connect } from "react-redux";
-import { noop, isEmpty } from "lodash";
 import { getActions, getContent } from "./utils";
 
 const { Text } = Typography;
@@ -28,12 +28,12 @@ interface CommentProps {
   onEditComment?: (id: string, value: string) => void;
 }
 
-export const Comment = ({
+export const Comment: React.FC<CommentProps> = ({
   comment,
   profileInfo,
   onDeleteComment = noop,
   onEditComment = noop,
-}: CommentProps) => {
+}) => {
   const [loading, setLoading] = useState(false);
   const [commentAuthor, setCommentAuthor] = useState({} as ProfileInfoProps);
   const [isEdit, setIsEdit] = useState(false);
@@ -48,7 +48,7 @@ export const Comment = ({
   } = comment;
   const date = getDateWithTimezone(creationDate).format(DATE_FORMATS.DATE_TIME);
 
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async () => {
     try {
       setLoading(true);
       const url = getFullUrl(urls.userProfiles.entity, userProfileId);
@@ -62,7 +62,7 @@ export const Comment = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [t, userProfileId]);
 
   useEffect(() => {
     if (isEmpty(commentAuthor) && userProfileId) {

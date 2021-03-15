@@ -1,5 +1,4 @@
 import { Rule } from "antd/lib/form";
-import { RSQL_OPERATORS_MAP } from "../common";
 
 // Типы
 
@@ -28,7 +27,7 @@ export type FieldType =
 
 export type RecordType = { [key: string]: string };
 
-export type FilterOperatorType = "equal" | "rsql";
+export type FilterOperaratorType = "equal" | "rsql";
 
 export type ActionType = "href" | "delete" | "call" | "email" | "view" | "done";
 
@@ -113,7 +112,7 @@ export interface ColumnProps {
   fixed?: FixedPositionType;
   sorter: any;
   filterable?: boolean;
-  filterOperator?: FilterOperatorType;
+  filterOperator?: FilterOperaratorType;
   editable?: boolean;
   columnActions?: ActionProps[];
 }

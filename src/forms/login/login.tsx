@@ -5,17 +5,17 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
 import { useTranslation } from "react-i18next";
 
-import style from "./login.module.scss";
 import { useHistory, useLocation } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
+import { Dispatch } from "@reduxjs/toolkit";
+import { connect } from "react-redux";
+import style from "./login.module.scss";
 import { urls, State } from "../../constants";
 import { logger, defaultErrorHandler } from "../../utils";
 import { FORM_NAME, FIELDS } from "./constants";
 
 import { storeRememberMeParams, getRules, getInitialValues } from "./utils";
 import { setAuth as setAuthAction } from "../../__data__";
-import { Dispatch } from "@reduxjs/toolkit";
-import { connect } from "react-redux";
 import { LoginHeader } from "../../components";
 
 const { Item } = FormUI;

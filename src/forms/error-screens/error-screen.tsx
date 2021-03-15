@@ -1,8 +1,8 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import { ClientError, ServerError } from "./components";
 import { http, ErrorAppState } from "../../constants";
-import { useLocation } from "react-router";
-import NotFoundScreen from "./not-found-screen";
+import { NotFoundScreen } from "./not-found-screen";
 
 const { HTTP_CODES } = http;
 

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { v4 as uuidV4 } from "uuid";
 import axios, { AxiosResponse } from "axios";
-import { defaultErrorHandler } from "./common";
 import { useDispatch, useSelector } from "react-redux";
+import { defaultErrorHandler } from "./common";
 import { ClientEntityProps, EntityOwnerProps, State, urls } from "../constants";
 import { updateForm } from "../__data__";
 import { getRsqlParams } from "./rsql";
@@ -37,9 +37,9 @@ export const useFetch = ({
       try {
         const res = await axios({ method, params, data, url });
         setResponse(res);
-      } catch (error) {
+      } catch (err) {
         setError(error);
-        defaultErrorHandler({ error });
+        defaultErrorHandler({ error: err });
       } finally {
         setLoading(false);
       }

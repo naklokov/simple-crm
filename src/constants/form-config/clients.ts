@@ -1,4 +1,4 @@
-import { urls } from "../";
+import { urls } from "..";
 import { TabProps } from "../interfaces";
 
 export const CLIENTS: { tabs: TabProps[] } = {
@@ -56,7 +56,6 @@ export const CLIENTS: { tabs: TabProps[] } = {
           columnCode: "creationDate",
           columnType: "date",
           format: "DD.MM.YYYY",
-          filterable: true,
           sorter: true,
           columnDescription: "Дата регистрации",
         },

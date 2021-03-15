@@ -6,10 +6,10 @@ interface HighlightTextWrapperProps {
   searched?: string[];
 }
 
-export const HighlightTextWrapper = ({
+export const HighlightTextWrapper: React.FC<HighlightTextWrapperProps> = ({
   text,
   searched = [],
-}: HighlightTextWrapperProps) => (
+}) => (
   <Highlighter
     highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
     searchWords={searched}

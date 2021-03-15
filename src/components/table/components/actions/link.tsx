@@ -10,7 +10,7 @@ interface LinkProps {
   column?: ColumnProps;
 }
 
-export const Link = ({ title, column, href = "" }: LinkProps) => {
+export const Link: React.FC<LinkProps> = ({ title, column, href = "" }) => {
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
 

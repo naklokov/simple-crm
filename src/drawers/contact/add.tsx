@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
+import { useParams } from "react-router-dom";
+import { DrawerForm } from "../../components";
 import { urls, FieldProps, QueryProps, FORM_NAMES } from "../../constants";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
-import { useParams } from "react-router";
 
 interface AddContactProps {
   fields: FieldProps[];
@@ -26,7 +26,7 @@ export const AddContact = ({ fields, visible, onClose }: AddContactProps) => {
         clientId,
       });
       defaultSuccessHandler(t("message.success.add"));
-      onClose(void 0, responce?.data);
+      onClose(undefined, responce?.data);
     } catch (error) {
       defaultErrorHandler({ error });
     } finally {

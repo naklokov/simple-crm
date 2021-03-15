@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { ErrorAppState, State, http, urls } from "../../constants";
 import { hasPermission } from "./utils";
-import { Redirect } from "react-router";
 
 interface PageCheckerProps {
   children: JSX.Element;

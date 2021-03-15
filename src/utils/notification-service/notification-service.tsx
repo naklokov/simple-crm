@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import moment from "moment-timezone";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import {
   showNotification,
   useOverdueTasksTotal,
@@ -9,10 +11,7 @@ import {
   getOverdueTasksProps,
 } from "./utils";
 import { NotificationProps, TASKS_SHOW_LIMIT } from "../../constants";
-import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router";
 import { play as playSound } from "../sounds";
-import { TASKS_ENTITY_STUB } from "./tests/stubs";
 
 export const useNotificationService = (onClickLink: (id: string) => void) => {
   const [t] = useTranslation("notifications");

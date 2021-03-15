@@ -1,6 +1,6 @@
 import axios from "axios";
-import { urls } from "../constants";
 import Cookie from "js-cookie";
+import urls from "../constants/urls";
 import { COOKIES } from "../constants/http";
 
 const usernameFromCookie = Cookie.get(COOKIES.USERNAME);
@@ -60,6 +60,7 @@ export const error = (props: LoggerProps) => {
   const logLevel = LogLevelsEnum.ERROR;
   const fullMessage = getFullMessage(props);
 
+  // eslint-disable-next-line
   console.error(fullMessage);
   sendRemote(fullMessage, logLevel);
 };
@@ -68,6 +69,7 @@ export const warn = (props: LoggerProps) => {
   const logLevel = LogLevelsEnum.WARNING;
   const fullMessage = getFullMessage(props);
 
+  // eslint-disable-next-line
   console.warn(fullMessage);
   sendRemote(fullMessage, logLevel);
 };

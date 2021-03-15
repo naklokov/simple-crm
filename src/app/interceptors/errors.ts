@@ -1,14 +1,10 @@
-import { http, ErrorProps, State, ErrorAppState } from "../../constants";
-import { logger, logout, defaultErrorHandler } from "../../utils";
-import { setError } from "../../__data__";
 import { Dispatch } from "@reduxjs/toolkit";
+import { http, ErrorProps, ErrorAppState } from "../../constants";
+import { logout, defaultErrorHandler } from "../../utils";
+import { setError } from "../../__data__";
 
 const { ERROR_SCREEN_CODES, HTTP_CODES } = http;
 const DEFAULT_ERROR_MESSAGE = "Произошла ошибка";
-
-const {
-  env: { NODE_ENV },
-} = require("process");
 
 interface ErrorResponceProps {
   config: any;
@@ -23,14 +19,10 @@ export const errorsInterceptor = (
   errorStore: ErrorAppState
 ) => (errorResponse: ErrorResponceProps) => {
   try {
-    const { _retry, method, url } = errorResponse?.config ?? {};
+    const { _retry: retry, method, url } = errorResponse?.config ?? {};
     const statusCode = errorResponse?.response?.status;
     const errorInfo: ErrorProps = errorResponse?.response?.data ?? {};
     const error = { ...errorInfo, url, method };
-
-    if (NODE_ENV === "development") {
-      console.error(`[ERROR] Response with statusCode: ${statusCode}`, error);
-    }
 
     if (statusCode === HTTP_CODES.UNAUTHORIZED) {
       logout(dispatch);
@@ -38,7 +30,7 @@ export const errorsInterceptor = (
     }
 
     const hasError = errorStore?.statusCode;
-    if (ERROR_SCREEN_CODES.includes(statusCode) && !_retry) {
+    if (ERROR_SCREEN_CODES.includes(statusCode) && !retry) {
       if (!hasError) {
         dispatch(setError({ statusCode, ...error }));
       }

@@ -1,10 +1,13 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { ClientEntityProps, urls } from "../../../../constants";
 import { notification, Skeleton, Typography } from "antd";
-import { defaultErrorHandler, getFullUrl } from "../../../common";
 import { History } from "history";
-import { ClientsPersonalContext } from "../../../../components/table/utils";
+import { ClientEntityProps, urls } from "../../../../constants";
+import {
+  ClientsPersonalContext,
+  defaultErrorHandler,
+  getFullUrl,
+} from "../../../common";
 
 interface TitleProps {
   id: string;
@@ -13,7 +16,12 @@ interface TitleProps {
   onClickLink: (id: string) => void;
 }
 
-export const Title = ({ id, clientId, history, onClickLink }: TitleProps) => {
+export const Title: React.FC<TitleProps> = ({
+  id,
+  clientId,
+  history,
+  onClickLink,
+}) => {
   const [client, setClient] = useState({} as ClientEntityProps);
   const [loading, setLoading] = useState(false);
   const cachingClients = useContext(ClientsPersonalContext);
@@ -39,7 +47,9 @@ export const Title = ({ id, clientId, history, onClickLink }: TitleProps) => {
   }, [history, onClickLink]);
 
   useEffect(() => {
-    const cachingClient = cachingClients.find(({ id }) => id === clientId);
+    const cachingClient = cachingClients.find(
+      ({ id: cachingClientId }) => cachingClientId === clientId
+    );
     if (cachingClient) {
       setClient(cachingClient);
     } else {
@@ -48,7 +58,7 @@ export const Title = ({ id, clientId, history, onClickLink }: TitleProps) => {
   }, []);
 
   const skeleton = (
-    <Skeleton.Input style={{ width: "200px" }} active={true} size={"small"} />
+    <Skeleton.Input style={{ width: "200px" }} active={true} size="small" />
   );
 
   return (

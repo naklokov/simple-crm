@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import axios from "axios";
 import { Form, Typography, Row } from "antd";
-import { FORM_NAME } from "./constansts";
 import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
-import { setProfileInfo } from "../../../../__data__";
 import { useTranslation } from "react-i18next";
+import { Store } from "antd/lib/form/interface";
+import { useHistory } from "react-router-dom";
+import { FORM_NAME } from "./constansts";
+import { setProfileInfo as setProfileInfoAction } from "../../../../__data__";
 import {
   createFormField,
   isValuesChanged,
@@ -17,16 +19,13 @@ import {
   GUTTER_FULL_WIDTH,
   formConfig,
   urls,
-  PERMISSIONS,
   State,
   ProfileInfoProps,
 } from "../../../../constants";
 
 import style from "./main.module.scss";
-import { Store } from "antd/lib/form/interface";
 import { FormFooter } from "../../../../components";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
-import { useHistory } from "react-router";
 
 const {
   profile: { FIELDS },
@@ -48,6 +47,10 @@ export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
     const isChanged = isValuesChanged(profileInfo, allValues);
     setSubmitDisabled(!isChanged);
   };
+
+  const handleGoBack = useCallback(() => {
+    history.go(-1);
+  }, [history]);
 
   const onFinish = async (values: Store) => {
     try {
@@ -91,6 +94,7 @@ export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
           <FormContext.Provider value={form}>
             {FIELDS.map((field) => (
               <ComponentPermissionsChecker
+                key={field.fieldCode}
                 hasRight={profileInfo?.isOwner?.UPDATE}
                 availablePermissions={field.permissions}
                 mode="readonly"
@@ -104,7 +108,7 @@ export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
           <FormFooter
             loading={submitLoading}
             disabled={submitDisabled}
-            onCancel={history.goBack}
+            onCancel={handleGoBack}
           />
         </ComponentPermissionsChecker>
       </Form>
@@ -117,6 +121,6 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setProfileInfo }, dispatch);
+  bindActionCreators({ setProfileInfo: setProfileInfoAction }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

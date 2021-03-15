@@ -10,7 +10,7 @@ interface ContentProps {
   description?: React.ReactNode | string;
 }
 
-export const Content = ({ date, description }: ContentProps) => (
+export const Content: React.FC<ContentProps> = ({ date, description }) => (
   <>
     <ExtendedText>{description}</ExtendedText>
     <ExtendedText className={style.time} size="small" type="secondary">

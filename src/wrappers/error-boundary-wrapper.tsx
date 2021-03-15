@@ -27,10 +27,6 @@ class ErrorBoundary extends React.Component<
     this.state = { hasError: false, errorMessage: "", callStack: "" };
   }
 
-  handleClick = () => {
-    window.location.replace("/");
-  };
-
   static getDerivedStateFromError(error: any) {
     return { hasError: true };
   }
@@ -40,6 +36,10 @@ class ErrorBoundary extends React.Component<
     this.setState({ callStack: error.stack });
     defaultErrorHandler({ error: { errorMessage: error.message } });
   }
+
+  handleClick = () => {
+    window.location.replace("/");
+  };
 
   render() {
     const { t } = this.props;

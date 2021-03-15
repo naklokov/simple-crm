@@ -16,13 +16,14 @@ interface AuthorizedProps {
 
 export const Authorized = ({ children, loading }: AuthorizedProps) => {
   const [collapsed, setCollapsed] = useState(false);
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       notification.destroy();
-    };
-  }, []);
+    },
+    []
+  );
 
-  const handleCollapseMenu = useCallback(() => {
+  const toogleCollapse = useCallback(() => {
     setCollapsed(!collapsed);
   }, [collapsed]);
 
@@ -34,7 +35,7 @@ export const Authorized = ({ children, loading }: AuthorizedProps) => {
           collapsed={collapsed}
           theme="light"
           className={style.sider}
-          onCollapse={handleCollapseMenu}
+          onCollapse={toogleCollapse}
         >
           <Logo collapsed={collapsed} />
           <Menu />

@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState, useContext, useMemo } from "react";
 import { Input, Form, InputNumber } from "antd";
 import { noop, isEqual } from "lodash";
 
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import style from "../table.module.scss";
 import {
   defaultErrorHandler,
@@ -9,9 +11,7 @@ import {
   FormContext,
 } from "../../../utils";
 import { ColumnProps, FORM_NAMES, State } from "../../../constants";
-import { useTranslation } from "react-i18next";
 import { isCanShow } from "../../../wrappers/permissions-checker/utils";
-import { useSelector } from "react-redux";
 import { TableActionsContext } from "./common";
 
 interface EditableRowProps {
@@ -43,14 +43,14 @@ const EditableCell = ({
   const inputRef = useRef<Input>(null);
   const form = useContext(FormContext);
   const { onSaveRow } = useContext(TableActionsContext);
-  const { values } = useFormValues(FORM_NAMES.CLIENT_CARD);
+  const { values: formValues } = useFormValues(FORM_NAMES.CLIENT_CARD);
   const allPermissions = useSelector(
     (state: State) => state?.persist?.permissions
   );
 
   const canShow = useMemo(
-    () => isCanShow(permissions, allPermissions, values?.isOwner?.UPDATE),
-    [permissions, allPermissions, values?.isOwner]
+    () => isCanShow(permissions, allPermissions, formValues?.isOwner?.UPDATE),
+    [permissions, allPermissions, formValues]
   );
 
   useEffect(() => {
@@ -108,6 +108,7 @@ const EditableCell = ({
         />
       </Form.Item>
     ) : (
+      // eslint-disable-next-line
       <div
         className={style.editableCellValueWrap}
         style={{ paddingRight: 24 }}
