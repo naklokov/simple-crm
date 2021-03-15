@@ -1,5 +1,5 @@
 type Permissions = {
-  [key in EntityType]: { [key in OperationTypeAdmin]: string };
+  [key in EntityType]: { [keyChild in OperationTypeAdmin]: string };
 };
 
 type OperationTypeAdmin =

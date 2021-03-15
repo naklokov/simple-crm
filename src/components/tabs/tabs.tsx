@@ -1,11 +1,11 @@
 import React, { useCallback } from "react";
 import cn from "classnames";
 import { Tabs as TabsUI, Tooltip } from "antd";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import { ModeType, TabPositionType, TabProps } from "../../constants";
 
 import style from "./tabs.module.scss";
-import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router";
 import {
   getActiveQueryTab,
   getPositionQueryParam,
@@ -28,7 +28,7 @@ interface TabsProps {
   theme?: TabsThemeProps;
 }
 
-export const Tabs = ({
+export const Tabs: React.FC<TabsProps> = ({
   mode = "view",
   mainTab = "",
   tabs,
@@ -36,7 +36,7 @@ export const Tabs = ({
   theme = {},
   position,
   ...props
-}: TabsProps) => {
+}) => {
   const queryParam = getPositionQueryParam(position);
   const history = useHistory();
   const [t] = useTranslation("tabs");

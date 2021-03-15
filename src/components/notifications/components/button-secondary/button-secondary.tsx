@@ -9,11 +9,12 @@ interface ButtonSecondaryProps {
   style?: CSSProperties;
 }
 
-const ButtonSecondary = ({
+const ButtonSecondary: React.FC<ButtonSecondaryProps> = ({
   children,
   onClick,
   style,
-}: ButtonSecondaryProps) => (
+}) => (
+  // eslint-disable-next-line
   <div style={style} className={styleModule.button} onClick={onClick}>
     <ExtendedText size="small" type="secondary">
       {children}

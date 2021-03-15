@@ -10,7 +10,7 @@ interface EmailProps {
   column?: ColumnProps;
 }
 
-export const Email = ({ mail, column }: EmailProps) => {
+export const Email: React.FC<EmailProps> = ({ mail, column }) => {
   const [t] = useTranslation("table");
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);

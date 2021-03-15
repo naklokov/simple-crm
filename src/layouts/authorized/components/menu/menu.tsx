@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Menu as MenuUI } from "antd";
 
+import { Link, useLocation } from "react-router-dom";
+import { connect } from "react-redux";
 import { MENU_ITEMS, State } from "../../../../constants";
 import { getSelectedKeyByUrl } from "./utils";
-import { Link, useLocation } from "react-router-dom";
 import { filterArrayByPermissions } from "../../../../wrappers";
-import { connect } from "react-redux";
 
 const { Item } = MenuUI;
 
@@ -19,8 +19,7 @@ export const Menu = ({ permissions }: MenuProps) => {
   const itemsByPermissions = filterArrayByPermissions(MENU_ITEMS, permissions);
 
   useEffect(() => {
-    const selectedKey = getSelectedKeyByUrl(location);
-    setSelectedKey(selectedKey);
+    setSelectedKey(getSelectedKeyByUrl(location));
   }, [location]);
 
   return (

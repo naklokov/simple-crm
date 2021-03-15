@@ -3,12 +3,12 @@ import { Avatar, Typography, Dropdown, Menu, Tooltip } from "antd";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
-import { logout as logoutMethod } from "../../../../utils";
 import { Dispatch } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 
-import style from "./profile.module.scss";
 import { useTranslation } from "react-i18next";
+import style from "./profile.module.scss";
+import { logout as logoutMethod } from "../../../../utils";
 import {
   urls,
   ProfileInfoProps,

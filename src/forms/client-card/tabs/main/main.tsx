@@ -1,5 +1,21 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useCallback, useState } from "react";
+import axios, { AxiosResponse } from "axios";
+import { Row, Form } from "antd";
+import { useParams, useHistory, BrowserRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { Store } from "antd/lib/form/interface";
+import { useTranslation } from "react-i18next";
+import { FormFooter } from "../../../../components";
+import {
+  createFormField,
+  isValuesChanged,
+  defaultErrorHandler,
+  defaultSuccessHandler,
+  getFullUrl,
+  useFormValues,
+  FormContext,
+} from "../../../../utils";
+import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
   GUTTER_FULL_WIDTH,
   ModeType,
@@ -11,26 +27,9 @@ import {
   ClientEntityProps,
   TabPaneFormProps,
 } from "../../../../constants";
-import { ComponentPermissionsChecker } from "../../../../wrappers";
-import {
-  createFormField,
-  isValuesChanged,
-  defaultErrorHandler,
-  defaultSuccessHandler,
-  getFullUrl,
-  useFormValues,
-  FormContext,
-} from "../../../../utils";
-import { Row, Form } from "antd";
-import { FormFooter } from "../../../../components";
-import { useParams, useHistory } from "react-router";
-import { connect } from "react-redux";
-import { Store } from "antd/lib/form/interface";
-import { useTranslation } from "react-i18next";
 import { getAddMetaValues } from "../../utils";
 
 import style from "./main.module.scss";
-import { AxiosResponse } from "axios";
 
 interface MainProps extends TabPaneFormProps {
   mode: ModeType;
@@ -44,14 +43,19 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
   const [t] = useTranslation("clientCardMain");
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
-  const { values, update } = useFormValues(FORM_NAMES.CLIENT_CARD);
+  const { values: formValues, update } = useFormValues(FORM_NAMES.CLIENT_CARD);
 
-  const initialValues = mode === "add" ? getAddMetaValues(profileInfo) : values;
+  const initialValues =
+    mode === "add" ? getAddMetaValues(profileInfo) : formValues;
 
   const handleValuesChange = (changed: Object, allValues: Object) => {
     const isChanged = isValuesChanged(initialValues, allValues);
     setSubmitDisabled(!isChanged);
   };
+
+  const handleGoBack = useCallback(() => {
+    history.go(-1);
+  }, [history]);
 
   const onFinishAdd = async (values: Store) => {
     setSubmitLoading(true);
@@ -98,7 +102,7 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
         onValuesChange={handleValuesChange}
         onFinish={mode === "add" ? onFinishAdd : onFinishEdit}
         layout="vertical"
-        name={"clientCardMain"}
+        name="clientCardMain"
         form={form}
         initialValues={initialValues}
       >
@@ -111,7 +115,7 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
                 key={field.fieldCode}
                 availablePermissions={field.permissions}
                 mode="readonly"
-                hasRight={values?.isOwner?.UPDATE}
+                hasRight={formValues?.isOwner?.UPDATE}
                 field={field.fieldCode}
               >
                 {createFormField(field)}
@@ -119,12 +123,12 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
             ))}
           </FormContext.Provider>
         </Row>
-        <ComponentPermissionsChecker hasRight={values?.isOwner?.UPDATE}>
+        <ComponentPermissionsChecker hasRight={formValues?.isOwner?.UPDATE}>
           <FormFooter
             loading={submitLoading}
             disabled={submitDisabled}
             withCancel={mode === "add"}
-            onCancel={history.goBack}
+            onCancel={handleGoBack}
           />
         </ComponentPermissionsChecker>
       </Form>

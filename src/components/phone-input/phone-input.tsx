@@ -22,14 +22,14 @@ interface PhoneInputProps {
   style?: object;
 }
 
-export const PhoneInput = ({
+export const PhoneInput: React.FC<PhoneInputProps> = ({
   value = "",
   onChange = noop,
   placeholder = "",
   disabled = false,
   style = {},
   ref,
-}: PhoneInputProps) => {
+}) => {
   const [mask, setMask] = useState(getMask(value));
 
   const handleChange = useCallback((event) => {
@@ -44,8 +44,8 @@ export const PhoneInput = ({
   }, []);
 
   const handleBlur = useCallback((event) => {
-    const mask = getMask(event.target.value);
-    setMask(mask);
+    const currentMask = getMask(event.target.value);
+    setMask(currentMask);
   }, []);
 
   const handlePipe = useCallback(

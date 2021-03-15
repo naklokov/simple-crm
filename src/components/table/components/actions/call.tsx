@@ -11,7 +11,7 @@ interface CallProps {
   column?: ColumnProps;
 }
 
-export const Call = ({ phone, column }: CallProps) => {
+export const Call: React.FC<CallProps> = ({ phone, column }) => {
   const [t] = useTranslation("table");
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);

@@ -1,6 +1,6 @@
 import axios from "axios";
-import { FIELDS } from "../constants";
 import { FormInstance } from "antd/lib/form";
+import { FIELDS } from "../constants";
 import { urls } from "../../../constants";
 import { logger, defaultErrorHandler } from "../../../utils";
 

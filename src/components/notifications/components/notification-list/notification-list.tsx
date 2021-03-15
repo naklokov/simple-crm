@@ -10,12 +10,12 @@ interface NotificationListProps {
   onClickRead?: (id: string) => void;
 }
 
-export const NotificationList = ({
+export const NotificationList: React.FC<NotificationListProps> = ({
   dataSource,
   emptyText,
   onClickRead,
   onClickDelete,
-}: NotificationListProps) => (
+}) => (
   <List
     itemLayout="horizontal"
     dataSource={dataSource}

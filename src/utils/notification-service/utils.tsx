@@ -4,6 +4,7 @@ import axios from "axios";
 import moment from "moment-timezone";
 import { v4 as uuidv4 } from "uuid";
 import { notification } from "antd";
+import { useSelector } from "react-redux";
 import {
   EntityOwnerProps,
   NotificationProps,
@@ -14,7 +15,6 @@ import {
   TASKS_ACTIVE_DURATION,
   urls,
 } from "../../constants";
-import { useSelector } from "react-redux";
 import { getDateRsql, getOverdueRsql } from "../tasks";
 import { defaultErrorHandler, pluralize } from "../common";
 import { InfoIcon, NotificationWarning } from "../../assets/icons";

@@ -14,12 +14,12 @@ interface ReadonlyProps {
 
 const DEFAULT_FORMAT = (value: string) => value;
 
-export const Readonly = ({
+export const Readonly: React.FC<ReadonlyProps> = ({
   value = "",
   format = DEFAULT_FORMAT,
   onClickLink = noop,
   type = "text",
-}: ReadonlyProps) => {
+}) => {
   const [t] = useTranslation("readonly");
 
   if (type === "href" && value) {

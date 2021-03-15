@@ -1,4 +1,4 @@
-import moment, { unitOfTime } from "moment-timezone";
+import moment, { unitOfTime as unitProps } from "moment-timezone";
 import {
   RsqlParamProps,
   RSQL_OPERATORS_MAP,
@@ -35,7 +35,7 @@ export const getLikeRsql = (
 
 export const getDateBetweenRsql = (
   date: string,
-  unitOfTime: unitOfTime.StartOf = "day"
+  unitOfTime: unitProps.StartOf = "day"
 ) => ({
   key: "date",
   operator: RSQL_OPERATORS_MAP.DATE_IS_BETWEEN,
@@ -65,7 +65,7 @@ export const getDateFieldBetweenRsql = ({
   date: string;
   fieldCode?: string;
   entityName?: string;
-  unitOfTime?: unitOfTime.StartOf;
+  unitOfTime?: unitProps.StartOf;
 }) => ({
   key: entityName,
   operator: RSQL_OPERATORS_MAP.DATE_FIELD_IS_BETWEEN,

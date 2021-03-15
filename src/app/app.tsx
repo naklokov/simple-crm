@@ -3,13 +3,13 @@ import axios from "axios";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 
+import { ConfigProvider, message } from "antd";
+import ruRu from "antd/es/locale/ru_RU";
 import { Routes } from "./routes";
 import { reducers } from "../__data__";
 import { errorsInterceptor } from "./interceptors";
 import { storage, checkMobile } from "../utils";
-import { ConfigProvider, message } from "antd";
 
-import ruRu from "antd/es/locale/ru_RU";
 import { ErrorBoundary } from "../wrappers";
 
 declare global {

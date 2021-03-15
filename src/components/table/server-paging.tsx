@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { TablePaginationConfig } from "antd/lib/table";
 import { Table } from ".";
 import {
   ActionProps,
@@ -16,8 +17,8 @@ import {
   pluralize,
 } from "../../utils";
 import { getServerPagingRsql, getSortedParams } from "./utils";
-import { TablePaginationConfig } from "antd/lib/table";
-interface TableWithServerPagingProps {
+
+export interface TableWithServerPagingProps {
   url: string;
   columns?: ColumnProps[];
   actions?: ActionProps[];
@@ -28,7 +29,7 @@ interface TableWithServerPagingProps {
   _links?: object;
 }
 
-export const TableWithServerPaging = ({
+export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
   columns = [],
   actions = [],
   extraHeader,
@@ -37,7 +38,7 @@ export const TableWithServerPaging = ({
   withSearch = true,
   bordered,
   _links = {},
-}: TableWithServerPagingProps) => {
+}) => {
   const [t] = useTranslation("tableServer");
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<ClientEntityProps[]>([]);
@@ -78,9 +79,9 @@ export const TableWithServerPaging = ({
     fetchDataSource();
   }, [page, pageSize, sortBy, searchedAll, searchedColumns, extraRsqlParams]);
 
-  const handleSearch = useCallback((searchedAll: string) => {
+  const handleSearch = useCallback((searchAllText: string) => {
     setPage(1);
-    setSearchedAll(searchedAll);
+    setSearchedAll(searchAllText);
   }, []);
 
   const handleDelete = useCallback(
@@ -92,11 +93,9 @@ export const TableWithServerPaging = ({
   );
 
   const handleChangeTable = useCallback((paginationParams, filters, sorter) => {
-    const { current, pageSize } = paginationParams;
-    const sortBy = getSortedParams(sorter);
-    setSortBy(sortBy);
-    setPage(current);
-    setPageSize(pageSize);
+    setSortBy(getSortedParams(sorter));
+    setPage(paginationParams.current);
+    setPageSize(paginationParams.pageSize);
   }, []);
 
   const handleSearchColumn = useCallback(

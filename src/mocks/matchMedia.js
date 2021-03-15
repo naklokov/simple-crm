@@ -1,4 +1,4 @@
-Object.defineProperty(window, "matchMedia", {
+const matchMedia = {
   writable: true,
   value: jest.fn().mockImplementation((query) => ({
     matches: false,
@@ -10,4 +10,6 @@ Object.defineProperty(window, "matchMedia", {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
-});
+};
+
+global.matchMedia = matchMedia;

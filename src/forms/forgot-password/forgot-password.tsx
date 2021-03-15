@@ -1,19 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Form as FormUI, Input, Button, message } from "antd";
+import { Form as FormUI, Input, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
 import { useTranslation } from "react-i18next";
 
-import style from "./forgot-password.module.scss";
 import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
-import { urls, http } from "../../constants";
-import {
-  logger,
-  defaultErrorHandler,
-  defaultSuccessHandler,
-} from "../../utils";
+import style from "./forgot-password.module.scss";
+import { urls } from "../../constants";
+import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 import { FORM_NAME, FIELDS } from "./constants";
 
 import { getRules, getInitialValues } from "./utils";

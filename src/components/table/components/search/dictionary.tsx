@@ -1,10 +1,10 @@
 import React, { useCallback, useContext } from "react";
 import { Select } from "antd";
-import { SearchFooter } from ".";
 import { WithTranslation, withTranslation } from "react-i18next";
-import { ColumnProps, State, DictionaryProps } from "../../../../constants";
 import { flow } from "lodash";
 import { connect } from "react-redux";
+import { ColumnProps, State, DictionaryProps } from "../../../../constants";
+import { SearchFooter } from ".";
 import { TableActionsContext } from "../../utils";
 
 interface DictionarySearchProps extends WithTranslation {
@@ -52,13 +52,11 @@ export const DictionarySearch = ({
         value={selectedKeys[0]}
         onChange={handleChange}
       >
-        {options.map(({ value, valueCode }) => {
-          return (
-            <Select.Option key={valueCode} value={valueCode}>
-              {value}
-            </Select.Option>
-          );
-        })}
+        {options.map(({ value, valueCode }) => (
+          <Select.Option key={valueCode} value={valueCode}>
+            {value}
+          </Select.Option>
+        ))}
       </Select>
       <SearchFooter
         onSearch={handleSearch}

@@ -1,1 +1,1 @@
-export { default as AddUser } from './add-user'
+export { default as AddUser } from "./add-user";

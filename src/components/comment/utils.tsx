@@ -14,7 +14,7 @@ export const getActions = ({
   onEdit,
   onDelete,
 }: CommentActionsProps) => {
-  let actions = [];
+  const actions = [];
   if (hasRightUpdate) {
     actions.push(<Edit onEdit={onEdit} />);
   }

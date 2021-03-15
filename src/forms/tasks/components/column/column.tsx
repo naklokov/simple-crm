@@ -2,11 +2,11 @@ import axios from "axios";
 import { Divider, Typography, List, Empty } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import InfiniteScroll from "react-infinite-scroller";
 import { Card } from "..";
 
 import style from "./column.module.scss";
 import { TaskEntityProps, urls } from "../../../../constants";
-import InfiniteScroll from "react-infinite-scroller";
 import { defaultErrorHandler, getTasksSorted } from "../../../../utils";
 import { ColumnTaskProps, INFINITY_SCROLL_STEP } from "../../constants";
 
