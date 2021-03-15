@@ -14,11 +14,9 @@ import {
   Tooltip,
   Typography,
 } from "antd";
-import {
-  defaultErrorHandler,
-  getDateWithTimezone,
-  getFullUrl,
-} from "../../../../utils";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { stringify } from "query-string";
 import {
   TASK_TYPES_MAP,
   urls,
@@ -27,10 +25,12 @@ import {
   DATE_FORMATS,
   TOOLTIP_SHOW_DELAY,
 } from "../../../../constants";
-import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { stringify } from "query-string";
-import { ClientsPersonalContext } from "../../../../components/table/utils";
+import {
+  ClientsPersonalContext,
+  defaultErrorHandler,
+  getDateWithTimezone,
+  getFullUrl,
+} from "../../../../utils";
 
 import style from "./card.module.scss";
 
@@ -45,14 +45,14 @@ interface CardProps {
   dateFormat?: string;
 }
 
-export const Card = ({
+export const Card: React.FC<CardProps> = ({
   task,
   dateFormat = DATE_FORMATS.TIME,
   onDelete,
   onComplete,
   onView,
   title = "",
-}: CardProps) => {
+}) => {
   const [t] = useTranslation("card");
   const [client, setClient] = useState({} as ClientEntityProps);
   const [loading, setLoading] = useState(false);
@@ -110,19 +110,31 @@ export const Card = ({
   }, [onDelete, task]);
 
   const actions = [
-    <Tooltip mouseEnterDelay={TOOLTIP_SHOW_DELAY} title={t("tooltip.complete")}>
+    <Tooltip
+      key="complete"
+      mouseEnterDelay={TOOLTIP_SHOW_DELAY}
+      title={t("tooltip.complete")}
+    >
       <CheckOutlined
         className={cn(style.complete, style.hovered)}
         onClick={handleComplete}
       />
     </Tooltip>,
-    <Tooltip mouseEnterDelay={TOOLTIP_SHOW_DELAY} title={t("tooltip.view")}>
+    <Tooltip
+      key="view"
+      mouseEnterDelay={TOOLTIP_SHOW_DELAY}
+      title={t("tooltip.view")}
+    >
       <FormOutlined
         className={cn(style.view, style.hovered)}
         onClick={handleView}
       />
     </Tooltip>,
-    <Tooltip mouseEnterDelay={TOOLTIP_SHOW_DELAY} title={t("tooltip.delete")}>
+    <Tooltip
+      key="delete"
+      mouseEnterDelay={TOOLTIP_SHOW_DELAY}
+      title={t("tooltip.delete")}
+    >
       <Popconfirm title={t("delete.confirm")} onConfirm={handleDelete}>
         <DeleteOutlined className={cn(style.delete, style.hovered)} />
       </Popconfirm>
@@ -141,7 +153,7 @@ export const Card = ({
   );
 
   const titleSkeleton = (
-    <Skeleton.Input style={{ width: "200px" }} active={true} size={"small"} />
+    <Skeleton.Input style={{ width: "200px" }} active={true} size="small" />
   );
 
   const cardTitle = loading ? titleSkeleton : titleContent;

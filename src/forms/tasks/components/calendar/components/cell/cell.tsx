@@ -8,7 +8,11 @@ interface CellProps {
   count?: number;
 }
 
-export const Cell = ({ date, color = "black", count = 0 }: CellProps) => {
+export const Cell: React.FC<CellProps> = ({
+  date,
+  color = "black",
+  count = 0,
+}) => {
   const day = date.date();
 
   return (

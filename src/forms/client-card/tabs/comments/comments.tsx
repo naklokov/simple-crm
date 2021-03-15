@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
-import { Footer } from "./components";
 import { List } from "antd";
 import { sortBy } from "lodash";
-import { Comment } from "../../../../components";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
+import { Comment } from "../../../../components";
+import { Footer } from "./components";
 import {
   defaultErrorHandler,
   getFullUrl,
@@ -42,6 +42,7 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
     { key: "entityType", value: "clients" },
     { key: "entityId", value: entityId },
   ]);
+
   const { loading: fetchLoading, response } = useFetch({
     url: urls.comments.entity,
     params: { query },

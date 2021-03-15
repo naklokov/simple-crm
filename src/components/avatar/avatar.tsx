@@ -8,7 +8,7 @@ interface AvatarProps {
   size?: number | "default" | "large" | "small";
 }
 
-export const Avatar = ({ src, size = "default" }: AvatarProps) => (
+export const Avatar: React.FC<AvatarProps> = ({ src, size = "default" }) => (
   <AvatarUi src={src} size={size} icon={<UserOutlined />} />
 );
 

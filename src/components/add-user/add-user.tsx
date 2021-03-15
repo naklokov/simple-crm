@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import axios from "axios";
-import { Tooltip } from "antd";
 import { UserAddOutlined } from "@ant-design/icons";
+import { Store } from "antd/es/form/interface";
 import { DrawerForm } from "../drawer-form";
 import {
   FIELDS,
@@ -12,7 +12,6 @@ import {
 } from "./constants";
 import { PERMISSIONS, urls } from "../../constants";
 import { ComponentPermissionsChecker } from "../../wrappers";
-import { Store } from "antd/es/form/interface";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 
 import style from "./add-user.module.scss";
@@ -52,7 +51,6 @@ const AddUser = () => {
   return (
     <ComponentPermissionsChecker
       availablePermissions={[PERMISSIONS.USERPROFILES["ADD.ALL"]]}
-      hasRight={false}
     >
       <>
         <ButtonLayout tooltip={TITLE} onClick={handleClick}>

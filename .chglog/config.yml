@@ -9,12 +9,14 @@ options:
       Type:
         - feature
         - fix
+        - hotfix
         - test
         - chore
   commit_groups:
     title_maps:
       feature: Features
       fix: Bug Fixes
+      hotfix: Hotfix
       test: Tests writing
       chore: Minor fixes
   header:

@@ -85,7 +85,7 @@ const getDateViewColumns = (selectedDate: string, profileInfoId: string) => {
       date: date.toISOString(),
       query: getDateRsql(date.toISOString(), profileInfoId),
       title: date.format(DATE_FORMATS.DATE),
-      titleType: !isSelectedDate ? "secondary" : void 0,
+      titleType: !isSelectedDate ? "secondary" : undefined,
       dividerColor: DIVIDER_COLORS[idx],
     });
   });

@@ -74,7 +74,7 @@
     "radio.all": "Все клиенты"
   },
   "tableServer": {
-    "total.title.one": "Всего {{total}} клиенто",
+    "total.title.one": "Всего {{total}} клиент",
     "total.title.some": "Всего {{total}} клиента",
     "total.title.many": "Всего {{total}} клиентов",
     "message.delete.success": "Запись успешно удалена"

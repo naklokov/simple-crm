@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useContext, useEffect } from "react";
 import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
+import { connect } from "react-redux";
 import {
   DEFAULT_FIELD_SPAN,
   FieldProps,
@@ -14,7 +15,6 @@ import {
   getEqualRsql,
   getSearchRsql,
 } from "../../../utils";
-import { connect } from "react-redux";
 import { Readonly } from "../readonly";
 
 const { Option } = Select;

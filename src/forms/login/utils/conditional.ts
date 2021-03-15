@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
-import { http, urls } from "../../../constants";
 import { History } from "history";
+import { http, urls } from "../../../constants";
 
 const { COOKIES } = http;
 

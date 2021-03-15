@@ -13,32 +13,32 @@ interface ComponentCheckerProps {
   field?: string;
 }
 
-export const ComponentChecker = ({
+export const ComponentChecker: React.FC<ComponentCheckerProps> = ({
   mode = "hide",
   allPermissions,
   children,
   availablePermissions = [],
   hasRight = true,
-}: ComponentCheckerProps) => {
+}) => {
   const canShow = useMemo(
     () => isCanShow(availablePermissions, allPermissions, hasRight),
     [availablePermissions, allPermissions, hasRight]
   );
 
   if (canShow) {
-    return <React.Fragment>{children}</React.Fragment>;
+    return <>{children}</>;
   }
 
   if (mode === "readonly") {
     return (
-      <React.Fragment>
+      <>
         {React.cloneElement(children, {
           readonly: true,
           rules: [],
           placeholder: "",
           style: { pointerEvents: "none" },
         })}
-      </React.Fragment>
+      </>
     );
   }
 

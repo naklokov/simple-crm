@@ -1,6 +1,5 @@
 import React, { useCallback, useContext } from "react";
 import { Button } from "antd";
-import noop from "lodash/noop";
 import { HighlightTextWrapper } from "../../../../wrappers";
 import { TableActionsContext } from "../../utils";
 
@@ -9,7 +8,7 @@ interface ViewProps {
   title?: string;
 }
 
-export const View = ({ id, title = "" }: ViewProps) => {
+export const View: React.FC<ViewProps> = ({ id, title = "" }) => {
   const { onViewRow } = useContext(TableActionsContext);
   const handleClick = useCallback(() => {
     onViewRow(id);

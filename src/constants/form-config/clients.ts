@@ -1,4 +1,4 @@
-import { urls } from "../";
+import { urls } from "..";
 import { TabProps } from "../interfaces";
 
 export const CLIENTS: { tabs: TabProps[] } = {

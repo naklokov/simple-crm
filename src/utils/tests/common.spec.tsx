@@ -40,9 +40,9 @@ test("clearCookie", () => {
 
   clearCookie();
 
-  expect(Cookies.get(COOKIES.USERNAME)).toBe(void 0);
-  expect(Cookies.get(COOKIES.JSESSIONID)).toBe(void 0);
-  expect(Cookies.get(COOKIES.REMEMBER_ME)).toBe(void 0);
+  expect(Cookies.get(COOKIES.USERNAME)).toBe(undefined);
+  expect(Cookies.get(COOKIES.JSESSIONID)).toBe(undefined);
+  expect(Cookies.get(COOKIES.REMEMBER_ME)).toBe(undefined);
 });
 
 test("logout", () => {

@@ -28,7 +28,12 @@ const formatNumber = (
   return formatter.format(+number);
 };
 
-export const Number = ({ value, format, record, column }: NumberProps) => {
+export const Number: React.FC<NumberProps> = ({
+  value,
+  format,
+  record,
+  column,
+}) => {
   const formattedNumber = format
     ? formatNumber(value, format, record)
     : value.toString();

@@ -1,11 +1,11 @@
 import React from "react";
 
 import { Typography } from "antd";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { LOGO } from "../../../../constants/layouts";
 
 import style from "./logo.module.scss";
-import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { urls } from "../../../../constants";
 
 interface LogoProps {

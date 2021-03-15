@@ -1,9 +1,9 @@
 import React from "react";
+import { Space } from "antd";
 import { ActionProps, ColumnProps, EntityOwnerProps } from "../../../constants";
 import { getFullUrl } from "../../../utils";
 import { Delete, View, Call, Email, Link } from "../components";
 import { ComponentPermissionsChecker } from "../../../wrappers";
-import { Space } from "antd";
 import { Done } from "../components/actions";
 
 const getActionComponent = (
@@ -58,7 +58,7 @@ export const renderActions = (
   entity: EntityOwnerProps,
   column?: ColumnProps
 ) => (
-  <React.Fragment>
+  <>
     {actions.map((action) => (
       <ComponentPermissionsChecker
         key={action.actionType}
@@ -69,5 +69,5 @@ export const renderActions = (
         </Space>
       </ComponentPermissionsChecker>
     ))}
-  </React.Fragment>
+  </>
 );

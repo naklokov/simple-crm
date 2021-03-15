@@ -5,16 +5,16 @@ import { LockOutlined } from "@ant-design/icons";
 
 import { useTranslation } from "react-i18next";
 
-import style from "./restore-password.module.scss";
 import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
+import { connect } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import style from "./restore-password.module.scss";
 import { urls } from "../../constants";
 import { FIELDS, FORM_NAME } from "./constants";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 
 import { getRules, checkEqualPasswords, checkToken, getToken } from "./utils";
-import { connect } from "react-redux";
-import { Dispatch } from "@reduxjs/toolkit";
 import * as actions from "../../__data__";
 import { LoginHeader } from "../../components";
 

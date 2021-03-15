@@ -1,11 +1,11 @@
-import packageJson from "../../../../../package.json";
 import React, { useCallback, useState } from "react";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import Modal from "antd/lib/modal/Modal";
 
-import style from "./about.module.scss";
 import { useTranslation } from "react-i18next";
-import { Tooltip, Typography } from "antd";
+import { Typography } from "antd";
+import style from "./about.module.scss";
+import packageJson from "../../../../../package.json";
 import { ButtonLayout } from "../../../../components";
 
 const { Paragraph, Title } = Typography;

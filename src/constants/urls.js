@@ -27,6 +27,9 @@ module.exports = {
     entity: "/crm/rest/user/profile",
     permissions: "/crm/rest/user/permissions",
   },
+  departments: {
+    entity: "/crm/rest/entity/departments",
+  },
   userProfiles: {
     entity: "/crm/rest/entity/userProfiles",
   },

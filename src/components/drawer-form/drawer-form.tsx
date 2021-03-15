@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { Drawer as DrawerUI, Form, PageHeader } from "antd";
+import isEmpty from "lodash/isEmpty";
+import { Store } from "antd/lib/form/interface";
 import { FormFooter } from "../form-footer";
 import { ComponentPermissionsChecker } from "../../wrappers";
 import {
@@ -8,9 +10,7 @@ import {
   isValuesChanged,
   useFormValues,
 } from "../../utils";
-import isEmpty from "lodash/isEmpty";
 import { EntityOwnerProps, FieldProps } from "../../constants";
-import { Store } from "antd/lib/form/interface";
 
 interface DrawerFormProps {
   name: string;
@@ -41,7 +41,7 @@ interface DrawerFormProps {
  * @param {array} permissions - Разрешения для отображения кнопки "Сохранить"
  * @param {object} initialValues - Начальные значения полей ввода
  */
-export const DrawerForm = ({
+export const DrawerForm: React.FC<DrawerFormProps> = ({
   fields,
   name,
   onFinish,
@@ -53,7 +53,7 @@ export const DrawerForm = ({
   defaultSubmitDisabled = true,
   permissions = [],
   initialValues = {} as EntityOwnerProps,
-}: DrawerFormProps) => {
+}) => {
   const [form] = Form.useForm();
   const [submitDisabled, setSubmitDisabled] = useState(defaultSubmitDisabled);
   const { clear } = useFormValues(name);

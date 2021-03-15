@@ -15,7 +15,12 @@ interface TextProps {
   column: ColumnProps;
 }
 
-export const Text = ({ value, format, record, column }: TextProps) => {
+export const Text: React.FC<TextProps> = ({
+  value,
+  format,
+  record,
+  column,
+}) => {
   const formattedText = format ? fillTemplate(format, record) : value;
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext(SearchedColumnsContext);
