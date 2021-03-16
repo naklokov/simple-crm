@@ -59,10 +59,6 @@
     "dev": "concurrently \"npm run server\" \"npm start\"",
     "rest": "npm start",
     "build": "react-scripts build",
-    "deploy:dev": "node scripts/dev-ftp-deploy.js",
-    "deploy:prom": "node scripts/prom-ftp-deploy.js",
-    "publish:dev": "npm i && npm run build && npm run deploy:dev",
-    "publish:prom": "npm i && npm run build && npm run deploy:prom",
     "test": "react-scripts test",
     "test:coverage": "npm test -- --coverage",
     "eject": "react-scripts eject"
