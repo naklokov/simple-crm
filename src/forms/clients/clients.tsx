@@ -5,7 +5,7 @@ import { Table, Tabs } from "../../components";
 import {
   formConfig,
   PERMISSIONS,
-  ProfileInfoProps,
+  ProfileInfoEntityProps,
   State,
   urls,
   TabProps,
@@ -19,7 +19,7 @@ import { getPersonalClientsRsql } from "./utils";
 
 interface ClientsProps {
   title?: string;
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
 }
 
 const {

@@ -29,7 +29,7 @@ export const CompleteTask = ({
   const metaCompletedInfo = {
     taskStatus: TASK_STATUSES.COMPLETED,
   };
-  const { values } = useFormValues(FORM_NAMES.TASK_COMPLETED);
+  const { values } = useFormValues<TaskEntityProps>(FORM_NAMES.TASK_COMPLETED);
 
   const onFinish = async (data: Store) => {
     setLoading(true);

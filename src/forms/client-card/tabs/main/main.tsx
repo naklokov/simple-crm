@@ -23,7 +23,7 @@ import {
   QueryProps,
   FORM_NAMES,
   State,
-  ProfileInfoProps,
+  ProfileInfoEntityProps,
   ClientEntityProps,
   TabPaneFormProps,
 } from "../../../../constants";
@@ -33,7 +33,7 @@ import style from "./main.module.scss";
 
 interface MainProps extends TabPaneFormProps {
   mode: ModeType;
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
 }
 
 export const Main = ({ tab, profileInfo, mode }: MainProps) => {
@@ -43,7 +43,9 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
   const [t] = useTranslation("clientCardMain");
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
-  const { values: formValues, update } = useFormValues(FORM_NAMES.CLIENT_CARD);
+  const { values: formValues, update } = useFormValues<ClientEntityProps>(
+    FORM_NAMES.CLIENT_CARD
+  );
 
   const initialValues =
     mode === "add" ? getAddMetaValues(profileInfo) : formValues;

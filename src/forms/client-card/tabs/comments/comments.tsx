@@ -20,7 +20,7 @@ import {
   CommentEntityProps,
   QueryProps,
   State,
-  ProfileInfoProps,
+  ProfileInfoEntityProps,
   TabPaneFormProps,
 } from "../../../../constants";
 import { getPostData } from "./utils";
@@ -28,7 +28,7 @@ import { getPostData } from "./utils";
 import style from "./comments.module.scss";
 
 interface CommentsProps extends TabPaneFormProps {
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
 }
 
 export const Comments = ({ profileInfo }: CommentsProps) => {

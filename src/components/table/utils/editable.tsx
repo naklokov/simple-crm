@@ -10,7 +10,12 @@ import {
   useFormValues,
   FormContext,
 } from "../../../utils";
-import { ColumnProps, FORM_NAMES, State } from "../../../constants";
+import {
+  ClientEntityProps,
+  ColumnProps,
+  FORM_NAMES,
+  State,
+} from "../../../constants";
 import { isCanShow } from "../../../wrappers/permissions-checker/utils";
 import { TableActionsContext } from "./common";
 
@@ -43,7 +48,9 @@ const EditableCell = ({
   const inputRef = useRef<Input>(null);
   const form = useContext(FormContext);
   const { onSaveRow } = useContext(TableActionsContext);
-  const { values: formValues } = useFormValues(FORM_NAMES.CLIENT_CARD);
+  const { values: formValues } = useFormValues<ClientEntityProps>(
+    FORM_NAMES.CLIENT_CARD
+  );
   const allPermissions = useSelector(
     (state: State) => state?.persist?.permissions
   );

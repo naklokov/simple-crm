@@ -11,8 +11,9 @@ import {
   PERMISSIONS,
   QueryProps,
   urls,
-  ProfileInfoProps,
+  ProfileInfoEntityProps,
   State,
+  ClientEntityProps,
 } from "../../constants";
 import { setLoading as setLoadingAction } from "../../__data__";
 import { getClientCardMode } from "./utils";
@@ -24,7 +25,7 @@ import { ClientCardHeader } from ".";
 import { PagePermissionsChecker } from "../../wrappers";
 
 interface ClientCardProps {
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
   setLoading: (loading: boolean) => void;
 }
 
@@ -42,7 +43,7 @@ export const TABS_MAP: {
 export const ClientCard = ({ setLoading }: ClientCardProps) => {
   const { id: clientId } = useParams<QueryProps>();
   const [t] = useTranslation(FORM_NAMES.CLIENT_CARD);
-  const { values: client, update, clear } = useFormValues(
+  const { values: client, update, clear } = useFormValues<ClientEntityProps>(
     FORM_NAMES.CLIENT_CARD
   );
 

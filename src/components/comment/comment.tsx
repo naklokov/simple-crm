@@ -14,7 +14,7 @@ import {
   CommentEntityProps,
   urls,
   DATE_FORMATS,
-  ProfileInfoProps,
+  ProfileInfoEntityProps,
   State,
 } from "../../constants";
 import { getActions, getContent } from "./utils";
@@ -23,7 +23,7 @@ const { Text } = Typography;
 
 interface CommentProps {
   comment: CommentEntityProps;
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
   onDeleteComment?: (id: string) => void;
   onEditComment?: (id: string, value: string) => void;
 }
@@ -35,7 +35,9 @@ export const Comment: React.FC<CommentProps> = ({
   onEditComment = noop,
 }) => {
   const [loading, setLoading] = useState(false);
-  const [commentAuthor, setCommentAuthor] = useState({} as ProfileInfoProps);
+  const [commentAuthor, setCommentAuthor] = useState(
+    {} as ProfileInfoEntityProps
+  );
   const [isEdit, setIsEdit] = useState(false);
   const [t] = useTranslation("comment");
 

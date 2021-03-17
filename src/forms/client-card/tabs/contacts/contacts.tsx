@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
@@ -7,15 +8,17 @@ import {
   QueryProps,
   FORM_NAMES,
   TabPaneFormProps,
+  ContactEntityProps,
 } from "../../../../constants";
 import { Table } from "../../../../components";
 import {
-  getFiteredEntityArray,
   getUpdatedEntityArray,
   useFetch,
   getRsqlParams,
   defaultSuccessHandler,
   useFormValues,
+  getFullUrl,
+  defaultErrorHandler,
 } from "../../../../utils";
 import { Header } from "./header";
 import { AddContactDrawer, ViewContactDrawer } from "../../../../drawers";
@@ -34,16 +37,32 @@ export const Contacts = ({ tab }: TabPaneFormProps) => {
   const [t] = useTranslation("clientCardContacts");
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
-  const { update: viewFormUpdate } = useFormValues(FORM_NAMES.CONTACT_VIEW);
+  const { update: viewFormUpdate } = useFormValues<ContactEntityProps>(
+    FORM_NAMES.CONTACT_VIEW
+  );
 
   const [contacts, setContacts] = useState([] as any[]);
   const { id: clientId } = useParams<QueryProps>();
 
   const query = getRsqlParams([{ key: "clientId", value: clientId }]);
-  const { response, loading } = useFetch({
+  const { response, loading, reload } = useFetch({
     url: urls.contacts.entity,
     params: { query },
   });
+
+  const fetchDelete = useCallback(
+    async (id: string) => {
+      try {
+        const url = getFullUrl(urls.contacts.entity, id);
+        await axios.delete(url);
+        reload();
+        defaultSuccessHandler(t("message.success.delete"));
+      } catch (error) {
+        defaultErrorHandler({ error });
+      }
+    },
+    [reload, t]
+  );
 
   useEffect(() => {
     setContacts(response?.data ?? []);
@@ -61,13 +80,9 @@ export const Contacts = ({ tab }: TabPaneFormProps) => {
     [contacts, viewFormUpdate]
   );
 
-  const handleDeleteContact = useCallback(
-    (id) => {
-      defaultSuccessHandler(t("message.delete.success"));
-      setContacts(getFiteredEntityArray(id, contacts));
-    },
-    [contacts, t]
-  );
+  const handleDeleteContact = useCallback((id) => {
+    fetchDelete(id);
+  }, []);
 
   const handleCloseAddDrawer = useCallback(
     (event: any, data: any) => {

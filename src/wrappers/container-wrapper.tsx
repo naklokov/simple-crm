@@ -3,7 +3,12 @@ import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { isEmpty } from "lodash";
-import { State, ProfileInfoProps, ErrorAppState, urls } from "../constants";
+import {
+  State,
+  ProfileInfoEntityProps,
+  ErrorAppState,
+  urls,
+} from "../constants";
 import {
   ClientsPersonalContext,
   useFetch,
@@ -22,7 +27,7 @@ interface ContainerWrapperProps {
   loading: boolean;
   setLoading: (loading: boolean) => void;
   setPermissions: (permissions: string[]) => void;
-  setProfileInfo: (profile: ProfileInfoProps) => void;
+  setProfileInfo: (profile: ProfileInfoEntityProps) => void;
 }
 
 export const ContainerWrapper = ({

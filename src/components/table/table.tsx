@@ -6,7 +6,13 @@ import noop from "lodash/noop";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { connect, useDispatch } from "react-redux";
 import { TablePaginationConfig } from "antd/lib/table";
-import { ColumnProps, ActionProps, RecordType, State } from "../../constants";
+import {
+  ColumnProps,
+  ActionProps,
+  RecordType,
+  State,
+  LinksType,
+} from "../../constants";
 import {
   getActions,
   getDataColumns,
@@ -37,7 +43,7 @@ interface TableProps {
   loading?: boolean;
   tableLoading: boolean;
   pagination?: TablePaginationConfig;
-  _links?: any;
+  _links?: LinksType;
   onDeleteRow?: (id: string) => void;
   onViewRow?: (id: string) => void;
   onSaveRow?: (record: any) => void;
@@ -66,7 +72,7 @@ interface TableProps {
 }
 
 export const Table: React.FC<TableProps> & TableExtendsProps = ({
-  _links = {},
+  _links,
   columns,
   className,
   dataSource,
@@ -94,9 +100,8 @@ export const Table: React.FC<TableProps> & TableExtendsProps = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const { self, ...links } = _links;
-    fetchDictionaries(links, dispatch);
-  }, [_links, dispatch]);
+    fetchDictionaries(dispatch, _links);
+  }, [dispatch, _links]);
 
   const title =
     withSearch || extraHeader

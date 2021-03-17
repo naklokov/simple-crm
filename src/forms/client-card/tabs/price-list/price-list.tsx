@@ -8,7 +8,7 @@ import {
   urls,
   ClientEntityProps,
   QueryProps,
-  ProfileInfoProps,
+  ProfileInfoEntityProps,
   State,
   TabPaneFormProps,
 } from "../../../../constants";
@@ -25,7 +25,7 @@ import { setTableLoading as setTableLoadingAction } from "../../../../__data__";
 import style from "./price-list.module.scss";
 
 interface ContactsProps extends TabPaneFormProps {
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
   clients: ClientEntityProps[];
   setTableLoading: (loading: boolean) => void;
 }

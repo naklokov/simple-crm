@@ -4,7 +4,12 @@ import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
 import { isEmpty } from "lodash";
 import { DrawerForm } from "../../components";
-import { urls, FieldProps, FORM_NAMES } from "../../constants";
+import {
+  urls,
+  FieldProps,
+  FORM_NAMES,
+  ContactEntityProps,
+} from "../../constants";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
@@ -26,7 +31,7 @@ export const ViewContact = ({
 }: ViewContactProps) => {
   const [t] = useTranslation("contactDrawer");
   const [submitLoading, setSubmitLoading] = useState(false);
-  const { values } = useFormValues(FORM_NAMES.CONTACT_VIEW);
+  const { values } = useFormValues<ContactEntityProps>(FORM_NAMES.CONTACT_VIEW);
 
   const onFinish = async (data: Store) => {
     try {

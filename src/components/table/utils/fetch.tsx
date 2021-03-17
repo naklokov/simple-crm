@@ -1,8 +1,8 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
-import { isEmpty, values } from "lodash";
-import { useDispatch } from "react-redux";
-import { defaultErrorHandler, defaultSuccessHandler } from "../../../utils";
+import { isEmpty } from "lodash";
+import { LinksType } from "../../../constants";
+import { defaultErrorHandler } from "../../../utils";
 import { setDictionaries, setTableLoading } from "../../../__data__";
 
 export const fetchTotalCount = async (
@@ -40,13 +40,11 @@ export const fetchData = async (
 };
 
 export const fetchDictionaries = async (
-  links: {
-    [key: string]: { href: string };
-  },
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  links?: LinksType
 ) => {
   if (!isEmpty(links)) {
-    const keys = Object.keys(links);
+    const keys = Object.keys(links || {});
 
     keys.forEach(async (key) => {
       dispatch(setTableLoading(true));

@@ -23,7 +23,7 @@ import {
   GUTTER_FULL_WIDTH,
   QueryProps,
   FORM_NAMES,
-  ProfileInfoProps,
+  ProfileInfoEntityProps,
   State,
   urls,
   ClientEntityProps,
@@ -31,7 +31,7 @@ import {
 } from "../../../../constants";
 
 interface RequisitesProps extends TabPaneFormProps {
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
 }
 
 export const Requisites = ({ tab }: RequisitesProps) => {
@@ -40,7 +40,7 @@ export const Requisites = ({ tab }: RequisitesProps) => {
   const [t] = useTranslation("clientCardRequisites");
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
-  const { values: clientValues, update } = useFormValues(
+  const { values: clientValues, update } = useFormValues<ClientEntityProps>(
     FORM_NAMES.CLIENT_CARD
   );
 

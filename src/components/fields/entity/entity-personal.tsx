@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import {
   DEFAULT_FIELD_SPAN,
   FieldProps,
-  ProfileInfoProps,
+  ProfileInfoEntityProps,
   State,
 } from "../../../constants";
 import {
@@ -20,7 +20,7 @@ import { Readonly } from "../readonly";
 const { Option } = Select;
 
 interface DictionaryComponentProps extends FieldProps {
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
 }
 
 // TODO костыль до первого запроса (первый запрос)

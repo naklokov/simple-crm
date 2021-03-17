@@ -21,6 +21,7 @@ import {
   PERMISSIONS_SET,
   FORM_NAMES,
   PERMISSIONS,
+  TaskEntityProps,
 } from "../../constants";
 
 import style from "./tasks.module.scss";
@@ -50,22 +51,27 @@ export const Tasks = () => {
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
   const { columns, reload } = useColumns(selectedDate);
 
-  const { update: completedFormUpdate } = useFormValues(
+  const { update: completedFormUpdate } = useFormValues<TaskEntityProps>(
     FORM_NAMES.TASK_COMPLETED
   );
 
-  const { update: viewFormUpdate } = useFormValues(FORM_NAMES.TASK_VIEW);
+  const { update: viewFormUpdate, values: viewFormValues } = useFormValues<
+    TaskEntityProps
+  >(FORM_NAMES.TASK_VIEW);
 
-  const fetchDelete = async (id: string, date: string) => {
-    try {
-      const url = getFullUrl(urls.tasks.entity, id);
-      await axios.delete(url);
-      reload(date);
-      defaultSuccessHandler(t("message.success.delete"));
-    } catch (error) {
-      defaultErrorHandler({ error });
-    }
-  };
+  const fetchDelete = useCallback(
+    async (id: string, date: string) => {
+      try {
+        const url = getFullUrl(urls.tasks.entity, id);
+        await axios.delete(url);
+        reload(date);
+        defaultSuccessHandler(t("message.success.delete"));
+      } catch (error) {
+        defaultErrorHandler({ error });
+      }
+    },
+    [reload, t]
+  );
 
   const handleChangeDate = useCallback((date: moment.Moment) => {
     setSelectedDate(date.toISOString());
@@ -81,19 +87,23 @@ export const Tasks = () => {
     [reload]
   );
 
-  const handleTaskView = useCallback((task) => {
-    viewFormUpdate(task);
-    setViewDrawerVisible(true);
-  }, []);
+  const handleTaskView = useCallback(
+    (task) => {
+      viewFormUpdate(task);
+      setViewDrawerVisible(true);
+    },
+    [viewFormUpdate]
+  );
 
   const handleCloseViewDrawer = useCallback(
     (task) => {
       if (!isEmpty(task)) {
+        reload(viewFormValues.taskEndDate);
         reload(task.taskEndDate);
       }
       setViewDrawerVisible(false);
     },
-    [reload]
+    [reload, viewFormValues.taskEndDate]
   );
 
   const handleCloseCompleteDrawer = useCallback(
@@ -110,16 +120,19 @@ export const Tasks = () => {
     setAddDrawerVisible(true);
   }, []);
 
-  const handleTaskComplete = useCallback((task) => {
-    completedFormUpdate(task);
-    setCompletedDrawerVisible(true);
-  }, []);
+  const handleTaskComplete = useCallback(
+    (task) => {
+      completedFormUpdate(task);
+      setCompletedDrawerVisible(true);
+    },
+    [completedFormUpdate]
+  );
 
   const handleTaskDelete = useCallback(
     (task) => {
       fetchDelete(task.id, task.taskEndDate);
     },
-    [reload]
+    [fetchDelete]
   );
 
   const extra = (
