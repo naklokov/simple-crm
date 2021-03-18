@@ -24,7 +24,7 @@ export const ViewTask = ({
   title,
 }: DrawerFormProps) => {
   const [t] = useTranslation("tasksDrawer");
-  const { values } = useFormValues(FORM_NAMES.TASK_VIEW);
+  const { values } = useFormValues<TaskEntityProps>(FORM_NAMES.TASK_VIEW);
   const [loading, setLoading] = useState(false);
 
   const onFinish = async (data: Store) => {

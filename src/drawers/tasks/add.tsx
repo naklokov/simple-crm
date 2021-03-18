@@ -10,7 +10,7 @@ import {
   TASK_TYPES,
   QueryProps,
   FORM_NAMES,
-  ProfileInfoProps,
+  ProfileInfoEntityProps,
   State,
   DrawerFormProps,
   TaskEntityProps,
@@ -19,7 +19,7 @@ import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 import { DrawerForm } from "../../components";
 
 interface AddTaskProps extends DrawerFormProps {
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
 }
 
 export const AddTask = ({

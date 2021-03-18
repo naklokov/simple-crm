@@ -77,7 +77,7 @@ export const DrawerForm: React.FC<DrawerFormProps> = ({
       clear();
       onFinish(data);
     },
-    [initialValues, onClose, onFinish, clear]
+    [initialValues, onFinish, clear]
   );
 
   const handleVisibleChange = useCallback(
@@ -88,7 +88,7 @@ export const DrawerForm: React.FC<DrawerFormProps> = ({
 
       setSubmitDisabled(defaultSubmitDisabled);
     },
-    [visible, defaultSubmitDisabled, form]
+    [defaultSubmitDisabled, form]
   );
 
   if (isEmpty(fields)) {

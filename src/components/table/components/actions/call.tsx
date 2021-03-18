@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import { Button, Popconfirm } from "antd";
+import { Popconfirm, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { HighlightTextWrapper } from "../../../../wrappers";
 import { callTel, getConformedValue } from "../../../../utils";
@@ -40,15 +40,13 @@ export const Call: React.FC<CallProps> = ({ phone, column }) => {
       title={t("actions.call.confirm")}
       onConfirm={handleCall}
       placement="left"
-      key={phone}
     >
-      <Button key={phone} style={{ padding: 0 }} type="link">
+      <Typography.Link style={{ padding: 0 }}>
         <HighlightTextWrapper
-          key={phone}
           text={getConformedValue(phone)}
           searched={searchedOptions}
         />
-      </Button>
+      </Typography.Link>
     </Popconfirm>
   );
 };

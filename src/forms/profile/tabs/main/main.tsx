@@ -20,7 +20,7 @@ import {
   formConfig,
   urls,
   State,
-  ProfileInfoProps,
+  ProfileInfoEntityProps,
 } from "../../../../constants";
 
 import style from "./main.module.scss";
@@ -32,8 +32,8 @@ const {
 } = formConfig;
 
 interface MainProps {
-  profileInfo: ProfileInfoProps;
-  setProfileInfo: (profileInfo: ProfileInfoProps) => void;
+  profileInfo: ProfileInfoEntityProps;
+  setProfileInfo: (profileInfo: ProfileInfoEntityProps) => void;
 }
 
 export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {

@@ -8,7 +8,7 @@ import {
 
 const phoneBase = "+79998887766";
 
-const phoneWithCode = phoneBase + ",22";
+const phoneWithCode = `${phoneBase},22`;
 
 test("getConformedValue", () => {
   expect(getConformedValue("+7999")).toBe("+7 (999) ");

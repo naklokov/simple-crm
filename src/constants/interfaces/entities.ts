@@ -2,15 +2,33 @@ export type TaskStatusType = "COMPLETED" | "NOT_COMPLETED" | "ACTIVE";
 
 export type TaskTypeType = "CALL";
 
+export type LinksType = {
+  [key: string]: {
+    href: string;
+  };
+};
+
 export interface EntityOwnerProps {
   id: string;
+  clientId: string;
+  historyId: string;
+  isActive: boolean;
+  isDeleted: boolean;
+  updateDate: string;
   isOwner: {
     DELETE: boolean;
     UPDATE: boolean;
   };
+  _links: LinksType;
 }
 
-export interface ProfileInfoProps extends EntityOwnerProps {
+export interface UseFormProps<T> {
+  values: T;
+  update: (data: T) => void;
+  clear: () => void;
+}
+
+export interface ProfileInfoEntityProps extends EntityOwnerProps {
   aboutMe?: string;
   birthDate?: string;
   businessId?: string;
@@ -20,11 +38,8 @@ export interface ProfileInfoProps extends EntityOwnerProps {
   avatar?: string;
   location?: string;
   login?: string;
-  parentId?: string;
   position?: string;
   userRoleId?: string;
-  isActive?: boolean;
-  isDeleted?: boolean;
   isLocked?: boolean;
 }
 
@@ -52,11 +67,6 @@ export interface ClientEntityProps extends EntityOwnerProps {
 }
 
 export interface CommentEntityProps extends EntityOwnerProps {
-  _links: {
-    self: {
-      href: string;
-    };
-  };
   commentText: string;
   creationDate: string;
   entityId: string;
@@ -64,12 +74,14 @@ export interface CommentEntityProps extends EntityOwnerProps {
   userProfileId?: string;
 }
 
+export interface ContactEntityProps extends EntityOwnerProps {
+  fullName: string;
+  phone: string;
+}
+
 export interface TaskEntityProps extends EntityOwnerProps {
   clientId: string;
   creationDate: string;
-  historyId: string;
-  isActive: boolean;
-  isDeleted: boolean;
   userProfileId: string;
   taskDescription: string;
   taskStatus: TaskStatusType;
@@ -78,9 +90,4 @@ export interface TaskEntityProps extends EntityOwnerProps {
   format?: string;
   updateDate: string;
   parentId?: string;
-  isOwner: {
-    DELETE: boolean;
-    UPDATE: boolean;
-  };
-  _links: object;
 }

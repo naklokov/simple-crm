@@ -1,7 +1,7 @@
 import moment from "moment-timezone";
-import { ProfileInfoProps } from "../../../constants";
+import { ProfileInfoEntityProps } from "../../../constants";
 
-export const getAddMetaValues = (profileInfo: ProfileInfoProps) => ({
+export const getAddMetaValues = (profileInfo: ProfileInfoEntityProps) => ({
   userProfileId: profileInfo.id ?? "",
   creationDate: moment().toISOString(),
 });

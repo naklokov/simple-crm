@@ -1,4 +1,4 @@
-import { ProfileInfoProps, ClientEntityProps } from "./entities";
+import { ProfileInfoEntityProps, ClientEntityProps } from "./entities";
 
 export interface PersistState {
   permissions: string[];
@@ -15,7 +15,7 @@ export interface AppState {
 export interface DataState {
   dictionaries: object;
   clients: ClientEntityProps[];
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
 }
 
 export interface State {

@@ -11,13 +11,13 @@ import style from "./profile.module.scss";
 import { logout as logoutMethod } from "../../../../utils";
 import {
   urls,
-  ProfileInfoProps,
+  ProfileInfoEntityProps,
   State,
   TOOLTIP_SHOW_DELAY,
 } from "../../../../constants";
 
 interface ProfileProps {
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
   logout: () => void;
 }
 

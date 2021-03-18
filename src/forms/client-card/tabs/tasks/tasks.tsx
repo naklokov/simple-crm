@@ -26,6 +26,7 @@ import {
   FORM_NAMES,
   TASK_STATUSES,
   TabPaneFormProps,
+  ClientEntityProps,
 } from "../../../../constants";
 import {
   AddTaskDrawer,
@@ -50,9 +51,11 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
   const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
 
-  const { values } = useFormValues(FORM_NAMES.CLIENT_CARD);
-  const { update: viewFormUpdate } = useFormValues(FORM_NAMES.TASK_VIEW);
-  const { update: completedFormUpdate } = useFormValues(
+  const { values } = useFormValues<ClientEntityProps>(FORM_NAMES.CLIENT_CARD);
+  const { update: viewFormUpdate } = useFormValues<TaskEntityProps>(
+    FORM_NAMES.TASK_VIEW
+  );
+  const { update: completedFormUpdate } = useFormValues<TaskEntityProps>(
     FORM_NAMES.TASK_COMPLETED
   );
 
