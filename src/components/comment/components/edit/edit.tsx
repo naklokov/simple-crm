@@ -8,6 +8,7 @@ export const Edit = ({ onEdit }: { onEdit: (value?: string) => void }) => {
     onEdit();
   }, [onEdit]);
 
+  // eslint-disable-next-line
   return <span onClick={handleClick}>{t("button.edit")}</span>;
 };
 

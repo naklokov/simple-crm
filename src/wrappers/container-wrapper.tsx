@@ -1,12 +1,24 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
-import { State, ProfileInfoProps, ErrorAppState, urls } from "../constants";
-import { useFetch, useFetchPersonalClients } from "../utils";
-import { setLoading, setProfileInfo, setPermissions } from "../__data__";
-import { Redirect } from "react-router";
+import { Redirect } from "react-router-dom";
 import { isEmpty } from "lodash";
-import { ClientsPersonalContext } from "../components/table/utils";
+import {
+  State,
+  ProfileInfoEntityProps,
+  ErrorAppState,
+  urls,
+} from "../constants";
+import {
+  ClientsPersonalContext,
+  useFetch,
+  useFetchPersonalClients,
+} from "../utils";
+import {
+  setLoading as setLoadingAction,
+  setProfileInfo as setProfileInfoAction,
+  setPermissions as setPermissionsAction,
+} from "../__data__";
 
 interface ContainerWrapperProps {
   children: ReactNode;
@@ -15,7 +27,7 @@ interface ContainerWrapperProps {
   loading: boolean;
   setLoading: (loading: boolean) => void;
   setPermissions: (permissions: string[]) => void;
-  setProfileInfo: (profile: ProfileInfoProps) => void;
+  setProfileInfo: (profile: ProfileInfoEntityProps) => void;
 }
 
 export const ContainerWrapper = ({
@@ -43,6 +55,7 @@ export const ContainerWrapper = ({
     setPermissions(permissionsResponse?.data?.permissions ?? []);
 
     if (!isEmpty(permissionsResponse?.data?.permissions)) {
+      // eslint-disable-next-line
       console.log("PERMISSIONS", permissionsResponse?.data?.permissions);
     }
   }, [profileResponse, permissionsResponse, setProfileInfo, setPermissions]);
@@ -80,9 +93,9 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      setPermissions,
-      setProfileInfo,
-      setLoading,
+      setPermissions: setPermissionsAction,
+      setProfileInfo: setProfileInfoAction,
+      setLoading: setLoadingAction,
     },
     dispatch
   );

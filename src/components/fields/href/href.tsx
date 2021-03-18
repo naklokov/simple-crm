@@ -1,12 +1,15 @@
 import React, { useCallback, useState } from "react";
 import { Form, Input, Col, Tooltip } from "antd";
-import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
-import { Readonly } from "../readonly";
 import { LinkOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
+import { Readonly } from "../readonly";
 
 import style from "./href.module.scss";
 import { openUrlTargetBlank } from "../../../utils";
+
+const getPrefixedUrl = (value: string) =>
+  /^(http|https|www):/.test(value) ? value : `http://${value}`;
 
 export const Href = ({
   fieldCode,
@@ -20,9 +23,6 @@ export const Href = ({
 }: FieldProps) => {
   const [t] = useTranslation("fields");
   const [value, setValue] = useState("");
-
-  const getPrefixedUrl = (value: string) =>
-    /^(http|https|www):/.test(value) ? value : `http://${value}`;
 
   const handleValueProps = useCallback((input: string) => {
     setValue(input);

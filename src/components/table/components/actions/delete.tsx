@@ -1,12 +1,10 @@
 import React, { useCallback, useContext } from "react";
-import axios from "axios";
 import { Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
 
-import { defaultErrorHandler } from "../../../../utils";
 import { connect } from "react-redux";
-import { setTableLoading } from "../../../../__data__";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
+import { setTableLoading } from "../../../../__data__";
 import { HighlightTextWrapper } from "../../../../wrappers";
 import { TableActionsContext } from "../../utils";
 
@@ -16,7 +14,11 @@ interface DeleteProps {
   hasRight?: boolean;
 }
 
-export const Delete = ({ id, title = "", hasRight = true }: DeleteProps) => {
+export const Delete: React.FC<DeleteProps> = ({
+  id,
+  title = "",
+  hasRight = true,
+}) => {
   const [t] = useTranslation("table");
   const { onDeleteRow } = useContext(TableActionsContext);
   const handleClick = useCallback(() => {

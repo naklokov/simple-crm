@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { v4 as uuidV4 } from "uuid";
 import moment from "moment-timezone";
+import axios from "axios";
+import { useSelector } from "react-redux";
 import {
   getRsqlParams,
   getDateFieldBetweenRsql,
@@ -8,7 +10,6 @@ import {
   defaultErrorHandler,
   getDateWithTimezone,
 } from "../../../../utils";
-import axios from "axios";
 import {
   DATE_FORMATS,
   EntityOwnerProps,
@@ -17,7 +18,6 @@ import {
   TASK_DATE_FIELD_CODE,
   urls,
 } from "../../../../constants";
-import { useSelector } from "react-redux";
 import { CELL_COLORS } from "../../constants";
 
 type BadgeMapType = { [key: string]: number };

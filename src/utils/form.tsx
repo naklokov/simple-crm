@@ -1,8 +1,8 @@
 import React from "react";
-import { fields } from "../components";
-import { FieldProps } from "../constants";
 import isEqual from "lodash/isEqual";
 import some from "lodash/some";
+import { fields } from "../components";
+import { FieldProps } from "../constants";
 import { getNormalizePhone } from "./phone";
 
 interface EntityWithId {
@@ -62,9 +62,8 @@ export const getUpdatedEntityArray = <T extends EntityWithId>(
   array: T[],
   key: string = "id"
 ) =>
-  array?.map((item) =>
-    Object.assign({}, item[key] === entity[key] ? entity : item)
-  ) ?? [];
+  array?.map((item) => ({ ...(item[key] === entity[key] ? entity : item) })) ??
+  [];
 
 export const getFiteredEntityArray = (id: string, array: any[]) =>
   array.filter((o) => o.id !== id);
@@ -80,7 +79,7 @@ export const vatRule = {
       return Promise.resolve();
     }
 
-    return Promise.reject("Некорректный формат ИНН");
+    return Promise.reject(new Error("Некорректный формат ИНН"));
   },
 };
 
@@ -95,7 +94,7 @@ export const phoneRule = {
       return Promise.resolve();
     }
 
-    return Promise.reject("Некорректный формат телефона");
+    return Promise.reject(new Error("Некорректный формат телефона"));
   },
 };
 
@@ -107,7 +106,7 @@ export const checkPhone = (value: string) => {
 export const checkINN = (value: any) => {
   if (value.match(/\D/)) return false;
 
-  var inn = value.match(/(\d)/g);
+  const inn = value.match(/(\d)/g);
 
   if (inn.length === 10) {
     return (
@@ -126,7 +125,8 @@ export const checkINN = (value: any) => {
           10
       )
     );
-  } else if (inn.length === 12) {
+  }
+  if (inn.length === 12) {
     return (
       inn[10] ===
         String(

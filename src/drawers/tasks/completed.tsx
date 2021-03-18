@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
+import { isEmpty } from "lodash";
+import { DrawerForm } from "../../components";
 import {
   urls,
   TASK_STATUSES,
@@ -16,7 +17,6 @@ import {
   getFullUrl,
   useFormValues,
 } from "../../utils";
-import { isEmpty } from "lodash";
 
 export const CompleteTask = ({
   title,
@@ -29,7 +29,7 @@ export const CompleteTask = ({
   const metaCompletedInfo = {
     taskStatus: TASK_STATUSES.COMPLETED,
   };
-  const { values } = useFormValues(FORM_NAMES.TASK_COMPLETED);
+  const { values } = useFormValues<TaskEntityProps>(FORM_NAMES.TASK_COMPLETED);
 
   const onFinish = async (data: Store) => {
     setLoading(true);

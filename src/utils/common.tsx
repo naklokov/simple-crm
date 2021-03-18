@@ -1,11 +1,11 @@
 import React from "react";
-import { urls, ErrorProps } from "../constants";
 import axios from "axios";
 import moment from "moment-timezone";
 import Cookies from "js-cookie";
-import { logger } from ".";
-import { COOKIES } from "../constants/http";
 import { Dispatch } from "@reduxjs/toolkit";
+import { message } from "antd";
+import { Link } from "react-router-dom";
+import { Route } from "antd/lib/breadcrumb/Breadcrumb";
 import {
   setAuth,
   setClients,
@@ -13,9 +13,10 @@ import {
   setPermissions,
   setProfileInfo,
 } from "../__data__";
-import { message } from "antd";
-import { Link } from "react-router-dom";
-import { Route } from "antd/lib/breadcrumb/Breadcrumb";
+import { COOKIES } from "../constants/http";
+import { logger } from "./index";
+
+import { urls, ErrorProps, ClientEntityProps } from "../constants";
 
 interface DefaultErrorHandlerProps {
   error: ErrorProps;
@@ -67,6 +68,10 @@ export const logout = async (dispatch: Dispatch) => {
 };
 
 export const FormContext = React.createContext<any>("");
+
+export const ClientsPersonalContext = React.createContext<ClientEntityProps[]>(
+  []
+);
 
 const getTemplateMask = (param: string) => `{{${param}}}`;
 
@@ -196,7 +201,7 @@ export const checkMobile = () => {
  */
 export const pluralize = (count: number, vars: string[]) => {
   const number = Math.abs(count) % 100;
-  var n1 = number % 10;
+  const n1 = number % 10;
   if (count > 10 && count < 20) {
     return vars[2];
   }
@@ -208,4 +213,17 @@ export const pluralize = (count: number, vars: string[]) => {
   }
 
   return vars[2];
+};
+
+/**
+ * Метод записи переменной в буфер обмена
+ * @param str Значение копируемое в буфер обмена
+ */
+export const copyToClipboard = (str: string) => {
+  const el = document.createElement("textarea");
+  el.value = str;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
 };

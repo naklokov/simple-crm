@@ -4,8 +4,8 @@ import { Input, Button, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import noop from "lodash/noop";
 
-import style from "./header.module.scss";
 import { ClearOutlined } from "@ant-design/icons";
+import style from "./header.module.scss";
 
 interface HeaderProps {
   withSearch?: boolean;
@@ -14,12 +14,12 @@ interface HeaderProps {
   onResetAllFilters: () => void;
 }
 
-export const Header = ({
+export const Header: React.FC<HeaderProps> = ({
   withSearch = false,
   onSearch = noop,
   extra,
   onResetAllFilters,
-}: HeaderProps) => {
+}) => {
   const [t] = useTranslation("table");
   const [value, setValue] = useState("");
 

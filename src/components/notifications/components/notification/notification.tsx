@@ -1,8 +1,8 @@
 import React, { ReactNode, useCallback } from "react";
 import { List } from "antd";
-import { NotificationProps } from "../../../../constants";
 import { useTranslation } from "react-i18next";
 import { BellOutlined } from "@ant-design/icons";
+import { NotificationProps } from "../../../../constants";
 import { ButtonSecondary } from "../button-secondary";
 
 import style from "./notification.module.scss";
@@ -14,16 +14,16 @@ interface NotificationComponentProps extends NotificationProps {
   onDelete?: (id: string) => void;
 }
 
-const Notification = ({
+const Notification: React.FC<NotificationComponentProps> = ({
   id,
   icon = <BellOutlined />,
   title,
   content,
   onHide,
   onDelete,
-}: NotificationComponentProps) => {
+}) => {
   const [t] = useTranslation("notifications");
-  let actions = [];
+  const actions = [];
 
   const handleHide = useCallback(() => {
     onHide?.(id);

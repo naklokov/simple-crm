@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useCallback, SyntheticEvent } from "react";
+import React, { useState, useCallback } from "react";
 import { Form, Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
 
+import { FormInstance } from "antd/lib/form";
 import style from "./form-footer.module.scss";
 import { ComponentPermissionsChecker } from "../../wrappers";
-import { FormInstance } from "antd/lib/form";
-import { Store } from "antd/lib/form/interface";
-import { isValuesChanged } from "../../utils";
 
 interface FormFooterProps {
   form?: FormInstance;
@@ -17,14 +15,14 @@ interface FormFooterProps {
   onCancel?: () => void;
 }
 
-export const FormFooter = ({
+export const FormFooter: React.FC<FormFooterProps> = ({
   form,
   disabled,
   loading = false,
   permissions = [],
   withCancel = true,
   onCancel,
-}: FormFooterProps) => {
+}) => {
   const [visible, setVisible] = useState(false);
   const [t] = useTranslation("formFooter");
 

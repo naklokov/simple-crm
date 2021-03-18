@@ -1,7 +1,7 @@
 import moment from "moment-timezone";
 import * as redux from "react-redux";
 import { renderHook } from "@testing-library/react-hooks";
-import * as uuid from "uuid";
+import uuid from "uuid";
 import { DATE_FORMATS } from "../../../constants";
 
 import { useColumns, checkDaysEqual, getUpdatedColumns } from "../utils";
@@ -17,7 +17,7 @@ const columns: ColumnTaskProps[] = [
     dividerColor: "#FFFFFF",
     query: "ololo",
     reloadKey: "111",
-    titleType: void 0,
+    titleType: undefined,
   },
   {
     title: "Просроченные",
@@ -26,7 +26,7 @@ const columns: ColumnTaskProps[] = [
     dividerColor: "#FFFFFF",
     query: "ololo",
     reloadKey: "222",
-    titleType: void 0,
+    titleType: undefined,
   },
   {
     title: moment(dateSampleIso).format(DATE_FORMATS.DATE),
@@ -35,7 +35,7 @@ const columns: ColumnTaskProps[] = [
     dividerColor: "#FFFFFF",
     query: "ololo",
     reloadKey: "333",
-    titleType: void 0,
+    titleType: undefined,
   },
 ];
 
@@ -127,7 +127,7 @@ test("useColumns date mode", () => {
     dividerColor: DIVIDER_COLORS[1],
     reloadKey: "1",
     title: secondDay.format(DATE_FORMATS.DATE),
-    titleType: void 0,
+    titleType: undefined,
   });
 
   const thirdDay = moment(selectedDate).add(1, "days");
@@ -175,7 +175,7 @@ test("useColumns date mode (near today date)", () => {
     dividerColor: DIVIDER_COLORS[1],
     reloadKey: "1",
     title: secondDay.format(DATE_FORMATS.DATE),
-    titleType: void 0,
+    titleType: undefined,
   });
 
   const thirdDay = moment(selectedDate).add(1, "days");
@@ -210,7 +210,7 @@ test("useColumns today mode", () => {
     dividerColor: DIVIDER_COLORS[0],
     reloadKey: "1",
     title: "today.title",
-    titleType: void 0,
+    titleType: undefined,
   });
 
   const secondDate = moment(selectedDate).add(1, "days");
@@ -223,7 +223,7 @@ test("useColumns today mode", () => {
     dividerColor: DIVIDER_COLORS[1],
     reloadKey: "1",
     title: "tommorow.title",
-    titleType: void 0,
+    titleType: undefined,
   });
 
   const thirdDate = moment(selectedDate).subtract(1, "days").endOf("day");
@@ -234,6 +234,6 @@ test("useColumns today mode", () => {
     dividerColor: DIVIDER_COLORS[2],
     reloadKey: "1",
     title: "overdue.title",
-    titleType: void 0,
+    titleType: undefined,
   });
 });

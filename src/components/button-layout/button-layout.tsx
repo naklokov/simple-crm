@@ -1,8 +1,8 @@
 import React from "react";
 import { Tooltip } from "antd";
 
-import style from "./button-layout.module.scss";
 import { noop } from "lodash";
+import style from "./button-layout.module.scss";
 import { TOOLTIP_SHOW_DELAY } from "../../constants";
 
 interface IconLayoutProps {
@@ -11,11 +11,12 @@ interface IconLayoutProps {
   onClick?: () => void;
 }
 
-const ButtonLayout = ({
+const ButtonLayout: React.FC<IconLayoutProps> = ({
   children,
   tooltip,
   onClick = noop,
-}: IconLayoutProps) => (
+}) => (
+  // eslint-disable-next-line
   <div className={style.container} onClick={onClick}>
     <Tooltip mouseEnterDelay={TOOLTIP_SHOW_DELAY} title={tooltip}>
       {children}

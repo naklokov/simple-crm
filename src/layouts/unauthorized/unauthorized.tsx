@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 
+import { connect } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
 import style from "./unauthorized.module.scss";
 import { logo } from "../../assets/img";
 import { State } from "../../constants";
-import { connect } from "react-redux";
 import { Loader } from "../../components";
 import { checkAuthCookie } from "../../utils";
-import { Dispatch } from "@reduxjs/toolkit";
 import { setAuth as setAuthAction } from "../../__data__";
 
 interface LoginProps {
@@ -18,18 +18,18 @@ interface LoginProps {
   children: JSX.Element;
 }
 
-export const Unauthorized = ({
+export const Unauthorized: React.FC<LoginProps> = ({
   auth,
   setAuth,
   loading,
   children,
-}: LoginProps) => {
+}) => {
   useEffect(() => {
     const isCheckSuccessfull = checkAuthCookie();
     if (isCheckSuccessfull && !auth) {
       setAuth(true);
     }
-  }, [auth]);
+  }, [auth, setAuth]);
 
   return (
     <div className={style.form}>

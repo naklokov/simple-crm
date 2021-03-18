@@ -23,6 +23,8 @@ export const loadState = () => {
   } catch (error) {
     logger.error({ message: error?.message ?? ERRORS_MESSAGE.LOAD });
   }
+
+  return undefined;
 };
 
 export const saveState = (state: LocalStorageState) => {

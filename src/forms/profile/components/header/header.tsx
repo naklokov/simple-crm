@@ -1,9 +1,9 @@
 import React from "react";
 import { random } from "lodash";
-import { Avatar } from "../../../../components";
 import { Typography, Tabs } from "antd";
-import { State, ProfileInfoProps } from "../../../../constants";
 import { connect } from "react-redux";
+import { Avatar } from "../../../../components";
+import { State, ProfileInfoEntityProps } from "../../../../constants";
 import { TABS_CONTENT } from "../../constansts";
 
 import style from "./header.module.scss";
@@ -11,7 +11,7 @@ import style from "./header.module.scss";
 const { TabPane } = Tabs;
 
 interface HeaderProps {
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
   onChangeTab: (key: string) => void;
 }
 

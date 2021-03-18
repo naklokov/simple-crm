@@ -1,12 +1,7 @@
 import { Rule } from "antd/lib/form";
+import { LinksType } from "./entities";
 
 // Типы
-
-type LinksType = {
-  self: {
-    href: string;
-  };
-};
 
 export type TabType = "container" | "table" | "custom";
 
@@ -82,7 +77,7 @@ export interface TabProps {
   fields?: FieldProps[];
   columns?: ColumnProps[];
   actions?: ActionProps[];
-  _links: object;
+  _links: LinksType;
 }
 
 export interface TableProps {

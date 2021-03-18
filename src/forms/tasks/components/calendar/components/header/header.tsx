@@ -1,6 +1,6 @@
-import React, { useCallback } from "react";
+import React from "react";
 import moment from "moment-timezone";
-import { Col, Row, Select } from "antd";
+import { Col, Row, Select, Typography } from "antd";
 
 interface HeaderProps {
   value: moment.Moment;
@@ -43,13 +43,13 @@ export const Header = ({ value, type, onChange }: HeaderProps) => {
     <div style={{ margin: 8 }}>
       <Row gutter={8}>
         <Col>
-          <a
+          <Typography.Link
             onClick={() => {
               onChange(moment());
             }}
           >
             Сегодня
-          </a>
+          </Typography.Link>
         </Col>
         <Col>
           <Select

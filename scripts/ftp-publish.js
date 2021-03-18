@@ -4,11 +4,18 @@ const path = require("path");
 const dotenvPath = path.join(__dirname, "..", ".env");
 require("dotenv").config({ path: dotenvPath });
 
+const {
+  HOST: host,
+  USERNAME: username,
+  PASSWORD: password,
+  PORT: port = 22,
+} = process.env;
+
 const config = {
-  host: "176.118.220.215",
-  username: "admn",
-  password: "olvje2021",
-  port: 22,
+  host,
+  username,
+  password,
+  port,
 };
 
 async function main() {

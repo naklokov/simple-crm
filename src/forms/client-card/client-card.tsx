@@ -1,30 +1,31 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
+import { isEmpty } from "lodash";
 import {
   FORM_NAMES,
   PERMISSIONS,
   QueryProps,
   urls,
-  ProfileInfoProps,
+  ProfileInfoEntityProps,
   State,
+  ClientEntityProps,
 } from "../../constants";
-import { connect } from "react-redux";
-import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
-import { setLoading } from "../../__data__";
+import { setLoading as setLoadingAction } from "../../__data__";
 import { getClientCardMode } from "./utils";
 import { Tabs, Loader } from "../../components";
 import { upper, lower } from "../../constants/form-config/client-card";
 import { Main, Comments, Contacts, Requisites, PriceList, Tasks } from "./tabs";
 import { defaultErrorHandler, getFullUrl, useFormValues } from "../../utils";
-import { isEmpty } from "lodash";
 import { ClientCardHeader } from ".";
 import { PagePermissionsChecker } from "../../wrappers";
 
 interface ClientCardProps {
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
   setLoading: (loading: boolean) => void;
 }
 
@@ -42,7 +43,7 @@ export const TABS_MAP: {
 export const ClientCard = ({ setLoading }: ClientCardProps) => {
   const { id: clientId } = useParams<QueryProps>();
   const [t] = useTranslation(FORM_NAMES.CLIENT_CARD);
-  const { values: client, update, clear } = useFormValues(
+  const { values: client, update, clear } = useFormValues<ClientEntityProps>(
     FORM_NAMES.CLIENT_CARD
   );
 
@@ -81,7 +82,7 @@ export const ClientCard = ({ setLoading }: ClientCardProps) => {
     <PagePermissionsChecker
       availablePermissions={[PERMISSIONS.CLIENTS["GET.ALL"]]}
     >
-      <React.Fragment>
+      <>
         <ClientCardHeader />
         <Tabs
           mainTab={upper.tabs[0].tabName}
@@ -98,7 +99,7 @@ export const ClientCard = ({ setLoading }: ClientCardProps) => {
             tabsMap={TABS_MAP}
           />
         )}
-      </React.Fragment>
+      </>
     </PagePermissionsChecker>
   );
 };
@@ -109,6 +110,6 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispathToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setLoading }, dispatch);
+  bindActionCreators({ setLoading: setLoadingAction }, dispatch);
 
 export default connect(mapStateToProps, mapDispathToProps)(ClientCard);

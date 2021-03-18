@@ -1,6 +1,10 @@
 import React, { ReactNode, useCallback } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import { PageHeader } from "antd";
+import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import {
   BREADCRUMB_ROUTES,
   ClientEntityProps,
@@ -10,9 +14,6 @@ import {
   State,
   CLIENT_NEW_ID,
 } from "../../constants";
-import { connect } from "react-redux";
-import { useHistory, useParams } from "react-router";
-import { PageHeader } from "antd";
 import {
   callTel,
   defaultErrorHandler,
@@ -22,7 +23,6 @@ import {
 } from "../../utils";
 import { setLoading } from "../../__data__";
 import { Call, Delete } from "./components";
-import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 
 interface ClientCardHeaderProps {
   client: ClientEntityProps;
@@ -34,7 +34,7 @@ export const ClientCardHeader = ({ client }: ClientCardHeaderProps) => {
   const { id } = useParams<QueryProps>();
   const isNew = id === CLIENT_NEW_ID;
 
-  const { shortName, phone, isOwner } = client;
+  const { shortName, phone } = client;
   const title = shortName || t("title.new");
 
   const fetchDelete = async () => {

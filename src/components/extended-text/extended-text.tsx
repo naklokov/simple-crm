@@ -15,12 +15,12 @@ const FONT_SIZE_MAP: { [key: string]: string } = {
   small: "12px",
 };
 
-const ExtendedText = ({
+const ExtendedText: React.FC<ExtendedTextProps> = ({
   size = "default",
   children,
   style,
   ...props
-}: ExtendedTextProps) => {
+}) => {
   const fontSize = FONT_SIZE_MAP[size];
 
   return (

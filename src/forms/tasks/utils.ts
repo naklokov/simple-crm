@@ -85,7 +85,7 @@ const getDateViewColumns = (selectedDate: string, profileInfoId: string) => {
       date: date.toISOString(),
       query: getDateRsql(date.toISOString(), profileInfoId),
       title: date.format(DATE_FORMATS.DATE),
-      titleType: !isSelectedDate ? "secondary" : void 0,
+      titleType: !isSelectedDate ? "secondary" : undefined,
       dividerColor: DIVIDER_COLORS[idx],
     });
   });
@@ -96,6 +96,7 @@ export const checkDaysEqual = (date: string, comparedDate?: string) =>
 
 export const getUpdatedColumns = (columns: ColumnTaskProps[], date: string) =>
   columns.map((column) => {
+    // проверка для обычных колонок
     if (column.date && checkDaysEqual(column.date, date)) {
       return {
         ...column,
@@ -103,6 +104,7 @@ export const getUpdatedColumns = (columns: ColumnTaskProps[], date: string) =>
       };
     }
 
+    // проверка для колонки "Просроченные"
     if (!column.date && checkOverdue(date)) {
       return {
         ...column,

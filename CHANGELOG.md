@@ -1,4 +1,22 @@
 
+<a name="0.4.0"></a>
+## [0.4.0](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.4.0..0.3.1) (2021-03-18)
+
+### Bug Fixes
+
+* Исправить удаление контактов из карточки клиента [OLVE-551] fix: Исправить перенос задачи во вкладке "задачи" в новый столбец при редактировании [OLVE-553]
+* Исправить скрипт проливки под работу с jenkins
+* Исправить возможность копирования email и номера телефона из таблиц [OLVE-478]
+
+### Features
+
+* Поднять версию react-scripts fix: Исправить тесты fix: Исправить ошибки из-за typescript-airbnb-config
+
+### Minor fixes
+
+* Добавить автоматическую генерацию CHANGELOG при npm version скрипте
+
+
 <a name="0.3.1"></a>
 ## [0.3.1](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.3.1..0.3.0) (2021-03-11)
 

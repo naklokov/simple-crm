@@ -1,3 +1,3 @@
-const logo = require("./logo.png");
+import logo from "./logo.png";
 
 export { logo };

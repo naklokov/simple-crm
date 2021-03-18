@@ -1,8 +1,18 @@
-import React, { useEffect, useMemo } from "react";
+import React, { ReactNode, useEffect, useMemo } from "react";
 import { Table as TableUI } from "antd";
 
-import { ColumnProps, ActionProps, RecordType, State } from "../../constants";
 import { useTranslation } from "react-i18next";
+import noop from "lodash/noop";
+import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
+import { connect, useDispatch } from "react-redux";
+import { TablePaginationConfig } from "antd/lib/table";
+import {
+  ColumnProps,
+  ActionProps,
+  RecordType,
+  State,
+  LinksType,
+} from "../../constants";
 import {
   getActions,
   getDataColumns,
@@ -13,17 +23,18 @@ import {
   TableActionsContext,
 } from "./utils";
 import { Header } from "./components";
-import noop from "lodash/noop";
 
 import style from "./table.module.scss";
 
 import { setTableLoading } from "../../__data__";
-import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
-import { connect, useDispatch } from "react-redux";
-import { TablePaginationConfig } from "antd/lib/table";
 
-import TableServer from "./server-paging";
-import TableClient from "./client-paging";
+import TableServer, { TableWithServerPagingProps } from "./server-paging";
+import TableClient, { TableWithClientPagingProps } from "./client-paging";
+
+interface TableExtendsProps {
+  Server: React.FC<TableWithServerPagingProps>;
+  Client: React.FC<TableWithClientPagingProps>;
+}
 
 interface TableProps {
   dataSource: any[];
@@ -32,7 +43,7 @@ interface TableProps {
   loading?: boolean;
   tableLoading: boolean;
   pagination?: TablePaginationConfig;
-  _links?: any;
+  _links?: LinksType;
   onDeleteRow?: (id: string) => void;
   onViewRow?: (id: string) => void;
   onSaveRow?: (record: any) => void;
@@ -60,8 +71,8 @@ interface TableProps {
   bordered?: boolean;
 }
 
-export const Table = ({
-  _links = {},
+export const Table: React.FC<TableProps> & TableExtendsProps = ({
+  _links,
   columns,
   className,
   dataSource,
@@ -84,14 +95,13 @@ export const Table = ({
   searchAll = "",
   searchedColumns = {},
   bordered = false,
-}: TableProps) => {
+}) => {
   const [t] = useTranslation("table");
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const { self, ...links } = _links;
-    fetchDictionaries(links, dispatch);
-  }, [_links, dispatch]);
+    fetchDictionaries(dispatch, _links);
+  }, [dispatch, _links]);
 
   const title =
     withSearch || extraHeader
@@ -103,7 +113,7 @@ export const Table = ({
             onResetAllFilters={onResetAllFilters}
           />
         )
-      : void 0;
+      : undefined;
 
   const dataSourceWithKeys = useMemo(
     () =>

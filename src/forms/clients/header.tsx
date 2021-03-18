@@ -1,17 +1,21 @@
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
+import { Button, PageHeader, Space } from "antd";
 import {
   PERMISSIONS,
   urls,
   CLIENT_NEW_ID,
   BREADCRUMB_ROUTES,
 } from "../../constants";
-import { useHistory } from "react-router";
 import { getFullUrl, getItemRender } from "../../utils";
-import { Button, PageHeader, Space } from "antd";
 import { ComponentPermissionsChecker } from "../../wrappers";
 
-export const ClientsHeader = ({ title }: { title?: string }) => {
+interface ClientsHeaderProps {
+  title?: string;
+}
+
+export const ClientsHeader: React.FC<ClientsHeaderProps> = ({ title }) => {
   const [t] = useTranslation("clients");
   const history = useHistory();
 
@@ -30,11 +34,11 @@ export const ClientsHeader = ({ title }: { title?: string }) => {
       <ComponentPermissionsChecker
         availablePermissions={[PERMISSIONS.CLIENTS["ADD.ALL"]]}
       >
-        <React.Fragment>
+        <>
           <Button type="primary" onClick={handleClickAdd}>
             {title || t("button.add.title")}
           </Button>
-        </React.Fragment>
+        </>
       </ComponentPermissionsChecker>
     </Space>
   );
@@ -48,5 +52,3 @@ export const ClientsHeader = ({ title }: { title?: string }) => {
     />
   );
 };
-
-export default ClientsHeader;
