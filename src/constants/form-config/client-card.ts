@@ -16,7 +16,7 @@ interface LowerProps {
 }
 
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
-const EMAIL_MESSAGE = "Пожалуйста, введите корректный email";
+const EMAIL_MESSAGE = "Пожалуйста, введите корректный e-mail";
 const PLACEHOLDER_DEFAULT = "Введите значение";
 
 export const lower: LowerProps = {
@@ -176,7 +176,7 @@ export const upper: UpperProps = {
         },
         {
           fieldCode: "email",
-          fieldName: "Email",
+          fieldName: "E-mail",
           fieldDescription: "",
           type: "email",
           readonly: false,

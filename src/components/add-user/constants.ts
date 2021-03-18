@@ -1,7 +1,7 @@
 import { FieldProps, urls } from "../../constants";
 
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
-const EMAIL_MESSAGE = "Пожалуйста, введите корректный email";
+const EMAIL_MESSAGE = "Пожалуйста, введите корректный e-mail";
 const PLACEHOLDER_DEFAULT = "Введите значение";
 
 export const NAME = "ADD_USER";
@@ -27,7 +27,7 @@ export const FIELDS: FieldProps[] = [
   },
   {
     fieldCode: "email",
-    fieldName: "Email",
+    fieldName: "E-mail",
     fieldDescription: "",
     type: "email",
     readonly: false,
