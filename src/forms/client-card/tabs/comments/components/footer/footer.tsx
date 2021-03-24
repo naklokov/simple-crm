@@ -45,6 +45,7 @@ export const Footer = ({ onSend }: FooterProps) => {
         value={comment}
         onPressEnter={handleClick}
         onChange={handleChange}
+        maxLength={10000}
       />
       <Button
         type="primary"

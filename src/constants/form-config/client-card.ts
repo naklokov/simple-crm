@@ -17,7 +17,14 @@ interface LowerProps {
 
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
 const EMAIL_MESSAGE = "Пожалуйста, введите корректный e-mail";
+const URL_MESSAGE = "Пожалуйста, введите корректный url";
+const KPP_MESSAGE = "Некорректный формат КПП";
+const CHECKING_ACCOUNT_MESSAGE = "Некорректный формат расчетного счета";
+const CORRESPONDENT_ACCOUNT_MESSAGE =
+  "Некорректный формат корреспондентского счета";
 const PLACEHOLDER_DEFAULT = "Введите значение";
+const getMaxLengthMessage = (len: number) =>
+  `Превышена максимальная длина - ${len} символов`;
 
 export const lower: LowerProps = {
   drawers: [
@@ -159,7 +166,10 @@ export const upper: UpperProps = {
           disabled: false,
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          rules: [
+            { required: true, message: REQUIRED_MESSAGE },
+            { max: 100, message: getMaxLengthMessage(100) },
+          ],
           permissions: [],
         },
         {
@@ -200,7 +210,7 @@ export const upper: UpperProps = {
           disabled: false,
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [],
+          rules: [{ max: 1000, message: getMaxLengthMessage(1000) }],
           permissions: [],
         },
         {
@@ -214,7 +224,7 @@ export const upper: UpperProps = {
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           rows: 2,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [],
+          rules: [{ max: 2000, message: getMaxLengthMessage(2000) }],
           permissions: [],
         },
       ],
@@ -235,7 +245,10 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          rules: [
+            { required: true, message: REQUIRED_MESSAGE },
+            { max: 1000, message: getMaxLengthMessage(1000) },
+          ],
           permissions: [],
         },
         {
@@ -246,7 +259,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [],
+          rules: [{ max: 100, message: getMaxLengthMessage(100) }],
           permissions: [],
         },
         {
@@ -257,7 +270,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [],
+          rules: [{ max: 2000, message: getMaxLengthMessage(2000) }],
           permissions: [],
         },
         {
@@ -306,7 +319,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [],
+          rules: [{ max: 1000, message: getMaxLengthMessage(1000) }],
           permissions: [],
         },
         {
@@ -317,7 +330,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           type: "href",
-          rules: [],
+          rules: [{ pattern: /.+\..+/, message: URL_MESSAGE }],
           permissions: [],
         },
         {
@@ -374,7 +387,7 @@ export const upper: UpperProps = {
           readonly: false,
           span: { xl: 12, md: 12, lg: 12, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [],
+          rules: [{ max: 10000, message: getMaxLengthMessage(10000) }],
           permissions: [],
         },
       ],
@@ -472,7 +485,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [],
+          rules: [vatRule],
           permissions: [],
         },
         {
@@ -483,7 +496,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           type: "string",
-          rules: [],
+          rules: [{ pattern: /^([0-9]{9})?$/, message: KPP_MESSAGE }],
           permissions: [],
         },
         {
@@ -494,7 +507,10 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           type: "string",
-          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          rules: [
+            { required: true, message: REQUIRED_MESSAGE },
+            { max: 2000, message: getMaxLengthMessage(2000) },
+          ],
           permissions: [],
         },
         {
@@ -505,7 +521,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [],
+          rules: [{ max: 1000, message: getMaxLengthMessage(1000) }],
           permissions: [],
         },
         {
@@ -516,7 +532,12 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           type: "string",
-          rules: [],
+          rules: [
+            {
+              pattern: /^(?:[\\. ]*\\d){20}$/,
+              message: CHECKING_ACCOUNT_MESSAGE,
+            },
+          ],
           permissions: [],
         },
         {
@@ -527,7 +548,12 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [],
+          rules: [
+            {
+              pattern: /^(?:[\\. ]*\\d){20}$/,
+              message: CORRESPONDENT_ACCOUNT_MESSAGE,
+            },
+          ],
           permissions: [],
         },
         {
@@ -538,7 +564,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [],
+          rules: [{ max: 1000, message: getMaxLengthMessage(1000) }],
           permissions: [],
         },
         {
@@ -549,7 +575,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [],
+          rules: [{ max: 1000, message: getMaxLengthMessage(1000) }],
           permissions: [],
         },
       ],
