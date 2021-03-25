@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import moment from "moment-timezone";
 import { ColumnProps, RecordType } from "../../../../../constants";
 import { getDateWithTimezone } from "../../../../../utils";
 import { SearchedAllContext, SearchedColumnsContext } from "../../../utils";
@@ -18,11 +19,14 @@ export const Date: React.FC<DateProps> = ({ value, format, column }) => {
 
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
+  const seachedColumnsValue = moment(
+    searchedColumns?.[column.columnCode]
+  ).format(format);
 
   return (
     <HighlightTextWrapper
       text={formattedDate}
-      searched={[searched, searchedColumns[column.columnCode]]}
+      searched={[searched, seachedColumnsValue]}
     />
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useContext } from "react";
 import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
+import { useDispatch } from "react-redux";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import {
   defaultErrorHandler,
@@ -10,6 +11,7 @@ import {
   getSearchRsql,
 } from "../../../utils";
 import { Readonly } from "../readonly";
+import { setFormLoading } from "../../../__data__";
 
 const { Option } = Select;
 
@@ -27,29 +29,39 @@ export const Entity = ({
   span = DEFAULT_FIELD_SPAN,
 }: FieldProps) => {
   const form = useContext(FormContext);
+  const dispatch = useDispatch();
   const [options, setOptions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const url = _links?.self.href ?? "";
 
-  const fetchEntity = async (params: object) => {
-    try {
-      setLoading(true);
-      const url = _links?.self.href ?? "";
-      const response = await axios.get(url, {
-        params,
-      });
-      setOptions(response?.data ?? []);
-    } catch (error) {
-      defaultErrorHandler({ error });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchEntity = useCallback(
+    async (params: object, initial = false) => {
+      try {
+        if (initial) {
+          dispatch(setFormLoading(true));
+        }
+        setLoading(true);
+        const response = await axios.get(url, {
+          params,
+        });
+        setOptions(response?.data ?? []);
+      } catch (error) {
+        defaultErrorHandler({ error });
+      } finally {
+        if (initial) {
+          dispatch(setFormLoading(false));
+        }
+        setLoading(false);
+      }
+    },
+    [url, dispatch]
+  );
 
   useEffect(() => {
     const initialValue = form.getFieldValue(fieldCode);
     const query = getRsqlParams([getEqualRsql(codeField, initialValue)]);
     const params = initialValue ? { query } : {};
-    fetchEntity(params);
+    fetchEntity(params, true);
   }, []);
 
   const handleSearch = useCallback(

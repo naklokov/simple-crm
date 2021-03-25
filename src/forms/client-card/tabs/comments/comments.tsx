@@ -129,7 +129,7 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
   );
 
   return (
-    <div className={style.container}>
+    <form>
       <div ref={listRef} className={style.list}>
         <List
           loading={loading}
@@ -148,7 +148,7 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
         />
       </div>
       <Footer onSend={handleSendComment} />
-    </div>
+    </form>
   );
 };
 

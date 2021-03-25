@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { PageHeader } from "antd";
 import { BREADCRUMB_ROUTES } from "../../constants";
 import { getItemRender } from "../../utils";
+import { FormHeader } from "../../components";
 
 interface TasksHeaderProps {
   extra: ReactNode;
@@ -17,12 +17,7 @@ export const TasksHeader = ({ extra }: TasksHeaderProps) => {
   };
 
   return (
-    <PageHeader
-      ghost={false}
-      title={t("title")}
-      breadcrumb={breadcrumb}
-      extra={extra}
-    />
+    <FormHeader title={t("title")} breadcrumb={breadcrumb} extra={extra} />
   );
 };
 

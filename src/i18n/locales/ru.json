@@ -95,7 +95,8 @@
     "actions.email.yes": "Да",
 
     "search.all.placeholder": "Поиск",
-    "search.all.clear": "Очистить фильтры"
+    "search.all.clear": "Очистить фильтры",
+    "search.all.enter.button": "Найти"
   },
   "clientCard": {
     "button.call": "Звонок",

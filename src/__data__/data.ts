@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+/* eslint-disable */
 const dataSlide = createSlice({
   name: "data",
   initialState: {

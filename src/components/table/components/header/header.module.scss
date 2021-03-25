@@ -1,7 +1,7 @@
 @import "../../../../assets/styles/offsets";
 
 .container {
-  margin: 0 calc(-1 * var(--offset-sm));
+  margin: -12px calc(-1 * var(--offset-sm)) 0 calc(-1 * var(--offset-sm));
 }
 
 .search {
