@@ -20,6 +20,7 @@ const EMAIL_MESSAGE = "Пожалуйста, введите корректный
 const URL_MESSAGE = "Пожалуйста, введите корректный url";
 const KPP_MESSAGE = "Некорректный формат КПП";
 const CHECKING_ACCOUNT_MESSAGE = "Некорректный формат расчетного счета";
+const BANK_BIK_ACCOUNT_MESSAGE = "Некорректный формат расчетного счета";
 const CORRESPONDENT_ACCOUNT_MESSAGE =
   "Некорректный формат корреспондентского счета";
 const PLACEHOLDER_DEFAULT = "Введите значение";
@@ -522,6 +523,22 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [{ max: 1000, message: getMaxLengthMessage(1000) }],
+          permissions: [],
+        },
+        {
+          fieldCode: "servicingBankBik",
+          fieldName: "БИК банка",
+          fieldDescription: "",
+          type: "string",
+          readonly: false,
+          disabled: false,
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [
+            {
+              pattern: /^[0-9]{9}$/,
+              message: BANK_BIK_ACCOUNT_MESSAGE,
+            },
+          ],
           permissions: [],
         },
         {
