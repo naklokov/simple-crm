@@ -19,10 +19,10 @@ const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
 const EMAIL_MESSAGE = "Пожалуйста, введите корректный e-mail";
 const URL_MESSAGE = "Пожалуйста, введите корректный url";
 const KPP_MESSAGE = "Некорректный формат КПП";
-const CHECKING_ACCOUNT_MESSAGE = "Некорректный формат расчетного счета";
-const BANK_BIK_ACCOUNT_MESSAGE = "Некорректный формат расчетного счета";
+const CHECKING_ACCOUNT_MESSAGE = "Некорректный формат расчётного счёта";
+const BANK_BIK_ACCOUNT_MESSAGE = "Некорректный формат расчётного счёта";
 const CORRESPONDENT_ACCOUNT_MESSAGE =
-  "Некорректный формат корреспондентского счета";
+  "Некорректный формат корреспондентского счёта";
 const PLACEHOLDER_DEFAULT = "Введите значение";
 const getMaxLengthMessage = (len: number) =>
   `Превышена максимальная длина - ${len} символов`;
@@ -543,7 +543,7 @@ export const upper: UpperProps = {
         },
         {
           fieldCode: "checkingAccount",
-          fieldName: "Расчетный счет",
+          fieldName: "Расчётный счёт",
           fieldDescription: "",
           readonly: false,
           disabled: false,
@@ -551,7 +551,7 @@ export const upper: UpperProps = {
           type: "string",
           rules: [
             {
-              pattern: /^(?:[\\. ]*\\d){20}$/,
+              pattern: /^\d{20}$/,
               message: CHECKING_ACCOUNT_MESSAGE,
             },
           ],
@@ -559,7 +559,7 @@ export const upper: UpperProps = {
         },
         {
           fieldCode: "correspondentAccount",
-          fieldName: "Корреспондентский счет",
+          fieldName: "Корреспондентский счёт",
           fieldDescription: "",
           type: "string",
           readonly: false,
@@ -567,7 +567,7 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [
             {
-              pattern: /^(?:[\\. ]*\\d){20}$/,
+              pattern: /^\d{20}$/,
               message: CORRESPONDENT_ACCOUNT_MESSAGE,
             },
           ],
