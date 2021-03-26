@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+
 import moment from "moment-timezone";
+import { v4 as uuidv4 } from "uuid";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import {
@@ -7,11 +9,15 @@ import {
   useOverdueTasksTotal,
   useActiveTasks,
   getMoreActiveTasksProps,
-  getActiveTasksProps,
   getOverdueTasksProps,
 } from "./utils";
-import { NotificationProps, TASKS_SHOW_LIMIT } from "../../constants";
+import {
+  NotificationProps,
+  TASKS_SHOW_LIMIT,
+  TASKS_TYPES_ICONS_MAP,
+} from "../../constants";
 import { play as playSound } from "../sounds";
+import { Title, Content } from "./components";
 
 export const useNotificationService = (onClickLink: (id: string) => void) => {
   const [t] = useTranslation("notifications");
@@ -21,15 +27,12 @@ export const useNotificationService = (onClickLink: (id: string) => void) => {
   const activeTasks = useActiveTasks();
   const overdueTasksTotal = useOverdueTasksTotal();
 
-  const addNotification = useCallback(
-    (notification: NotificationProps) => {
-      setNotifications((prevNotifications) => [
-        { ...notification, status: "unread" },
-        ...prevNotifications,
-      ]);
-    },
-    [notifications]
-  );
+  const addNotification = useCallback((notification: NotificationProps) => {
+    setNotifications((prevNotifications) => [
+      { ...notification, status: "unread" },
+      ...prevNotifications,
+    ]);
+  }, []);
 
   // обработка просроченных задач
   useEffect(() => {
@@ -47,23 +50,49 @@ export const useNotificationService = (onClickLink: (id: string) => void) => {
         dateTime: moment().toISOString(),
       });
     }
-  }, [overdueTasksTotal]);
+  }, [overdueTasksTotal, addNotification, history, onClickLink, t]);
 
   // обработка задач на текущее время
   useEffect(() => {
     const isMoreTasks = activeTasks.length > TASKS_SHOW_LIMIT;
 
-    activeTasks.map((task) => {
-      const props = getActiveTasksProps(task, onClickLink, history);
+    activeTasks.forEach((task) => {
+      const {
+        taskType: type,
+        taskDescription: description,
+        taskEndDate: dateTime,
+        clientId,
+      } = task;
+
+      const id = uuidv4();
+      const icon = TASKS_TYPES_ICONS_MAP[type];
+      const title = (
+        <Title
+          id={id}
+          clientId={clientId}
+          onClickLink={onClickLink}
+          history={history}
+        />
+      );
 
       addNotification({
-        ...props,
+        id,
+        icon,
+        title,
+        content: <Content description={description} date={dateTime} />,
         dateTime: task.taskEndDate,
         clientId: task.clientId,
       });
 
       if (!isMoreTasks) {
-        showNotification(props);
+        showNotification({
+          id,
+          icon,
+          title,
+          content: (
+            <Content description={description} date={dateTime} ellipsis />
+          ),
+        });
       }
     });
 
@@ -75,7 +104,7 @@ export const useNotificationService = (onClickLink: (id: string) => void) => {
     if (activeTasks.length) {
       playSound();
     }
-  }, [activeTasks, onClickLink]);
+  }, [addNotification, activeTasks, history, t, onClickLink]);
 
   return { notifications, setNotifications };
 };
