@@ -98,6 +98,10 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
     }
   };
 
+  if (!profileInfo.id) {
+    return null;
+  }
+
   return (
     <div className={style.container}>
       <Form

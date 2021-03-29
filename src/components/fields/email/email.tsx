@@ -47,7 +47,7 @@ export const Email = ({
         name={fieldCode}
         label={fieldName}
         extra={fieldDescription}
-        validateTrigger="onSubmit"
+        validateTrigger="onBlur"
         rules={rules}
         getValueProps={handleValueProps}
       >
