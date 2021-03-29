@@ -137,7 +137,7 @@ export const lower: LowerProps = {
           columnActions: [],
         },
         {
-          columnName: "Примечание",
+          columnName: "Комментарий",
           columnCode: "note",
           columnType: "string",
           columnDescription: "Комментарий о выполнении задачи",
