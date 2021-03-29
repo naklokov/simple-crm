@@ -1,50 +1,53 @@
 {
   "name": "olivje.crm.pl",
-  "version": "0.3.1",
+  "version": "0.4.1",
   "homepage": "http://localhost:3000",
   "author": {
     "name": "klokov-na"
   },
   "private": true,
   "dependencies": {
-    "@ant-design/icons": "^4.5.0",
+    "@ant-design/icons": "4.5.0",
     "@reduxjs/toolkit": "1.4.0",
+    "@testing-library/react-hooks": "5.0.3",
     "@types/axios": "0.14.0",
     "@types/classnames": "2.2.11",
-    "@types/jest": "26.0.0",
+    "@types/jest": "26.0.20",
     "@types/js-cookie": "2.2.6",
     "@types/lodash": "4.14.158",
     "@types/moment-timezone": "0.5.30",
     "@types/node": "14.0.13",
-    "@types/react": "16.9.36",
-    "@types/react-dom": "16.9.8",
+    "@types/react": "16.14.5",
+    "@types/react-dom": "16.9.11",
     "@types/react-highlight-words": "0.16.1",
     "@types/react-infinite-scroller": "1.2.1",
     "@types/react-redux": "7.1.9",
-    "@types/react-router": "5.1.8",
+    "@types/react-router": "5.1.12",
     "@types/react-router-dom": "5.1.5",
     "@types/react-text-mask": "5.4.6",
+    "@types/uuid": "8.3.0",
     "antd": "4.12.3",
     "axios": "0.21.0",
     "classnames": "2.2.6",
-    "http-proxy-middleware": "1.0.6",
+    "history": "5.0.0",
     "i18next": "19.4.5",
     "js-cookie": "2.2.1",
     "lodash": "4.17.19",
-    "moment-timezone": "^0.5.33",
+    "moment": "2.29.1",
+    "moment-timezone": "0.5.33",
     "query-string": "6.13.2",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
     "react-highlight-words": "0.16.0",
     "react-i18next": "11.5.1",
     "react-infinite-scroller": "1.2.4",
     "react-redux": "7.2.0",
-    "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "4.0.3",
     "react-spinners": "0.9.0",
     "react-text-mask": "5.4.3",
-    "typescript": "4.1.5"
+    "typescript": "4.1.5",
+    "uuid": "8.3.0"
   },
   "repository": {
     "type": "git",
@@ -56,13 +59,12 @@
     "dev": "concurrently \"npm run server\" \"npm start\"",
     "rest": "npm start",
     "build": "react-scripts build",
-    "deploy:dev": "node scripts/dev-ftp-deploy.js",
-    "deploy:prom": "node scripts/prom-ftp-deploy.js",
-    "publish:dev": "npm i && npm run build && npm run deploy:dev",
-    "publish:prom": "npm i && npm run build && npm run deploy:prom",
     "test": "react-scripts test",
     "test:coverage": "npm test -- --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "changelog": "git-chglog -o CHANGELOG.md",
+    "version": "node scripts/create-changelog.js",
+    "postversion": "git push && git push --tags"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -80,25 +82,29 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/react-hooks": "^5.0.3",
     "@types/enzyme": "3.10.5",
     "@types/react-test-renderer": "^16.9.2",
     "@types/redux-mock-store": "^1.0.2",
-    "@types/uuid": "^8.3.0",
     "axios-mock-adapter": "^1.18.1",
     "concurrently": "^5.2.0",
     "enzyme": "^3.11.0",
+    "http-proxy-middleware": "1.0.6",
     "enzyme-adapter-react-16": "^1.15.2",
-    "eslint-config-airbnb-typescript": "^8.0.2",
-    "eslint-config-prettier": "^6.11.0",
-    "ftp-deploy": "^2.3.7",
-    "jest-enzyme": "^7.1.2",
+    "eslint-config-airbnb-typescript": "12.3.1",
+    "eslint-config-prettier": "8.1.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-prettier": "3.3.1",
+    "jest-enzyme": "7.1.2",
     "json-server": "^0.16.1",
     "node-sass": "^4.14.1",
     "prettier": "2.0.5",
     "react-test-renderer": "^16.13.1",
     "redux-mock-store": "^1.5.4",
-    "ssh2-sftp-client": "^5.3.2",
-    "uuid": "^8.3.0"
+    "ssh2-sftp-client": "^5.3.2"
+  },
+  "jest": {
+    "testMatch": [
+      "**/*.spec.ts"
+    ]
   }
 }

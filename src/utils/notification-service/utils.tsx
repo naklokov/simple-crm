@@ -4,6 +4,7 @@ import axios from "axios";
 import moment from "moment-timezone";
 import { v4 as uuidv4 } from "uuid";
 import { notification } from "antd";
+import { useSelector } from "react-redux";
 import {
   EntityOwnerProps,
   NotificationProps,
@@ -14,7 +15,6 @@ import {
   TASKS_ACTIVE_DURATION,
   urls,
 } from "../../constants";
-import { useSelector } from "react-redux";
 import { getDateRsql, getOverdueRsql } from "../tasks";
 import { defaultErrorHandler, pluralize } from "../common";
 import { InfoIcon, NotificationWarning } from "../../assets/icons";
@@ -153,38 +153,6 @@ export const updateNotificationStatus = (
 
     return notif;
   });
-
-export const getActiveTasksProps = (
-  task: TaskEntityProps,
-  onClickLink: (id: string) => void,
-  history: History
-) => {
-  const {
-    taskType: type,
-    taskDescription: description,
-    taskEndDate: dateTime,
-    clientId,
-  } = task;
-
-  const id = uuidv4();
-  const icon = TASKS_TYPES_ICONS_MAP[type];
-  const title = (
-    <Title
-      id={id}
-      clientId={clientId}
-      onClickLink={onClickLink}
-      history={history}
-    />
-  );
-  const content = <Content description={description} date={dateTime} />;
-
-  return {
-    id,
-    icon,
-    title,
-    content,
-  };
-};
 
 export const getMoreActiveTasksProps = (count: number, t: Function) => {
   const id = uuidv4();

@@ -1,8 +1,8 @@
-import React, { ReactNode, useCallback } from "react";
+import React, { ReactNode, useCallback, useState } from "react";
 import { List } from "antd";
-import { NotificationProps } from "../../../../constants";
 import { useTranslation } from "react-i18next";
 import { BellOutlined } from "@ant-design/icons";
+import { NotificationProps } from "../../../../constants";
 import { ButtonSecondary } from "../button-secondary";
 
 import style from "./notification.module.scss";
@@ -14,16 +14,17 @@ interface NotificationComponentProps extends NotificationProps {
   onDelete?: (id: string) => void;
 }
 
-const Notification = ({
+const Notification: React.FC<NotificationComponentProps> = ({
   id,
   icon = <BellOutlined />,
   title,
   content,
   onHide,
   onDelete,
-}: NotificationComponentProps) => {
+}) => {
   const [t] = useTranslation("notifications");
-  let actions = [];
+  const actions = [];
+  const [hover, setHover] = useState(false);
 
   const handleHide = useCallback(() => {
     onHide?.(id);
@@ -34,11 +35,19 @@ const Notification = ({
   }, [onDelete, id]);
 
   const hide = (
-    <ButtonSecondary onClick={handleHide}>{t("actions.read")}</ButtonSecondary>
+    <ButtonSecondary
+      style={{ visibility: hover ? "visible" : "hidden" }}
+      onClick={handleHide}
+    >
+      {t("actions.read")}
+    </ButtonSecondary>
   );
 
   const del = (
-    <ButtonSecondary onClick={handleDelete}>
+    <ButtonSecondary
+      style={{ visibility: hover ? "visible" : "hidden" }}
+      onClick={handleDelete}
+    >
       {t("actions.delete")}
     </ButtonSecondary>
   );
@@ -53,8 +62,20 @@ const Notification = ({
 
   const avatar = <div className={style.icon}>{icon}</div>;
 
+  const handleMouseEnter = useCallback(() => {
+    setHover(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setHover(false);
+  }, []);
+
   return (
-    <List.Item actions={actions}>
+    <List.Item
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      actions={actions}
+    >
       <List.Item.Meta avatar={avatar} title={title} description={content} />
     </List.Item>
   );

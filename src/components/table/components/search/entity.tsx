@@ -1,10 +1,10 @@
 import React, { useCallback, useContext } from "react";
 import { Select } from "antd";
-import { SearchFooter } from ".";
 import { WithTranslation, withTranslation } from "react-i18next";
-import { ColumnProps, State } from "../../../../constants";
 import { flow } from "lodash";
 import { connect } from "react-redux";
+import { ColumnProps, State } from "../../../../constants";
+import { SearchFooter } from ".";
 import { TableActionsContext } from "../../utils";
 
 interface EntitySearchProps extends WithTranslation {

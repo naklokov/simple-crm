@@ -16,7 +16,7 @@ import {
 const checkColumnActionType = (column: ColumnProps, actionType: ActionType) =>
   column.columnActions?.some((o: ActionProps) => o.actionType === "call");
 
-const getSearchComponent = (column: ColumnProps) => {
+const getSearch = (column: ColumnProps) => {
   if (checkColumnActionType(column, "call")) {
     return PhoneSearch;
   }
@@ -49,13 +49,11 @@ export const getColumnSearchProp = (
     const handleSaveRef = (passedRef: HTMLInputElement) => {
       searchInput = passedRef;
     };
-
-    const filteredValue = searchedColumns?.[column.columnCode];
-
-    const Search = getSearchComponent(column);
-
+    const Search = getSearch(column);
     return {
-      filteredValue: filteredValue ? [filteredValue] : null,
+      filteredValue: searchedColumns?.[column.columnCode]
+        ? [searchedColumns[column.columnCode]]
+        : null,
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -73,7 +71,7 @@ export const getColumnSearchProp = (
       ),
       onFilterDropdownVisibleChange: (visible: boolean) => {
         if (visible) {
-          setTimeout(() => searchInput?.focus?.(), 200);
+          setTimeout(() => searchInput?.select(), 100);
         }
       },
     };

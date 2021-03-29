@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import isEmpty from "lodash/isEmpty";
 import { Col, Form, Select } from "antd";
 import { Dispatch } from "@reduxjs/toolkit";
+import { connect } from "react-redux";
 import {
   DictionaryProps,
   FieldProps,
   DEFAULT_FIELD_SPAN,
 } from "../../../constants";
 import { useFetch } from "../../../utils";
-import { setLoading } from "../../../__data__";
-import { connect } from "react-redux";
+import { setLoading as setLoadingAction } from "../../../__data__";
 import { Readonly } from "../readonly";
 
 const { Option } = Select;
@@ -18,7 +18,7 @@ interface DictionaryComponentProps extends FieldProps {
   setLoading: (loading: boolean) => void;
 }
 
-export const Dictionary = ({
+export const Dictionary: React.FC<DictionaryComponentProps> = ({
   fieldCode,
   rules,
   fieldName,
@@ -29,7 +29,7 @@ export const Dictionary = ({
   _links,
   span = DEFAULT_FIELD_SPAN,
   setLoading,
-}: DictionaryComponentProps) => {
+}) => {
   const [dictionary, setDictionary] = useState<DictionaryProps>({});
   const url = _links?.self.href ?? "";
   const { dictionaryValueEntities: options } = dictionary;
@@ -58,7 +58,7 @@ export const Dictionary = ({
         label={fieldName}
         extra={fieldDescription}
         rules={rules}
-        validateTrigger="onSubmit"
+        validateTrigger="onBlur"
       >
         {readonly ? (
           <Readonly format={formatFunc} />
@@ -81,7 +81,7 @@ export const Dictionary = ({
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setLoading: (loading: boolean) => dispatch(setLoading(loading)),
+  setLoading: (loading: boolean) => dispatch(setLoadingAction(loading)),
 });
 
 export default connect(null, mapDispatchToProps)(Dictionary);

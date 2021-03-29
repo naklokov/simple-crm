@@ -20,7 +20,7 @@ export const TextArea = ({
       label={fieldName}
       extra={fieldDescription}
       rules={rules}
-      validateTrigger="onSubmit"
+      validateTrigger="onBlur"
       style={{ width: "100%" }}
     >
       {readonly ? (

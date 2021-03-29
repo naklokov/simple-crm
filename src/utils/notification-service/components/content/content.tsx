@@ -8,11 +8,16 @@ import style from "./content.module.scss";
 interface ContentProps {
   date: string;
   description?: React.ReactNode | string;
+  ellipsis?: boolean;
 }
 
-export const Content = ({ date, description }: ContentProps) => (
+export const Content: React.FC<ContentProps> = ({
+  date,
+  description,
+  ellipsis = false,
+}) => (
   <>
-    <ExtendedText>{description}</ExtendedText>
+    <ExtendedText ellipsis={ellipsis}>{description}</ExtendedText>
     <ExtendedText className={style.time} size="small" type="secondary">
       {getDateWithTimezone(date).format(DATE_FORMATS.TIME)}
     </ExtendedText>

@@ -1,13 +1,7 @@
 import { Rule } from "antd/lib/form";
-import { RSQL_OPERATORS_MAP } from "../common";
+import { LinksType } from "./entities";
 
 // Типы
-
-type LinksType = {
-  self: {
-    href: string;
-  };
-};
 
 export type TabType = "container" | "table" | "custom";
 
@@ -28,7 +22,7 @@ export type FieldType =
 
 export type RecordType = { [key: string]: string };
 
-export type FilterOperatorType = "equal" | "rsql";
+export type FilterOperaratorType = "equal" | "rsql";
 
 export type ActionType = "href" | "delete" | "call" | "email" | "view" | "done";
 
@@ -83,7 +77,7 @@ export interface TabProps {
   fields?: FieldProps[];
   columns?: ColumnProps[];
   actions?: ActionProps[];
-  _links: object;
+  _links: LinksType;
 }
 
 export interface TableProps {
@@ -113,7 +107,7 @@ export interface ColumnProps {
   fixed?: FixedPositionType;
   sorter: any;
   filterable?: boolean;
-  filterOperator?: FilterOperatorType;
+  filterOperator?: FilterOperaratorType;
   editable?: boolean;
   columnActions?: ActionProps[];
 }

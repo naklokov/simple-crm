@@ -2,7 +2,7 @@ import React from "react";
 import isEmpty from "lodash/isEmpty";
 import pick from "lodash/pick";
 import noop from "lodash/noop";
-import { columns } from "../components";
+import { columns as tableColumns } from "../components";
 import { getSearchRsql, getRsqlParams, getEqualRsql } from "../../../utils";
 
 import {
@@ -11,14 +11,13 @@ import {
   EntityOwnerProps,
   RecordType,
   RsqlParamProps,
-  ClientEntityProps,
 } from "../../../constants";
 import { getSorterProp } from "./sorter";
 import { getEditableProp } from "./editable";
 import { renderActions } from "./actions";
 import { getColumnSearchProp } from "./column-search";
 
-const { Entity, Date, Text, Number, Dictionary } = columns;
+const { Entity, Date, Text, Number, Dictionary } = tableColumns;
 
 export const SearchedAllContext = React.createContext("");
 export const SearchedColumnsContext = React.createContext<RecordType>({});
@@ -30,10 +29,6 @@ export const TableActionsContext = React.createContext({
   onSearchColumn: noop,
   onResetFilter: noop,
 });
-
-export const ClientsPersonalContext = React.createContext<ClientEntityProps[]>(
-  []
-);
 
 const getRenderProp = (column: ColumnProps) => ({
   render: (text: string, record: any) => {
@@ -99,12 +94,9 @@ export const getFilteredDataSource = (
 
   const filteredIds = visibleColumns
     .filter((row: Object) =>
-      Object.values(row).some((value: string) => {
-        return value
-          ?.toString()
-          ?.toLowerCase()
-          ?.includes(searched?.toLowerCase());
-      })
+      Object.values(row).some((value: string) =>
+        value?.toString()?.toLowerCase()?.includes(searched?.toLowerCase())
+      )
     )
     .map((o) => o?.[idField]);
 
@@ -162,7 +154,7 @@ export const getServerPagingRsql = ({
   extraRsqlParams?: RsqlParamProps[];
   entityName?: string;
 }) => {
-  let params: RsqlParamProps[] = [];
+  const params: RsqlParamProps[] = [];
 
   if (searchedAll) {
     params.push(

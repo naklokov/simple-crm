@@ -15,7 +15,12 @@
   },
   "rules": {
     "object-curly-spacing": ["warn", "always"],
+    "react/prop-types": 0,
+    "react/no-unused-prop-types": 0,
     "no-debugger": "error",
+    "no-underscore-dangle": 0,
+    "import/no-cycle": 0,
+    "no-param-reassign": ["error", { "props": false }],
     "no-unused-vars": [
       "warn",
       {
@@ -28,12 +33,6 @@
       {
         "vars": "all",
         "args": "none"
-      }
-    ],
-    "@typescript-eslint/no-explicit-any": [
-      "error",
-      {
-        "ignoreRestArgs": true
       }
     ],
     "max-len": [
@@ -67,7 +66,6 @@
     "react/jsx-props-no-spreading": "off",
     "import/prefer-default-export": "off",
     "react/jsx-boolean-value": "off",
-    "react/prop-types": "off",
     "react/no-unescaped-entities": "off",
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-wrap-multilines": "off",

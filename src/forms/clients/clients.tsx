@@ -1,32 +1,32 @@
 import React from "react";
 import { connect } from "react-redux";
+import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { Table, Tabs } from "../../components";
 import {
   formConfig,
   PERMISSIONS,
-  ProfileInfoProps,
+  ProfileInfoEntityProps,
   State,
   urls,
   TabProps,
 } from "../../constants";
 
 import style from "./clients.module.scss";
-import ClientsHeader from "./header";
+import { ClientsHeader } from "./header";
 import { PagePermissionsChecker } from "../../wrappers";
-import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { setTableLoading } from "../../__data__";
 import { getPersonalClientsRsql } from "./utils";
 
 interface ClientsProps {
   title?: string;
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
 }
 
 const {
   CLIENTS: { tabs: TABS },
 } = formConfig.clients;
 
-export const Clients = ({ profileInfo }: ClientsProps) => {
+export const Clients: React.FC<ClientsProps> = ({ profileInfo }) => {
   const personalClientsRsql = getPersonalClientsRsql(profileInfo?.id);
 
   const TABS_MAP: {

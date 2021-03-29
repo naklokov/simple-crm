@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from "react";
+import { noop } from "lodash";
+import { PaginationProps } from "antd/es/pagination";
 import { TabProps } from "../../constants";
 import { Table } from ".";
 import { getFilteredDataSource } from "./utils";
-import { noop } from "lodash";
-import { PaginationProps } from "antd/es/pagination";
 
-interface TableWithClientPagingProps {
+export interface TableWithClientPagingProps {
   table: TabProps;
   dataSource: any[];
   actionsPermissions?: string[];
@@ -21,7 +21,7 @@ interface TableWithClientPagingProps {
   className?: any;
 }
 
-export const TableWithClientPaging = ({
+export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
   table,
   dataSource,
   actionsPermissions = [],
@@ -37,7 +37,7 @@ export const TableWithClientPaging = ({
   onDoneRow = noop,
   className,
   withSearch = false,
-}: TableWithClientPagingProps) => {
+}) => {
   const [searchedAll, setSearchedAll] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState<any[]>([]);
 

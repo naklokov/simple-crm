@@ -16,8 +16,4 @@ export const isCanShow = (
 export const filterArrayByPermissions = (
   array: any[],
   allPermissions: string[]
-) => {
-  return array.filter((item) =>
-    hasPermission(allPermissions, item.permissions)
-  );
-};
+) => array.filter((item) => hasPermission(allPermissions, item.permissions));

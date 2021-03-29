@@ -1,9 +1,15 @@
 import { useState, useEffect } from "react";
 import { v4 as uuidV4 } from "uuid";
 import axios, { AxiosResponse } from "axios";
-import { defaultErrorHandler } from "./common";
 import { useDispatch, useSelector } from "react-redux";
-import { ClientEntityProps, EntityOwnerProps, State, urls } from "../constants";
+import { defaultErrorHandler } from "./common";
+import {
+  UseFormProps,
+  State,
+  urls,
+  ClientEntityProps,
+  ProfileInfoEntityProps,
+} from "../constants";
 import { updateForm } from "../__data__";
 import { getRsqlParams } from "./rsql";
 
@@ -37,9 +43,9 @@ export const useFetch = ({
       try {
         const res = await axios({ method, params, data, url });
         setResponse(res);
-      } catch (error) {
+      } catch (err) {
         setError(error);
-        defaultErrorHandler({ error });
+        defaultErrorHandler({ error: err });
       } finally {
         setLoading(false);
       }
@@ -50,16 +56,10 @@ export const useFetch = ({
   return { response, loading, error, reload };
 };
 
-interface FormReturnProps {
-  values: EntityOwnerProps;
-  update: (data: EntityOwnerProps) => void;
-  clear: () => void;
-}
-
-export const useFormValues = (formName: string): FormReturnProps => {
+export function useFormValues<T>(formName: string): UseFormProps<T> {
   const dispatch = useDispatch();
   const values = useSelector(
-    (state: State) => state?.app?.forms?.[formName] ?? ({} as EntityOwnerProps)
+    (state: State) => state?.app?.forms?.[formName] ?? ({} as T)
   );
 
   const clear = () => {
@@ -71,12 +71,12 @@ export const useFormValues = (formName: string): FormReturnProps => {
   };
 
   return { values, update, clear };
-};
+}
 
 export const useFetchPersonalClients = () => {
   const [clients, setClients] = useState<ClientEntityProps[]>([]);
   const profileInfo = useSelector(
-    (state: State) => state?.data?.profileInfo ?? ({} as EntityOwnerProps)
+    (state: State) => state?.data?.profileInfo ?? ({} as ProfileInfoEntityProps)
   );
 
   const fetchClients = async (query: string) => {

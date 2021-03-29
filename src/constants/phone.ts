@@ -26,6 +26,15 @@ export const PHONE_MASK = [
   /\d/,
 ];
 
-export const PHONE_MASK_WITH_CODE = [...PHONE_MASK, ",", " ", /\d/, /\d/, /\d/];
+export const PHONE_MASK_WITH_CODE = [
+  ...PHONE_MASK,
+  ",",
+  " ",
+  /\d/,
+  /\d/,
+  /\d/,
+  /\d/,
+  /\d/,
+];
 
 export const PHONE_PLACEHOLDER = `${RU_PHONE_CODE} `;

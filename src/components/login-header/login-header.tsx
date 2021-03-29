@@ -5,12 +5,14 @@ import style from "./login-header.module.scss";
 
 const { Title } = Typography;
 
-export const LoginHeader = ({
-  title,
-  description,
-}: {
+interface LoginHeaderProps {
   title?: string;
   description?: string;
+}
+
+export const LoginHeader: React.FC<LoginHeaderProps> = ({
+  title,
+  description,
 }) => (
   <div>
     {title && (

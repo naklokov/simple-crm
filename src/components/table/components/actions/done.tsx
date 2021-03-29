@@ -9,7 +9,11 @@ interface DoneProps {
   hasRight?: boolean;
 }
 
-export const Done = ({ id, title = "", hasRight = true }: DoneProps) => {
+export const Done: React.FC<DoneProps> = ({
+  id,
+  title = "",
+  hasRight = true,
+}) => {
   const { onDoneRow } = useContext(TableActionsContext);
   const handleClick = useCallback(() => {
     onDoneRow(id);

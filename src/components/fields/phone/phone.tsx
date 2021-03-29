@@ -22,7 +22,7 @@ export const Phone = ({
   const form = useContext(FormContext);
   const value = form.getFieldValue(fieldCode);
 
-  const formatFunc = (value: string) => getConformedValue(value);
+  const formatFunc = (input: string) => getConformedValue(input);
 
   return (
     <Col {...span} key={fieldCode}>
@@ -32,7 +32,7 @@ export const Phone = ({
         label={fieldName}
         extra={fieldDescription}
         rules={rules}
-        validateTrigger="onSubmit"
+        validateTrigger="onBlur"
         normalize={getNormalizePhone}
       >
         {readonly ? (

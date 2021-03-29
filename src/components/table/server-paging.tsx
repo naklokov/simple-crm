@@ -1,11 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { TablePaginationConfig } from "antd/lib/table";
 import { Table } from ".";
 import {
   ActionProps,
   ClientEntityProps,
   ColumnProps,
+  LinksType,
   RecordType,
   RsqlParamProps,
 } from "../../constants";
@@ -16,8 +18,10 @@ import {
   pluralize,
 } from "../../utils";
 import { getServerPagingRsql, getSortedParams } from "./utils";
-import { TablePaginationConfig } from "antd/lib/table";
-interface TableWithServerPagingProps {
+
+const DEFAULT_PAGE_NUMBER = 1;
+
+export interface TableWithServerPagingProps {
   url: string;
   columns?: ColumnProps[];
   actions?: ActionProps[];
@@ -25,10 +29,10 @@ interface TableWithServerPagingProps {
   extraRsqlParams?: RsqlParamProps[];
   withSearch?: boolean;
   bordered?: boolean;
-  _links?: object;
+  _links?: LinksType;
 }
 
-export const TableWithServerPaging = ({
+export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
   columns = [],
   actions = [],
   extraHeader,
@@ -36,12 +40,12 @@ export const TableWithServerPaging = ({
   extraRsqlParams,
   withSearch = true,
   bordered,
-  _links = {},
-}: TableWithServerPagingProps) => {
+  _links,
+}) => {
   const [t] = useTranslation("tableServer");
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<ClientEntityProps[]>([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(DEFAULT_PAGE_NUMBER);
   const [pageSize, setPageSize] = useState(10);
   const [sortBy, setSortBy] = useState("");
   const [searchedAll, setSearchedAll] = useState("");
@@ -78,25 +82,23 @@ export const TableWithServerPaging = ({
     fetchDataSource();
   }, [page, pageSize, sortBy, searchedAll, searchedColumns, extraRsqlParams]);
 
-  const handleSearch = useCallback((searchedAll: string) => {
+  const handleSearch = useCallback((searchAllText: string) => {
     setPage(1);
-    setSearchedAll(searchedAll);
+    setSearchedAll(searchAllText);
   }, []);
 
   const handleDelete = useCallback(
     (id) => {
-      defaultSuccessHandler(t("message.delete.success"));
+      defaultSuccessHandler(t("message.success.delete"));
       setDataSource(getFiteredEntityArray(id, dataSource));
     },
     [dataSource, t]
   );
 
   const handleChangeTable = useCallback((paginationParams, filters, sorter) => {
-    const { current, pageSize } = paginationParams;
-    const sortBy = getSortedParams(sorter);
-    setSortBy(sortBy);
-    setPage(current);
-    setPageSize(pageSize);
+    setPage(paginationParams.current || DEFAULT_PAGE_NUMBER);
+    setPageSize(paginationParams.pageSize);
+    setSortBy(getSortedParams(sorter));
   }, []);
 
   const handleSearchColumn = useCallback(

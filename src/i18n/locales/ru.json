@@ -28,7 +28,7 @@
   },
   "forgotPassword": {
     "title": "Проф - Ресурс CRM",
-    "description": "Если вы забыли пароль, введите email, указанный при регистрации. \n\nНа почту будет отправлена ссылка для сброса пароля.",
+    "description": "Если вы забыли пароль, введите e-mail, указанный при регистрации. \n\nНа почту будет отправлена ссылка для сброса пароля.",
     "placeholder.username": "Почта",
     "rules.username.required": "Введите адрес почты",
     "rules.username.format": "Введите корректный адрес почты",
@@ -77,7 +77,7 @@
     "total.title.one": "Всего {{total}} клиент",
     "total.title.some": "Всего {{total}} клиента",
     "total.title.many": "Всего {{total}} клиентов",
-    "message.delete.success": "Запись успешно удалена"
+    "message.success.delete": "Запись успешно удалена"
   },
   "tableClient": {
     "message.row.save.success": "Запись успешно изменена"
@@ -111,7 +111,7 @@
   },
   "clientCardContacts": {
     "title.add": "＋ Добавить контакт",
-    "message.delete.success": "Контакт успешно удалён"
+    "message.success.delete": "Контакт успешно удалён"
   },
   "clientCardRequisites": {
     "message.success": "Информация о реквизитах клиента обновлена"

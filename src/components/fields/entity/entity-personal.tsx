@@ -1,10 +1,11 @@
 import React, { useState, useCallback, useContext, useEffect } from "react";
 import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
+import { connect } from "react-redux";
 import {
   DEFAULT_FIELD_SPAN,
   FieldProps,
-  ProfileInfoProps,
+  ProfileInfoEntityProps,
   State,
 } from "../../../constants";
 import {
@@ -14,13 +15,12 @@ import {
   getEqualRsql,
   getSearchRsql,
 } from "../../../utils";
-import { connect } from "react-redux";
 import { Readonly } from "../readonly";
 
 const { Option } = Select;
 
 interface DictionaryComponentProps extends FieldProps {
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
 }
 
 // TODO костыль до первого запроса (первый запрос)
@@ -90,7 +90,7 @@ export const Entity = ({
         style={{ width: "100%" }}
         extra={fieldDescription}
         rules={rules}
-        validateTrigger="onSubmit"
+        validateTrigger="onBlur"
       >
         {readonly ? (
           <Readonly format={formatFunc} />

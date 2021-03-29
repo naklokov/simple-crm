@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { DrawerForm } from "../../components";
 import { useTranslation } from "react-i18next";
 import { Store } from "antd/lib/form/interface";
-import { urls, FieldProps, FORM_NAMES, PERMISSIONS_SET } from "../../constants";
+import { isEmpty } from "lodash";
+import { DrawerForm } from "../../components";
+import {
+  urls,
+  FieldProps,
+  FORM_NAMES,
+  ContactEntityProps,
+} from "../../constants";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
   useFormValues,
 } from "../../utils";
-import { isEmpty } from "lodash";
 
 interface ViewContactProps {
   fields: FieldProps[];
@@ -26,7 +31,7 @@ export const ViewContact = ({
 }: ViewContactProps) => {
   const [t] = useTranslation("contactDrawer");
   const [submitLoading, setSubmitLoading] = useState(false);
-  const { values } = useFormValues(FORM_NAMES.CONTACT_VIEW);
+  const { values } = useFormValues<ContactEntityProps>(FORM_NAMES.CONTACT_VIEW);
 
   const onFinish = async (data: Store) => {
     try {
@@ -34,7 +39,7 @@ export const ViewContact = ({
       const url = `${urls.contacts.entity}/${values.id}`;
       const responce = await axios.put(url, data);
       defaultSuccessHandler(t("message.success.edit"));
-      onClose(void 0, responce?.data);
+      onClose(undefined, responce?.data);
     } catch (error) {
       defaultErrorHandler({ error });
     } finally {

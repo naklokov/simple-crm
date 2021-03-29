@@ -6,10 +6,10 @@ import style from "./profile.module.scss";
 
 import { TABS_CONTENT, TABS_MAP } from "./constansts";
 import { PagePermissionsChecker } from "../../wrappers";
-import { PERMISSIONS, State, ProfileInfoProps } from "../../constants";
+import { PERMISSIONS, State, ProfileInfoEntityProps } from "../../constants";
 
 interface ProfileProps {
-  profileInfo: ProfileInfoProps;
+  profileInfo: ProfileInfoEntityProps;
 }
 
 export const Profile = ({ profileInfo }: ProfileProps) => {

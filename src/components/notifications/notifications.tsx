@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { Badge, Popover, Collapse, Typography } from "antd";
+import { BellOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 import {
   useNotificationService,
   updateNotificationStatus,
 } from "../../utils/notification-service";
 import { ButtonLayout } from "../button-layout";
-import { BellOutlined } from "@ant-design/icons";
-import { useTranslation } from "react-i18next";
 import { ButtonSecondary, NotificationList } from "./components";
 
 const { Panel } = Collapse;
@@ -28,7 +28,7 @@ const Notifications = () => {
     setNotifications((prevNotifications) =>
       prevNotifications.map((notif) => ({ ...notif, status: "read" }))
     );
-  }, [setNotifications, notifications]);
+  }, [setNotifications]);
 
   const handleClickRead = useCallback(
     (id: string) => {
@@ -36,7 +36,7 @@ const Notifications = () => {
         updateNotificationStatus(id, prevNotifications, "read")
       );
     },
-    [setNotifications, notifications]
+    [setNotifications]
   );
 
   const handleClickDelete = useCallback(
@@ -45,15 +45,12 @@ const Notifications = () => {
         prevNotifications.filter((notif) => notif.id !== id)
       );
     },
-    [setNotifications, notifications]
+    [setNotifications]
   );
 
-  const handleChangeVisible = useCallback(
-    (value) => {
-      setVisible(value);
-    },
-    [visible]
-  );
+  const handleChangeVisible = useCallback((value) => {
+    setVisible(value);
+  }, []);
 
   const unreadNotifications = useMemo(
     () => notifications.filter(({ status }) => status === "unread"),

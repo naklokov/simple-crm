@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from "react";
 import { Form, Input, Col, Tooltip } from "antd";
+import { MailOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
-import { MailOutlined } from "@ant-design/icons";
 import { checkEmail } from "../../../utils";
-import { useTranslation } from "react-i18next";
 
 import style from "./email.module.scss";
 
@@ -47,7 +47,7 @@ export const Email = ({
         name={fieldCode}
         label={fieldName}
         extra={fieldDescription}
-        validateTrigger="onSubmit"
+        validateTrigger="onBlur"
         rules={rules}
         getValueProps={handleValueProps}
       >

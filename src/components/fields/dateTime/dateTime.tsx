@@ -70,7 +70,7 @@ export const DateTime = ({
         extra={fieldDescription}
         rules={rules}
         getValueProps={handleValueProp}
-        validateTrigger="onSubmit"
+        validateTrigger="onBlur"
       >
         {readonly ? (
           <Readonly format={formatFunc} />
@@ -83,8 +83,8 @@ export const DateTime = ({
             disabled={disabled}
             showTime={showTime}
             inputReadOnly={readonly}
-            disabledDate={!withSelectBefore ? getDisabledDate : void 0}
-            disabledTime={!withSelectBefore ? getDisabledTime : void 0}
+            disabledDate={!withSelectBefore ? getDisabledDate : undefined}
+            disabledTime={!withSelectBefore ? getDisabledTime : undefined}
           />
         )}
       </Form.Item>

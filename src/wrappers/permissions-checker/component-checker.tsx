@@ -13,13 +13,13 @@ interface ComponentCheckerProps {
   field?: string;
 }
 
-export const ComponentChecker = ({
+export const ComponentChecker: React.FC<ComponentCheckerProps> = ({
   mode = "hide",
   allPermissions,
   children,
   availablePermissions = [],
   hasRight = true,
-}: ComponentCheckerProps) => {
+}) => {
   const canShow = useMemo(
     () => isCanShow(availablePermissions, allPermissions, hasRight),
     [availablePermissions, allPermissions, hasRight]

@@ -1,5 +1,5 @@
+import { sortBy } from "lodash";
 import { CommentEntityProps } from "../../../../constants";
-import sortBy from "lodash/sortBy";
 
 export const prepareComments = (comments: CommentEntityProps[]) => {
   const sorted = sortBy(comments, "creationDate");

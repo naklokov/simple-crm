@@ -22,46 +22,48 @@ interface PhoneInputProps {
   style?: object;
 }
 
-export const PhoneInput = ({
+export const PhoneInput: React.FC<PhoneInputProps> = ({
   value = "",
   onChange = noop,
   placeholder = "",
   disabled = false,
   style = {},
   ref,
-}: PhoneInputProps) => {
+}) => {
   const [mask, setMask] = useState(getMask(value));
 
-  const handleChange = useCallback((event) => {
-    const normalizeValue = getNormalizePhone(event.target.value);
+  const handleChange = useCallback(
+    (event) => {
+      const normalizeValue = getNormalizePhone(event.target.value);
 
-    // до ввода 12 символа показываем маску без запятой для доп кода
-    const withoutAdditionalCode =
-      normalizeValue.length < NORMALIZE_PHONE_LENGTH;
-    setMask(withoutAdditionalCode ? PHONE_MASK : PHONE_MASK_WITH_CODE);
+      // до ввода 12 символа показываем маску без запятой для доп кода
+      const withoutAdditionalCode =
+        normalizeValue.length < NORMALIZE_PHONE_LENGTH;
+      setMask(withoutAdditionalCode ? PHONE_MASK : PHONE_MASK_WITH_CODE);
 
-    onChange(event);
-  }, []);
+      onChange(event);
+    },
+    [onChange]
+  );
 
   const handleBlur = useCallback((event) => {
-    const mask = getMask(event.target.value);
-    setMask(mask);
+    const currentMask = getMask(event.target.value);
+    setMask(currentMask);
   }, []);
 
   const handlePipe = useCallback(
     (conformedValue: string, config: any) => {
-      const normalizePhone = getNormalizePhone(config.rawValue);
+      const normalizePhone = getNormalizePhone(config.rawValue).trim();
 
       // заменяем не кошерные первые символы кода ("7", "8") на кошерную "+7"
       if (isNeedReplaceFirstChar(normalizePhone)) {
         const phoneWithReplacedCode =
           RU_PHONE_CODE + normalizePhone.substring(1);
-
         return conformToMask(phoneWithReplacedCode, mask, config)
           .conformedValue;
       }
 
-      return conformedValue;
+      return conformToMask(normalizePhone, mask, config).conformedValue;
     },
     [mask]
   );
