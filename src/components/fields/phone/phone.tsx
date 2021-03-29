@@ -32,7 +32,7 @@ export const Phone = ({
         label={fieldName}
         extra={fieldDescription}
         rules={rules}
-        validateTrigger="onSubmit"
+        validateTrigger="onBlur"
         normalize={getNormalizePhone}
       >
         {readonly ? (

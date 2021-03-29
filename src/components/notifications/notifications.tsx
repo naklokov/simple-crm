@@ -28,7 +28,7 @@ const Notifications = () => {
     setNotifications((prevNotifications) =>
       prevNotifications.map((notif) => ({ ...notif, status: "read" }))
     );
-  }, [setNotifications, notifications]);
+  }, [setNotifications]);
 
   const handleClickRead = useCallback(
     (id: string) => {
@@ -36,7 +36,7 @@ const Notifications = () => {
         updateNotificationStatus(id, prevNotifications, "read")
       );
     },
-    [setNotifications, notifications]
+    [setNotifications]
   );
 
   const handleClickDelete = useCallback(
@@ -45,15 +45,12 @@ const Notifications = () => {
         prevNotifications.filter((notif) => notif.id !== id)
       );
     },
-    [setNotifications, notifications]
+    [setNotifications]
   );
 
-  const handleChangeVisible = useCallback(
-    (value) => {
-      setVisible(value);
-    },
-    [visible]
-  );
+  const handleChangeVisible = useCallback((value) => {
+    setVisible(value);
+  }, []);
 
   const unreadNotifications = useMemo(
     () => notifications.filter(({ status }) => status === "unread"),
