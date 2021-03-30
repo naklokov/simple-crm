@@ -22,8 +22,6 @@ import {
 } from "../../../../utils";
 import { setTableLoading as setTableLoadingAction } from "../../../../__data__";
 
-import style from "./price-list.module.scss";
-
 interface ContactsProps extends TabPaneFormProps {
   profileInfo: ProfileInfoEntityProps;
   clients: ClientEntityProps[];
@@ -74,15 +72,16 @@ export const PriceList: React.FC<ContactsProps> = ({
   );
 
   return (
-    <Table.Client
-      idValue="itemId"
-      className={style.table}
-      table={tab}
-      loading={loading}
-      dataSource={positions}
-      onSaveRow={handleSaveRow}
-      withSearch
-    />
+    <form>
+      <Table.Client
+        idValue="itemId"
+        table={tab}
+        loading={loading}
+        dataSource={positions}
+        onSaveRow={handleSaveRow}
+        withSearch
+      />
+    </form>
   );
 };
 

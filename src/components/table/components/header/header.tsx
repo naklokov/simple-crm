@@ -26,7 +26,7 @@ export const Header: React.FC<HeaderProps> = ({
   const handleClear = useCallback(() => {
     onResetAllFilters();
     setValue("");
-  }, [onSearch]);
+  }, [onResetAllFilters]);
 
   const handleSearch = useCallback(
     (searched: string) => {
@@ -41,7 +41,15 @@ export const Header: React.FC<HeaderProps> = ({
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setValue(event.target.value);
     },
-    [value]
+    []
+  );
+
+  const handlePressEnter = useCallback(
+    (event: React.KeyboardEvent) => {
+      handleSearch(value);
+      event.preventDefault();
+    },
+    [value, handleSearch]
   );
 
   return (
@@ -55,8 +63,10 @@ export const Header: React.FC<HeaderProps> = ({
             placeholder={t("search.all.placeholder")}
             onSearch={handleSearch}
             onChange={handleChange}
+            onPressEnter={handlePressEnter}
             value={value}
-            enterButton
+            enterButton={t("search.all.enter.button")}
+            allowClear
           />
           {window.isMobile ? (
             <Tooltip title={t("search.all.clear")}>

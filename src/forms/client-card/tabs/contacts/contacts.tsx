@@ -23,8 +23,6 @@ import {
 import { Header } from "./header";
 import { AddContactDrawer, ViewContactDrawer } from "../../../../drawers";
 
-import style from "./contacts.module.scss";
-
 const {
   clientCard: {
     upper: { drawers },
@@ -117,9 +115,8 @@ export const Contacts = ({ tab }: TabPaneFormProps) => {
         fields={drawer?.fields ?? []}
         onClose={handleCloseViewDrawer}
       />
-      <div className={style.container}>
+      <form>
         <Table.Client
-          className={style.table}
           table={tab}
           loading={loading}
           pagination={{ pageSize: 5 }}
@@ -129,7 +126,7 @@ export const Contacts = ({ tab }: TabPaneFormProps) => {
           extraHeader={<Header onClickAdd={handleAddContact} />}
           actionsPermissions={[]}
         />
-      </div>
+      </form>
     </div>
   );
 };

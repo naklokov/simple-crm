@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import axios, { AxiosResponse } from "axios";
-import { Row, Form } from "antd";
-import { useParams, useHistory, BrowserRouter } from "react-router-dom";
+import { Row, Form, Spin } from "antd";
+import { useParams, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { Store } from "antd/lib/form/interface";
 import { useTranslation } from "react-i18next";
@@ -29,14 +29,13 @@ import {
 } from "../../../../constants";
 import { getAddMetaValues } from "../../utils";
 
-import style from "./main.module.scss";
-
 interface MainProps extends TabPaneFormProps {
   mode: ModeType;
   profileInfo: ProfileInfoEntityProps;
+  formLoading: boolean;
 }
 
-export const Main = ({ tab, profileInfo, mode }: MainProps) => {
+export const Main = ({ tab, profileInfo, mode, formLoading }: MainProps) => {
   const { id } = useParams<QueryProps>();
   const [form] = Form.useForm();
   const history = useHistory();
@@ -103,47 +102,50 @@ export const Main = ({ tab, profileInfo, mode }: MainProps) => {
   }
 
   return (
-    <div className={style.container}>
-      <Form
-        onValuesChange={handleValuesChange}
-        onFinish={mode === "add" ? onFinishAdd : onFinishEdit}
-        layout="vertical"
-        name="clientCardMain"
-        form={form}
-        initialValues={initialValues}
-      >
-        <Row
-          gutter={[GUTTER_FULL_WIDTH.HORIZONTAL, GUTTER_FULL_WIDTH.VERTICAL]}
+    <form>
+      <Spin spinning={formLoading}>
+        <Form
+          onValuesChange={handleValuesChange}
+          onFinish={mode === "add" ? onFinishAdd : onFinishEdit}
+          layout="vertical"
+          name="clientCardMain"
+          form={form}
+          initialValues={initialValues}
         >
-          <FormContext.Provider value={form}>
-            {tab.fields?.map((field) => (
-              <ComponentPermissionsChecker
-                key={field.fieldCode}
-                availablePermissions={field.permissions}
-                mode="readonly"
-                hasRight={formValues?.isOwner?.UPDATE}
-                field={field.fieldCode}
-              >
-                {createFormField(field)}
-              </ComponentPermissionsChecker>
-            ))}
-          </FormContext.Provider>
-        </Row>
-        <ComponentPermissionsChecker hasRight={formValues?.isOwner?.UPDATE}>
-          <FormFooter
-            loading={submitLoading}
-            disabled={submitDisabled}
-            withCancel={mode === "add"}
-            onCancel={handleGoBack}
-          />
-        </ComponentPermissionsChecker>
-      </Form>
-    </div>
+          <Row
+            gutter={[GUTTER_FULL_WIDTH.HORIZONTAL, GUTTER_FULL_WIDTH.VERTICAL]}
+          >
+            <FormContext.Provider value={form}>
+              {tab?.fields?.map((field) => (
+                <ComponentPermissionsChecker
+                  key={field.fieldCode}
+                  availablePermissions={field.permissions}
+                  mode="readonly"
+                  hasRight={formValues?.isOwner?.UPDATE}
+                  field={field.fieldCode}
+                >
+                  {createFormField(field)}
+                </ComponentPermissionsChecker>
+              ))}
+            </FormContext.Provider>
+          </Row>
+          <ComponentPermissionsChecker hasRight={formValues?.isOwner?.UPDATE}>
+            <FormFooter
+              loading={submitLoading}
+              disabled={submitDisabled}
+              withCancel={mode === "add"}
+              onCancel={handleGoBack}
+            />
+          </ComponentPermissionsChecker>
+        </Form>
+      </Spin>
+    </form>
   );
 };
 
 const mapStateToProps = (state: State) => ({
   profileInfo: state?.data?.profileInfo,
+  formLoading: state?.app?.formLoading,
 });
 
 export default connect(mapStateToProps)(Main);

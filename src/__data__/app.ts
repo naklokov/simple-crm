@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+/* eslint-disable */
 const appSlide = createSlice({
   name: "app",
   initialState: {
     loading: false,
     tableLoading: false,
+    formLoading: false,
     forms: {},
     error: {},
   },
@@ -18,6 +20,9 @@ const appSlide = createSlice({
     setTableLoading(state, action) {
       state.tableLoading = action.payload;
     },
+    setFormLoading(state, action) {
+      state.formLoading = action.payload;
+    },
     updateForm(state, action) {
       state.forms = {
         ...state.forms,
@@ -30,6 +35,7 @@ const appSlide = createSlice({
 export const {
   setLoading,
   setTableLoading,
+  setFormLoading,
   setError,
   updateForm,
 } = appSlide.actions;

@@ -56,7 +56,7 @@ export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
         setFilteredDataSource([]);
       }
     },
-    [filteredDataSource, dataSource, idValue, table]
+    [dataSource, idValue, table]
   );
 
   const handleResetAllFilters = useCallback(() => {

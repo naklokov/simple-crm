@@ -193,7 +193,7 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
         onClose={handleCloseCompleteDrawer}
         visible={completedDrawerVisible}
       />
-      <div className={style.container}>
+      <form>
         <Tabs
           tabBarExtraContent={{
             left: (
@@ -227,7 +227,7 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
             />
           </TabPane>
         </Tabs>
-      </div>
+      </form>
     </div>
   );
 };

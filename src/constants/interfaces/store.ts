@@ -8,6 +8,7 @@ export interface PersistState {
 export interface AppState {
   error: ErrorAppState;
   tableLoading: boolean;
+  formLoading: boolean;
   loading: boolean;
   forms: any;
 }

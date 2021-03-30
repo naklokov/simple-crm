@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Table as TableUI } from "antd";
 
 import { useTranslation } from "react-i18next";
@@ -17,7 +17,7 @@ import {
   getActions,
   getDataColumns,
   getEditableTableBody,
-  fetchDictionaries,
+  loadDictionaries,
   SearchedAllContext,
   SearchedColumnsContext,
   TableActionsContext,
@@ -38,12 +38,12 @@ interface TableExtendsProps {
 
 interface TableProps {
   dataSource: any[];
-  columns?: ColumnProps[];
+  columns: ColumnProps[];
   actions?: ActionProps[];
   loading?: boolean;
   tableLoading: boolean;
   pagination?: TablePaginationConfig;
-  _links?: LinksType;
+  _links: LinksType;
   onDeleteRow?: (id: string) => void;
   onViewRow?: (id: string) => void;
   onSaveRow?: (record: any) => void;
@@ -100,8 +100,8 @@ export const Table: React.FC<TableProps> & TableExtendsProps = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchDictionaries(dispatch, _links);
-  }, [dispatch, _links]);
+    loadDictionaries(columns, _links, dispatch);
+  }, []);
 
   const title =
     withSearch || extraHeader

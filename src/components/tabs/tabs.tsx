@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import cn from "classnames";
 import { Tabs as TabsUI, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
@@ -41,7 +41,10 @@ export const Tabs: React.FC<TabsProps> = ({
   const history = useHistory();
   const [t] = useTranslation("tabs");
   const activeTab = getActiveQueryTab(tabs);
-  const Form = tabsMap[activeTab.tabCode];
+  const Form = useMemo(() => tabsMap[activeTab.tabCode], [
+    tabsMap,
+    activeTab.tabCode,
+  ]);
 
   const handleChange = useCallback((id) => {
     setActiveQueryTab(id, queryParam, history);

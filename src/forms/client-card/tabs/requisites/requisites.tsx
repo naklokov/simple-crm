@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import { useForm } from "antd/lib/form/Form";
 
 import { connect } from "react-redux";
-import style from "./requisites.module.scss";
 import { FormFooter } from "../../../../components";
 import {
   createFormField,
@@ -30,11 +29,7 @@ import {
   TabPaneFormProps,
 } from "../../../../constants";
 
-interface RequisitesProps extends TabPaneFormProps {
-  profileInfo: ProfileInfoEntityProps;
-}
-
-export const Requisites = ({ tab }: RequisitesProps) => {
+export const Requisites = ({ tab }: TabPaneFormProps) => {
   const { id } = useParams<QueryProps>();
   const [form] = useForm();
   const [t] = useTranslation("clientCardRequisites");
@@ -69,7 +64,7 @@ export const Requisites = ({ tab }: RequisitesProps) => {
   };
 
   return (
-    <div className={style.container}>
+    <form>
       <Form
         onValuesChange={handleValuesChange}
         onFinish={onFinish}
@@ -102,7 +97,7 @@ export const Requisites = ({ tab }: RequisitesProps) => {
           />
         </ComponentPermissionsChecker>
       </Form>
-    </div>
+    </form>
   );
 };
 

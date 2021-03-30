@@ -1,10 +1,10 @@
-import { getCellColor, useBadgeMap } from "../utils";
 import { renderHook, act } from "@testing-library/react-hooks";
 import moment from "moment-timezone";
 import axios from "axios";
 import * as redux from "react-redux";
-import { CELL_COLORS } from "../../../constants";
 import MockAdapter from "axios-mock-adapter";
+import { CELL_COLORS } from "../../../constants";
+import { getCellColor, useBadgeMap } from "../utils";
 import { urls } from "../../../../../constants";
 import { TASKS_ENTITY_STUB } from "./stub";
 

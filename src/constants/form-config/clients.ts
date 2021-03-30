@@ -55,6 +55,7 @@ export const CLIENTS: { tabs: TabProps[] } = {
           columnName: "Дата регистрации",
           columnCode: "creationDate",
           columnType: "date",
+          filterable: true,
           format: "DD.MM.YYYY",
           sorter: true,
           columnDescription: "Дата регистрации",
@@ -77,6 +78,9 @@ export const CLIENTS: { tabs: TabProps[] } = {
         },
       ],
       _links: {
+        self: {
+          href: `${urls.clients.paging}?query=userProfileId=={{userProfileId}}`,
+        },
         userProfileId: {
           href: urls.userProfiles.entity,
         },
@@ -137,6 +141,7 @@ export const CLIENTS: { tabs: TabProps[] } = {
           columnName: "Дата регистрации",
           columnCode: "creationDate",
           columnType: "date",
+          filterable: true,
           format: "DD.MM.YYYY",
           sorter: true,
           columnDescription: "Дата регистрации",
@@ -165,11 +170,13 @@ export const CLIENTS: { tabs: TabProps[] } = {
           valueField: "id",
           sorter: false,
           filterable: true,
-          filterOperator: "equal",
           columnDescription: "Куратор компании",
         },
       ],
       _links: {
+        self: {
+          href: urls.clients.paging,
+        },
         userProfileId: {
           href: urls.userProfiles.entity,
         },

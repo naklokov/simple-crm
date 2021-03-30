@@ -97,7 +97,6 @@ export const DrawerForm: React.FC<DrawerFormProps> = ({
 
   return (
     <DrawerUI
-      forceRender={true}
       title={
         <PageHeader
           style={{ padding: 0 }}
@@ -105,7 +104,6 @@ export const DrawerForm: React.FC<DrawerFormProps> = ({
           extra={headerButtons}
         />
       }
-      destroyOnClose={true}
       closeIcon={false}
       onClose={handleClose}
       afterVisibleChange={handleVisibleChange}
@@ -124,6 +122,8 @@ export const DrawerForm: React.FC<DrawerFormProps> = ({
           />
         </ComponentPermissionsChecker>
       }
+      destroyOnClose
+      forceRender
     >
       <Form
         name={name}

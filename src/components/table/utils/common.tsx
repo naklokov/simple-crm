@@ -1,37 +1,25 @@
 import React from "react";
 import isEmpty from "lodash/isEmpty";
 import pick from "lodash/pick";
-import noop from "lodash/noop";
+import { Dispatch } from "@reduxjs/toolkit";
 import { columns as tableColumns } from "../components";
-import { getSearchRsql, getRsqlParams, getEqualRsql } from "../../../utils";
 
 import {
   ActionProps,
   ColumnProps,
   EntityOwnerProps,
+  LinksType,
   RecordType,
-  RsqlParamProps,
 } from "../../../constants";
 import { getSorterProp } from "./sorter";
 import { getEditableProp } from "./editable";
 import { renderActions } from "./actions";
 import { getColumnSearchProp } from "./column-search";
-
-const { Entity, Date, Text, Number, Dictionary } = tableColumns;
-
-export const SearchedAllContext = React.createContext("");
-export const SearchedColumnsContext = React.createContext<RecordType>({});
-export const TableActionsContext = React.createContext({
-  onSaveRow: noop,
-  onDeleteRow: noop,
-  onViewRow: noop,
-  onDoneRow: noop,
-  onSearchColumn: noop,
-  onResetFilter: noop,
-});
+import { fetchDictionary } from "./fetch";
 
 const getRenderProp = (column: ColumnProps) => ({
   render: (text: string, record: any) => {
+    const { Entity, Date, Text, Number, Dictionary } = tableColumns;
     const { format, columnType } = column;
 
     switch (columnType) {
@@ -141,49 +129,19 @@ export const getDataColumns = (
     return columnProps;
   });
 
-export const getServerPagingRsql = ({
-  searchedAll,
-  searchedColumns,
-  columns,
-  extraRsqlParams = [],
-  entityName,
-}: {
-  searchedAll?: string;
-  searchedColumns?: RecordType;
-  columns: ColumnProps[];
-  extraRsqlParams?: RsqlParamProps[];
-  entityName?: string;
-}) => {
-  const params: RsqlParamProps[] = [];
+export const loadDictionaries = (
+  columns: ColumnProps[],
+  links: LinksType,
+  dispatch: Dispatch
+) => {
+  if (!isEmpty(links)) {
+    const linksKeys = Object.keys(links);
+    const visibleColumns = columns.map(({ columnCode }) => columnCode);
 
-  if (searchedAll) {
-    params.push(
-      getSearchRsql(
-        ["phone", "inn", "shortName", "city"],
-        searchedAll,
-        entityName
-      )
-    );
+    linksKeys
+      .filter((key) => visibleColumns.includes(key))
+      .forEach((dictionaryName) =>
+        fetchDictionary(links?.[dictionaryName]?.href, dictionaryName, dispatch)
+      );
   }
-
-  if (searchedColumns) {
-    Object.keys(searchedColumns).forEach((key) => {
-      const { filterOperator = "rsql" } =
-        columns.find((o) => o.columnCode === key) || ({} as ColumnProps);
-
-      if (searchedColumns[key]) {
-        if (filterOperator === "equal") {
-          params.push(getEqualRsql(key, searchedColumns[key]));
-        } else {
-          params.push(getSearchRsql([key], searchedColumns[key], entityName));
-        }
-      }
-    });
-  }
-
-  if (extraRsqlParams?.length) {
-    params.push(...extraRsqlParams);
-  }
-
-  return getRsqlParams(params);
 };
