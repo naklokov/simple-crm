@@ -82,7 +82,7 @@ export const Entity = ({
         style={{ width: "100%" }}
         extra={fieldDescription}
         rules={rules}
-        validateTrigger="onSubmit"
+        validateTrigger="onBlur"
       >
         {readonly ? (
           <Readonly format={formatFunc} />

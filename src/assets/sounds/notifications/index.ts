@@ -1,3 +1,3 @@
-const plucky = require("./plucky.mp3");
+import plucky from "./plucky.mp3";
 
 export { plucky };

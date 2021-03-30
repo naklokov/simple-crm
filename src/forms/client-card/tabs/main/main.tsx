@@ -97,6 +97,10 @@ export const Main = ({ tab, profileInfo, mode, formLoading }: MainProps) => {
     }
   };
 
+  if (!profileInfo.id) {
+    return null;
+  }
+
   return (
     <form>
       <Spin spinning={formLoading}>

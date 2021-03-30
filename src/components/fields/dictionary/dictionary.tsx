@@ -53,7 +53,7 @@ export const Dictionary: React.FC<FieldProps> = ({
         label={fieldName}
         extra={fieldDescription}
         rules={rules}
-        validateTrigger="onSubmit"
+        validateTrigger="onBlur"
       >
         {readonly ? (
           <Readonly format={formatFunc} />

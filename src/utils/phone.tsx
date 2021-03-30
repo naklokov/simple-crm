@@ -8,7 +8,7 @@ import {
 
 // +79998887766
 export const getNormalizePhone = (value: string) =>
-  value?.replace(/[^\d\+]/g, "") ?? "";
+  value?.replace(/[^+,\d]/g, "") ?? "";
 
 export const isNeedReplaceFirstChar = (phone: string) =>
   PHONE_TRIM_START_CHARS.includes(phone[0]);
