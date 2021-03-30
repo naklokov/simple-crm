@@ -1,4 +1,5 @@
 import { FieldProps, urls } from "../../constants";
+import { phoneRule } from "../../utils";
 
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
 const EMAIL_MESSAGE = "Пожалуйста, введите корректный e-mail";
@@ -41,6 +42,18 @@ export const FIELDS: FieldProps[] = [
         message: EMAIL_MESSAGE,
       },
     ],
+    permissions: [],
+  },
+  {
+    fieldCode: "phone",
+    fieldName: "Телефон",
+    fieldDescription: "",
+    type: "phone",
+    readonly: false,
+    disabled: false,
+    span: { xl: 24, md: 24, lg: 24, sm: 24 },
+    placeholder: "+7 ",
+    rules: [phoneRule],
     permissions: [],
   },
   {
