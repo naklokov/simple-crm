@@ -53,7 +53,7 @@ export const FIELDS: FieldProps[] = [
     disabled: false,
     span: { xl: 24, md: 24, lg: 24, sm: 24 },
     placeholder: "+7 ",
-    rules: [phoneRule],
+    rules: [],
     permissions: [],
   },
   {
