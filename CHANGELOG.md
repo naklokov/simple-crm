@@ -1,4 +1,14 @@
 
+<a name="0.5.0"></a>
+## [0.5.0](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.5.0..0.4.1) (2021-03-30)
+
+### Bug Fixes
+
+* Добавить ES6 импорт и типизацию для .mp3 файла
+* Добавить поле телефон в форму добавления пользователя [OLVE-570]
+* Добавить поле телефон в форму добавления пользователя [OLVE-570]
+
+
 <a name="0.4.1"></a>
 ## [0.4.1](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.4.1..0.3.0) (2021-03-29)
 
