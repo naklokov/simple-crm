@@ -1,50 +1,41 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, message, Upload } from "antd";
-import { UploadChangeParam } from "antd/lib/upload";
-import { useFetch } from "../../../../utils";
-
-const STATUSSES = {
-  UPLOADING: "uploading",
-  DONE: "done",
-  ERROR: "error",
-};
+import { Button, Select, Space } from "antd";
+import { useTranslation } from "react-i18next";
 
 export const Documents = () => {
-  const url = "/crm/rest/upload";
-  const [docs, setDocs] = useState([]);
-  const { response, loading } = useFetch({ url });
+  const [t] = useTranslation("documents");
+  const [options, setOptions] = useState([]);
+  const [selected, setSelected] = useState();
+  // const { response, loading } = useFetch({ url });
 
-  useEffect(() => {
-    // eslint-disable-next-line
-    if (response?.data) {
-      const formData = new FormData(response?.data);
-      console.log(formData);
-    }
-  }, [response]);
+  // useEffect(() => {
+  //   setOptions(response?.data ?? [])
+  // }, [])
 
-  const handleChange = useCallback(({ file, fileList }: UploadChangeParam) => {
-    if (file.status !== STATUSSES.UPLOADING) {
-      console.log(file, fileList);
-    }
-    if (file.status === STATUSSES.DONE) {
-      message.success("upload successfull");
-    } else if (file.status === "error") {
-      message.error("upload error");
-    }
+  const handleChange = useCallback((value) => {
+    setSelected(value);
   }, []);
 
-  //   useEffect(() => {
-  //     // console.log(response?.data);
-  //   }, []);
+  const handleClick = useCallback(() => {
+    alert("Сгенерировано!");
+  }, []);
 
   return (
-    <Upload
-      name="file"
-      action="/crm/rest/upload"
-      onChange={handleChange}
-      defaultFileList={docs}
-    >
-      <Button>Click to Upload</Button>
-    </Upload>
+    <Space>
+      <Select
+        placeholder={t("select.placeholder")}
+        onChange={handleChange}
+        value={selected}
+      >
+        {options.map((o: any) => (
+          <Select.Option key={o?.id} value={o?.id}>
+            {o.title}
+          </Select.Option>
+        ))}
+      </Select>
+      <Button disabled={!selected} onClick={handleClick}>
+        {t("button.title")}
+      </Button>
+    </Space>
   );
 };
