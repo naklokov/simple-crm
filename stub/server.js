@@ -1,7 +1,12 @@
+const FormData = require("form-data");
 const jsonServer = require("json-server");
 const server = jsonServer.create();
 
-const { dictionaries, profileInfo, permissions, clients } = require("./jsons");
+const {
+  dictionaries,
+  permissions,
+  clients: clientsResponse,
+} = require("./jsons");
 
 const {
   login,
@@ -10,6 +15,9 @@ const {
   restorePassword,
   profile,
   dictionaries: dictionariesUrls,
+  userProfiles,
+  departments,
+  clients,
 } = require("../src/constants/urls");
 
 const {
@@ -39,8 +47,36 @@ server.post(forgotPassword.submit, sendSuccessResponce());
 
 //checkToken
 server.post(restorePassword.check, checkToken);
+server.get("/crm/rest/upload", (req, res) => {
+  var form = new FormData();
+  form.append(
+    "entityData",
+    JSON.stringify({
+      _links: {
+        self: {
+          href: "/lololool",
+        },
+      },
+      creationDate: "2020-22-11",
+      fileName: "photo_2021-02-09_16-06-02",
+      fileType: "jpg",
+    }),
+    { contentType: "application/json" }
+  );
+  form.append("file", "", {
+    contentType: "application/octet-stream",
+  });
+  res.setHeader(
+    "X-Content-Type",
+    "multipart/form-data; boundary=" + form._boundary
+  );
+  res.setHeader("Content-Type", "multipart/form-data");
+  form.pipe(res);
+});
 //restorePassword
-server.post(restorePassword.submit, sendSuccessResponce());
+server.post(restorePassword.submit, (req, res) => {
+  res.status(HTTP_CODES.SUCCESS).json({});
+});
 
 //getProfileInfo
 // server.get(profile.info, sendSuccessResponce(profileInfo));
@@ -48,7 +84,9 @@ server.post(restorePassword.submit, sendSuccessResponce());
 server.get(profile.permissions, sendPostResponce(permissions));
 
 // клиенты
-server.get(clients.entity, sendSuccessResponce(clients));
+server.get(clients.entity, sendSuccessResponce(clientsResponse));
+server.get(userProfiles.entity, sendSuccessResponce(userProfiles));
+server.get(departments.entity, sendSuccessResponce(departments));
 
 server.get(
   dictionariesUrls.position,

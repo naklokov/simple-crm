@@ -19,7 +19,15 @@ import { setLoading as setLoadingAction } from "../../__data__";
 import { getClientCardMode } from "./utils";
 import { Tabs, Loader } from "../../components";
 import { upper, lower } from "../../constants/form-config/client-card";
-import { Main, Comments, Contacts, Requisites, PriceList, Tasks } from "./tabs";
+import {
+  Main,
+  Comments,
+  Contacts,
+  Requisites,
+  PriceList,
+  Tasks,
+  Documents,
+} from "./tabs";
 import { defaultErrorHandler, getFullUrl, useFormValues } from "../../utils";
 import { ClientCardHeader } from ".";
 import { PagePermissionsChecker } from "../../wrappers";
@@ -38,11 +46,11 @@ export const TABS_MAP: {
   priceList: PriceList,
   comments: Comments,
   tasks: Tasks,
+  documents: Documents,
 };
 
 export const ClientCard = ({ setLoading }: ClientCardProps) => {
   const { id: clientId } = useParams<QueryProps>();
-  const [t] = useTranslation(FORM_NAMES.CLIENT_CARD);
   const { values: client, update, clear } = useFormValues<ClientEntityProps>(
     FORM_NAMES.CLIENT_CARD
   );
