@@ -1,4 +1,12 @@
 
+<a name="0.5.1-joke"></a>
+## [0.5.1-joke](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.5.1-joke..0.5.0) (2021-03-31)
+
+### Features
+
+* Пустить в бой Рикардо Милоса!!!
+
+
 <a name="0.5.0"></a>
 ## [0.5.0](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.5.0..0.4.1) (2021-03-30)
 
