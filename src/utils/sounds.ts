@@ -5,3 +5,5 @@ export const play = () => {
   const audio = new Audio(notifications.plucky);
   return audio?.play().then(noop).catch(noop);
 };
+
+export const getMilosAudio = () => new Audio(notifications.hello);

@@ -13,5 +13,6 @@ export { AddUser } from "./add-user";
 export { Notifications } from "./notifications";
 export { ButtonLayout } from "./button-layout";
 export { ExtendedText } from "./extended-text";
+export { Joke } from "./joke";
 
 export { fields };
