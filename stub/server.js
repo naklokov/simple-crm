@@ -1,4 +1,3 @@
-const FormData = require("form-data");
 const jsonServer = require("json-server");
 const server = jsonServer.create();
 
@@ -6,6 +5,7 @@ const {
   dictionaries,
   permissions,
   clients: clientsResponse,
+  templates: templatesResponse,
 } = require("./jsons");
 
 const {
@@ -18,6 +18,7 @@ const {
   userProfiles,
   departments,
   clients,
+  templates,
 } = require("../src/constants/urls");
 
 const {
@@ -47,32 +48,9 @@ server.post(forgotPassword.submit, sendSuccessResponce());
 
 //checkToken
 server.post(restorePassword.check, checkToken);
-server.get("/crm/rest/upload", (req, res) => {
-  var form = new FormData();
-  form.append(
-    "entityData",
-    JSON.stringify({
-      _links: {
-        self: {
-          href: "/lololool",
-        },
-      },
-      creationDate: "2020-22-11",
-      fileName: "photo_2021-02-09_16-06-02",
-      fileType: "jpg",
-    }),
-    { contentType: "application/json" }
-  );
-  form.append("file", "", {
-    contentType: "application/octet-stream",
-  });
-  res.setHeader(
-    "X-Content-Type",
-    "multipart/form-data; boundary=" + form._boundary
-  );
-  res.setHeader("Content-Type", "multipart/form-data");
-  form.pipe(res);
-});
+server.get(templates.entity, sendSuccessResponce(templatesResponse));
+server.post(templates.generation, sendSuccessResponce(new Int8Array(4096)));
+
 //restorePassword
 server.post(restorePassword.submit, (req, res) => {
   res.status(HTTP_CODES.SUCCESS).json({});

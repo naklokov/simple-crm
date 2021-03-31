@@ -56,6 +56,10 @@ module.exports = {
     entity: "/crm/rest/entity/tasks",
     paging: "/crm/rest/entity/tasks/paging",
   },
+  templates: {
+    generation: "/crm/rest/generation",
+    entity: "/crm/rest/entity/templates",
+  },
   deals: {
     path: "/deals",
   },

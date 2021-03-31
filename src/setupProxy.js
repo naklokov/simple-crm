@@ -1,8 +1,8 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
 module.exports = (app) => {
-  app.use(
-    "/crm/rest/upload",
+  app.all(
+    [/generation/, /templates/],
     createProxyMiddleware({
       target: "http://localhost:8080",
       changeOrigin: true,

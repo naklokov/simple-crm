@@ -227,3 +227,22 @@ export const copyToClipboard = (str: string) => {
   document.execCommand("copy");
   document.body.removeChild(el);
 };
+
+/**
+ * Метод сохранения бинарного файла на диск
+ * @param data массив байтов stream
+ * @param name имя файла
+ */
+export const saveByteArray = (() => {
+  const a: any = document.createElement("a");
+  document.body.appendChild(a);
+  a.style = "display: none";
+  return (data: any, name: string) => {
+    const blob = new Blob(data, { type: "octet/stream" });
+    const url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = name;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+})();

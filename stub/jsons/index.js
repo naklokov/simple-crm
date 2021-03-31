@@ -4,6 +4,7 @@ const permissions = require("./permissions.json");
 const clients = require("./clients.json");
 const departments = require("./departments.json");
 const userProfiles = require("./userProfiles.json");
+const templates = require("./templates.json");
 
 module.exports = {
   dictionaries,
@@ -12,4 +13,5 @@ module.exports = {
   clients,
   departments,
   userProfiles,
+  templates,
 };

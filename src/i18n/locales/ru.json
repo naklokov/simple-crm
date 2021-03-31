@@ -230,6 +230,7 @@
   },
   "documents": {
     "button.title": "Сгенерировать",
-    "select.placeholder": "Выберите документ"
+    "select.placeholder": "Выберите документ",
+    "template.name.default": "Документ"
   }
 }
