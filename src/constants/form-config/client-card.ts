@@ -363,6 +363,18 @@ export const upper: UpperProps = {
           permissions: [],
         },
         {
+          fieldCode: "updateDate",
+          fieldName: "Дата обновления",
+          fieldDescription: "",
+          type: "date",
+          readonly: true,
+          placeholder: PLACEHOLDER_DEFAULT,
+          disabled: true,
+          format: "DD.MM.yyyy",
+          rules: [],
+          permissions: [],
+        },
+        {
           fieldCode: "userProfileId",
           fieldName: "Куратор",
           type: "entity",
