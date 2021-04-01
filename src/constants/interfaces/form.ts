@@ -106,6 +106,8 @@ export interface ColumnProps {
   sorter?: boolean;
   filterable?: boolean;
   editable?: boolean;
+  // до первого запроса
+  isJsonField?: boolean;
   columnActions?: ActionProps[];
 }
 

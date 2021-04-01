@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Tabs } from "antd";
-import { useHistory } from "react-router-dom";
 import { Table } from "../../components";
 import {
   formConfig,
