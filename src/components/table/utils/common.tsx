@@ -16,6 +16,7 @@ import { getEditableProp } from "./editable";
 import { renderActions } from "./actions";
 import { getColumnSearchProp } from "./column-search";
 import { fetchDictionary } from "./fetch";
+import { DefaultSortProps } from "../constants";
 
 const getRenderProp = (column: ColumnProps) => ({
   render: (text: string, record: any) => {
@@ -51,6 +52,7 @@ const getRenderProp = (column: ColumnProps) => ({
 export const getColumn = (
   column: ColumnProps,
   searchedColumns: RecordType,
+  defaultSort?: DefaultSortProps,
   permissions: string[] = []
 ) => {
   const { columnCode, columnName, fixed, ellipsis, width } = column;
@@ -62,6 +64,7 @@ export const getColumn = (
     fixed,
     width,
     ellipsis,
+    defaultSortOrder: defaultSort?.[columnCode],
     ...getSorterProp(column),
     ...getEditableProp(column, permissions),
     ...getColumnSearchProp(column, searchedColumns),
@@ -112,10 +115,16 @@ export const getActions = (
 export const getDataColumns = (
   columns: ColumnProps[] = [],
   searchedColumns: RecordType,
+  defaultSort?: DefaultSortProps,
   permissions?: string[]
 ) =>
   columns.map((column) => {
-    const columnProps = getColumn(column, searchedColumns, permissions);
+    const columnProps = getColumn(
+      column,
+      searchedColumns,
+      defaultSort,
+      permissions
+    );
 
     if (!isEmpty(column.columnActions)) {
       const actions = column.columnActions || [];

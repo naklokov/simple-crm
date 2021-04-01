@@ -30,6 +30,7 @@ import { setTableLoading } from "../../__data__";
 
 import TableServer, { TableWithServerPagingProps } from "./server-paging";
 import TableClient, { TableWithClientPagingProps } from "./client-paging";
+import { DefaultSortProps } from "./constants";
 
 interface TableExtendsProps {
   Server: React.FC<TableWithServerPagingProps>;
@@ -58,6 +59,7 @@ interface TableProps {
   onResetFilter?: (column: ColumnProps, clearFilters: Function) => void;
   withSearch?: boolean;
   extraHeader?: JSX.Element;
+  defaultSort?: DefaultSortProps;
   className?: string;
   permissions?: string[];
   onChangeTable?: (
@@ -90,6 +92,7 @@ export const Table: React.FC<TableProps> & TableExtendsProps = ({
   onSearch,
   withSearch = false,
   extraHeader,
+  defaultSort,
   onChangeTable = noop,
   permissions = [],
   searchAll = "",
@@ -143,7 +146,12 @@ export const Table: React.FC<TableProps> & TableExtendsProps = ({
             size="middle"
             title={title}
             columns={[
-              ...getDataColumns(columns, searchedColumns, permissions),
+              ...getDataColumns(
+                columns,
+                searchedColumns,
+                defaultSort,
+                permissions
+              ),
               ...getActions(actions, t),
             ]}
             dataSource={dataSourceWithKeys}
