@@ -21,6 +21,7 @@ import {
   pluralize,
 } from "../../utils";
 import {
+  getDefaultSort,
   getFetchDataSourceQuery,
   getFilterAllRsqlQuery,
   getFilterColumnRsqlQuery,
@@ -190,6 +191,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
       extraHeader={extraHeader}
       pagination={serverPagination}
       onDeleteRow={handleDelete}
+      defaultSort={getDefaultSort(sortBy)}
       dataSource={dataSource}
       onSearch={handleSearch}
       onChangeTable={handleChangeTable}
