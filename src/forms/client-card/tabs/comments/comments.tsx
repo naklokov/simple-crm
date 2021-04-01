@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
-import { List } from "antd";
-import { sortBy } from "lodash";
+import { Dropdown, List, Menu } from "antd";
+import { orderBy } from "lodash";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
+import { DownOutlined } from "@ant-design/icons";
 import { Comment } from "../../../../components";
 import { Footer } from "./components";
 import {
@@ -34,6 +35,7 @@ interface CommentsProps extends TabPaneFormProps {
 export const Comments = ({ profileInfo }: CommentsProps) => {
   const [loading, setLoading] = useState(false);
   const [comments, setComments] = useState([] as CommentEntityProps[]);
+  const [order, setOrder] = useState<"asc" | "desc">("asc");
   const listRef = useRef<HTMLDivElement>(null);
 
   const { id: entityId } = useParams<QueryProps>();
@@ -128,13 +130,38 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
     [comments, entityId, profileInfo.id, t]
   );
 
+  const orderLabel = order === "asc" ? "Сначала старые" : "Сначала новые";
+
+  const handleOrderComment = (direction: "asc" | "desc") => {
+    setOrder(direction);
+  };
+  const menu = (
+    <Menu>
+      <Menu.Item key="asc" onClick={() => handleOrderComment("asc")}>
+        Старые
+      </Menu.Item>
+      <Menu.Item key="desc" onClick={() => handleOrderComment("desc")}>
+        Новые
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <div className={style.container}>
+      <Dropdown overlay={menu} trigger={["click"]}>
+        <a
+          href="#"
+          className="ant-dropdown-link"
+          onClick={(e) => e.preventDefault()}
+        >
+          {orderLabel} <DownOutlined />
+        </a>
+      </Dropdown>
       <div ref={listRef} className={style.list}>
         <List
           loading={loading}
           itemLayout="horizontal"
-          dataSource={sortBy(comments, "creationDate")}
+          dataSource={orderBy(comments, "creationDate", order)}
           renderItem={(comment) => (
             <List.Item>
               <Comment
