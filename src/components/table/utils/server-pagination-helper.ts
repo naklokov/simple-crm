@@ -7,6 +7,7 @@ import { ColumnProps, RecordType, RSQL_DELIMETER } from "../../../constants";
 import {
   getDateBetweenRsql,
   getEqualRsql,
+  getFieldEqualRsql,
   getRsqlParams,
   getSearchRsql,
   getValueFromRsql,
@@ -70,7 +71,11 @@ export const getFilterColumnRsqlQuery = (
   }
 
   if (column.columnType === "dictionary" || column.columnType === "entity") {
-    return getRsqlParams([getEqualRsql(column.columnCode, searched)]);
+    const rsql = column.isJsonField
+      ? getFieldEqualRsql({ searched, fieldCode: column.columnCode })
+      : getEqualRsql(column.columnCode, searched);
+
+    return getRsqlParams([rsql]);
   }
 
   return getRsqlParams([getSearchRsql([column.columnCode], searched)]);
