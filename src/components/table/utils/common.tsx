@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import isEmpty from "lodash/isEmpty";
 import pick from "lodash/pick";
-import { Dispatch } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 import { columns as tableColumns } from "../components";
 
 import {
@@ -138,19 +138,26 @@ export const getDataColumns = (
     return columnProps;
   });
 
-export const loadDictionaries = (
+export const useFetchDictionaries = (
   columns: ColumnProps[],
-  links: LinksType,
-  dispatch: Dispatch
+  links: LinksType
 ) => {
-  if (!isEmpty(links)) {
-    const linksKeys = Object.keys(links);
-    const visibleColumns = columns.map(({ columnCode }) => columnCode);
+  const dispatch = useDispatch();
 
-    linksKeys
-      .filter((key) => visibleColumns.includes(key))
-      .forEach((dictionaryName) =>
-        fetchDictionary(links?.[dictionaryName]?.href, dictionaryName, dispatch)
-      );
-  }
+  useEffect(() => {
+    if (!isEmpty(links)) {
+      const linksKeys = Object.keys(links);
+      const visibleColumns = columns.map(({ columnCode }) => columnCode);
+
+      linksKeys
+        .filter((key) => visibleColumns.includes(key))
+        .forEach((dictionaryName) =>
+          fetchDictionary(
+            links?.[dictionaryName]?.href,
+            dictionaryName,
+            dispatch
+          )
+        );
+    }
+  }, [columns, dispatch]);
 };

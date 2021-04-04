@@ -30,29 +30,35 @@ import {
   getSortedParams,
   useTableServerPagingParams,
 } from "./utils";
-import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from "./constants";
+import {
+  DEFAULT_PAGE_NUMBER,
+  DEFAULT_PAGE_SIZE,
+  FILTER_ALL_NAME,
+} from "./constants";
 import { setTableLoading } from "../../__data__";
+import { TableHeader } from "./components";
 
-const FILTER_ALL_NAME = "all";
 const SEARCH_ALL_KEYS = ["phone", "inn", "shortName", "city"];
 
 export interface TableWithServerPagingProps {
   columns?: ColumnProps[];
   actions?: ActionProps[];
-  extraHeader?: JSX.Element;
+  extraTitle?: JSX.Element;
   extraRsqlParams?: RsqlParamProps[];
   withSearch?: boolean;
-  _links: LinksType;
+  searchPlaceholder?: string;
+  links: LinksType;
 }
 
 export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
   columns = [],
   actions = [],
-  _links = {},
-  extraHeader,
-  withSearch = true,
+  extraTitle,
+  withSearch,
+  searchPlaceholder,
+  links = {},
 }) => {
-  const [url, initialSearch] = _links?.self?.href?.split("?") ?? [];
+  const [url, initialSearch] = links?.self?.href?.split("?") ?? [];
   const [t] = useTranslation("tableServer");
   const dispatch = useDispatch();
   const [searchedAll, setSearchedAll] = useState("");
@@ -109,10 +115,10 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     fetchDataSource();
   }, [filters, page, pageSize, initialQueries, sortBy, url, dispatch]);
 
-  const handleSearch = useCallback(
-    (searchAllText: string) => {
+  const handleSearchAll = useCallback(
+    (inputSearchedAll: string) => {
       const filterAllRsql = getFilterAllRsqlQuery(
-        searchAllText,
+        inputSearchedAll,
         SEARCH_ALL_KEYS
       );
 
@@ -145,11 +151,12 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
   const handleSearchColumn = useCallback(
     (searched: string, confirm: any, column: ColumnProps) => {
       const filterColumnRsql = getFilterColumnRsqlQuery(searched, column);
-
-      setFilters({
+      const updatedFilters = {
         ...filters,
         [column.columnCode]: filterColumnRsql,
-      });
+      };
+
+      setFilters(updatedFilters);
       confirm();
     },
     [filters, setFilters]
@@ -157,16 +164,18 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
 
   const handleResetFilter = useCallback(
     (column: ColumnProps, clearFilters: Function) => {
-      setFilters({
+      const updatedFilters = {
         ...filters,
         [column.columnCode]: "",
-      });
+      };
+
+      setFilters(updatedFilters);
       clearFilters();
     },
     [filters, setFilters]
   );
 
-  const handleResetAllFilters = useCallback(() => {
+  const handleClearAll = useCallback(() => {
     setFilters({});
   }, [setFilters]);
 
@@ -183,24 +192,37 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     showTotal: () => totalText,
   };
 
+  const tableHeader = useMemo(
+    () =>
+      withSearch || extraTitle
+        ? () => (
+            <TableHeader
+              onClearAll={handleClearAll}
+              onSearch={handleSearchAll}
+              searchPlaceholder={searchPlaceholder}
+              withSearch={withSearch}
+              extra={extraTitle}
+            />
+          )
+        : undefined,
+    [withSearch, extraTitle, handleClearAll, handleSearchAll, searchPlaceholder]
+  );
+
   return (
     <Table
-      _links={_links}
+      links={links}
       actions={actions}
       columns={columns}
-      extraHeader={extraHeader}
+      tableHeader={tableHeader}
       pagination={serverPagination}
       onDeleteRow={handleDelete}
       defaultSort={getDefaultSort(sortBy)}
       dataSource={dataSource}
-      onSearch={handleSearch}
       onChangeTable={handleChangeTable}
       onSearchColumn={handleSearchColumn}
       onResetFilter={handleResetFilter}
       searchAll={searchedAll}
       searchedColumns={searchedColumns}
-      onResetAllFilters={handleResetAllFilters}
-      withSearch={withSearch}
     />
   );
 };

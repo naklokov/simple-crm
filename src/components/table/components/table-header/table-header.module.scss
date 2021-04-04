@@ -1,0 +1,30 @@
+@import "../../../../assets/styles/offsets";
+
+.container {
+  margin: -12px calc(-1 * var(--offset-sm)) 0 calc(-1 * var(--offset-sm));
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.search {
+  flex: 1;
+  
+  display: flex;
+  max-width: 600px;
+  min-width: 150px;
+  
+  &Clear {
+    margin-left: var(--offset-sm);
+
+    &WithExtra {
+      margin-right: var(--offset-sm);
+    }
+  }
+}
+
+.extra {
+  position: relative;
+  right: 0;
+  margin-left: auto;
+}

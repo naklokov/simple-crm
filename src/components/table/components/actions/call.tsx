@@ -1,10 +1,11 @@
 import React, { useCallback, useContext } from "react";
 import { Popconfirm, Typography } from "antd";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { HighlightTextWrapper } from "../../../../wrappers";
 import { callTel, getConformedValue } from "../../../../utils";
 import { SearchedAllContext, SearchedColumnsContext } from "../../utils";
-import { ColumnProps, RecordType } from "../../../../constants";
+import { ColumnProps, RecordType, State } from "../../../../constants";
 
 interface CallProps {
   phone: string;
@@ -12,6 +13,7 @@ interface CallProps {
 }
 
 export const Call: React.FC<CallProps> = ({ phone, column }) => {
+  const tableLoading = useSelector((state: State) => state?.app?.tableLoading);
   const [t] = useTranslation("table");
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
@@ -43,6 +45,7 @@ export const Call: React.FC<CallProps> = ({ phone, column }) => {
     >
       <Typography.Link style={{ padding: 0 }}>
         <HighlightTextWrapper
+          loading={tableLoading}
           text={getConformedValue(phone)}
           searched={searchedOptions}
         />
