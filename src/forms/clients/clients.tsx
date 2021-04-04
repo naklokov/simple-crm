@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Tabs } from "antd";
+import { useTranslation } from "react-i18next";
 import { Table } from "../../components";
 import {
   formConfig,
@@ -23,6 +24,7 @@ const {
 } = formConfig.clients;
 
 export const Clients: React.FC<ClientsProps> = ({ profileInfo }) => {
+  const [t] = useTranslation("clients");
   const { activeTab, onChange } = useTabs(tabs);
 
   if (!profileInfo.id) {
@@ -49,9 +51,11 @@ export const Clients: React.FC<ClientsProps> = ({ profileInfo }) => {
               key={activeTab.tabName}
               columns={activeTab.columns}
               actions={activeTab.actions}
-              _links={fillLinks(activeTab._links, {
+              links={fillLinks(activeTab._links, {
                 userProfileId: profileInfo.id,
               })}
+              searchPlaceholder={t("table.search.placeholder")}
+              withSearch
             />
           </form>
         )}

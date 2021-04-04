@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import axios from "axios";
 import moment from "moment-timezone";
 import { Tabs, Button } from "antd";
@@ -6,6 +6,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { isEmpty } from "lodash";
+import { useDispatch } from "react-redux";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
@@ -34,6 +35,7 @@ import {
   CompletedTaskDrawer,
 } from "../../../../drawers";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
+import { setTableLoading } from "../../../../__data__";
 
 const { TabPane } = Tabs;
 
@@ -46,6 +48,7 @@ const taskDrawer = formConfig.clientCard.lower.drawers.find(
 
 export const Tasks = ({ tab }: TabPaneFormProps) => {
   const [t] = useTranslation("tasks");
+  const dispatch = useDispatch();
   const { id: clientId } = useParams<QueryProps>();
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
@@ -66,26 +69,36 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
     params: { query },
   });
 
+  useEffect(() => {
+    dispatch(setTableLoading(loading));
+  }, [loading, dispatch]);
+
   const tasks: TaskEntityProps[] = useMemo(() => response?.data ?? [], [
     response,
   ]);
 
-  const fetchDelete = async (id: string) => {
-    try {
-      const url = getFullUrl(urls.tasks.entity, id);
-      await axios.delete(url);
-      reload();
-      defaultSuccessHandler(t("message.success.delete"));
-    } catch (error) {
-      defaultErrorHandler({ error });
-    }
-  };
+  const fetchDelete = useCallback(
+    async (id: string) => {
+      try {
+        dispatch(setTableLoading(true));
+        const url = getFullUrl(urls.tasks.entity, id);
+        await axios.delete(url);
+        reload();
+        defaultSuccessHandler(t("message.success.delete"));
+      } catch (error) {
+        defaultErrorHandler({ error });
+      } finally {
+        dispatch(setTableLoading(false));
+      }
+    },
+    [dispatch, reload, t]
+  );
 
   const handleDeleteRow = useCallback(
     (id: string) => {
       fetchDelete(id);
     },
-    [reload]
+    [fetchDelete]
   );
 
   const handleAddClick = useCallback(() => {
@@ -99,7 +112,7 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
       );
       setCompletedDrawerVisible(true);
     },
-    [tasks]
+    [tasks, completedFormUpdate]
   );
 
   const handleViewRow = useCallback(
@@ -107,7 +120,7 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
       viewFormUpdate(tasks.find((o) => o.id === id) || ({} as TaskEntityProps));
       setViewDrawerVisible(true);
     },
-    [tasks]
+    [tasks, viewFormUpdate]
   );
 
   const handleCloseAddDrawer = useCallback(
@@ -137,7 +150,7 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
         reload();
       }
     },
-    [tasks]
+    [reload]
   );
 
   const activeTasks = useMemo(
@@ -195,6 +208,7 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
       />
       <form>
         <Tabs
+          style={{ marginTop: "-8px" }}
           tabBarExtraContent={{
             left: (
               <ComponentPermissionsChecker hasRight={values?.isOwner?.UPDATE}>
@@ -207,10 +221,9 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
             ),
           }}
         >
-          <TabPane tab="Активные" key="active">
+          <TabPane tab={t("tab.active")} key="active">
             <Table.Client
               table={activeTasksTable as TabProps}
-              loading={loading}
               dataSource={activeTasks}
               pagination={{ pageSize: 3 }}
               onViewRow={handleViewRow}
@@ -218,10 +231,9 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
               onDeleteRow={handleDeleteRow}
             />
           </TabPane>
-          <TabPane tab="Выполненные" key="done">
+          <TabPane tab={t("tab.completed")} key="done">
             <Table.Client
               table={completedTasksTable as TabProps}
-              loading={loading}
               dataSource={completedTasks}
               pagination={{ pageSize: 3 }}
             />

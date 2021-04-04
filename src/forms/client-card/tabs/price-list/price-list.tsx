@@ -20,7 +20,10 @@ import {
   getFullUrl,
   defaultSuccessHandler,
 } from "../../../../utils";
-import { setTableLoading as setTableLoadingAction } from "../../../../__data__";
+import {
+  setLoading,
+  setTableLoading as setTableLoadingAction,
+} from "../../../../__data__";
 
 interface ContactsProps extends TabPaneFormProps {
   profileInfo: ProfileInfoEntityProps;
@@ -50,6 +53,10 @@ export const PriceList: React.FC<ContactsProps> = ({
   });
 
   useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  useEffect(() => {
     setPositions(response?.data ?? []);
   }, [response]);
 
@@ -76,7 +83,6 @@ export const PriceList: React.FC<ContactsProps> = ({
       <Table.Client
         idValue="itemId"
         table={tab}
-        loading={loading}
         dataSource={positions}
         onSaveRow={handleSaveRow}
         withSearch

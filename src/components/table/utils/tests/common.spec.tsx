@@ -1,5 +1,7 @@
+import { renderHook, act } from "@testing-library/react-hooks";
 import { ColumnProps } from "../../../../constants";
-import { loadDictionaries } from "../common";
+import { useFetchDictionaries } from "../common";
+import * as reactRedux from "react-redux";
 import * as fetches from "../fetch";
 
 const columns: ColumnProps[] = [
@@ -34,11 +36,12 @@ const links = {
   },
 };
 
-test("loadDictionaries", () => {
+test("useFetchDictionaries", () => {
   const dispatch = jest.fn();
+  jest.spyOn(reactRedux, "useDispatch").mockReturnValue(dispatch);
   const fetchDictionarySpy = jest.spyOn(fetches, "fetchDictionary");
 
-  loadDictionaries(columns, links, dispatch);
+  renderHook(() => useFetchDictionaries(columns, links));
 
   expect(fetchDictionarySpy).toHaveBeenCalledTimes(2);
 

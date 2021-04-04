@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { ReactNode, useEffect, useMemo } from "react";
 import { Table as TableUI } from "antd";
 
 import { useTranslation } from "react-i18next";
@@ -17,12 +17,11 @@ import {
   getActions,
   getDataColumns,
   getEditableTableBody,
-  loadDictionaries,
   SearchedAllContext,
   SearchedColumnsContext,
   TableActionsContext,
+  useFetchDictionaries,
 } from "./utils";
-import { Header } from "./components";
 
 import style from "./table.module.scss";
 
@@ -41,10 +40,9 @@ interface TableProps {
   dataSource: any[];
   columns: ColumnProps[];
   actions?: ActionProps[];
-  loading?: boolean;
   tableLoading: boolean;
   pagination?: TablePaginationConfig;
-  _links: LinksType;
+  links: LinksType;
   onDeleteRow?: (id: string) => void;
   onViewRow?: (id: string) => void;
   onSaveRow?: (record: any) => void;
@@ -57,8 +55,7 @@ interface TableProps {
   ) => void;
   onResetAllFilters?: () => void;
   onResetFilter?: (column: ColumnProps, clearFilters: Function) => void;
-  withSearch?: boolean;
-  extraHeader?: JSX.Element;
+  tableHeader?: () => JSX.Element;
   defaultSort?: DefaultSortProps;
   className?: string;
   permissions?: string[];
@@ -74,12 +71,11 @@ interface TableProps {
 }
 
 export const Table: React.FC<TableProps> & TableExtendsProps = ({
-  _links,
+  links,
   columns,
   className,
   dataSource,
   actions,
-  loading,
   tableLoading,
   pagination = { pageSize: 10 },
   onDeleteRow = noop,
@@ -88,10 +84,7 @@ export const Table: React.FC<TableProps> & TableExtendsProps = ({
   onDoneRow = noop,
   onSearchColumn = noop,
   onResetFilter = noop,
-  onResetAllFilters = noop,
-  onSearch,
-  withSearch = false,
-  extraHeader,
+  tableHeader,
   defaultSort,
   onChangeTable = noop,
   permissions = [],
@@ -100,23 +93,8 @@ export const Table: React.FC<TableProps> & TableExtendsProps = ({
   bordered = false,
 }) => {
   const [t] = useTranslation("table");
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    loadDictionaries(columns, _links, dispatch);
-  }, []);
-
-  const title =
-    withSearch || extraHeader
-      ? () => (
-          <Header
-            withSearch={withSearch}
-            onSearch={onSearch}
-            extra={extraHeader}
-            onResetAllFilters={onResetAllFilters}
-          />
-        )
-      : undefined;
+  useFetchDictionaries(columns, links);
 
   const dataSourceWithKeys = useMemo(
     () =>
@@ -144,7 +122,7 @@ export const Table: React.FC<TableProps> & TableExtendsProps = ({
             className={className}
             onChange={onChangeTable}
             size="middle"
-            title={title}
+            title={tableHeader}
             columns={[
               ...getDataColumns(
                 columns,
@@ -155,10 +133,10 @@ export const Table: React.FC<TableProps> & TableExtendsProps = ({
               ...getActions(actions, t),
             ]}
             dataSource={dataSourceWithKeys}
-            pagination={{ ...pagination }}
+            pagination={pagination}
             components={getEditableTableBody()}
             rowClassName={() => style.editableRow}
-            loading={loading || tableLoading}
+            loading={tableLoading}
             scroll={{ x: true }}
             bordered={bordered}
           />

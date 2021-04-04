@@ -1,6 +1,6 @@
 import React from "react";
-import { Avatar, Typography, Dropdown, Menu, Tooltip } from "antd";
-import { UserOutlined, DownOutlined } from "@ant-design/icons";
+import { Typography, Dropdown, Menu, Tooltip } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 import { Dispatch } from "@reduxjs/toolkit";
@@ -15,6 +15,7 @@ import {
   State,
   TOOLTIP_SHOW_DELAY,
 } from "../../../../constants";
+import { Avatar } from "../../../../components";
 
 interface ProfileProps {
   profileInfo: ProfileInfoEntityProps;
@@ -45,7 +46,7 @@ export const Profile = ({ profileInfo, logout }: ProfileProps) => {
           mouseEnterDelay={TOOLTIP_SHOW_DELAY}
           title={t("tooltip.edit.profile")}
         >
-          <Avatar src={avatar} icon={<UserOutlined />} />
+          <Avatar src={avatar} />
         </Tooltip>
       </Link>
       <Dropdown overlay={menu} trigger={["click"]}>
