@@ -21,9 +21,10 @@ export const Date: React.FC<DateProps> = ({ value, format, column }) => {
 
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
-  const seachedColumnsValue = moment(
-    searchedColumns?.[column.columnCode]
-  ).format(format);
+  const columnValue = searchedColumns?.[column.columnCode];
+  const seachedColumnsValue = columnValue
+    ? moment(columnValue).format(format)
+    : "";
 
   return (
     <HighlightTextWrapper
