@@ -149,10 +149,8 @@ export interface RsqlParamProps {
   value: string | number | boolean;
 }
 
-export type ModeType = "view" | "add";
-
 export interface QueryProps {
-  id: string;
+  id: "new" | string;
 }
 
 export interface RuleProps {

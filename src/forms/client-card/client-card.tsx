@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { Tabs } from "antd";
 import axios from "axios";
 
@@ -14,8 +14,8 @@ import {
   ClientEntityProps,
   formConfig,
   State,
+  CLIENT_NEW_ID,
 } from "../../constants";
-import { getClientCardMode } from "./utils";
 import { FormHeader, Loader } from "../../components";
 import { Main, Comments, Contacts, Requisites, PriceList, Tasks } from "./tabs";
 import {
@@ -60,9 +60,9 @@ export const ClientCard = () => {
     FORM_NAMES.CLIENT_CARD
   );
 
-  const mode = getClientCardMode(clientId);
+  const isAdd = useMemo(() => clientId === CLIENT_NEW_ID, [clientId]);
 
-  const isClientEmpty = mode === "view" && isEmpty(client);
+  const isClientEmpty = !isAdd && isEmpty(client);
   const url = getFullUrl(urls.clientCard.entity, clientId);
 
   const fetchClientCard = useCallback(async () => {
@@ -75,7 +75,7 @@ export const ClientCard = () => {
   }, [update, url]);
 
   useEffect(() => {
-    if (mode === "view") {
+    if (!isAdd) {
       fetchClientCard();
     }
 

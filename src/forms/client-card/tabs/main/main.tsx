@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { Row, Form, Spin } from "antd";
 import { useParams, useHistory } from "react-router-dom";
@@ -18,7 +18,6 @@ import {
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 import {
   GUTTER_FULL_WIDTH,
-  ModeType,
   urls,
   QueryProps,
   FORM_NAMES,
@@ -26,16 +25,20 @@ import {
   ProfileInfoEntityProps,
   ClientEntityProps,
   TabPaneFormProps,
+  CLIENT_NEW_ID,
 } from "../../../../constants";
 import { getAddMetaValues } from "../../utils";
 
 interface MainProps extends TabPaneFormProps {
-  mode: ModeType;
   profileInfo: ProfileInfoEntityProps;
   formLoading: boolean;
 }
 
-export const Main = ({ tab, profileInfo, mode, formLoading }: MainProps) => {
+export const Main: React.FC<MainProps> = ({
+  tab,
+  profileInfo,
+  formLoading,
+}) => {
   const { id } = useParams<QueryProps>();
   const [form] = Form.useForm();
   const history = useHistory();
@@ -46,8 +49,8 @@ export const Main = ({ tab, profileInfo, mode, formLoading }: MainProps) => {
     FORM_NAMES.CLIENT_CARD
   );
 
-  const initialValues =
-    mode === "add" ? getAddMetaValues(profileInfo) : formValues;
+  const isAdd = useMemo(() => id === CLIENT_NEW_ID, [id]);
+  const initialValues = isAdd ? getAddMetaValues(profileInfo) : formValues;
 
   const handleValuesChange = (changed: Object, allValues: Object) => {
     const isChanged = isValuesChanged(initialValues, allValues);
@@ -106,7 +109,7 @@ export const Main = ({ tab, profileInfo, mode, formLoading }: MainProps) => {
       <Spin spinning={formLoading}>
         <Form
           onValuesChange={handleValuesChange}
-          onFinish={mode === "add" ? onFinishAdd : onFinishEdit}
+          onFinish={isAdd ? onFinishAdd : onFinishEdit}
           layout="vertical"
           name="clientCardMain"
           form={form}
@@ -133,7 +136,7 @@ export const Main = ({ tab, profileInfo, mode, formLoading }: MainProps) => {
             <FormFooter
               loading={submitLoading}
               disabled={submitDisabled}
-              withCancel={mode === "add"}
+              withCancel={isAdd}
               onCancel={handleGoBack}
             />
           </ComponentPermissionsChecker>
