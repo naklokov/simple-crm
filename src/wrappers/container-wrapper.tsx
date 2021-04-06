@@ -22,9 +22,7 @@ import {
 
 interface ContainerWrapperProps {
   children: ReactNode;
-  permissions: string[];
   error: ErrorAppState;
-  loading: boolean;
   setLoading: (loading: boolean) => void;
   setPermissions: (permissions: string[]) => void;
   setProfileInfo: (profile: ProfileInfoEntityProps) => void;

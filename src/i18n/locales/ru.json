@@ -67,6 +67,7 @@
     "confirm.no": "Нет"
   },
   "clients": {
+    "table.search.placeholder": "Наименование, телефон, город, ИНН",
     "title": "Клиенты",
     "title.my": "Мои клиенты",
     "button.add.title": "＋ Добавить клиента",
@@ -92,10 +93,14 @@
     "actions.call.yes": "Да",
     "actions.email.confirm": "Вы хотите написать письмо?",
     "actions.email.no": "Нет",
-    "actions.email.yes": "Да",
-
-    "search.all.placeholder": "Поиск",
-    "search.all.clear": "Очистить фильтры"
+    "actions.email.yes": "Да"
+  },
+  "tableHeader": {
+    "button.clear.all": "Очистить фильтры"
+  },
+  "searchBar": {
+    "placeholder": "Поиск",
+    "button": "Найти"
   },
   "clientCard": {
     "button.call": "Звонок",
@@ -162,6 +167,8 @@
     "rules.required": "Пожалуйста, введите комментарий"
   },
   "tasks": {
+    "tab.completed": "Выполненные",
+    "tab.active": "Активные",
     "button.add.title": "＋ Добавить задачу",
     "overdue.title": "Просроченные",
     "title": "Задачи",

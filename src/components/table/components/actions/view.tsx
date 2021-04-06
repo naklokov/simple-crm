@@ -1,7 +1,9 @@
 import React, { useCallback, useContext } from "react";
 import { Button } from "antd";
+import { useSelector } from "react-redux";
 import { HighlightTextWrapper } from "../../../../wrappers";
 import { TableActionsContext } from "../../utils";
+import { State } from "../../../../constants";
 
 interface ViewProps {
   id: string;
@@ -9,6 +11,7 @@ interface ViewProps {
 }
 
 export const View: React.FC<ViewProps> = ({ id, title = "" }) => {
+  const tableLoading = useSelector((state: State) => state?.app?.tableLoading);
   const { onViewRow } = useContext(TableActionsContext);
   const handleClick = useCallback(() => {
     onViewRow(id);
@@ -16,7 +19,7 @@ export const View: React.FC<ViewProps> = ({ id, title = "" }) => {
 
   return (
     <Button style={{ paddingLeft: 0 }} type="link" onClick={handleClick}>
-      <HighlightTextWrapper text={title} />
+      <HighlightTextWrapper text={title} loading={tableLoading} />
     </Button>
   );
 };

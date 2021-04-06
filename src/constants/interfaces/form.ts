@@ -22,8 +22,6 @@ export type FieldType =
 
 export type RecordType = { [key: string]: string };
 
-export type FilterOperaratorType = "equal" | "rsql";
-
 export type ActionType = "href" | "delete" | "call" | "email" | "view" | "done";
 
 export type ColumnType =
@@ -105,10 +103,11 @@ export interface ColumnProps {
   ellipsis?: boolean;
   width?: string;
   fixed?: FixedPositionType;
-  sorter: any;
+  sorter?: boolean;
   filterable?: boolean;
-  filterOperator?: FilterOperaratorType;
   editable?: boolean;
+  // до первого запроса
+  isJsonField?: boolean;
   columnActions?: ActionProps[];
 }
 
@@ -150,10 +149,8 @@ export interface RsqlParamProps {
   value: string | number | boolean;
 }
 
-export type ModeType = "view" | "add";
-
 export interface QueryProps {
-  id: string;
+  id: "new" | string;
 }
 
 export interface RuleProps {

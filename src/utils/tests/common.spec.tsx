@@ -6,6 +6,7 @@ import { DATE_FORMATS, urls } from "../../constants";
 import {
   callTel,
   clearCookie,
+  fillLinks,
   fillTemplate,
   getDateWithTimezone,
   getFullUrl,
@@ -15,12 +16,6 @@ import {
 const getAction = (type: string, payload: any) => ({
   type,
   payload,
-});
-
-beforeEach(() => {
-  Cookies.remove(COOKIES.JSESSIONID);
-  Cookies.remove(COOKIES.REMEMBER_ME);
-  Cookies.remove(COOKIES.USERNAME);
 });
 
 test("checkAuthCookie", () => {
@@ -131,4 +126,56 @@ test("pluralize", () => {
   expect(pluralize(102, vars)).toBe(some);
   expect(pluralize(10, vars)).toBe(many);
   expect(pluralize(100, vars)).toBe(many);
+});
+
+test("fillLinks", () => {
+  const links = {
+    self: {
+      href: "/somePath/id",
+    },
+    userNames: {
+      href: "/somePath/id/{{name}}",
+    },
+    profiles: {
+      href: "/somePath/id/{{profile}}",
+    },
+  };
+
+  expect(fillLinks(links, { name: "Ivan", profile: "user" })).toEqual({
+    self: {
+      href: "/somePath/id",
+    },
+    userNames: {
+      href: "/somePath/id/Ivan",
+    },
+    profiles: {
+      href: "/somePath/id/user",
+    },
+  });
+});
+
+test("fillLinks without value", () => {
+  const links = {
+    self: {
+      href: "/somePath/id",
+    },
+    userNames: {
+      href: "/somePath/id/{{name}}",
+    },
+    profiles: {
+      href: "/somePath/id/{{profile}}",
+    },
+  };
+
+  expect(fillLinks(links, { profile: "user" })).toEqual({
+    self: {
+      href: "/somePath/id",
+    },
+    userNames: {
+      href: "/somePath/id/{{name}}",
+    },
+    profiles: {
+      href: "/somePath/id/user",
+    },
+  });
 });
