@@ -1,35 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { Tabs } from "antd";
 import axios from "axios";
 
 import { useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
-import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { isEmpty } from "lodash";
+import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
+import { connect } from "react-redux";
 import {
   FORM_NAMES,
   PERMISSIONS,
   QueryProps,
   urls,
-  ProfileInfoEntityProps,
-  State,
   ClientEntityProps,
+  formConfig,
+  State,
+  CLIENT_NEW_ID,
 } from "../../constants";
-import { setLoading as setLoadingAction } from "../../__data__";
-import { getClientCardMode } from "./utils";
-import { Tabs, Loader } from "../../components";
-import { upper, lower } from "../../constants/form-config/client-card";
+import { FormHeader, Loader } from "../../components";
 import { Main, Comments, Contacts, Requisites, PriceList, Tasks } from "./tabs";
-import { defaultErrorHandler, getFullUrl, useFormValues } from "../../utils";
+import {
+  defaultErrorHandler,
+  getFullUrl,
+  useFormValues,
+  useTabs,
+} from "../../utils";
 import { ClientCardHeader } from ".";
 import { PagePermissionsChecker } from "../../wrappers";
+import { setLoading as setLoadingAction } from "../../__data__";
 
-interface ClientCardProps {
-  profileInfo: ProfileInfoEntityProps;
-  setLoading: (loading: boolean) => void;
-}
-
-export const TABS_MAP: {
+export const formsMap: {
   [key: string]: (props: any) => any;
 } = {
   main: Main,
@@ -40,65 +39,84 @@ export const TABS_MAP: {
   tasks: Tasks,
 };
 
-export const ClientCard = ({ setLoading }: ClientCardProps) => {
+const {
+  clientCard: { upper, lower },
+} = formConfig;
+
+export const ClientCard = () => {
+  const { activeTab: upperActiveTab, onChange: onChangeUpper } = useTabs(
+    upper.tabs,
+    "replace",
+    "upper"
+  );
+  const { activeTab: lowerActiveTab, onChange: onChangeLower } = useTabs(
+    lower.tabs,
+    "replace",
+    "lower"
+  );
+
   const { id: clientId } = useParams<QueryProps>();
-  const [t] = useTranslation(FORM_NAMES.CLIENT_CARD);
   const { values: client, update, clear } = useFormValues<ClientEntityProps>(
     FORM_NAMES.CLIENT_CARD
   );
 
-  const mode = getClientCardMode(clientId);
+  const isAdd = useMemo(() => clientId === CLIENT_NEW_ID, [clientId]);
 
-  const isClientEmpty = mode === "view" && isEmpty(client);
+  const isClientEmpty = !isAdd && isEmpty(client);
   const url = getFullUrl(urls.clientCard.entity, clientId);
 
-  const fetchClientCard = async () => {
+  const fetchClientCard = useCallback(async () => {
     try {
-      setLoading(true);
       const response = await axios.get(url);
       update(response?.data);
     } catch (error) {
       defaultErrorHandler({ error });
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [update, url]);
 
   useEffect(() => {
-    if (mode === "view") {
+    if (!isAdd) {
       fetchClientCard();
     }
 
     return () => {
       clear();
     };
-  }, [clientId]);
+  }, []);
 
   if (isClientEmpty) {
     return <Loader />;
   }
+
+  const UpperForm = formsMap[upperActiveTab?.tabCode];
+  const LowerForm = formsMap[lowerActiveTab?.tabCode];
 
   return (
     <PagePermissionsChecker
       availablePermissions={[PERMISSIONS.CLIENTS["GET.ALL"]]}
     >
       <>
-        <ClientCardHeader />
-        <Tabs
-          mainTab={upper.tabs[0].tabName}
-          position="upper"
-          mode={mode}
-          tabs={upper.tabs}
-          tabsMap={TABS_MAP}
+        <ClientCardHeader
+          footer={
+            <Tabs onChange={onChangeUpper} activeKey={upperActiveTab.tabCode}>
+              {upper?.tabs?.map(({ tabCode, tabName }) => (
+                <Tabs.TabPane key={tabCode} tab={tabName} />
+              ))}
+            </Tabs>
+          }
         />
-        {mode === "view" && (
-          <Tabs
-            position="lower"
-            mode={mode}
-            tabs={lower.tabs}
-            tabsMap={TABS_MAP}
-          />
-        )}
+        {UpperForm && <UpperForm tab={upperActiveTab} />}
+        <FormHeader
+          position="lower"
+          footer={
+            <Tabs onChange={onChangeLower} activeKey={lowerActiveTab.tabCode}>
+              {lower?.tabs?.map(({ tabCode, tabName }) => (
+                <Tabs.TabPane key={tabCode} tab={tabName} />
+              ))}
+            </Tabs>
+          }
+        />
+        {LowerForm && <LowerForm tab={lowerActiveTab} />}
       </>
     </PagePermissionsChecker>
   );

@@ -8,5 +8,6 @@ export * from "./tasks";
 export * from "./phone";
 export * from "./rsql";
 export * from "./sounds";
+export * from "./context";
 
 export { logger, storage };

@@ -17,7 +17,7 @@ import {
   State,
 } from "../../../constants";
 import { isCanShow } from "../../../wrappers/permissions-checker/utils";
-import { TableActionsContext } from "./common";
+import { TableActionsContext } from "./context";
 
 interface EditableRowProps {
   index: number;

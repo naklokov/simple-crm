@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import axios from "axios";
-import { Form, Typography, Row } from "antd";
+import { Form, Row } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import { useTranslation } from "react-i18next";
@@ -17,26 +17,21 @@ import {
 } from "../../../../utils";
 import {
   GUTTER_FULL_WIDTH,
-  formConfig,
   urls,
   State,
   ProfileInfoEntityProps,
+  TabPaneFormProps,
 } from "../../../../constants";
 
-import style from "./main.module.scss";
 import { FormFooter } from "../../../../components";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
 
-const {
-  profile: { FIELDS },
-} = formConfig;
-
-interface MainProps {
+interface MainProps extends TabPaneFormProps {
   profileInfo: ProfileInfoEntityProps;
   setProfileInfo: (profileInfo: ProfileInfoEntityProps) => void;
 }
 
-export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
+export const Main = ({ profileInfo, setProfileInfo, tab }: MainProps) => {
   const [form] = Form.useForm();
   const [t] = useTranslation(FORM_NAME);
   const history = useHistory();
@@ -71,15 +66,12 @@ export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
     }
   };
 
-  if (!profileInfo.id) {
+  if (!profileInfo.id || !tab?.fields?.length) {
     return null;
   }
 
   return (
-    <div className={style.container}>
-      <Typography.Title level={4} className={style.title}>
-        {t("title")}
-      </Typography.Title>
+    <form>
       <Form
         onValuesChange={handleValuesChange}
         onFinish={onFinish}
@@ -92,7 +84,7 @@ export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
           gutter={[GUTTER_FULL_WIDTH.HORIZONTAL, GUTTER_FULL_WIDTH.VERTICAL]}
         >
           <FormContext.Provider value={form}>
-            {FIELDS.map((field) => (
+            {tab?.fields.map((field) => (
               <ComponentPermissionsChecker
                 key={field.fieldCode}
                 hasRight={profileInfo?.isOwner?.UPDATE}
@@ -112,7 +104,7 @@ export const Main = ({ profileInfo, setProfileInfo }: MainProps) => {
           />
         </ComponentPermissionsChecker>
       </Form>
-    </div>
+    </form>
   );
 };
 

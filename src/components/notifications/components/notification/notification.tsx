@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useState } from "react";
+import React, { ReactNode, useCallback } from "react";
 import { List } from "antd";
 import { useTranslation } from "react-i18next";
 import { BellOutlined } from "@ant-design/icons";
@@ -24,7 +24,6 @@ const Notification: React.FC<NotificationComponentProps> = ({
 }) => {
   const [t] = useTranslation("notifications");
   const actions = [];
-  const [hover, setHover] = useState(false);
 
   const handleHide = useCallback(() => {
     onHide?.(id);
@@ -35,19 +34,11 @@ const Notification: React.FC<NotificationComponentProps> = ({
   }, [onDelete, id]);
 
   const hide = (
-    <ButtonSecondary
-      style={{ visibility: hover ? "visible" : "hidden" }}
-      onClick={handleHide}
-    >
-      {t("actions.read")}
-    </ButtonSecondary>
+    <ButtonSecondary onClick={handleHide}>{t("actions.read")}</ButtonSecondary>
   );
 
   const del = (
-    <ButtonSecondary
-      style={{ visibility: hover ? "visible" : "hidden" }}
-      onClick={handleDelete}
-    >
+    <ButtonSecondary onClick={handleDelete}>
       {t("actions.delete")}
     </ButtonSecondary>
   );
@@ -62,20 +53,8 @@ const Notification: React.FC<NotificationComponentProps> = ({
 
   const avatar = <div className={style.icon}>{icon}</div>;
 
-  const handleMouseEnter = useCallback(() => {
-    setHover(true);
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setHover(false);
-  }, []);
-
   return (
-    <List.Item
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      actions={actions}
-    >
+    <List.Item actions={actions}>
       <List.Item.Meta avatar={avatar} title={title} description={content} />
     </List.Item>
   );

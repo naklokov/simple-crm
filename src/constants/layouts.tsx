@@ -25,6 +25,16 @@ export const MENU_ITEMS = [
 ];
 
 export const BREADCRUMB_ROUTES = {
+  PROFILE: [
+    {
+      path: urls.main.path,
+      breadcrumbName: "Главная",
+    },
+    {
+      path: urls.profile.path.replace(urls.main.path, ""),
+      breadcrumbName: "Профиль",
+    },
+  ],
   CLIENTS: [
     {
       path: urls.main.path,

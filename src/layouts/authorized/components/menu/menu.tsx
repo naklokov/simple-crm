@@ -24,6 +24,7 @@ export const Menu = ({ permissions }: MenuProps) => {
 
   return (
     <MenuUI
+      theme="light"
       mode="inline"
       selectedKeys={[selectedKey]}
       style={{ border: "none" }}

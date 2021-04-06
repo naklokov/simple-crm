@@ -1,37 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import isEmpty from "lodash/isEmpty";
 import pick from "lodash/pick";
-import noop from "lodash/noop";
+import { useDispatch } from "react-redux";
 import { columns as tableColumns } from "../components";
-import { getSearchRsql, getRsqlParams, getEqualRsql } from "../../../utils";
 
 import {
   ActionProps,
   ColumnProps,
   EntityOwnerProps,
+  LinksType,
   RecordType,
-  RsqlParamProps,
 } from "../../../constants";
 import { getSorterProp } from "./sorter";
 import { getEditableProp } from "./editable";
 import { renderActions } from "./actions";
 import { getColumnSearchProp } from "./column-search";
-
-const { Entity, Date, Text, Number, Dictionary } = tableColumns;
-
-export const SearchedAllContext = React.createContext("");
-export const SearchedColumnsContext = React.createContext<RecordType>({});
-export const TableActionsContext = React.createContext({
-  onSaveRow: noop,
-  onDeleteRow: noop,
-  onViewRow: noop,
-  onDoneRow: noop,
-  onSearchColumn: noop,
-  onResetFilter: noop,
-});
+import { fetchDictionary } from "./fetch";
+import { DefaultSortProps } from "../constants";
 
 const getRenderProp = (column: ColumnProps) => ({
   render: (text: string, record: any) => {
+    const { Entity, Date, Text, Number, Dictionary } = tableColumns;
     const { format, columnType } = column;
 
     switch (columnType) {
@@ -63,6 +52,7 @@ const getRenderProp = (column: ColumnProps) => ({
 export const getColumn = (
   column: ColumnProps,
   searchedColumns: RecordType,
+  defaultSort?: DefaultSortProps,
   permissions: string[] = []
 ) => {
   const { columnCode, columnName, fixed, ellipsis, width } = column;
@@ -74,6 +64,7 @@ export const getColumn = (
     fixed,
     width,
     ellipsis,
+    defaultSortOrder: defaultSort?.[columnCode],
     ...getSorterProp(column),
     ...getEditableProp(column, permissions),
     ...getColumnSearchProp(column, searchedColumns),
@@ -124,10 +115,16 @@ export const getActions = (
 export const getDataColumns = (
   columns: ColumnProps[] = [],
   searchedColumns: RecordType,
+  defaultSort?: DefaultSortProps,
   permissions?: string[]
 ) =>
   columns.map((column) => {
-    const columnProps = getColumn(column, searchedColumns, permissions);
+    const columnProps = getColumn(
+      column,
+      searchedColumns,
+      defaultSort,
+      permissions
+    );
 
     if (!isEmpty(column.columnActions)) {
       const actions = column.columnActions || [];
@@ -141,49 +138,26 @@ export const getDataColumns = (
     return columnProps;
   });
 
-export const getServerPagingRsql = ({
-  searchedAll,
-  searchedColumns,
-  columns,
-  extraRsqlParams = [],
-  entityName,
-}: {
-  searchedAll?: string;
-  searchedColumns?: RecordType;
-  columns: ColumnProps[];
-  extraRsqlParams?: RsqlParamProps[];
-  entityName?: string;
-}) => {
-  const params: RsqlParamProps[] = [];
+export const useFetchDictionaries = (
+  columns: ColumnProps[],
+  links: LinksType
+) => {
+  const dispatch = useDispatch();
 
-  if (searchedAll) {
-    params.push(
-      getSearchRsql(
-        ["phone", "inn", "shortName", "city"],
-        searchedAll,
-        entityName
-      )
-    );
-  }
+  useEffect(() => {
+    if (!isEmpty(links)) {
+      const linksKeys = Object.keys(links);
+      const visibleColumns = columns.map(({ columnCode }) => columnCode);
 
-  if (searchedColumns) {
-    Object.keys(searchedColumns).forEach((key) => {
-      const { filterOperator = "rsql" } =
-        columns.find((o) => o.columnCode === key) || ({} as ColumnProps);
-
-      if (searchedColumns[key]) {
-        if (filterOperator === "equal") {
-          params.push(getEqualRsql(key, searchedColumns[key]));
-        } else {
-          params.push(getSearchRsql([key], searchedColumns[key], entityName));
-        }
-      }
-    });
-  }
-
-  if (extraRsqlParams?.length) {
-    params.push(...extraRsqlParams);
-  }
-
-  return getRsqlParams(params);
+      linksKeys
+        .filter((key) => visibleColumns.includes(key))
+        .forEach((dictionaryName) =>
+          fetchDictionary(
+            links?.[dictionaryName]?.href,
+            dictionaryName,
+            dispatch
+          )
+        );
+    }
+  }, [columns, dispatch]);
 };

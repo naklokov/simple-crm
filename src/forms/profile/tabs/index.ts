@@ -1,1 +1,3 @@
-export { Main } from "./main";
+import { Main as profile } from "./main";
+
+export { profile };
