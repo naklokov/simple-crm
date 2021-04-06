@@ -42,7 +42,7 @@ class ErrorBoundary extends React.Component<
   };
 
   render() {
-    const { t } = this.props;
+    const { t, children } = this.props;
     const { hasError, callStack, errorMessage } = this.state;
 
     if (hasError) {
@@ -82,7 +82,7 @@ class ErrorBoundary extends React.Component<
       );
     }
 
-    return this.props.children;
+    return children;
   }
 }
 

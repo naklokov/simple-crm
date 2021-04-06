@@ -1,4 +1,3 @@
-import { State } from "../../constants";
 import { loadState, saveState } from "../local-storage";
 
 const state = {
@@ -9,7 +8,7 @@ const state = {
 };
 
 test("loadState", () => {
-  expect(loadState()).toEqual(void 0);
+  expect(loadState()).toEqual(undefined);
 
   localStorage.setItem("state", JSON.stringify(state));
   expect(loadState()).toEqual(state);
@@ -17,7 +16,7 @@ test("loadState", () => {
   localStorage.setItem("state", "undefined");
 });
 
-xtest("saveState", () => {
+test("saveState", () => {
   expect(localStorage.getItem("state")).toBe("undefined");
 
   saveState(state);

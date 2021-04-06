@@ -3,11 +3,8 @@ import axios from "axios";
 import { notification, Skeleton, Typography } from "antd";
 import { History } from "history";
 import { ClientEntityProps, urls } from "../../../../constants";
-import {
-  ClientsPersonalContext,
-  defaultErrorHandler,
-  getFullUrl,
-} from "../../../common";
+import { defaultErrorHandler, getFullUrl } from "../../../common";
+import { ClientsPersonalContext } from "../../../context";
 
 interface TitleProps {
   id: string;
@@ -44,7 +41,7 @@ export const Title: React.FC<TitleProps> = ({
     onClickLink?.(id);
     notification.close(id);
     history.push(getFullUrl(urls.clients.path, clientId));
-  }, [history, onClickLink]);
+  }, [history, onClickLink, clientId, id]);
 
   useEffect(() => {
     const cachingClient = cachingClients.find(
@@ -58,7 +55,7 @@ export const Title: React.FC<TitleProps> = ({
   }, []);
 
   const skeleton = (
-    <Skeleton.Input style={{ width: "200px" }} active={true} size="small" />
+    <Skeleton.Input style={{ width: "200px" }} active size="small" />
   );
 
   return (

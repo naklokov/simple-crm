@@ -1,10 +1,6 @@
 @import "../../../../assets/styles/offsets";
 @import "../../../../assets/styles/common";
 
-.table {
-  margin: 0 var(--offset-sm) var(--offset-sm) var(--offset-sm);
-}
-
 // TODO Переделать на прижатый к правому краю button и плавающий
 .button {
   display: block !important;

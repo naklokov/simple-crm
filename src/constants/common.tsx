@@ -61,3 +61,5 @@ export const RSQL_OPERATORS_MAP = {
 };
 
 export const TOOLTIP_SHOW_DELAY = 1;
+
+export const RSQL_DELIMETER = ";";

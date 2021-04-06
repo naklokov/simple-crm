@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
-import { ColumnProps, RecordType } from "../../../../../constants";
+import moment from "moment-timezone";
+import { useSelector } from "react-redux";
+import { ColumnProps, RecordType, State } from "../../../../../constants";
 import { getDateWithTimezone } from "../../../../../utils";
 import { SearchedAllContext, SearchedColumnsContext } from "../../../utils";
 import { HighlightTextWrapper } from "../../../../../wrappers";
@@ -12,17 +14,23 @@ interface DateProps {
 }
 
 export const Date: React.FC<DateProps> = ({ value, format, column }) => {
+  const tableLoading = useSelector((state: State) => state?.app?.tableLoading);
   const formattedDate = format
     ? getDateWithTimezone(value).format(format)
     : value;
 
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
+  const columnValue = searchedColumns?.[column.columnCode];
+  const seachedColumnsValue = columnValue
+    ? moment(columnValue).format(format)
+    : "";
 
   return (
     <HighlightTextWrapper
+      loading={tableLoading}
       text={formattedDate}
-      searched={[searched, searchedColumns[column.columnCode]]}
+      searched={[searched, seachedColumnsValue]}
     />
   );
 };

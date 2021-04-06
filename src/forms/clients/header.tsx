@@ -1,7 +1,7 @@
-import React, { useCallback } from "react";
+import React, { ReactNode, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { Button, PageHeader, Space } from "antd";
+import { Button, Space } from "antd";
 import {
   PERMISSIONS,
   urls,
@@ -10,19 +10,24 @@ import {
 } from "../../constants";
 import { getFullUrl, getItemRender } from "../../utils";
 import { ComponentPermissionsChecker } from "../../wrappers";
+import { FormHeader } from "../../components";
 
 interface ClientsHeaderProps {
   title?: string;
+  footer?: ReactNode;
 }
 
-export const ClientsHeader: React.FC<ClientsHeaderProps> = ({ title }) => {
+export const ClientsHeader: React.FC<ClientsHeaderProps> = ({
+  title,
+  footer,
+}) => {
   const [t] = useTranslation("clients");
   const history = useHistory();
 
   const handleClickAdd = useCallback(() => {
     const url = getFullUrl(urls.clients.path, CLIENT_NEW_ID);
     history.push(url);
-  }, []);
+  }, [history]);
 
   const breadcrumb = {
     routes: BREADCRUMB_ROUTES.CLIENTS,
@@ -44,11 +49,11 @@ export const ClientsHeader: React.FC<ClientsHeaderProps> = ({ title }) => {
   );
 
   return (
-    <PageHeader
-      ghost={false}
+    <FormHeader
       title={t("title")}
       breadcrumb={breadcrumb}
       extra={extra}
+      footer={footer}
     />
   );
 };
