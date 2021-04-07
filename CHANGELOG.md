@@ -1,5 +1,14 @@
 
 
+## [0.6.1](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.6.1..0.6.0) (06.04.2021)
+
+### Hotfix
+
+- Исправить дизейбл табы при добавлении пользователя [OLVE-586]
+- Исправить дизейбл табы при добавлении пользователя [OLVE-586]
+
+
+
 ## [0.6.0](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.6.0..0.5.1-joke) (06.04.2021)
 
 ### Bug Fixes
