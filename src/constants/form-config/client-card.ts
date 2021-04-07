@@ -370,7 +370,7 @@ export const upper: UpperProps = {
           readonly: true,
           placeholder: PLACEHOLDER_DEFAULT,
           disabled: true,
-          format: "DD.MM.yyyy",
+          format: DATE_FORMATS.DATE,
           rules: [],
           permissions: [],
         },
