@@ -10,8 +10,32 @@ import {
   getDateFieldBetweenRsql,
   getDateFieldBeforeRsql,
   getDateFieldAfterRsql,
+  getValueFromRsql,
+  getRsqlParams,
 } from "../rsql";
-import { RSQL_OPERATORS_MAP } from "../../constants";
+import { RsqlParamProps, RSQL_OPERATORS_MAP } from "../../constants";
+
+test("getRsqlParams", () => {
+  const params: RsqlParamProps[] = [
+    {
+      key: "key1",
+      value: 1,
+    },
+    {
+      key: "key2",
+      value: 2,
+      operator: "OPER",
+    },
+  ];
+
+  expect(getRsqlParams(params)).toBe("key1==1;key2OPER2");
+});
+
+test("getRsqlParams with empty params", () => {
+  const params: RsqlParamProps[] = [];
+
+  expect(getRsqlParams(params)).toBe("");
+});
 
 test("getLikeRsql", () => {
   const keys = ["id", "name"];
@@ -37,19 +61,19 @@ test("getSearchRsql", () => {
 test("getDateIsBetweenRsql", () => {
   const date = moment().toISOString();
 
-  expect(getDateBetweenRsql(date)).toEqual({
+  expect(getDateBetweenRsql({ searched: date })).toEqual({
     key: "date",
     operator: RSQL_OPERATORS_MAP.DATE_IS_BETWEEN,
-    value: `${moment(date).startOf("day").toISOString()},${moment(date)
+    value: `("${moment(date).startOf("day").toISOString()}","${moment(date)
       .endOf("day")
-      .toISOString()}`,
+      .toISOString()}")`,
   });
 });
 
 test("getDateIsBeforeRsql", () => {
   const date = moment().toISOString();
 
-  expect(getDateBeforeRsql(date)).toEqual({
+  expect(getDateBeforeRsql({ searched: date })).toEqual({
     key: "date",
     operator: RSQL_OPERATORS_MAP.DATE_IS_BEFORE,
     value: date,
@@ -59,7 +83,7 @@ test("getDateIsBeforeRsql", () => {
 test("getDateIsAfterRsql", () => {
   const date = moment().toISOString();
 
-  expect(getDateAfterRsql(date)).toEqual({
+  expect(getDateAfterRsql({ searched: date })).toEqual({
     key: "date",
     operator: RSQL_OPERATORS_MAP.DATE_IS_AFTER,
     value: date,
@@ -116,4 +140,19 @@ test("getEqualRsql", () => {
   const key = "kkk";
   const value = "vvv";
   expect(getEqualRsql(key, value)).toEqual({ key, value });
+});
+
+test("getValueFromRsql with EQUAL operator", () => {
+  const query = "userProfileId==12345";
+  expect(getValueFromRsql(query)).toBe("12345");
+});
+
+test("getValueFromRsql with date operator", () => {
+  const query = 'entityData=JDATEBETWEEN=(dateFrom,"lololo1","lololo")';
+  expect(getValueFromRsql(query)).toBe("lololo");
+});
+
+test("getValueFromRsql with another operator", () => {
+  const query = 'entityData=JDATEBETWEEN=(dateFrom,"lololo")';
+  expect(getValueFromRsql(query)).toBe("lololo");
 });

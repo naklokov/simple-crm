@@ -1,7 +1,9 @@
 import React, { useCallback, useContext } from "react";
 import { Button } from "antd";
+import { useSelector } from "react-redux";
 import { HighlightTextWrapper } from "../../../../wrappers";
 import { TableActionsContext } from "../../utils";
+import { State } from "../../../../constants";
 
 interface DoneProps {
   id: string;
@@ -14,6 +16,7 @@ export const Done: React.FC<DoneProps> = ({
   title = "",
   hasRight = true,
 }) => {
+  const tableLoading = useSelector((state: State) => state?.app?.tableLoading);
   const { onDoneRow } = useContext(TableActionsContext);
   const handleClick = useCallback(() => {
     onDoneRow(id);
@@ -25,7 +28,7 @@ export const Done: React.FC<DoneProps> = ({
 
   return (
     <Button style={{ paddingLeft: 0 }} type="link" onClick={handleClick}>
-      <HighlightTextWrapper text={title} />
+      <HighlightTextWrapper text={title} loading={tableLoading} />
     </Button>
   );
 };

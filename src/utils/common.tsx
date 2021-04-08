@@ -16,7 +16,7 @@ import {
 import { COOKIES } from "../constants/http";
 import { logger } from "./index";
 
-import { urls, ErrorProps, ClientEntityProps } from "../constants";
+import { urls, ErrorProps, LinksType } from "../constants";
 
 interface DefaultErrorHandlerProps {
   error: ErrorProps;
@@ -66,12 +66,6 @@ export const logout = async (dispatch: Dispatch) => {
     dispatch(setLoading(false));
   }
 };
-
-export const FormContext = React.createContext<any>("");
-
-export const ClientsPersonalContext = React.createContext<ClientEntityProps[]>(
-  []
-);
 
 const getTemplateMask = (param: string) => `{{${param}}}`;
 
@@ -226,4 +220,21 @@ export const copyToClipboard = (str: string) => {
   el.select();
   document.execCommand("copy");
   document.body.removeChild(el);
+};
+
+// метод заполнения links нужными данными до первого запроса
+export const fillLinks = (
+  links: LinksType,
+  values: { [key: string]: string }
+): LinksType => {
+  const keys = Object.keys(links);
+  return keys.reduce(
+    (acc, current) => ({
+      ...acc,
+      [current]: {
+        href: fillTemplate(links?.[current]?.href, values),
+      },
+    }),
+    {}
+  );
 };

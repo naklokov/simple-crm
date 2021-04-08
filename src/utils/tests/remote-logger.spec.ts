@@ -1,10 +1,10 @@
+import axios from "axios";
+import { getFullMessage, error, debug, warn, HEADERS } from "../remote-logger";
+import { urls } from "../../constants";
+
 const message = "Сообщение";
 const value = 1;
 const username = "test@mail.ru";
-
-import { getFullMessage, error, debug, warn, HEADERS } from "../remote-logger";
-import axios from "axios";
-import { urls } from "../../constants";
 
 test("test getFullMessage", () => {
   expect(getFullMessage({ message })).toBe(message);

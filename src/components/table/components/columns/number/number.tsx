@@ -1,8 +1,10 @@
 import React, { useContext, useRef } from "react";
+import { useSelector } from "react-redux";
 import {
   ColumnFormatType,
   ColumnProps,
   RecordType,
+  State,
 } from "../../../../../constants";
 import { SearchedAllContext, SearchedColumnsContext } from "../../../utils";
 import { HighlightTextWrapper } from "../../../../../wrappers";
@@ -34,6 +36,7 @@ export const Number: React.FC<NumberProps> = ({
   record,
   column,
 }) => {
+  const tableLoading = useSelector((state: State) => state?.app?.tableLoading);
   const formattedNumber = format
     ? formatNumber(value, format, record)
     : value.toString();
@@ -42,6 +45,7 @@ export const Number: React.FC<NumberProps> = ({
 
   return (
     <HighlightTextWrapper
+      loading={tableLoading}
       text={formattedNumber}
       searched={[searched, searchedColumns[column?.columnCode]]}
     />

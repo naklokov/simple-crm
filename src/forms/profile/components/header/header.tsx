@@ -3,10 +3,19 @@ import { random } from "lodash";
 import { Typography, Tabs } from "antd";
 import { connect } from "react-redux";
 import { Avatar } from "../../../../components";
-import { State, ProfileInfoEntityProps } from "../../../../constants";
-import { TABS_CONTENT } from "../../constansts";
+import {
+  State,
+  ProfileInfoEntityProps,
+  formConfig,
+} from "../../../../constants";
 
 import style from "./header.module.scss";
+
+const {
+  profile: {
+    FORM: { tabs },
+  },
+} = formConfig;
 
 const { TabPane } = Tabs;
 
@@ -14,6 +23,9 @@ interface HeaderProps {
   profileInfo: ProfileInfoEntityProps;
   onChangeTab: (key: string) => void;
 }
+
+// кастомный Header с фоновым рисунком и большой аватаркой
+// не используется, но нужен как альтернативный вариант, пока не удаляем!
 
 export const Header = ({ profileInfo, onChangeTab }: HeaderProps) => (
   <div className={style.container}>
@@ -30,8 +42,8 @@ export const Header = ({ profileInfo, onChangeTab }: HeaderProps) => (
       </Typography.Title>
 
       <Tabs defaultActiveKey="1" className={style.tabs} onChange={onChangeTab}>
-        {TABS_CONTENT.map(({ id, title }) => (
-          <TabPane key={id} tab={title} />
+        {tabs.map(({ tabName }) => (
+          <TabPane key={tabName} tab={tabName} />
         ))}
       </Tabs>
     </div>

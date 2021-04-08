@@ -1,7 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { TablePaginationConfig } from "antd/lib/table";
+import { PaginationConfig } from "antd/lib/pagination";
+import { useDispatch } from "react-redux";
 import { Table } from ".";
 import {
   ActionProps,
@@ -15,77 +17,119 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFiteredEntityArray,
+  getValueFromRsql,
   pluralize,
 } from "../../utils";
-import { getServerPagingRsql, getSortedParams } from "./utils";
+import {
+  getDefaultSort,
+  getFetchDataSourceQuery,
+  getFilterAllRsqlQuery,
+  getFilterColumnRsqlQuery,
+  getInitialQueries,
+  getSearchedColumnsFromFilters,
+  getSortedParams,
+  useTableServerPagingParams,
+} from "./utils";
+import {
+  DEFAULT_PAGE_NUMBER,
+  DEFAULT_PAGE_SIZE,
+  FILTER_ALL_NAME,
+} from "./constants";
+import { setTableLoading } from "../../__data__";
+import { TableHeader } from "./components";
 
-const DEFAULT_PAGE_NUMBER = 1;
+const SEARCH_ALL_KEYS = ["phone", "inn", "shortName", "city"];
 
 export interface TableWithServerPagingProps {
-  url: string;
   columns?: ColumnProps[];
   actions?: ActionProps[];
-  extraHeader?: JSX.Element;
+  extraTitle?: JSX.Element;
   extraRsqlParams?: RsqlParamProps[];
   withSearch?: boolean;
-  bordered?: boolean;
-  _links?: LinksType;
+  searchPlaceholder?: string;
+  links: LinksType;
 }
 
 export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
   columns = [],
   actions = [],
-  extraHeader,
-  url,
-  extraRsqlParams,
-  withSearch = true,
-  bordered,
-  _links,
+  extraTitle,
+  withSearch,
+  searchPlaceholder,
+  links = {},
 }) => {
+  const [url, initialSearch] = links?.self?.href?.split("?") ?? [];
   const [t] = useTranslation("tableServer");
-  const [loading, setLoading] = useState(false);
-  const [dataSource, setDataSource] = useState<ClientEntityProps[]>([]);
-  const [page, setPage] = useState(DEFAULT_PAGE_NUMBER);
-  const [pageSize, setPageSize] = useState(10);
-  const [sortBy, setSortBy] = useState("");
+  const dispatch = useDispatch();
   const [searchedAll, setSearchedAll] = useState("");
   const [searchedColumns, setSearchedColumns] = useState<RecordType>({});
+
+  const [dataSource, setDataSource] = useState<ClientEntityProps[]>([]);
   const [total, setTotal] = useState(0);
+  const initialQueries = useMemo(() => getInitialQueries(initialSearch), [
+    initialSearch,
+  ]);
 
-  const fetchDataSource = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(url, {
-        params: {
-          page,
-          pageSize,
-          sortBy,
-          query: getServerPagingRsql({
-            searchedAll,
-            searchedColumns,
-            columns: columns ?? [],
-            extraRsqlParams,
-          }),
-        },
-      });
+  const {
+    page,
+    pageSize,
+    sortBy,
+    filters,
+    setPage,
+    setPageSize,
+    setFilters,
+    setSortBy,
+  } = useTableServerPagingParams();
 
-      setDataSource(response?.data?.rows ?? []);
-      setTotal(response?.data?.totalCount ?? 0);
-    } catch (error) {
-      defaultErrorHandler({ error });
-    } finally {
-      setLoading(false);
-    }
-  };
+  // пробрасываем значения колонок необходимые для поиска
+  useEffect(() => {
+    const { [FILTER_ALL_NAME]: all = "", ...columnsFilters } = filters;
+    const searchedColumnsParsed = getSearchedColumnsFromFilters(columnsFilters);
+
+    setSearchedColumns(searchedColumnsParsed);
+    setSearchedAll(getValueFromRsql(all));
+  }, [filters]);
 
   useEffect(() => {
-    fetchDataSource();
-  }, [page, pageSize, sortBy, searchedAll, searchedColumns, extraRsqlParams]);
+    const fetchDataSource = async () => {
+      dispatch(setTableLoading(true));
+      try {
+        const response = await axios.get(url, {
+          params: {
+            page,
+            pageSize,
+            sortBy,
+            query: getFetchDataSourceQuery(filters, initialQueries),
+          },
+        });
 
-  const handleSearch = useCallback((searchAllText: string) => {
-    setPage(1);
-    setSearchedAll(searchAllText);
-  }, []);
+        setDataSource(response?.data?.rows ?? []);
+        setTotal(response?.data?.totalCount ?? 0);
+      } catch (error) {
+        defaultErrorHandler({ error });
+      } finally {
+        dispatch(setTableLoading(false));
+      }
+    };
+
+    fetchDataSource();
+  }, [filters, page, pageSize, initialQueries, sortBy, url, dispatch]);
+
+  const handleSearchAll = useCallback(
+    (inputSearchedAll: string) => {
+      const filterAllRsql = getFilterAllRsqlQuery(
+        inputSearchedAll,
+        SEARCH_ALL_KEYS
+      );
+
+      setPage(DEFAULT_PAGE_NUMBER);
+      setFilters({
+        ...filters,
+        [FILTER_ALL_NAME]: filterAllRsql,
+      });
+    },
+    [filters, setFilters, setPage]
+  );
 
   const handleDelete = useCallback(
     (id) => {
@@ -95,47 +139,52 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     [dataSource, t]
   );
 
-  const handleChangeTable = useCallback((paginationParams, filters, sorter) => {
-    setPage(paginationParams.current || DEFAULT_PAGE_NUMBER);
-    setPageSize(paginationParams.pageSize);
-    setSortBy(getSortedParams(sorter));
-  }, []);
+  const handleChangeTable = useCallback(
+    (paginationParams: PaginationConfig, tableFilters, sorter) => {
+      setPage(paginationParams.current || DEFAULT_PAGE_NUMBER);
+      setPageSize(paginationParams.pageSize || DEFAULT_PAGE_SIZE);
+      setSortBy(getSortedParams(sorter));
+    },
+    [setPage, setPageSize, setSortBy]
+  );
 
   const handleSearchColumn = useCallback(
     (searched: string, confirm: any, column: ColumnProps) => {
-      const updated = {
-        ...searchedColumns,
-        [column.columnCode]: searched,
+      const filterColumnRsql = getFilterColumnRsqlQuery(searched, column);
+      const updatedFilters = {
+        ...filters,
+        [column.columnCode]: filterColumnRsql,
       };
 
-      setSearchedColumns(updated);
+      setFilters(updatedFilters);
       confirm();
     },
-    [searchedColumns]
+    [filters, setFilters]
   );
 
   const handleResetFilter = useCallback(
     (column: ColumnProps, clearFilters: Function) => {
-      const updated = {
-        ...searchedColumns,
+      const updatedFilters = {
+        ...filters,
         [column.columnCode]: "",
       };
-      setSearchedColumns(updated);
+
+      setFilters(updatedFilters);
       clearFilters();
     },
-    [searchedColumns]
+    [filters, setFilters]
   );
 
-  const handleResetAllFilters = useCallback(() => {
-    setSearchedAll("");
-    setSearchedColumns({});
-  }, []);
+  const handleClearAll = useCallback(() => {
+    setFilters({});
+  }, [setFilters]);
 
   const totalText = pluralize(total, [
     t("total.title.one", { total }),
     t("total.title.some", { total }),
     t("total.title.many", { total }),
   ]);
+
   const serverPagination: TablePaginationConfig = {
     pageSize,
     current: page,
@@ -143,25 +192,37 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     showTotal: () => totalText,
   };
 
+  const tableHeader = useMemo(
+    () =>
+      withSearch || extraTitle
+        ? () => (
+            <TableHeader
+              onClearAll={handleClearAll}
+              onSearch={handleSearchAll}
+              searchPlaceholder={searchPlaceholder}
+              withSearch={withSearch}
+              extra={extraTitle}
+            />
+          )
+        : undefined,
+    [withSearch, extraTitle, handleClearAll, handleSearchAll, searchPlaceholder]
+  );
+
   return (
     <Table
-      _links={_links}
+      links={links}
       actions={actions}
       columns={columns}
-      extraHeader={extraHeader}
-      loading={loading}
+      tableHeader={tableHeader}
       pagination={serverPagination}
       onDeleteRow={handleDelete}
+      defaultSort={getDefaultSort(sortBy)}
       dataSource={dataSource}
-      onSearch={handleSearch}
       onChangeTable={handleChangeTable}
       onSearchColumn={handleSearchColumn}
       onResetFilter={handleResetFilter}
       searchAll={searchedAll}
       searchedColumns={searchedColumns}
-      onResetAllFilters={handleResetAllFilters}
-      bordered={bordered}
-      withSearch={withSearch}
     />
   );
 };
