@@ -223,23 +223,30 @@ export const copyToClipboard = (str: string) => {
 };
 
 /**
- * Метод сохранения бинарного файла на диск
- * @param data массив байтов stream
- * @param name имя файла
+ * Метод сохранения полученного с BH файла на компьютер
+ * @param data Бинарный ответ от сервера
+ * @param fileName Имя файла с расширением
  */
-export const saveByteArray = (() => {
-  const a: any = document.createElement("a");
-  document.body.appendChild(a);
-  a.style = "display: none";
-  return (data: any, name: string) => {
-    const blob = new Blob(data, { type: "octet/stream" });
-    const url = window.URL.createObjectURL(blob);
-    a.href = url;
-    a.download = name;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
-})();
+export const downloadFile = (data: ArrayBuffer, fileName: string) => {
+  const blob = new Blob([data]);
+  if (navigator.msSaveBlob) {
+    // IE 10+
+    navigator.msSaveBlob(blob, fileName);
+  } else {
+    const link = document.createElement("a");
+    // Browsers that support HTML5 download attribute
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", fileName);
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+};
+
 // метод заполнения links нужными данными до первого запроса
 export const fillLinks = (
   links: LinksType,

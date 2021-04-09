@@ -6,9 +6,9 @@ import { useParams } from "react-router-dom";
 import { QueryProps, TemplateEntityProps, urls } from "../../../../constants";
 import {
   defaultErrorHandler,
+  downloadFile,
   getFullUrl,
   getRsqlParams,
-  saveByteArray,
   useFetch,
 } from "../../../../utils";
 
@@ -33,44 +33,61 @@ export const Documents = () => {
 
   const generateDocument = useCallback(async () => {
     const {
+      id,
       fileExtension = DEFAULT_EXTENSION,
       templateName = t("template.name.default"),
     } = selectedTemplate || {};
 
     try {
-      const url = getFullUrl(urls.templates.generation, selectedTemplate?.id);
-      const { data } = await axios.post(url, { entityId });
-      saveByteArray([data], `${templateName}.${fileExtension}`);
+      const url = getFullUrl(urls.templates.generation, id);
+      const { data } = await axios.post(
+        url,
+        { entityId },
+        // без этого параметра входной массив байт парсится некорректно и в Blob не преобразуется
+        { responseType: "arraybuffer" }
+      );
+
+      const fileName = `${templateName}.${fileExtension}`;
+      downloadFile(data, fileName);
     } catch (error) {
       defaultErrorHandler({ error });
     }
   }, [entityId, t, selectedTemplate]);
 
-  const handleChange = useCallback((value) => {
-    setSelectedTemplate(value);
-  }, []);
+  const handleChange = useCallback(
+    (templateId: string) => {
+      const template = options.find(({ id }) => templateId === id);
+
+      if (template) {
+        setSelectedTemplate(template);
+      }
+    },
+    [options]
+  );
 
   const handleClick = useCallback(() => {
     generateDocument();
   }, [generateDocument]);
 
   return (
-    <Space>
-      <Select
-        placeholder={t("select.placeholder")}
-        onChange={handleChange}
-        value={selectedTemplate?.id}
-        loading={loading}
-      >
-        {options.map(({ id, templateName }) => (
-          <Select.Option key={id} value={id}>
-            {templateName}
-          </Select.Option>
-        ))}
-      </Select>
-      <Button disabled={!selectedTemplate} onClick={handleClick}>
-        {t("button.title")}
-      </Button>
-    </Space>
+    <form>
+      <Space>
+        <Select
+          placeholder={t("select.placeholder")}
+          onChange={handleChange}
+          value={selectedTemplate?.id}
+          loading={loading}
+        >
+          {options.map(({ id, templateName }) => (
+            <Select.Option key={id} value={id}>
+              {templateName}
+            </Select.Option>
+          ))}
+        </Select>
+        <Button disabled={!selectedTemplate} onClick={handleClick}>
+          {t("button.title")}
+        </Button>
+      </Space>
+    </form>
   );
 };
