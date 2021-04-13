@@ -17,4 +17,10 @@ module.exports = {
   useTabs: false,
   vueIndentScriptAndStyle: false,
   parser: "typescript",
+  overrides: [
+    {
+      files: "*.json",
+      options: { parser: "json" },
+    },
+  ],
 };

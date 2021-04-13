@@ -222,6 +222,31 @@ export const copyToClipboard = (str: string) => {
   document.body.removeChild(el);
 };
 
+/**
+ * Метод сохранения полученного с BH файла на компьютер
+ * @param data Бинарный ответ от сервера
+ * @param fileName Имя файла с расширением
+ */
+export const downloadFile = (data: ArrayBuffer, fileName: string) => {
+  const blob = new Blob([data]);
+  if (navigator.msSaveBlob) {
+    // IE 10+
+    navigator.msSaveBlob(blob, fileName);
+  } else {
+    const link = document.createElement("a");
+    // Browsers that support HTML5 download attribute
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", fileName);
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+};
+
 // метод заполнения links нужными данными до первого запроса
 export const fillLinks = (
   links: LinksType,

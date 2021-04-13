@@ -10,7 +10,6 @@ export type LinksType = {
 
 export interface EntityOwnerProps {
   id: string;
-  clientId: string;
   historyId: string;
   isActive: boolean;
   isDeleted: boolean;
@@ -40,6 +39,7 @@ export interface ProfileInfoEntityProps extends EntityOwnerProps {
   login?: string;
   position?: string;
   userRoleId?: string;
+  clientId: string;
   isLocked?: boolean;
 }
 
@@ -49,6 +49,7 @@ export interface ClientEntityProps extends EntityOwnerProps {
   businessId: string;
   checkingAccount: string;
   city: string;
+  clientId: string;
   corrdespondentAccount: string;
   creationDate: string;
   email: string;
@@ -70,12 +71,14 @@ export interface CommentEntityProps extends EntityOwnerProps {
   commentText: string;
   creationDate: string;
   entityId: string;
+  clientId: string;
   entityType: string;
   userProfileId?: string;
 }
 
 export interface ContactEntityProps extends EntityOwnerProps {
   fullName: string;
+  clientId: string;
   phone: string;
 }
 
@@ -90,4 +93,14 @@ export interface TaskEntityProps extends EntityOwnerProps {
   format?: string;
   updateDate: string;
   parentId?: string;
+}
+
+export interface TemplateEntityProps extends EntityOwnerProps {
+  creationDate: string;
+  departmentId: string;
+  fileId: string;
+  fileExtension: string;
+  linkedEntityType: string;
+  templateDescription: string;
+  templateName: string;
 }

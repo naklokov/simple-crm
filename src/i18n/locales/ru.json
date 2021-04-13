@@ -238,5 +238,10 @@
   "fields": {
     "email.tooltip": "Написать письмо",
     "href.tooltip": "Перейти по ссылке"
+  },
+  "documents": {
+    "button.title": "Сгенерировать",
+    "select.placeholder": "Выберите документ",
+    "template.name.default": "Документ"
   }
 }

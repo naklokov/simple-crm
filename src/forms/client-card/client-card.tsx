@@ -17,7 +17,15 @@ import {
   CLIENT_NEW_ID,
 } from "../../constants";
 import { FormHeader, Loader } from "../../components";
-import { Main, Comments, Contacts, Requisites, PriceList, Tasks } from "./tabs";
+import {
+  Main,
+  Comments,
+  Contacts,
+  Requisites,
+  PriceList,
+  Tasks,
+  Documents,
+} from "./tabs";
 import {
   defaultErrorHandler,
   getFullUrl,
@@ -37,6 +45,7 @@ export const formsMap: {
   priceList: PriceList,
   comments: Comments,
   tasks: Tasks,
+  documents: Documents,
 };
 
 const {
