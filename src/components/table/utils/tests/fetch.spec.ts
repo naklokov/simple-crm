@@ -15,6 +15,6 @@ test("fetchDictionary", async () => {
     payload: {
       profile: "profilesData",
     },
-    type: "data/setDictionaries",
+    type: "app/setDictionaries",
   });
 });

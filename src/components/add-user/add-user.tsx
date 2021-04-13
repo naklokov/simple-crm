@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import axios from "axios";
 import { UserAddOutlined } from "@ant-design/icons";
 import { Store } from "antd/es/form/interface";
+import { useSelector } from "react-redux";
 import { DrawerForm } from "../drawer-form";
 import {
   FIELDS,
@@ -10,7 +11,7 @@ import {
   SUCCESS_MESSAGE,
   TITLE,
 } from "./constants";
-import { PERMISSIONS, urls } from "../../constants";
+import { PERMISSIONS, State, urls } from "../../constants";
 import { ComponentPermissionsChecker } from "../../wrappers";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 
@@ -20,6 +21,7 @@ import { ButtonLayout } from "../button-layout";
 const AddUser = () => {
   const [visible, setVisible] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
+  const loading = useSelector((state: State) => state?.app?.loading);
 
   const handleClick = useCallback(() => {
     setVisible(true);
@@ -47,6 +49,10 @@ const AddUser = () => {
       setVisible(false);
     }
   }, []);
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <ComponentPermissionsChecker

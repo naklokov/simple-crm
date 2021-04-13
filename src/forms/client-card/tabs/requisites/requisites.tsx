@@ -22,7 +22,6 @@ import {
   GUTTER_FULL_WIDTH,
   QueryProps,
   FORM_NAMES,
-  ProfileInfoEntityProps,
   State,
   urls,
   ClientEntityProps,
@@ -102,7 +101,7 @@ export const Requisites = ({ tab }: TabPaneFormProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.data?.profileInfo,
+  profileInfo: state?.persist?.profileInfo,
 });
 
 export default connect(mapStateToProps)(Requisites);

@@ -65,7 +65,7 @@ export const Clients: React.FC<ClientsProps> = ({ profileInfo }) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.data?.profileInfo,
+  profileInfo: state?.persist?.profileInfo,
 });
 
 export default connect(mapStateToProps)(Clients);

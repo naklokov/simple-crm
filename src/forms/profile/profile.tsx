@@ -71,7 +71,7 @@ export const Profile = ({ profileInfo }: ProfileProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.data?.profileInfo,
+  profileInfo: state?.persist?.profileInfo,
 });
 
 export default connect(mapStateToProps)(Profile);
