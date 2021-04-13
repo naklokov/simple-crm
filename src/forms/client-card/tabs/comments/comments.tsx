@@ -1,31 +1,33 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { List } from "antd";
-import { sortBy } from "lodash";
+import { orderBy } from "lodash";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { Comment } from "../../../../components";
-import { Footer } from "./components";
+import { Footer, Order } from "./components";
 import {
   defaultErrorHandler,
-  getFullUrl,
   getFiteredEntityArray,
+  getFullUrl,
+  getRsqlParams,
   getUpdatedEntityArray,
   useFetch,
-  getRsqlParams,
 } from "../../../../utils";
 import {
-  urls,
   CommentEntityProps,
+  ProfileInfoEntityProps,
   QueryProps,
   State,
-  ProfileInfoEntityProps,
   TabPaneFormProps,
+  urls,
 } from "../../../../constants";
 import { getPostData } from "./utils";
 
 import style from "./comments.module.scss";
+
+type TDirection = "asc" | "desc";
 
 interface CommentsProps extends TabPaneFormProps {
   profileInfo: ProfileInfoEntityProps;
@@ -34,7 +36,9 @@ interface CommentsProps extends TabPaneFormProps {
 export const Comments = ({ profileInfo }: CommentsProps) => {
   const [loading, setLoading] = useState(false);
   const [comments, setComments] = useState([] as CommentEntityProps[]);
+  const [order, setOrder] = useState<TDirection>("asc");
   const listRef = useRef<HTMLDivElement>(null);
+  const COMMENT_DATE_FIELD_CODE = "creationDate";
 
   const { id: entityId } = useParams<QueryProps>();
   const [t] = useTranslation("clientCardComments");
@@ -130,11 +134,12 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
 
   return (
     <form>
+      <Order onChange={setOrder} value={order} />
       <div ref={listRef} className={style.list}>
         <List
           loading={loading}
           itemLayout="horizontal"
-          dataSource={sortBy(comments, "creationDate")}
+          dataSource={orderBy(comments, COMMENT_DATE_FIELD_CODE, order)}
           renderItem={(comment) => (
             <List.Item>
               <Comment
