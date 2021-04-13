@@ -74,6 +74,11 @@ export const ClientCard = () => {
   const isClientEmpty = !isAdd && isEmpty(client);
   const url = getFullUrl(urls.clientCard.entity, clientId);
 
+  const isTabDisabled = useMemo(
+    () => (tabCode: string) => tabCode !== upper?.tabs?.[0]?.tabCode && isAdd,
+    [isAdd]
+  );
+
   const fetchClientCard = useCallback(async () => {
     try {
       const response = await axios.get(url);
@@ -109,23 +114,34 @@ export const ClientCard = () => {
           footer={
             <Tabs onChange={onChangeUpper} activeKey={upperActiveTab.tabCode}>
               {upper?.tabs?.map(({ tabCode, tabName }) => (
-                <Tabs.TabPane key={tabCode} tab={tabName} />
+                <Tabs.TabPane
+                  key={tabCode}
+                  tab={tabName}
+                  disabled={isTabDisabled(tabCode)}
+                />
               ))}
             </Tabs>
           }
         />
         {UpperForm && <UpperForm tab={upperActiveTab} />}
-        <FormHeader
-          position="lower"
-          footer={
-            <Tabs onChange={onChangeLower} activeKey={lowerActiveTab.tabCode}>
-              {lower?.tabs?.map(({ tabCode, tabName }) => (
-                <Tabs.TabPane key={tabCode} tab={tabName} />
-              ))}
-            </Tabs>
-          }
-        />
-        {LowerForm && <LowerForm tab={lowerActiveTab} />}
+        {!isAdd && (
+          <>
+            <FormHeader
+              position="lower"
+              footer={
+                <Tabs
+                  onChange={onChangeLower}
+                  activeKey={lowerActiveTab.tabCode}
+                >
+                  {lower?.tabs?.map(({ tabCode, tabName }) => (
+                    <Tabs.TabPane key={tabCode} tab={tabName} />
+                  ))}
+                </Tabs>
+              }
+            />
+            {LowerForm && <LowerForm tab={lowerActiveTab} />}
+          </>
+        )}
       </>
     </PagePermissionsChecker>
   );

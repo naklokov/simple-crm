@@ -149,7 +149,11 @@
     "button": "Отправить",
     "message.get.error": "Ошибка при получении списка комментариев",
     "message.add.error": "Ошибка при добавлении комментария",
-    "empty": "Нет комментариев"
+    "empty": "Нет комментариев",
+    "order.label.first.old": "Сначала старые",
+    "order.label.first.new": "Сначала новые",
+    "order.label.old": "Старые",
+    "order.label.new": "Новые"
   },
   "clientCardTasks": {
     "message.get.error": "Ошибка при получении списка задач"
