@@ -27,11 +27,7 @@ export const Dictionary = ({
     return null;
   }
 
-  const {
-    dictionaryValueEntities,
-    dictionaryName,
-    dictionaryDescription,
-  } = dictionary;
+  const { dictionaryValueEntities } = dictionary;
 
   const text =
     dictionaryValueEntities?.find((o: any) => o.valueCode === value)?.value ??
@@ -47,7 +43,7 @@ export const Dictionary = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  dictionaries: state?.data?.dictionaries,
+  dictionaries: state?.app?.dictionaries,
   tableLoading: state?.app?.tableLoading,
 });
 

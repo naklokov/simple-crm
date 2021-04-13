@@ -39,7 +39,7 @@ export const DictionarySearch = ({
 
   const handleSearch = useCallback(() => {
     onSearchColumn(searched, confirm, column);
-  }, [selectedKeys, confirm, column]);
+  }, [onSearchColumn, searched, confirm, column]);
 
   const options =
     dictionaries?.[column.columnCode]?.dictionaryValueEntities ?? [];
@@ -68,7 +68,7 @@ export const DictionarySearch = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  dictionaries: state?.data?.dictionaries,
+  dictionaries: state?.app?.dictionaries,
 });
 
 export default flow([

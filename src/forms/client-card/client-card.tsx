@@ -148,8 +148,7 @@ export const ClientCard = () => {
 };
 
 const mapStateToProps = (state: State) => ({
-  clients: state?.data?.clients,
-  profileInfo: state?.data?.profileInfo,
+  profileInfo: state?.persist?.profileInfo,
 });
 
 const mapDispathToProps = (dispatch: Dispatch) =>

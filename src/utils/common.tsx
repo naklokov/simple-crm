@@ -6,13 +6,7 @@ import { Dispatch } from "@reduxjs/toolkit";
 import { message } from "antd";
 import { Link } from "react-router-dom";
 import { Route } from "antd/lib/breadcrumb/Breadcrumb";
-import {
-  setAuth,
-  setClients,
-  setLoading,
-  setPermissions,
-  setProfileInfo,
-} from "../__data__";
+import { setLoading, logout as logoutAction } from "../__data__";
 import { COOKIES } from "../constants/http";
 import { logger } from "./index";
 
@@ -30,26 +24,11 @@ const DEFAULT_SUCCESS_MESSAGE_LOGOUT = "Пользователь вышел из
 const DEFAULT_ERROR_MESSAGE_LOGOUT =
   "Произошла ошибка в процессе выхода из системы";
 
-const clearReduxStore = (dispatch: Dispatch) => {
-  dispatch(setClients([]));
-  dispatch(setProfileInfo({}));
-  dispatch(setPermissions([]));
-};
-
 export const checkAuthCookie = () =>
   !!Cookies.get(COOKIES.USERNAME) && !!Cookies.get(COOKIES.JSESSIONID);
 
-export const clearCookie = () => {
-  Cookies.remove(COOKIES.USERNAME);
-  Cookies.remove(COOKIES.JSESSIONID);
-  Cookies.remove(COOKIES.REMEMBER_ME);
-};
-
 export const logout = async (dispatch: Dispatch) => {
   const username = Cookies.get(COOKIES.USERNAME);
-  clearReduxStore(dispatch);
-  clearCookie();
-  localStorage.clear();
 
   try {
     dispatch(setLoading(true));
@@ -62,8 +41,8 @@ export const logout = async (dispatch: Dispatch) => {
       username,
     });
   } finally {
-    dispatch(setAuth(false));
     dispatch(setLoading(false));
+    dispatch(logoutAction());
   }
 };
 

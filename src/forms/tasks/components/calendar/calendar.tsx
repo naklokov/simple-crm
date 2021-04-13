@@ -44,9 +44,8 @@ export const Calendar = ({
   }, []);
 
   const handleOpen = useCallback(() => {
-    reload();
     setVisible(true);
-  }, [reload]);
+  }, []);
 
   const handleClose = useCallback(() => {
     setVisible(false);

@@ -147,7 +147,7 @@ export const Main: React.FC<MainProps> = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.data?.profileInfo,
+  profileInfo: state?.persist?.profileInfo,
   formLoading: state?.app?.formLoading,
 });
 

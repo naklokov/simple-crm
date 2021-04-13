@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState, useCallback } from "react";
 import { History } from "history";
 import axios from "axios";
 import moment from "moment-timezone";
@@ -6,19 +6,17 @@ import { v4 as uuidv4 } from "uuid";
 import { notification } from "antd";
 import { useSelector } from "react-redux";
 import {
-  EntityOwnerProps,
   NotificationProps,
   NotificationStatusType,
   State,
   TaskEntityProps,
-  TASKS_TYPES_ICONS_MAP,
   TASKS_ACTIVE_DURATION,
   urls,
 } from "../../constants";
 import { getDateRsql, getOverdueRsql } from "../tasks";
 import { defaultErrorHandler, pluralize } from "../common";
 import { InfoIcon, NotificationWarning } from "../../assets/icons";
-import { Title, Content, OverdueContent } from "./components";
+import { Content, OverdueContent } from "./components";
 
 interface ShowNotificationProps {
   title: ReactNode;
@@ -79,30 +77,30 @@ export const useActiveDateTime = () => {
 
 export const useOverdueTasksTotal = () => {
   const [total, setTotal] = useState(0);
-  const profileInfo = useSelector(
-    (state: State) => state?.data?.profileInfo ?? ({} as EntityOwnerProps)
+  const profileInfoId = useSelector(
+    (state: State) => state?.persist?.profileInfo?.id
   );
 
-  const fetchOverdueTasks = async () => {
-    try {
-      const query = getOverdueRsql(moment().toISOString(), profileInfo.id);
-      const response = await axios.get(urls.tasks.paging, {
-        params: { query },
-      });
+  const fetchOverdueTasks = useCallback(async () => {
+    if (profileInfoId) {
+      try {
+        const query = getOverdueRsql(moment().toISOString(), profileInfoId);
+        const response = await axios.get(urls.tasks.paging, {
+          params: { query },
+        });
 
-      setTotal(response?.data?.totalCount ?? 0);
-    } catch (error) {
-      defaultErrorHandler({
-        error,
-      });
+        setTotal(response?.data?.totalCount ?? 0);
+      } catch (error) {
+        defaultErrorHandler({
+          error,
+        });
+      }
     }
-  };
+  }, [profileInfoId]);
 
   useEffect(() => {
-    if (profileInfo.id) {
-      fetchOverdueTasks();
-    }
-  }, [profileInfo]);
+    fetchOverdueTasks();
+  }, [fetchOverdueTasks]);
 
   return total;
 };
@@ -110,30 +108,30 @@ export const useOverdueTasksTotal = () => {
 export const useActiveTasks = () => {
   const [tasks, setTasks] = useState<TaskEntityProps[]>([]);
   const dateTime = useActiveDateTime();
-  const profileInfo = useSelector(
-    (state: State) => state?.data?.profileInfo ?? ({} as EntityOwnerProps)
+  const profileInfoId = useSelector(
+    (state: State) => state?.persist?.profileInfo?.id
   );
 
-  const fetchTasks = async () => {
-    try {
-      const query = getDateRsql(dateTime, profileInfo.id, "minute");
-      const response = await axios.get(urls.tasks.entity, {
-        params: { query },
-      });
+  const fetchTasks = useCallback(async () => {
+    if (profileInfoId && dateTime) {
+      try {
+        const query = getDateRsql(dateTime, profileInfoId, "minute");
+        const response = await axios.get(urls.tasks.entity, {
+          params: { query },
+        });
 
-      setTasks(response?.data ?? []);
-    } catch (error) {
-      defaultErrorHandler({
-        error,
-      });
+        setTasks(response?.data ?? []);
+      } catch (error) {
+        defaultErrorHandler({
+          error,
+        });
+      }
     }
-  };
+  }, [profileInfoId, dateTime]);
 
   useEffect(() => {
-    if (profileInfo.id && dateTime) {
-      fetchTasks();
-    }
-  }, [profileInfo, dateTime]);
+    fetchTasks();
+  }, [fetchTasks]);
 
   return tasks;
 };

@@ -35,7 +35,7 @@ export const Entity = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  dictionaries: state?.data?.dictionaries,
+  dictionaries: state?.app?.dictionaries,
   tableLoading: state?.app?.tableLoading,
 });
 

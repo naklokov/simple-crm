@@ -109,7 +109,7 @@ export const Main = ({ profileInfo, setProfileInfo, tab }: MainProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.data?.profileInfo,
+  profileInfo: state?.persist?.profileInfo,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

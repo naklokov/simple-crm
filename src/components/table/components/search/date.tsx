@@ -60,7 +60,7 @@ export const DateSearch = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  dictionaries: state?.data?.dictionaries,
+  dictionaries: state?.app?.dictionaries,
 });
 
 export default flow([

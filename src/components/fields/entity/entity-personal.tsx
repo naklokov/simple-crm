@@ -1,13 +1,8 @@
 import React, { useState, useCallback, useContext, useEffect } from "react";
 import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
-import { connect } from "react-redux";
-import {
-  DEFAULT_FIELD_SPAN,
-  FieldProps,
-  ProfileInfoEntityProps,
-  State,
-} from "../../../constants";
+import { useSelector } from "react-redux";
+import { DEFAULT_FIELD_SPAN, FieldProps, State } from "../../../constants";
 import {
   defaultErrorHandler,
   FormContext,
@@ -18,10 +13,6 @@ import {
 import { Readonly } from "../readonly";
 
 const { Option } = Select;
-
-interface DictionaryComponentProps extends FieldProps {
-  profileInfo: ProfileInfoEntityProps;
-}
 
 // TODO костыль до первого запроса (первый запрос)
 export const Entity = ({
@@ -36,47 +27,55 @@ export const Entity = ({
   readonly = false,
   _links,
   span = DEFAULT_FIELD_SPAN,
-  profileInfo,
-}: DictionaryComponentProps) => {
+}: FieldProps) => {
+  const url = _links?.self.href ?? "";
   const form = useContext(FormContext);
   const [options, setOptions] = useState<any>([]);
   const [loading, setLoading] = useState(false);
+  const profileInfoId = useSelector(
+    (state: State) => state?.persist?.profileInfo?.id
+  );
+
+  const fetchEntity = useCallback(
+    async (query: string) => {
+      try {
+        setLoading(true);
+        const response = await axios.get(url, {
+          params: { query },
+        });
+        setOptions(response?.data ?? []);
+      } catch (error) {
+        defaultErrorHandler({ error });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [url]
+  );
 
   useEffect(() => {
     const initialValue = form.getFieldValue(fieldCode);
-    const initialQuery = getRsqlParams([
-      { key: "userProfileId", value: profileInfo.id },
-      getEqualRsql(codeField, initialValue),
-    ]);
-    fetchEntity(initialQuery);
-  }, [profileInfo]);
 
-  const fetchEntity = async (query: string) => {
-    try {
-      setLoading(true);
-      const url = _links?.self.href ?? "";
-      const response = await axios.get(url, {
-        params: { query },
-      });
-      setOptions(response?.data ?? []);
-    } catch (error) {
-      defaultErrorHandler({ error });
-    } finally {
-      setLoading(false);
+    if (profileInfoId && initialValue) {
+      const initialQuery = getRsqlParams([
+        { key: "userProfileId", value: profileInfoId },
+        getEqualRsql(codeField, initialValue),
+      ]);
+      fetchEntity(initialQuery);
     }
-  };
+  }, [profileInfoId, fetchEntity, fieldCode, codeField, form]);
 
   const handleSearch = useCallback(
     (value) => {
-      if (profileInfo.id) {
+      if (profileInfoId) {
         const searchedQuery = getRsqlParams([
-          { key: "userProfileId", value: profileInfo.id },
+          { key: "userProfileId", value: profileInfoId },
           getSearchRsql([titleField], value),
         ]);
         fetchEntity(searchedQuery);
       }
     },
-    [titleField, profileInfo]
+    [titleField, profileInfoId, fetchEntity]
   );
 
   const formatFunc = (value: string) =>
@@ -118,8 +117,4 @@ export const Entity = ({
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  profileInfo: state?.data?.profileInfo,
-});
-
-export default connect(mapStateToProps)(Entity);
+export default Entity;

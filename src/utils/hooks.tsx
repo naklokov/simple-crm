@@ -11,7 +11,6 @@ import {
   State,
   urls,
   ClientEntityProps,
-  ProfileInfoEntityProps,
   TabProps,
   TabPositionType,
 } from "../constants";
@@ -123,8 +122,8 @@ export function useFormValues<T>(formName: string): UseFormProps<T> {
 
 export const useFetchPersonalClients = () => {
   const [clients, setClients] = useState<ClientEntityProps[]>([]);
-  const profileInfo = useSelector(
-    (state: State) => state?.data?.profileInfo ?? ({} as ProfileInfoEntityProps)
+  const profileInfoId = useSelector(
+    (state: State) => state?.persist?.profileInfo?.id
   );
 
   const fetchClients = async (query: string) => {
@@ -140,13 +139,13 @@ export const useFetchPersonalClients = () => {
   };
 
   useEffect(() => {
-    if (profileInfo.id) {
+    if (profileInfoId) {
       const query = getRsqlParams([
-        { key: "userProfileId", value: profileInfo.id },
+        { key: "userProfileId", value: profileInfoId },
       ]);
       fetchClients(query);
     }
-  }, [profileInfo]);
+  }, [profileInfoId]);
 
   return clients;
 };

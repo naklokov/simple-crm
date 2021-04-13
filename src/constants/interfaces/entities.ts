@@ -27,7 +27,18 @@ export interface UseFormProps<T> {
   clear: () => void;
 }
 
-export interface ProfileInfoEntityProps extends EntityOwnerProps {
+export interface ProfileInfoEntityProps {
+  id?: string;
+  clientId?: string;
+  historyId?: string;
+  isActive?: boolean;
+  isDeleted?: boolean;
+  updateDate?: string;
+  isOwner?: {
+    DELETE: boolean;
+    UPDATE: boolean;
+  };
+  _links?: LinksType;
   aboutMe?: string;
   birthDate?: string;
   businessId?: string;
