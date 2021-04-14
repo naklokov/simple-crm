@@ -69,7 +69,9 @@ export const Main: React.FC<MainProps> = ({
         ...initialValues,
         ...values,
       });
+
       update(response?.data ?? {});
+      form.setFieldsValue(response?.data ?? {});
 
       defaultSuccessHandler(t("message.success"));
       history.replace(getFullUrl(urls.clients.path, response?.data?.id));
@@ -89,7 +91,9 @@ export const Main: React.FC<MainProps> = ({
         ...initialValues,
         ...values,
       });
+
       update(response?.data ?? {});
+      form.setFieldsValue(response?.data ?? {});
 
       defaultSuccessHandler(t("message.success"));
       setSubmitDisabled(true);

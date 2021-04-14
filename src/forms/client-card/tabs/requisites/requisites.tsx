@@ -51,7 +51,9 @@ export const Requisites = ({ tab }: TabPaneFormProps) => {
         ...clientValues,
         ...values,
       });
+
       update(response?.data ?? {});
+      form.setFieldsValue(response?.data ?? {});
 
       defaultSuccessHandler(t("message.success"));
       setSubmitDisabled(true);
