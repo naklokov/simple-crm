@@ -1,6 +1,7 @@
 @import "../../../../assets/styles/offsets";
 
 .list {
+  margin-bottom: var(--offset-md);
   position: relative;
   min-height: 15vh;
   max-height: 40vh;

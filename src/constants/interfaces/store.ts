@@ -1,11 +1,13 @@
-import { ProfileInfoEntityProps, ClientEntityProps } from "./entities";
+import { ProfileInfoEntityProps } from "./entities";
 
 export interface PersistState {
   permissions: string[];
   auth: boolean;
+  profileInfo: ProfileInfoEntityProps;
 }
 
 export interface AppState {
+  dictionaries: object;
   error: ErrorAppState;
   tableLoading: boolean;
   formLoading: boolean;
@@ -13,16 +15,9 @@ export interface AppState {
   forms: any;
 }
 
-export interface DataState {
-  dictionaries: object;
-  clients: ClientEntityProps[];
-  profileInfo: ProfileInfoEntityProps;
-}
-
 export interface State {
   persist: PersistState;
   app: AppState;
-  data: DataState;
 }
 
 export interface ErrorAppState {

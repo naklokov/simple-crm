@@ -1,6 +1,6 @@
 import moment from "moment-timezone";
-import * as redux from "react-redux";
 import { renderHook } from "@testing-library/react-hooks";
+import * as reactRedux from "react-redux";
 import uuid from "uuid";
 import { DATE_FORMATS } from "../../../constants";
 
@@ -8,6 +8,11 @@ import { useColumns, checkDaysEqual, getUpdatedColumns } from "../utils";
 import { ColumnTaskProps, DIVIDER_COLORS } from "../constants";
 
 const dateSampleIso = "2080-07-30T15:00:58.475";
+const profileInfoId = "123";
+
+beforeEach(() => {
+  jest.spyOn(reactRedux, "useSelector").mockReturnValue(profileInfoId);
+});
 
 const columns: ColumnTaskProps[] = [
   {
@@ -98,10 +103,6 @@ test("getUpdatedColumns", () => {
 
 test("useColumns date mode", () => {
   const selectedDate = "2021-02-03T15:00:00.000Z";
-  const profileInfoId = "123";
-
-  jest.spyOn(redux, "useSelector").mockReturnValue({ id: profileInfoId });
-
   const { result } = renderHook(() => useColumns(selectedDate));
 
   const firstDate = moment(selectedDate).subtract(1, "days");
@@ -146,10 +147,6 @@ test("useColumns date mode", () => {
 
 test("useColumns date mode (near today date)", () => {
   const selectedDate = moment().add(1, "days").toISOString();
-  const profileInfoId = "123";
-
-  jest.spyOn(redux, "useSelector").mockReturnValue({ id: profileInfoId });
-
   const { result } = renderHook(() => useColumns(selectedDate));
 
   const firstDate = moment(selectedDate).subtract(1, "days");
@@ -194,10 +191,6 @@ test("useColumns date mode (near today date)", () => {
 
 test("useColumns today mode", () => {
   const selectedDate = moment().toISOString();
-  const profileInfoId = "123";
-
-  jest.spyOn(redux, "useSelector").mockReturnValue({ id: profileInfoId });
-
   const { result } = renderHook(() => useColumns(selectedDate));
 
   const firstDate = moment(selectedDate);

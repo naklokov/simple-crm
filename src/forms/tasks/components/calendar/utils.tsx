@@ -12,7 +12,6 @@ import {
 } from "../../../../utils";
 import {
   DATE_FORMATS,
-  EntityOwnerProps,
   State,
   TaskEntityProps,
   TASK_DATE_FIELD_CODE,
@@ -51,45 +50,48 @@ export const useBadgeMap = (date: string) => {
   const [map, setMap] = useState<BadgeMapType>({});
   const [reloadKey, setReloadKey] = useState("");
   const [loading, setLoading] = useState(false);
-  const profileInfo = useSelector(
-    (state: State) => state?.data?.profileInfo ?? ({} as EntityOwnerProps)
+  const profileInfoId = useSelector(
+    (state: State) => state?.persist?.profileInfo?.id
   );
 
   const reload = useCallback(() => {
     setReloadKey(uuidV4());
   }, []);
 
-  const fetchTasks = async () => {
-    setLoading(true);
-    try {
-      const query = getRsqlParams([
-        ...getExtraRsql(profileInfo.id),
-        getDateFieldBetweenRsql({
-          date,
-          fieldCode: TASK_DATE_FIELD_CODE,
-          unitOfTime: "month",
-        }),
-      ]);
-      const response = await axios.get(urls.tasks.entity, {
-        params: { query },
-      });
+  const fetchTasks = useCallback(
+    async (userProfileId: string) => {
+      setLoading(true);
+      try {
+        const query = getRsqlParams([
+          ...getExtraRsql(userProfileId),
+          getDateFieldBetweenRsql({
+            date,
+            fieldCode: TASK_DATE_FIELD_CODE,
+            unitOfTime: "month",
+          }),
+        ]);
+        const response = await axios.get(urls.tasks.entity, {
+          params: { query },
+        });
 
-      const tasks = response?.data ?? [];
-      setMap(getBadgeMap(tasks));
-    } catch (error) {
-      defaultErrorHandler({
-        error,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+        const tasks = response?.data ?? [];
+        setMap(getBadgeMap(tasks));
+      } catch (error) {
+        defaultErrorHandler({
+          error,
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [date]
+  );
 
   useEffect(() => {
-    if (profileInfo.id) {
-      fetchTasks();
+    if (profileInfoId) {
+      fetchTasks(profileInfoId);
     }
-  }, [profileInfo, date, reloadKey]);
+  }, [fetchTasks, profileInfoId, reloadKey]);
 
   return { map, loading, reload };
 };

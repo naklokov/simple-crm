@@ -10,7 +10,7 @@ import { Store } from "antd/lib/form/interface";
 import { Dispatch } from "@reduxjs/toolkit";
 import { connect } from "react-redux";
 import style from "./login.module.scss";
-import { urls, State } from "../../constants";
+import { urls, State, LocationLogoutProps } from "../../constants";
 import { logger, defaultErrorHandler } from "../../utils";
 import { FORM_NAME, FIELDS } from "./constants";
 
@@ -32,7 +32,7 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
   const rules = getRules(t);
   const initialValues = getInitialValues();
   const [submitLoading, setSubmitLoading] = useState(false);
-  const location = useLocation<{ from: string }>();
+  const location = useLocation<LocationLogoutProps>();
 
   useEffect(() => {
     localStorage.clear();

@@ -17,7 +17,15 @@ import {
   CLIENT_NEW_ID,
 } from "../../constants";
 import { FormHeader, Loader } from "../../components";
-import { Main, Comments, Contacts, Requisites, PriceList, Tasks } from "./tabs";
+import {
+  Main,
+  Comments,
+  Contacts,
+  Requisites,
+  PriceList,
+  Tasks,
+  Documents,
+} from "./tabs";
 import {
   defaultErrorHandler,
   getFullUrl,
@@ -37,6 +45,7 @@ export const formsMap: {
   priceList: PriceList,
   comments: Comments,
   tasks: Tasks,
+  // documents: Documents,
 };
 
 const {
@@ -139,8 +148,7 @@ export const ClientCard = () => {
 };
 
 const mapStateToProps = (state: State) => ({
-  clients: state?.data?.clients,
-  profileInfo: state?.data?.profileInfo,
+  profileInfo: state?.persist?.profileInfo,
 });
 
 const mapDispathToProps = (dispatch: Dispatch) =>

@@ -50,12 +50,13 @@ export const Main = ({ profileInfo, setProfileInfo, tab }: MainProps) => {
   const onFinish = async (values: Store) => {
     try {
       setSubmitLoading(true);
-      const responce = await axios.put(urls.profile.entity, {
+      const response = await axios.put(urls.profile.entity, {
         ...profileInfo,
         ...values,
       });
 
-      setProfileInfo(responce.data);
+      form.setFieldsValue(response?.data ?? {});
+      setProfileInfo(response.data);
       setSubmitDisabled(true);
 
       defaultSuccessHandler(t("message.success"));
@@ -109,7 +110,7 @@ export const Main = ({ profileInfo, setProfileInfo, tab }: MainProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.data?.profileInfo,
+  profileInfo: state?.persist?.profileInfo,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

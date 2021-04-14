@@ -43,3 +43,7 @@ export interface ErrorProps {
   method?: string;
   url?: string;
 }
+
+export interface LocationLogoutProps {
+  from: string;
+}

@@ -148,6 +148,13 @@ export const lower: LowerProps = {
       ],
       _links: {},
     },
+    // {
+    //   tabCode: "documents",
+    //   tabName: "Документы",
+    //   tabDescription: "Документы привязанные к клиенту",
+    //   type: "custom",
+    //   _links: {},
+    // },
   ],
 };
 
@@ -359,6 +366,18 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           disabled: true,
           format: "DD.MM.yyyy",
+          rules: [],
+          permissions: [],
+        },
+        {
+          fieldCode: "updateDate",
+          fieldName: "Дата обновления",
+          fieldDescription: "",
+          type: "date",
+          readonly: true,
+          placeholder: PLACEHOLDER_DEFAULT,
+          disabled: true,
+          format: DATE_FORMATS.DATE,
           rules: [],
           permissions: [],
         },

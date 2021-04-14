@@ -92,7 +92,7 @@ export const PriceList: React.FC<ContactsProps> = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.data?.profileInfo,
+  profileInfo: state?.persist?.profileInfo,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

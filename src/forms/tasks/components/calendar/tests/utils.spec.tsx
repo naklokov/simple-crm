@@ -43,8 +43,8 @@ test("getCellColor month not in view", () => {
 test("useBadgeMap", async () => {
   const selectedDate = "2000-07-30T15:00:00.475";
   mock.onGet(urls.tasks.entity).reply(200, TASKS_ENTITY_STUB);
-  const profileInfo = { id: "123" };
-  jest.spyOn(redux, "useSelector").mockReturnValue(profileInfo);
+  const profileInfoId = "123";
+  jest.spyOn(redux, "useSelector").mockReturnValue(profileInfoId);
 
   const { result } = renderHook(() => useBadgeMap(selectedDate));
 

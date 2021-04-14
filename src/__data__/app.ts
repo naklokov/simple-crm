@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const appSlide = createSlice({
   name: "app",
   initialState: {
+    dictionaries: {},
     loading: false,
     tableLoading: false,
     formLoading: false,
@@ -11,6 +12,9 @@ const appSlide = createSlice({
     error: {},
   },
   reducers: {
+    setDictionaries(state, action) {
+      state.dictionaries = Object.assign(state.dictionaries, action.payload);
+    },
     setError(state, action) {
       state.error = action.payload;
     },
@@ -33,6 +37,7 @@ const appSlide = createSlice({
 });
 
 export const {
+  setDictionaries,
   setLoading,
   setTableLoading,
   setFormLoading,
