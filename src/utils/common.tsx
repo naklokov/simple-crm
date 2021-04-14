@@ -31,7 +31,7 @@ export const logout = async (dispatch: Dispatch) => {
   const username = Cookies.get(COOKIES.USERNAME);
 
   try {
-    dispatch(setLoading(true));
+    dispatch(logoutAction());
     await axios.get(urls.login.logout);
     logger.debug({ message: DEFAULT_SUCCESS_MESSAGE_LOGOUT, username });
   } catch (error) {
@@ -40,9 +40,6 @@ export const logout = async (dispatch: Dispatch) => {
       defaultErrorMessage: DEFAULT_ERROR_MESSAGE_LOGOUT,
       username,
     });
-  } finally {
-    dispatch(setLoading(false));
-    dispatch(logoutAction());
   }
 };
 

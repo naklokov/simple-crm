@@ -38,17 +38,7 @@ test("logout", async () => {
   await logout(dispatchSpy);
   expect(getSpy).toHaveBeenCalledWith(urls.login.logout);
 
-  // clear redux store
-  expect(dispatchSpy).toHaveBeenNthCalledWith(
-    1,
-    getAction("app/setLoading", true)
-  );
-  expect(dispatchSpy).toHaveBeenNthCalledWith(
-    2,
-    getAction("app/setLoading", false)
-  );
-
-  expect(dispatchSpy).toHaveBeenNthCalledWith(3, getAction("persist/logout"));
+  expect(dispatchSpy).toHaveBeenNthCalledWith(1, getAction("persist/logout"));
 });
 
 test("fillTemplate", () => {

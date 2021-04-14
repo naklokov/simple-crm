@@ -24,7 +24,7 @@ export const Profile = ({ profileInfo }: ProfileProps) => {
   const [t] = useTranslation("authorizedLayout");
   const dispatch = useDispatch();
   const history = useHistory();
-  const { fullName, avatar } = profileInfo;
+  const { fullName, avatar } = profileInfo || {};
 
   const handleClickLogout = useCallback(() => {
     history.replace("/");

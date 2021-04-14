@@ -50,7 +50,6 @@ export interface ProfileInfoEntityProps {
   login?: string;
   position?: string;
   userRoleId?: string;
-  clientId: string;
   isLocked?: boolean;
 }
 

@@ -134,14 +134,14 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
 
   return (
     <form>
-      <Order onChange={setOrder} value={order} />
       <div ref={listRef} className={style.list}>
+        <Order onChange={setOrder} value={order} />
         <List
           loading={loading}
           itemLayout="horizontal"
           dataSource={orderBy(comments, COMMENT_DATE_FIELD_CODE, order)}
           renderItem={(comment) => (
-            <List.Item>
+            <List.Item style={{ padding: 0 }}>
               <Comment
                 key={comment.id}
                 comment={comment}

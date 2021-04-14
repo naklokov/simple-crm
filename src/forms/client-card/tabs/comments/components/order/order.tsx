@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Button, Dropdown, Menu } from "antd";
+import { Button, Dropdown, Menu, Space } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 
@@ -22,15 +22,19 @@ const Order: FC<Props> = ({ value, onChange }) => {
   };
 
   const menu = (
-    <Menu onClick={handleSelect}>
+    <Menu onClick={handleSelect} selectedKeys={[value]}>
       <Menu.Item key="asc">{t("order.label.old")}</Menu.Item>
       <Menu.Item key="desc">{t("order.label.new")}</Menu.Item>
     </Menu>
   );
+
   return (
     <Dropdown overlay={menu} trigger={["click"]}>
-      <Button type="link" icon={<DownOutlined />}>
-        {orderLabel}
+      <Button type="link" style={{ padding: 0 }}>
+        <Space size="small">
+          {orderLabel}
+          <DownOutlined style={{ fontSize: "10px" }} />
+        </Space>
       </Button>
     </Dropdown>
   );

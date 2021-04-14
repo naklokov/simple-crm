@@ -45,7 +45,7 @@ export const formsMap: {
   priceList: PriceList,
   comments: Comments,
   tasks: Tasks,
-  documents: Documents,
+  // documents: Documents,
 };
 
 const {

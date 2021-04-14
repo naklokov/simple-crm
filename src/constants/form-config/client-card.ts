@@ -148,13 +148,13 @@ export const lower: LowerProps = {
       ],
       _links: {},
     },
-    {
-      tabCode: "documents",
-      tabName: "Документы",
-      tabDescription: "Документы привязанные к клиенту",
-      type: "custom",
-      _links: {},
-    },
+    // {
+    //   tabCode: "documents",
+    //   tabName: "Документы",
+    //   tabDescription: "Документы привязанные к клиенту",
+    //   type: "custom",
+    //   _links: {},
+    // },
   ],
 };
 
