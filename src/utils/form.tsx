@@ -1,5 +1,5 @@
 import React from "react";
-import isEqual from "lodash/isEqual";
+import { parseInt, isEqual } from "lodash";
 import some from "lodash/some";
 import { fields } from "../components";
 import { FieldProps } from "../constants";
@@ -83,6 +83,22 @@ export const vatRule = {
   },
 };
 
+export const ogrnRule = {
+  validator: (_: any, value: string) => {
+    if (!value) {
+      return Promise.resolve();
+    }
+
+    const { success, errorMessage } = validateOgrn(value);
+
+    if (success) {
+      return Promise.resolve();
+    }
+
+    return Promise.reject(new Error(errorMessage));
+  },
+};
+
 export const phoneRule = {
   validator: (_: any, value: string) => {
     // может быть пустым
@@ -101,6 +117,41 @@ export const phoneRule = {
 export const checkPhone = (value: string) => {
   const normalizePhone = getNormalizePhone(value);
   return normalizePhone.length > 11;
+};
+
+export const validateOgrn = (ogrn: string) => {
+  if (!ogrn.length) {
+    return {
+      success: false,
+      errorMessage: "ОГРН пуст",
+    };
+  }
+
+  if (/[^0-9]/.test(ogrn)) {
+    return {
+      success: false,
+      errorMessage: "ОГРН может состоять только из цифр",
+    };
+  }
+
+  if (ogrn.length !== 13 && ogrn.length !== 15) {
+    return {
+      success: false,
+      errorMessage: "ОГРН может состоять из 13 или 15 цифр",
+    };
+  }
+
+  const n13 = parseInt((parseInt(ogrn.slice(0, -1)) % 11).toString().slice(-1));
+  if (n13 === parseInt(ogrn[12])) {
+    return { success: true, errorMessage: "" };
+  }
+
+  const n15 = parseInt((parseInt(ogrn.slice(0, -1)) % 13).toString().slice(-1));
+  if (n15 === parseInt(ogrn[14])) {
+    return { success: true, errorMessage: "" };
+  }
+
+  return { success: false, errorMessage: "Некорректный формат ОГРН" };
 };
 
 export const checkINN = (value: any) => {
