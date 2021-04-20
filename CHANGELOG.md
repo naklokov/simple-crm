@@ -1,5 +1,17 @@
 
 
+## [0.8.0](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.8.0..0.7.0) (19.04.2021)
+
+### Features
+
+- Добавить поле ОГРН и проверку для него [OLVE-605]
+
+### Hotfix
+
+- Вернуть генерацию документов
+
+
+
 ## [0.7.0](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.7.0..0.6.1) (14.04.2021)
 
 ### Bug Fixes
