@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import { Button, Popconfirm } from "antd";
+import { Popconfirm, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 
 import { connect, useSelector } from "react-redux";
@@ -37,9 +37,9 @@ export const Delete: React.FC<DeleteProps> = ({
       onConfirm={handleClick}
       placement="left"
     >
-      <Button style={{ padding: 0 }} type="link">
+      <Typography.Link style={{ marginRight: 8 }}>
         <HighlightTextWrapper loading={tableLoading} text={title} />
-      </Button>
+      </Typography.Link>
     </Popconfirm>
   );
 };

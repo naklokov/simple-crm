@@ -46,6 +46,9 @@ const taskDrawer = formConfig.clientCard.lower.drawers.find(
   (drawer) => drawer.code === "task"
 );
 
+const OMIT_COLUMNS_ACTIVE = ["note", "updateDate"];
+const OMIT_COLUMNS_COMPLETE = ["taskEndDate"];
+
 export const Tasks = ({ tab }: TabPaneFormProps) => {
   const [t] = useTranslation("tasks");
   const dispatch = useDispatch();
@@ -177,12 +180,16 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
 
   const activeTasksTable = {
     ...tab,
-    columns:
-      tab.columns?.filter(({ columnCode }) => columnCode !== "note") ?? [],
+    columns: tab.columns?.filter(
+      ({ columnCode }) => !OMIT_COLUMNS_ACTIVE.includes(columnCode)
+    ),
   };
 
   const completedTasksTable = {
     ...tab,
+    columns: tab.columns?.filter(
+      ({ columnCode }) => !OMIT_COLUMNS_COMPLETE.includes(columnCode)
+    ),
     actions: [],
   };
 
@@ -225,7 +232,6 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
             <Table.Client
               table={activeTasksTable as TabProps}
               dataSource={activeTasks}
-              pagination={{ pageSize: 3 }}
               onViewRow={handleViewRow}
               onDoneRow={handleDoneRow}
               onDeleteRow={handleDeleteRow}
@@ -235,7 +241,6 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
             <Table.Client
               table={completedTasksTable as TabProps}
               dataSource={completedTasks}
-              pagination={{ pageSize: 3 }}
             />
           </TabPane>
         </Tabs>
