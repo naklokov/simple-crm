@@ -43,7 +43,7 @@ export const Call: React.FC<CallProps> = ({ phone, column }) => {
       onConfirm={handleCall}
       placement="left"
     >
-      <Typography.Link style={{ padding: 0 }}>
+      <Typography.Link style={{ marginRight: 8 }}>
         <HighlightTextWrapper
           loading={tableLoading}
           text={getConformedValue(phone)}
