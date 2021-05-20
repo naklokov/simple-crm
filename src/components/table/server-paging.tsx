@@ -47,6 +47,7 @@ export interface TableWithServerPagingProps {
   extraRsqlParams?: RsqlParamProps[];
   withSearch?: boolean;
   searchPlaceholder?: string;
+  defaultPageSize?: number;
   links: LinksType;
 }
 
@@ -57,6 +58,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
   withSearch,
   searchPlaceholder,
   links = {},
+  defaultPageSize,
 }) => {
   const [url, initialSearch] = links?.self?.href?.split("?") ?? [];
   const [t] = useTranslation("tableServer");
@@ -79,7 +81,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     setPageSize,
     setFilters,
     setSortBy,
-  } = useTableServerPagingParams();
+  } = useTableServerPagingParams(defaultPageSize);
 
   // пробрасываем значения колонок необходимые для поиска
   useEffect(() => {

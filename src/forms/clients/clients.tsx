@@ -51,6 +51,7 @@ export const Clients: React.FC<ClientsProps> = ({ profileInfo }) => {
               key={activeTab.tabName}
               columns={activeTab.columns}
               actions={activeTab.actions}
+              defaultPageSize={50}
               links={fillLinks(activeTab._links, {
                 userProfileId: profileInfo.id,
               })}

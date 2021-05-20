@@ -49,6 +49,9 @@ const taskDrawer = formConfig.clientCard.lower.drawers.find(
 const OMIT_COLUMNS_ACTIVE = ["note", "updateDate"];
 const OMIT_COLUMNS_COMPLETE = ["taskEndDate"];
 
+const sortByDate = (a: TaskEntityProps, b: TaskEntityProps) =>
+  moment(b.taskEndDate).unix() - moment(a.taskEndDate).unix();
+
 export const Tasks = ({ tab }: TabPaneFormProps) => {
   const [t] = useTranslation("tasks");
   const dispatch = useDispatch();
@@ -159,10 +162,7 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
   const activeTasks = useMemo(
     () =>
       tasks
-        .sort(
-          (a: TaskEntityProps, b: TaskEntityProps) =>
-            moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
-        )
+        .sort(sortByDate)
         .filter(({ taskStatus }) => taskStatus === TASK_STATUSES.NOT_COMPLETED),
     [tasks]
   );
@@ -170,10 +170,7 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
   const completedTasks = useMemo(
     () =>
       tasks
-        .sort(
-          (a: TaskEntityProps, b: TaskEntityProps) =>
-            moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
-        )
+        .sort(sortByDate)
         .filter(({ taskStatus }) => taskStatus === TASK_STATUSES.COMPLETED),
     [tasks]
   );
@@ -228,6 +225,12 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
             ),
           }}
         >
+          <TabPane tab={t("tab.completed")} key="done">
+            <Table.Client
+              table={completedTasksTable as TabProps}
+              dataSource={completedTasks}
+            />
+          </TabPane>
           <TabPane tab={t("tab.active")} key="active">
             <Table.Client
               table={activeTasksTable as TabProps}
@@ -235,12 +238,6 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
               onViewRow={handleViewRow}
               onDoneRow={handleDoneRow}
               onDeleteRow={handleDeleteRow}
-            />
-          </TabPane>
-          <TabPane tab={t("tab.completed")} key="done">
-            <Table.Client
-              table={completedTasksTable as TabProps}
-              dataSource={completedTasks}
             />
           </TabPane>
         </Tabs>

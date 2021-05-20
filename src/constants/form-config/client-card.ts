@@ -89,13 +89,6 @@ export const lower: LowerProps = {
   ],
   tabs: [
     {
-      tabCode: "comments",
-      tabName: "Комментарии",
-      tabDescription: "Комментарии о клиенте",
-      type: "custom",
-      _links: {},
-    },
-    {
       tabCode: "tasks",
       tabName: "Задачи",
       tabDescription: "Задачи связанные с клиентом",
@@ -157,6 +150,13 @@ export const lower: LowerProps = {
           columnActions: [],
         },
       ],
+      _links: {},
+    },
+    {
+      tabCode: "comments",
+      tabName: "Комментарии",
+      tabDescription: "Комментарии о клиенте",
+      type: "custom",
       _links: {},
     },
     {
