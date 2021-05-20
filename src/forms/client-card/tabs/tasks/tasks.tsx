@@ -49,8 +49,13 @@ const taskDrawer = formConfig.clientCard.lower.drawers.find(
 const OMIT_COLUMNS_ACTIVE = ["note", "updateDate"];
 const OMIT_COLUMNS_COMPLETE = ["taskEndDate"];
 
-const sortByDate = (a: TaskEntityProps, b: TaskEntityProps) =>
-  moment(b.taskEndDate).unix() - moment(a.taskEndDate).unix();
+const sortByDateField = (field: string, order: "asc" | "desc") => (
+  a: any,
+  b: any
+) =>
+  order === "asc"
+    ? moment(a?.[field]).unix() - moment(b?.[field]).unix()
+    : moment(b?.[field]).unix() - moment(a?.[field]).unix();
 
 export const Tasks = ({ tab }: TabPaneFormProps) => {
   const [t] = useTranslation("tasks");
@@ -162,7 +167,7 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
   const activeTasks = useMemo(
     () =>
       tasks
-        .sort(sortByDate)
+        .sort(sortByDateField("taskEndDate", "asc"))
         .filter(({ taskStatus }) => taskStatus === TASK_STATUSES.NOT_COMPLETED),
     [tasks]
   );
@@ -170,7 +175,7 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
   const completedTasks = useMemo(
     () =>
       tasks
-        .sort(sortByDate)
+        .sort(sortByDateField("updateDate", "desc"))
         .filter(({ taskStatus }) => taskStatus === TASK_STATUSES.COMPLETED),
     [tasks]
   );
