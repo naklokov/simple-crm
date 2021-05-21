@@ -1,6 +1,20 @@
 
 
-## [0.8.0](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.8.0..0.7.0) (19.04.2021)
+## [0.9.0](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.9.0..0.8.0) (20.05.2021)
+
+### Bug Fixes
+
+- Изменить сортировку во вкладке задачи [OLVE-626]
+
+### Features
+
+- Добавить по умолчанию отображение 50 компаний на странице [OLVE-627]
+- Доработать табу Задачи в карточке клиента [OLVE-626]
+- Изменить набор полей для в табе "Задачи" в карточке клиента [OLVE-620]
+
+
+
+## [0.8.0](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.8.0..0.7.0) (20.04.2021)
 
 ### Features
 
