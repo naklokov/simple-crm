@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from "react";
-import { Button } from "antd";
+import { Typography } from "antd";
 import { useSelector } from "react-redux";
 import { HighlightTextWrapper } from "../../../../wrappers";
 import { TableActionsContext } from "../../utils";
@@ -18,9 +18,9 @@ export const View: React.FC<ViewProps> = ({ id, title = "" }) => {
   }, [id, onViewRow]);
 
   return (
-    <Button style={{ paddingLeft: 0 }} type="link" onClick={handleClick}>
+    <Typography.Link style={{ marginRight: 8 }} onClick={handleClick}>
       <HighlightTextWrapper text={title} loading={tableLoading} />
-    </Button>
+    </Typography.Link>
   );
 };
 

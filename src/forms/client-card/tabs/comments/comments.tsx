@@ -135,7 +135,7 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
   return (
     <form>
       <div ref={listRef} className={style.list}>
-        <Order onChange={setOrder} value={order} />
+        {!!comments.length && <Order onChange={setOrder} value={order} />}
         <List
           loading={loading}
           itemLayout="horizontal"

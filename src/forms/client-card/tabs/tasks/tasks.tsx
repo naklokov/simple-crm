@@ -46,6 +46,17 @@ const taskDrawer = formConfig.clientCard.lower.drawers.find(
   (drawer) => drawer.code === "task"
 );
 
+const OMIT_COLUMNS_ACTIVE = ["note", "updateDate"];
+const OMIT_COLUMNS_COMPLETE = ["taskEndDate"];
+
+const sortByDateField = (field: string, order: "asc" | "desc") => (
+  a: any,
+  b: any
+) =>
+  order === "asc"
+    ? moment(a?.[field]).unix() - moment(b?.[field]).unix()
+    : moment(b?.[field]).unix() - moment(a?.[field]).unix();
+
 export const Tasks = ({ tab }: TabPaneFormProps) => {
   const [t] = useTranslation("tasks");
   const dispatch = useDispatch();
@@ -156,10 +167,7 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
   const activeTasks = useMemo(
     () =>
       tasks
-        .sort(
-          (a: TaskEntityProps, b: TaskEntityProps) =>
-            moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
-        )
+        .sort(sortByDateField("taskEndDate", "asc"))
         .filter(({ taskStatus }) => taskStatus === TASK_STATUSES.NOT_COMPLETED),
     [tasks]
   );
@@ -167,22 +175,23 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
   const completedTasks = useMemo(
     () =>
       tasks
-        .sort(
-          (a: TaskEntityProps, b: TaskEntityProps) =>
-            moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
-        )
+        .sort(sortByDateField("updateDate", "desc"))
         .filter(({ taskStatus }) => taskStatus === TASK_STATUSES.COMPLETED),
     [tasks]
   );
 
   const activeTasksTable = {
     ...tab,
-    columns:
-      tab.columns?.filter(({ columnCode }) => columnCode !== "note") ?? [],
+    columns: tab.columns?.filter(
+      ({ columnCode }) => !OMIT_COLUMNS_ACTIVE.includes(columnCode)
+    ),
   };
 
   const completedTasksTable = {
     ...tab,
+    columns: tab.columns?.filter(
+      ({ columnCode }) => !OMIT_COLUMNS_COMPLETE.includes(columnCode)
+    ),
     actions: [],
   };
 
@@ -221,21 +230,19 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
             ),
           }}
         >
-          <TabPane tab={t("tab.active")} key="active">
-            <Table.Client
-              table={activeTasksTable as TabProps}
-              dataSource={activeTasks}
-              pagination={{ pageSize: 3 }}
-              onViewRow={handleViewRow}
-              onDoneRow={handleDoneRow}
-              onDeleteRow={handleDeleteRow}
-            />
-          </TabPane>
           <TabPane tab={t("tab.completed")} key="done">
             <Table.Client
               table={completedTasksTable as TabProps}
               dataSource={completedTasks}
-              pagination={{ pageSize: 3 }}
+            />
+          </TabPane>
+          <TabPane tab={t("tab.active")} key="active">
+            <Table.Client
+              table={activeTasksTable as TabProps}
+              dataSource={activeTasks}
+              onViewRow={handleViewRow}
+              onDoneRow={handleDoneRow}
+              onDeleteRow={handleDeleteRow}
             />
           </TabPane>
         </Tabs>

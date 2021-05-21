@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { noop } from "lodash";
 import { PaginationProps } from "antd/es/pagination";
-import { TabProps } from "../../constants";
+import { ColumnProps, RecordType, TabProps } from "../../constants";
 import { Table } from ".";
 import { getFilteredDataSource } from "./utils";
 import { TableHeader } from "./components";
@@ -40,6 +40,7 @@ export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
   searchPlaceholder,
 }) => {
   const [searchedAll, setSearchedAll] = useState("");
+  const [searchedColumns, setSearchedColumns] = useState<RecordType>({});
 
   const tableDataSource = useMemo(
     () =>
@@ -61,6 +62,14 @@ export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
   const handleSearchAll = useCallback((searched: string) => {
     setSearchedAll(searched);
   }, []);
+
+  const handleSearchColumn = useCallback(
+    (searched: string, confirm: any, column: ColumnProps) => {
+      setSearchedColumns({ ...searchedColumns, [column.columnCode]: searched });
+      confirm();
+    },
+    [searchedColumns]
+  );
 
   const tableHeader = useMemo(
     () =>
@@ -92,6 +101,8 @@ export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
       tableHeader={tableHeader}
       onViewRow={onViewRow}
       onDoneRow={onDoneRow}
+      onSearchColumn={handleSearchColumn}
+      searchedColumns={searchedColumns}
       onDeleteRow={onDeleteRow}
     />
   );
