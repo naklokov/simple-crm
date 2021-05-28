@@ -31,15 +31,15 @@ export const ViewContact = ({
 }: ViewContactProps) => {
   const [t] = useTranslation("contactDrawer");
   const [submitLoading, setSubmitLoading] = useState(false);
-  const { values } = useFormValues<ContactEntityProps>(FORM_NAMES.CONTACT_VIEW);
+  const [contact] = useFormValues<ContactEntityProps>(FORM_NAMES.CONTACT_VIEW);
 
   const onFinish = async (data: Store) => {
     try {
       setSubmitLoading(true);
-      const url = `${urls.contacts.entity}/${values.id}`;
-      const responce = await axios.put(url, data);
+      const url = `${urls.contacts.entity}/${contact.id}`;
+      const response = await axios.put(url, data);
       defaultSuccessHandler(t("message.success.edit"));
-      onClose(undefined, responce?.data);
+      onClose(response?.data);
     } catch (error) {
       defaultErrorHandler({ error });
     } finally {
@@ -47,7 +47,7 @@ export const ViewContact = ({
     }
   };
 
-  if (isEmpty(values)) {
+  if (isEmpty(contact)) {
     return null;
   }
 
@@ -55,7 +55,7 @@ export const ViewContact = ({
     <DrawerForm
       title={title}
       fields={fields}
-      initialValues={values}
+      initialValues={contact}
       name={FORM_NAMES.CONTACT_VIEW}
       onClose={onClose}
       visible={visible}

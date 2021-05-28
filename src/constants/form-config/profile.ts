@@ -7,12 +7,14 @@ import { TabProps } from "../interfaces";
 const { USERPROFILES } = PERMISSIONS;
 
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
+
+const PLACEHOLDER_DEFAULT = "Введите значение";
 const PHONE_PLACEHOLDER = "+7 (___) ___-__-__";
 
 export const FORM: { tabs: TabProps[] } = {
   tabs: [
     {
-      tabCode: "profile",
+      tabCode: "profileMain",
       tabName: "Профиль",
       tabDescription: "Информация о профиле",
       type: "container",
@@ -22,6 +24,7 @@ export const FORM: { tabs: TabProps[] } = {
           fieldName: "Ф.И.О.",
           fieldDescription: "",
           type: "string",
+          placeholder: PLACEHOLDER_DEFAULT,
           readonly: false,
           disabled: false,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
@@ -74,6 +77,7 @@ export const FORM: { tabs: TabProps[] } = {
           fieldName: "Адрес",
           fieldDescription: "",
           type: "string",
+          placeholder: PLACEHOLDER_DEFAULT,
           readonly: false,
           disabled: false,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
@@ -108,8 +112,11 @@ export const FORM: { tabs: TabProps[] } = {
         },
       ],
       _links: {
+        self: {
+          href: `${urls.userProfiles.entity}/{{userProfileId}}`,
+        },
         userProfileId: {
-          href: urls.dictionaries.userProfiles,
+          href: urls.userProfiles.entity,
         },
       },
     },

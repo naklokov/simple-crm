@@ -1,16 +1,14 @@
-import React, { ReactNode, useCallback } from "react";
+import React, { ReactNode, useCallback, useMemo } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 import {
   BREADCRUMB_ROUTES,
   ClientEntityProps,
   FORM_NAMES,
   QueryProps,
   urls,
-  State,
   CLIENT_NEW_ID,
 } from "../../constants";
 import {
@@ -19,30 +17,38 @@ import {
   defaultSuccessHandler,
   getFullUrl,
   getItemRender,
+  getItemLoadingRender,
+  useFormValues,
 } from "../../utils";
-import { setLoading } from "../../__data__";
 import { Call, Delete } from "./components";
-import { FormHeader } from "../../components";
+import { FormHeader, Skeleton } from "../../components";
+import { setFormLoading } from "../../__data__";
 
 interface ClientCardHeaderProps {
-  client: ClientEntityProps;
   footer?: ReactNode;
 }
 
+const formName = FORM_NAMES.CLIENT_CARD;
+
 export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
-  client,
   footer,
 }) => {
   const [t] = useTranslation("clientCard");
+  const dispatch = useDispatch();
   const history = useHistory();
   const { id } = useParams<QueryProps>();
   const isNew = id === CLIENT_NEW_ID;
 
-  const { shortName, phone } = client;
-  const title = shortName || t("title.new");
+  const [{ shortName, phone }] = useFormValues<ClientEntityProps>(
+    FORM_NAMES.CLIENT_CARD
+  );
 
-  const fetchDelete = async () => {
-    setLoading(true);
+  const loading = useMemo(() => !shortName && !isNew, [shortName, isNew]);
+  const filledTitle = shortName || t("title.new");
+  const title = loading ? <Skeleton.Title /> : filledTitle;
+
+  const fetchDelete = useCallback(async () => {
+    dispatch(setFormLoading({ name: formName, loading: true }));
     try {
       const url = getFullUrl(urls.clients.entity, id);
       await axios.delete(url);
@@ -51,9 +57,9 @@ export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
     } catch (error) {
       defaultErrorHandler({ error });
     } finally {
-      setLoading(false);
+      dispatch(setFormLoading({ name: formName, loading: false }));
     }
-  };
+  }, [history, dispatch, id, t]);
 
   const handleGoBack = useCallback(() => {
     history.go(-1);
@@ -67,7 +73,7 @@ export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
 
   const handleDelete = useCallback(() => {
     fetchDelete();
-  }, [id]);
+  }, [fetchDelete]);
 
   let extra: ReactNode[] = [];
 
@@ -82,9 +88,9 @@ export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
   const breadcrumb = {
     routes: [
       ...BREADCRUMB_ROUTES.CLIENTS,
-      { path: `/${id}`, breadcrumbName: title },
+      { path: `/${id}`, breadcrumbName: filledTitle },
     ],
-    itemRender: getItemRender,
+    itemRender: loading ? getItemLoadingRender : getItemRender,
   };
 
   return (
@@ -99,11 +105,4 @@ export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  client: state?.app?.forms?.[FORM_NAMES.CLIENT_CARD] ?? {},
-});
-
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setLoading }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(ClientCardHeader);
+export default ClientCardHeader;

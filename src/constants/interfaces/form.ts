@@ -1,4 +1,5 @@
 import { Rule } from "antd/lib/form";
+import React, { ReactNode } from "react";
 import { LinksType } from "./entities";
 
 // Типы
@@ -52,12 +53,19 @@ export type TabPositionType = "lower" | "upper" | undefined;
 
 export type FixedPositionType = "left" | "right";
 
+export type TableType = "server" | "client";
+
 // Интерфейсы
 export interface DrawerProps {
   code: string;
   name: string;
   description: string;
   fields: FieldProps[];
+}
+
+export interface FormProps {
+  tab: TabProps;
+  drawers: DrawerProps[];
 }
 
 export interface DrawerFormProps {
@@ -72,6 +80,9 @@ export interface TabProps {
   tabName: string;
   tabDescription: string;
   type: TabType;
+  tableType?: TableType;
+  searchPlaceholder?: string;
+  withSearch?: boolean;
   fields?: FieldProps[];
   columns?: ColumnProps[];
   actions?: ActionProps[];
@@ -141,7 +152,10 @@ export interface FieldProps {
 
 export interface TabPaneFormProps {
   tab: TabProps;
+  formName?: string;
 }
+
+export type MethodType = "get" | "post" | "put" | "delete";
 
 export interface RsqlParamProps {
   key: string;
@@ -160,4 +174,14 @@ export interface RuleProps {
   message?: string;
   max?: number;
   min?: number;
+}
+
+export interface MenuItemProps {
+  id: string;
+  title: string;
+  type: "link" | "drawer";
+  permissions: string[];
+  icon?: ReactNode;
+  url?: string;
+  subIcon?: ReactNode;
 }

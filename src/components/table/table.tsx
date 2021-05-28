@@ -1,11 +1,12 @@
-import React, { ReactNode, useEffect, useMemo } from "react";
+import React, { ReactNode, useMemo } from "react";
 import { Table as TableUI } from "antd";
 
 import { useTranslation } from "react-i18next";
 import noop from "lodash/noop";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import { TablePaginationConfig } from "antd/lib/table";
+import { TableRowSelection } from "antd/es/table/interface";
 import {
   ColumnProps,
   ActionProps,
@@ -66,7 +67,9 @@ interface TableProps {
     extra: any
   ) => void;
   searchAll?: string;
+  rowSelection?: TableRowSelection<any>;
   searchedColumns?: RecordType;
+  footer?: ReactNode;
   bordered?: boolean;
 }
 
@@ -90,7 +93,9 @@ export const Table: React.FC<TableProps> & TableExtendsProps = ({
   permissions = [],
   searchAll = "",
   searchedColumns = {},
+  rowSelection,
   bordered = false,
+  footer,
 }) => {
   const [t] = useTranslation("table");
 
@@ -106,43 +111,47 @@ export const Table: React.FC<TableProps> & TableExtendsProps = ({
   );
 
   return (
-    <SearchedAllContext.Provider value={searchAll}>
-      <SearchedColumnsContext.Provider value={searchedColumns}>
-        <TableActionsContext.Provider
-          value={{
-            onSaveRow,
-            onDeleteRow,
-            onViewRow,
-            onDoneRow,
-            onSearchColumn,
-            onResetFilter,
-          }}
-        >
-          <TableUI
-            className={className}
-            onChange={onChangeTable}
-            size="middle"
-            title={tableHeader}
-            columns={[
-              ...getDataColumns(
-                columns,
-                searchedColumns,
-                defaultSort,
-                permissions
-              ),
-              ...getActions(actions, t),
-            ]}
-            dataSource={dataSourceWithKeys}
-            pagination={pagination}
-            components={getEditableTableBody()}
-            rowClassName={() => style.editableRow}
-            loading={tableLoading}
-            scroll={{ x: true }}
-            bordered={bordered}
-          />
-        </TableActionsContext.Provider>
-      </SearchedColumnsContext.Provider>
-    </SearchedAllContext.Provider>
+    <>
+      <SearchedAllContext.Provider value={searchAll}>
+        <SearchedColumnsContext.Provider value={searchedColumns}>
+          <TableActionsContext.Provider
+            value={{
+              onSaveRow,
+              onDeleteRow,
+              onViewRow,
+              onDoneRow,
+              onSearchColumn,
+              onResetFilter,
+            }}
+          >
+            <TableUI
+              className={className}
+              onChange={onChangeTable}
+              size="middle"
+              title={tableHeader}
+              columns={[
+                ...getDataColumns(
+                  columns,
+                  searchedColumns,
+                  defaultSort,
+                  permissions
+                ),
+                ...getActions(actions, t),
+              ]}
+              dataSource={dataSourceWithKeys}
+              pagination={pagination}
+              components={getEditableTableBody()}
+              rowClassName={() => style.editableRow}
+              loading={tableLoading}
+              scroll={{ x: true }}
+              bordered={bordered}
+              rowSelection={rowSelection}
+              footer={footer ? () => footer : undefined}
+            />
+          </TableActionsContext.Provider>
+        </SearchedColumnsContext.Provider>
+      </SearchedAllContext.Provider>
+    </>
   );
 };
 

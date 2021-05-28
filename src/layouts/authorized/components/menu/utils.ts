@@ -1,8 +1,6 @@
-import find from "lodash/find";
-import { MENU_ITEMS } from "../../../../constants/layouts";
+import { MENU_ITEMS } from "../../../../constants";
 
 export const getSelectedKeyByUrl = (location: any) => {
   const url = location?.pathname ?? "";
-  const selectedItem = find(MENU_ITEMS, { url });
-  return selectedItem?.id ?? "";
+  return MENU_ITEMS.filter((item) => item.url === url)?.[0]?.id ?? "";
 };

@@ -12,8 +12,6 @@ import {
 } from "../../../utils";
 import { Readonly } from "../readonly";
 
-const { Option } = Select;
-
 // TODO костыль до первого запроса (первый запрос)
 export const Entity = ({
   fieldCode,
@@ -29,8 +27,8 @@ export const Entity = ({
   span = DEFAULT_FIELD_SPAN,
 }: FieldProps) => {
   const url = _links?.self.href ?? "";
-  const form = useContext(FormContext);
-  const [options, setOptions] = useState<any>([]);
+  const { form } = useContext(FormContext);
+  const [options, setOptions] = useState<{ label: string; value: string }[]>();
   const [loading, setLoading] = useState(false);
   const profileInfoId = useSelector(
     (state: State) => state?.persist?.profileInfo?.id
@@ -43,7 +41,14 @@ export const Entity = ({
         const response = await axios.get(url, {
           params: { query },
         });
-        setOptions(response?.data ?? []);
+
+        const mappingOptions =
+          response?.data?.map((o: any) => {
+            const { [titleField]: label, [codeField]: value } = o;
+            return { label, value };
+          }) ?? [];
+
+        setOptions(mappingOptions);
       } catch (error) {
         defaultErrorHandler({ error });
       } finally {
@@ -79,7 +84,7 @@ export const Entity = ({
   );
 
   const formatFunc = (value: string) =>
-    options.find((o: any) => o[codeField] === value)?.[titleField] ?? "";
+    options?.find((o) => o.value === value)?.label ?? "";
 
   return (
     <Col {...span} key={fieldCode}>
@@ -92,7 +97,7 @@ export const Entity = ({
         validateTrigger="onBlur"
       >
         {readonly ? (
-          <Readonly format={formatFunc} />
+          <Readonly format={formatFunc} loading />
         ) : (
           <Select
             showSearch
@@ -100,17 +105,12 @@ export const Entity = ({
             filterOption={false}
             onSearch={handleSearch}
             placeholder={placeholder}
+            loading={loading}
             style={{ width: "100%" }}
             disabled={disabled}
             notFoundContent={loading ? <Spin size="small" /> : null}
-            showArrow={false}
-          >
-            {options.map((o: any) => (
-              <Option key={o[codeField]} value={o[codeField]}>
-                {o[titleField]}
-              </Option>
-            ))}
-          </Select>
+            options={options}
+          />
         )}
       </Form.Item>
     </Col>

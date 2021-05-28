@@ -31,6 +31,7 @@ import {
 } from "../../drawers";
 import {
   ComponentPermissionsChecker,
+  FormWrapper,
   PagePermissionsChecker,
 } from "../../wrappers";
 
@@ -50,13 +51,13 @@ export const Tasks = () => {
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
   const { columns, reload } = useColumns(selectedDate);
 
-  const { update: completedFormUpdate } = useFormValues<TaskEntityProps>(
+  const [, setCompletedTask] = useFormValues<TaskEntityProps>(
     FORM_NAMES.TASK_COMPLETED
   );
 
-  const { update: viewFormUpdate, values: viewFormValues } = useFormValues<
-    TaskEntityProps
-  >(FORM_NAMES.TASK_VIEW);
+  const [viewTask, setViewTask] = useFormValues<TaskEntityProps>(
+    FORM_NAMES.TASK_VIEW
+  );
 
   const fetchDelete = useCallback(
     async (id: string, date: string) => {
@@ -88,21 +89,21 @@ export const Tasks = () => {
 
   const handleTaskView = useCallback(
     (task) => {
-      viewFormUpdate(task);
+      setViewTask(task);
       setViewDrawerVisible(true);
     },
-    [viewFormUpdate]
+    [setViewTask]
   );
 
   const handleCloseViewDrawer = useCallback(
     (task) => {
       if (!isEmpty(task)) {
-        reload(viewFormValues.taskEndDate);
+        reload(viewTask.taskEndDate);
         reload(task.taskEndDate);
       }
       setViewDrawerVisible(false);
     },
-    [reload, viewFormValues.taskEndDate]
+    [reload, viewTask.taskEndDate]
   );
 
   const handleCloseCompleteDrawer = useCallback(
@@ -121,10 +122,10 @@ export const Tasks = () => {
 
   const handleTaskComplete = useCallback(
     (task) => {
-      completedFormUpdate(task);
+      setCompletedTask(task);
       setCompletedDrawerVisible(true);
     },
-    [completedFormUpdate]
+    [setCompletedTask]
   );
 
   const handleTaskDelete = useCallback(
@@ -174,7 +175,7 @@ export const Tasks = () => {
           onClose={handleCloseCompleteDrawer}
           visible={completedDrawerVisible}
         />
-        <form>
+        <FormWrapper>
           <Row>
             {columns.map((column) => (
               <Col span={8} key={column.title}>
@@ -187,7 +188,7 @@ export const Tasks = () => {
               </Col>
             ))}
           </Row>
-        </form>
+        </FormWrapper>
         <BackTop />
       </>
     </PagePermissionsChecker>

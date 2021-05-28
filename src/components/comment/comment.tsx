@@ -54,8 +54,8 @@ export const Comment: React.FC<CommentProps> = ({
     try {
       setLoading(true);
       const url = getFullUrl(urls.userProfiles.entity, userProfileId);
-      const responce = await axios.get(url);
-      setCommentAuthor(responce?.data ?? {});
+      const response = await axios.get(url);
+      setCommentAuthor(response?.data ?? {});
     } catch (error) {
       defaultErrorHandler({
         error,

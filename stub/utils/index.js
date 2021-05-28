@@ -5,11 +5,11 @@ const { HTTP_CODES } = require("../../src/constants/http");
 const loggerStub = require("./logger");
 const { checkToken } = require("./token");
 
-const sendSuccessResponce = (json = {}) => (req, res) => {
+const sendSuccessResponse = (json = {}) => (req, res) => {
   res.status(HTTP_CODES.SUCCESS).json(json);
 };
 
-const sendPostResponce = (fullEntity) => (req, res) => {
+const sendPostResponse = (fullEntity) => (req, res) => {
   const fields = req.body;
   res.status(HTTP_CODES.SUCCESS).json({
     ...fullEntity,
@@ -23,6 +23,6 @@ module.exports = {
   checkLogin,
   loggerStub,
   checkToken,
-  sendSuccessResponce,
-  sendPostResponce,
+  sendSuccessResponse,
+  sendPostResponse,
 };

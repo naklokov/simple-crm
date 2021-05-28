@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Drawer as DrawerUI, Form, PageHeader } from "antd";
+import { Drawer as DrawerUI, Form } from "antd";
 import isEmpty from "lodash/isEmpty";
 import { Store } from "antd/lib/form/interface";
 import { FormFooter } from "../form-footer";
@@ -10,7 +10,7 @@ import {
   isValuesChanged,
   useFormValues,
 } from "../../utils";
-import { EntityOwnerProps, FieldProps } from "../../constants";
+import { FieldProps } from "../../constants";
 
 interface DrawerFormProps {
   name: string;
@@ -23,7 +23,7 @@ interface DrawerFormProps {
   onFinish: (values: Store) => void;
   onClose: (event?: any) => void;
   headerButtons?: React.ReactNode[];
-  initialValues?: EntityOwnerProps;
+  initialValues?: any;
 }
 
 /**
@@ -36,10 +36,9 @@ interface DrawerFormProps {
  * @param {boolean} submitLoading - Признак отображения loader на кнопке "Сохранить"
  * @param {function} onClose - Callback при нажатии кнопки "Отмена"
  * @param {function} onFinish - Callback при нажатии кнопки "Сохранить"
- * @param {array} headerButtons - Массив дополнительных кнопок в заголовке
  * @param {boolean} defaultSubmitDisabled - Признак disable кнопки "Сохранить" при открытии боковой формы
  * @param {array} permissions - Разрешения для отображения кнопки "Сохранить"
- * @param {object} initialValues - Начальные значения полей ввода
+ * @param {any} initialValues - Начальные значения полей ввода
  */
 export const DrawerForm: React.FC<DrawerFormProps> = ({
   fields,
@@ -49,14 +48,13 @@ export const DrawerForm: React.FC<DrawerFormProps> = ({
   title,
   onClose,
   visible,
-  headerButtons,
   defaultSubmitDisabled = true,
   permissions = [],
-  initialValues = {} as EntityOwnerProps,
+  initialValues = {},
 }) => {
   const [form] = Form.useForm();
   const [submitDisabled, setSubmitDisabled] = useState(defaultSubmitDisabled);
-  const { clear } = useFormValues(name);
+  const [, setValues] = useFormValues(name);
 
   const handleValuesChange = useCallback(
     (changed: Object, allValues: Object) => {
@@ -67,17 +65,17 @@ export const DrawerForm: React.FC<DrawerFormProps> = ({
   );
 
   const handleClose = useCallback(() => {
-    clear();
+    setValues();
     onClose({});
-  }, [onClose, clear]);
+  }, [onClose, setValues]);
 
   const handleFinish = useCallback(
     (values: Store) => {
       const data = { ...initialValues, ...values };
-      clear();
+      setValues();
       onFinish(data);
     },
-    [initialValues, onFinish, clear]
+    [initialValues, onFinish, setValues]
   );
 
   const handleVisibleChange = useCallback(
@@ -97,13 +95,7 @@ export const DrawerForm: React.FC<DrawerFormProps> = ({
 
   return (
     <DrawerUI
-      title={
-        <PageHeader
-          style={{ padding: 0 }}
-          title={title}
-          extra={headerButtons}
-        />
-      }
+      title={title}
       closeIcon={false}
       onClose={handleClose}
       afterVisibleChange={handleVisibleChange}
@@ -133,7 +125,7 @@ export const DrawerForm: React.FC<DrawerFormProps> = ({
         layout="vertical"
         initialValues={initialValues}
       >
-        <FormContext.Provider value={form}>
+        <FormContext.Provider value={{ name, form }}>
           {fields?.map((field) => (
             <ComponentPermissionsChecker
               key={field.fieldCode}

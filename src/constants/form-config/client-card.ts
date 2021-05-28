@@ -423,8 +423,8 @@ export const upper: UpperProps = {
         },
       ],
       _links: {
-        userProfileId: {
-          href: urls.dictionaries.userProfiles,
+        self: {
+          href: `${urls.clientCard.entity}/{{id}}`,
         },
       },
     },
@@ -638,8 +638,8 @@ export const upper: UpperProps = {
         },
       ],
       _links: {
-        userProfileId: {
-          href: urls.dictionaries.userProfiles,
+        self: {
+          href: `${urls.clientCard.entity}/{{id}}`,
         },
       },
     },

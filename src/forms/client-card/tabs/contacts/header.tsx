@@ -14,11 +14,11 @@ interface HeaderProps {
 export const Header = ({ onClickAdd }: HeaderProps) => {
   const [t] = useTranslation("clientCardContacts");
 
-  const { values } = useFormValues<ClientEntityProps>(FORM_NAMES.CLIENT_CARD);
+  const [client] = useFormValues<ClientEntityProps>(FORM_NAMES.CLIENT_CARD);
 
   return (
     // завязка на UPDATE клиента, т.к. контакт привязывается конкретно к клиенту
-    <ComponentPermissionsChecker hasRight={values?.isOwner?.UPDATE}>
+    <ComponentPermissionsChecker hasRight={client?.isOwner?.UPDATE}>
       <Button type="primary" className={style.button} onClick={onClickAdd}>
         {t("title.add")}
       </Button>

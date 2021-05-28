@@ -1,45 +1,55 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Menu as MenuUI } from "antd";
 
-import { Link, useLocation } from "react-router-dom";
-import { connect } from "react-redux";
-import { MENU_ITEMS, State } from "../../../../constants";
+import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { State, MENU_ITEMS, MenuItemProps } from "../../../../constants";
 import { getSelectedKeyByUrl } from "./utils";
+import { Item } from "./components";
 import { filterArrayByPermissions } from "../../../../wrappers";
 
-const { Item } = MenuUI;
-
 interface MenuProps {
-  permissions: string[];
+  onClickItem: (item: MenuItemProps) => void;
 }
 
-export const Menu = ({ permissions }: MenuProps) => {
+export const Menu: React.FC<MenuProps> = ({ onClickItem }) => {
   const location = useLocation();
   const [selectedKey, setSelectedKey] = useState("");
-  const itemsByPermissions = filterArrayByPermissions(MENU_ITEMS, permissions);
+  const permissions = useSelector(
+    (state: State) => state?.persist?.permissions
+  );
+
+  const availableItems = useMemo(
+    () => filterArrayByPermissions(MENU_ITEMS, permissions),
+    [permissions]
+  );
 
   useEffect(() => {
     setSelectedKey(getSelectedKeyByUrl(location));
   }, [location]);
 
+  const handleClick = useCallback(
+    ({ key }) => {
+      onClickItem(availableItems.find(({ id }) => id === key));
+    },
+    [availableItems, onClickItem]
+  );
+
   return (
     <MenuUI
       theme="light"
       mode="inline"
+      onClick={handleClick}
       selectedKeys={[selectedKey]}
       style={{ border: "none" }}
     >
-      {itemsByPermissions.map(({ id, icon, title, url }) => (
-        <Item key={id} icon={icon}>
-          <Link to={url}>{title}</Link>
-        </Item>
+      {availableItems.map((item) => (
+        <MenuUI.Item key={item.id} icon={item.icon}>
+          <Item item={item} />
+        </MenuUI.Item>
       ))}
     </MenuUI>
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  permissions: state?.persist?.permissions,
-});
-
-export default connect(mapStateToProps)(Menu);
+export default Menu;

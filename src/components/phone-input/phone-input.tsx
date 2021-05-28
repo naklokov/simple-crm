@@ -19,7 +19,7 @@ interface PhoneInputProps {
   placeholder?: string;
   disabled?: boolean;
   ref?: any;
-  style?: object;
+  style?: React.CSSProperties;
 }
 
 export const PhoneInput: React.FC<PhoneInputProps> = ({

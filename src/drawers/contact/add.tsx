@@ -10,7 +10,7 @@ import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 interface AddContactProps {
   fields: FieldProps[];
   visible: boolean;
-  onClose: (event: any, entity?: Store) => void;
+  onClose: (entity?: Store) => void;
 }
 
 export const AddContact = ({ fields, visible, onClose }: AddContactProps) => {
@@ -21,12 +21,12 @@ export const AddContact = ({ fields, visible, onClose }: AddContactProps) => {
   const onFinish = async (values: Store) => {
     try {
       setSubmitLoading(true);
-      const responce = await axios.post(urls.contacts.entity, {
+      const response = await axios.post(urls.contacts.entity, {
         ...values,
         clientId,
       });
       defaultSuccessHandler(t("message.success.add"));
-      onClose(undefined, responce?.data);
+      onClose(response?.data);
     } catch (error) {
       defaultErrorHandler({ error });
     } finally {

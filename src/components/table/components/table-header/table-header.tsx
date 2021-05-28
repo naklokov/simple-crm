@@ -55,6 +55,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
             placeholder={searchPlaceholder}
             onChange={handleChange}
             onSearch={handleSearch}
+            enterButton={t("button.enter")}
           />
           {onClearAll && (
             <Button
