@@ -12,9 +12,9 @@ interface DeleteProps {
 
 export const Delete = ({ onClick }: DeleteProps) => {
   const [t] = useTranslation("clientCard");
-  const { values } = useFormValues<ClientEntityProps>(FORM_NAMES.CLIENT_CARD);
+  const [client] = useFormValues<ClientEntityProps>(FORM_NAMES.CLIENT_CARD);
   return (
-    <ComponentPermissionsChecker hasRight={values?.isOwner?.DELETE}>
+    <ComponentPermissionsChecker hasRight={client?.isOwner?.DELETE}>
       <Popconfirm
         title={t("confirm.delete")}
         onConfirm={onClick}

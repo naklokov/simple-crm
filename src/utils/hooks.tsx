@@ -1,30 +1,35 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo, Key } from "react";
 import { v4 as uuidV4 } from "uuid";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { parse, stringify } from "query-string";
 import { History } from "history";
-import { defaultErrorHandler } from "./common";
+import { Button, Col, Row, Select, Space, Typography } from "antd";
+import { useTranslation } from "react-i18next";
+import { TableRowSelection } from "antd/lib/table/interface";
+import { DeleteOutlined } from "@ant-design/icons";
+import { defaultErrorHandler, pluralize } from "./common";
 import {
-  UseFormProps,
   State,
   urls,
   ClientEntityProps,
   TabProps,
   TabPositionType,
+  MethodType,
 } from "../constants";
 import { updateForm } from "../__data__";
 import { getRsqlParams } from "./rsql";
-
-type MethodType = "get" | "post" | "put" | "delete";
 
 interface FetchProps {
   url: string;
   method?: MethodType;
   data?: object;
   params?: object;
+  initial?: any;
 }
+
+type FetchResponseType<T> = [T, boolean, () => void, any];
 
 const TAB_QUERY_NAME = "tab";
 
@@ -69,55 +74,58 @@ const setActiveQueryTab = (
   });
 };
 
-export const useFetch = ({
+export function useFetch<T>({
   url,
   method = "get",
   data = {},
   params = {},
-}: FetchProps) => {
-  const [response, setResponse] = useState<AxiosResponse<any>>();
+  initial = [],
+}: FetchProps): FetchResponseType<T> {
+  const [responseData, setResponseData] = useState<T>(initial);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [reloadKey, setReloadKey] = useState(uuidV4());
 
-  const reload = () => {
+  const reload = useCallback(() => {
     setReloadKey(uuidV4());
-  };
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         const res = await axios({ method, params, data, url });
-        setResponse(res);
+        setResponseData(res?.data);
       } catch (err) {
-        setError(error);
+        setError(err);
         defaultErrorHandler({ error: err });
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
-  }, [reloadKey]);
+  }, [reloadKey, url]);
 
-  return { response, loading, error, reload };
-};
+  return [responseData, loading, reload, error];
+}
 
-export function useFormValues<T>(formName: string): UseFormProps<T> {
+type FormValuesReturn<T> = [T, (values?: T) => void];
+
+export function useFormValues<T>(name: string): FormValuesReturn<T> {
   const dispatch = useDispatch();
   const values = useSelector(
-    (state: State) => state?.app?.forms?.[formName] ?? ({} as T)
+    (state: State) => state?.form?.forms?.[name] ?? ({} as T)
   );
 
-  const clear = () => {
-    dispatch(updateForm({ name: formName, data: {} }));
-  };
+  const update = useCallback(
+    (data: T = {} as T) => {
+      dispatch(updateForm({ name, values: data }));
+    },
+    [name, dispatch]
+  );
 
-  const update = (data: any) => {
-    dispatch(updateForm({ name: formName, data }));
-  };
-
-  return { values, update, clear };
+  return [values, update];
 }
 
 export const useFetchPersonalClients = () => {
@@ -176,4 +184,106 @@ export const useTabs = (
   );
 
   return { activeTab, onChange };
+};
+
+interface UseSelectableFooterProps {
+  dataSource: { value: string; title: string }[];
+  onSubmit: (selectedKeys: Key[], selectedTarget: string) => void;
+  placeholder?: string;
+  buttonTitle?: string;
+  onDelete?: (selectedKeys: Key[]) => void;
+}
+
+export const useSelectableFooter = ({
+  dataSource,
+  placeholder,
+  buttonTitle,
+  onSubmit,
+  onDelete,
+}: UseSelectableFooterProps) => {
+  const [t] = useTranslation("selectableFooter");
+  const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
+  const [selectedTarget, setSelectedTarget] = useState<string>();
+
+  const handleSelectChangeTable = useCallback((values) => {
+    setSelectedRowKeys(values);
+  }, []);
+
+  const handleSelectChange = useCallback((value) => {
+    setSelectedTarget(value);
+  }, []);
+
+  const handleResetTableSelection = useCallback(() => {
+    setSelectedRowKeys([]);
+    setSelectedTarget(undefined);
+  }, []);
+
+  const handleClickFinish = useCallback(() => {
+    onSubmit?.(selectedRowKeys, selectedTarget || "");
+    handleResetTableSelection();
+  }, [onSubmit, selectedRowKeys, selectedTarget, handleResetTableSelection]);
+
+  const handleDelete = useCallback(() => {
+    onDelete?.(selectedRowKeys);
+  }, [onDelete, selectedRowKeys]);
+
+  const rowSelection: TableRowSelection<any> = {
+    selectedRowKeys,
+    onChange: handleSelectChangeTable,
+  };
+
+  const selectedCount = selectedRowKeys?.length ?? 0;
+
+  if (!selectedCount) {
+    return { rowSelection, footer: undefined };
+  }
+
+  const total = pluralize(selectedCount, [
+    t("selected.one", { count: selectedCount }),
+    t("selected.some", { count: selectedCount }),
+    t("selected.many", { count: selectedCount }),
+  ]);
+
+  const footer = (
+    <Row justify="space-between">
+      <Col flex="auto">
+        <Space size="middle">
+          <Select
+            style={{ width: 250 }}
+            placeholder={placeholder || t("select.placeholder")}
+            onChange={handleSelectChange}
+            value={selectedTarget}
+          >
+            {dataSource.map(({ value, title }) => (
+              <Select.Option key={value} value={value}>
+                {title}
+              </Select.Option>
+            ))}
+          </Select>
+          <Button
+            type="primary"
+            disabled={!selectedTarget}
+            onClick={handleClickFinish}
+          >
+            {buttonTitle || t("button.submit")}
+          </Button>
+        </Space>
+      </Col>
+      <Col>
+        <Space size="middle">
+          <Typography.Text>{total}</Typography.Text>
+          <Button onClick={handleResetTableSelection}>
+            {t("button.reset")}
+          </Button>
+          {onDelete && (
+            <Button icon={<DeleteOutlined />} onClick={handleDelete}>
+              {t("button.delete")}
+            </Button>
+          )}
+        </Space>
+      </Col>
+    </Row>
+  );
+
+  return { rowSelection, footer };
 };

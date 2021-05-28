@@ -1,14 +1,21 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { noop } from "lodash";
 import { PaginationProps } from "antd/es/pagination";
-import { TabProps } from "../../constants";
+import {
+  ActionProps,
+  ColumnProps,
+  LinksType,
+  RecordType,
+} from "../../constants";
 import { Table } from ".";
 import { getFilteredDataSource } from "./utils";
 import { TableHeader } from "./components";
 
 export interface TableWithClientPagingProps {
   className?: any;
-  table: TabProps;
+  columns?: ColumnProps[];
+  actions?: ActionProps[];
+  links: LinksType;
   dataSource: any[];
   actionsPermissions?: string[];
   idValue?: string;
@@ -24,7 +31,9 @@ export interface TableWithClientPagingProps {
 
 export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
   className,
-  table,
+  columns = [],
+  actions = [],
+  links = {},
   dataSource,
   actionsPermissions = [],
   idValue = "id",
@@ -40,18 +49,14 @@ export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
   searchPlaceholder,
 }) => {
   const [searchedAll, setSearchedAll] = useState("");
+  const [searchedColumns, setSearchedColumns] = useState<RecordType>({});
 
   const tableDataSource = useMemo(
     () =>
       searchedAll
-        ? getFilteredDataSource(
-            searchedAll,
-            dataSource,
-            table?.columns ?? [],
-            idValue
-          )
+        ? getFilteredDataSource(searchedAll, dataSource, columns, idValue)
         : dataSource,
-    [dataSource, searchedAll, idValue, table?.columns]
+    [dataSource, searchedAll, idValue, columns]
   );
 
   const handleClearAll = useCallback(() => {
@@ -61,6 +66,14 @@ export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
   const handleSearchAll = useCallback((searched: string) => {
     setSearchedAll(searched);
   }, []);
+
+  const handleSearchColumn = useCallback(
+    (searched: string, confirm: any, column: ColumnProps) => {
+      setSearchedColumns({ ...searchedColumns, [column.columnCode]: searched });
+      confirm();
+    },
+    [searchedColumns]
+  );
 
   const tableHeader = useMemo(
     () =>
@@ -81,9 +94,9 @@ export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
   return (
     <Table
       className={className}
-      columns={table?.columns ?? []}
-      actions={table?.actions ?? []}
-      links={table?._links ?? {}}
+      columns={columns}
+      actions={actions}
+      links={links}
       pagination={pagination}
       dataSource={tableDataSource}
       onSaveRow={onSaveRow}
@@ -92,6 +105,8 @@ export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
       tableHeader={tableHeader}
       onViewRow={onViewRow}
       onDoneRow={onDoneRow}
+      onSearchColumn={handleSearchColumn}
+      searchedColumns={searchedColumns}
       onDeleteRow={onDeleteRow}
     />
   );

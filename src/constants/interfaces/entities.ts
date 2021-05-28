@@ -21,12 +21,6 @@ export interface EntityOwnerProps {
   _links: LinksType;
 }
 
-export interface UseFormProps<T> {
-  values: T;
-  update: (data: T) => void;
-  clear: () => void;
-}
-
 export interface ProfileInfoEntityProps {
   id?: string;
   clientId?: string;
@@ -43,7 +37,9 @@ export interface ProfileInfoEntityProps {
   birthDate?: string;
   businessId?: string;
   creationDate?: string;
+  departmentId?: string;
   email?: string;
+  phone?: string;
   fullName?: string;
   avatar?: string;
   location?: string;
@@ -51,6 +47,19 @@ export interface ProfileInfoEntityProps {
   position?: string;
   userRoleId?: string;
   isLocked?: boolean;
+}
+
+export interface PositionsEntityProps {
+  cost: number;
+  costPrice: number;
+  currency: string;
+  estimatedItemId: string;
+  itemId: string;
+  note: string;
+  positionDescription: string;
+  positionName: string;
+  positionUnit: string;
+  priceListId: string;
 }
 
 export interface ClientEntityProps extends EntityOwnerProps {
@@ -113,4 +122,12 @@ export interface TemplateEntityProps extends EntityOwnerProps {
   linkedEntityType: string;
   templateDescription: string;
   templateName: string;
+}
+
+export interface DepartmentEntityProps extends EntityOwnerProps {
+  administratorId: string;
+  creationDate: string;
+  departmentHierarchy: string;
+  departmentName: string;
+  children?: DepartmentEntityProps[];
 }

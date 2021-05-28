@@ -104,6 +104,7 @@ export const getActions = (
 
   return [
     {
+      width: 300,
       title: t("actions.column.title"),
       key: "actions",
       render: (text: string, entity: EntityOwnerProps) =>

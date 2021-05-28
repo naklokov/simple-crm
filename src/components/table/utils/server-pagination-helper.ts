@@ -81,14 +81,16 @@ export const getFilterColumnRsqlQuery = (
   return getRsqlParams([getSearchRsql([column.columnCode], searched)]);
 };
 
-export const useTableServerPagingParams = () => {
+export const useTableServerPagingParams = (
+  defaultPageSize: number = DEFAULT_PAGE_SIZE
+) => {
   const history = useHistory();
   const searchParams = parse(history.location.search);
   const [page, setPage] = useState(
     toNumber(searchParams.page) || DEFAULT_PAGE_NUMBER
   );
   const [pageSize, setPageSize] = useState(
-    toNumber(searchParams.pageSize) || DEFAULT_PAGE_SIZE
+    toNumber(searchParams.pageSize) || defaultPageSize
   );
   const [sortBy, setSortBy] = useState(toString(searchParams.sortBy));
   const [filters, setFilters] = useState(

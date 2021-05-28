@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect, useContext } from "react";
 import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
 import { useDispatch } from "react-redux";
+import { OptionType } from "antd/lib/select";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import {
   defaultErrorHandler,
@@ -12,8 +13,6 @@ import {
 } from "../../../utils";
 import { Readonly } from "../readonly";
 import { setFormLoading } from "../../../__data__";
-
-const { Option } = Select;
 
 export const Entity = ({
   fieldCode,
@@ -28,9 +27,9 @@ export const Entity = ({
   readonly = false,
   span = DEFAULT_FIELD_SPAN,
 }: FieldProps) => {
-  const form = useContext(FormContext);
+  const { name = "", form } = useContext(FormContext) ?? {};
   const dispatch = useDispatch();
-  const [options, setOptions] = useState<any[]>([]);
+  const [options, setOptions] = useState<{ label: string; value: string }[]>();
   const [loading, setLoading] = useState(false);
   const url = _links?.self.href ?? "";
 
@@ -38,27 +37,33 @@ export const Entity = ({
     async (params: object, initial = false) => {
       try {
         if (initial) {
-          dispatch(setFormLoading(true));
+          dispatch(setFormLoading({ name, loading: true }));
         }
         setLoading(true);
         const response = await axios.get(url, {
           params,
         });
-        setOptions(response?.data ?? []);
+        const mappingOptions =
+          response?.data?.map((o: any) => {
+            const { [titleField]: label, [codeField]: value } = o;
+            return { label, value };
+          }) ?? [];
+
+        setOptions(mappingOptions);
       } catch (error) {
         defaultErrorHandler({ error });
       } finally {
         if (initial) {
-          dispatch(setFormLoading(false));
+          dispatch(setFormLoading({ name, loading: false }));
         }
         setLoading(false);
       }
     },
-    [url, dispatch]
+    [url, dispatch, name, codeField, titleField]
   );
 
   useEffect(() => {
-    const initialValue = form.getFieldValue(fieldCode);
+    const initialValue = form?.getFieldValue(fieldCode);
     const query = getRsqlParams([getEqualRsql(codeField, initialValue)]);
     const params = initialValue ? { query } : {};
     fetchEntity(params, true);
@@ -72,7 +77,7 @@ export const Entity = ({
     [fetchEntity, titleField]
   );
   const formatFunc = (value: string) =>
-    options.find((o: any) => o[codeField] === value)?.[titleField] ?? "";
+    options?.find((o) => o.value === value)?.label ?? "";
 
   return (
     <Col {...span} key={fieldCode}>
@@ -85,24 +90,20 @@ export const Entity = ({
         validateTrigger="onBlur"
       >
         {readonly ? (
-          <Readonly format={formatFunc} />
+          <Readonly format={formatFunc} loading={loading} />
         ) : (
           <Select
             showSearch
+            defaultActiveFirstOption={false}
             filterOption={false}
             onSearch={handleSearch}
             placeholder={placeholder}
             style={{ width: "100%" }}
+            loading={loading}
             disabled={disabled}
             notFoundContent={loading ? <Spin size="small" /> : null}
-            showArrow={false}
-          >
-            {options.map((o) => (
-              <Option key={o[codeField]} value={o[codeField]}>
-                {o[titleField]}
-              </Option>
-            ))}
-          </Select>
+            options={options}
+          />
         )}
       </Form.Item>
     </Col>

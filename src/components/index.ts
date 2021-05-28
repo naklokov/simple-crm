@@ -14,5 +14,7 @@ export { ButtonLayout } from "./button-layout";
 export { ExtendedText } from "./extended-text";
 export { FormHeader } from "./form-header";
 export { SearchBar } from "./search-bar";
+export { FieldsContainer } from "./fields-container";
+export { Skeleton } from "./skeleton";
 
 export { fields };

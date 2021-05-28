@@ -1,58 +1,73 @@
 import React from "react";
-import { UserOutlined, CalendarOutlined } from "@ant-design/icons";
+import { Card, Menu, Typography } from "antd";
+import {
+  UserOutlined,
+  CalendarOutlined,
+  ClusterOutlined,
+  RightOutlined,
+} from "@ant-design/icons";
 
-import { urls, http } from ".";
+import { urls } from ".";
 import { logo } from "../assets/img";
 import { PERMISSIONS_SET } from "./permissions";
+import { MenuItemProps } from "./interfaces";
 
 export const LOGO = logo;
 
-export const MENU_ITEMS = [
+export const MENU_ITEMS: MenuItemProps[] = [
   {
     id: "clients",
     title: "Клиенты",
-    url: urls.clients.path,
-    permissions: PERMISSIONS_SET.CLIENT_GET,
+    type: "link",
     icon: <UserOutlined />,
+    permissions: PERMISSIONS_SET.CLIENT_GET,
+    url: urls.clients.path,
   },
   {
     id: "tasks",
     title: "Задачи",
-    url: urls.tasks.path,
-    permissions: PERMISSIONS_SET.TASK_GET,
+    type: "link",
     icon: <CalendarOutlined />,
+    permissions: PERMISSIONS_SET.TASK_GET,
+    url: urls.tasks.path,
+  },
+  {
+    id: "departments",
+    title: "Отделы",
+    type: "drawer",
+    icon: <ClusterOutlined />,
+    permissions: PERMISSIONS_SET.DEPARTMENTS_GET,
+  },
+];
+
+export const MAIN_ROUTE = [
+  {
+    path: urls.main.path,
+    breadcrumbName: "Главная",
   },
 ];
 
 export const BREADCRUMB_ROUTES = {
-  PROFILE: [
-    {
-      path: urls.main.path,
-      breadcrumbName: "Главная",
-    },
-    {
-      path: urls.profile.path.replace(urls.main.path, ""),
-      breadcrumbName: "Профиль",
-    },
-  ],
+  PROFILE: [...MAIN_ROUTE],
   CLIENTS: [
-    {
-      path: urls.main.path,
-      breadcrumbName: "Главная",
-    },
+    ...MAIN_ROUTE,
     {
       path: urls.clients.path.replace(urls.main.path, ""),
       breadcrumbName: "Клиенты",
     },
   ],
   TASKS: [
-    {
-      path: urls.main.path,
-      breadcrumbName: "Главная",
-    },
+    ...MAIN_ROUTE,
     {
       path: urls.tasks.path.replace(urls.main.path, ""),
       breadcrumbName: "Задачи",
+    },
+  ],
+  DEPARTMENTS: [
+    ...MAIN_ROUTE,
+    {
+      path: urls.tasks.path.replace(urls.departments.path, ""),
+      breadcrumbName: "Отделы",
     },
   ],
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { Tabs } from "antd";
 import { useTranslation } from "react-i18next";
 import { Table } from "../../components";
@@ -11,7 +11,7 @@ import {
 } from "../../constants";
 
 import { ClientsHeader } from "./header";
-import { PagePermissionsChecker } from "../../wrappers";
+import { FormWrapper, PagePermissionsChecker } from "../../wrappers";
 import { fillLinks, useTabs } from "../../utils";
 
 interface ClientsProps {
@@ -26,8 +26,11 @@ const {
 export const Clients: React.FC<ClientsProps> = ({ profileInfo }) => {
   const [t] = useTranslation("clients");
   const { activeTab, onChange } = useTabs(tabs);
+  const userProfileId = useSelector(
+    (state: State) => state?.persist?.profileInfo?.id
+  );
 
-  if (!profileInfo.id) {
+  if (!userProfileId) {
     return null;
   }
 
@@ -46,18 +49,19 @@ export const Clients: React.FC<ClientsProps> = ({ profileInfo }) => {
           }
         />
         {activeTab && (
-          <form>
+          <FormWrapper>
             <Table.Server
               key={activeTab.tabName}
               columns={activeTab.columns}
               actions={activeTab.actions}
+              defaultPageSize={50}
               links={fillLinks(activeTab._links, {
-                userProfileId: profileInfo.id,
+                userProfileId,
               })}
               searchPlaceholder={t("table.search.placeholder")}
               withSearch
             />
-          </form>
+          </FormWrapper>
         )}
       </>
     </PagePermissionsChecker>

@@ -40,12 +40,15 @@ export const TASKS_SHOW_LIMIT = 3;
 export const TASKS_ACTIVE_DURATION = 5; // секунд
 
 export const FORM_NAMES = {
+  PROFILE: "profile",
   CLIENT_CARD: "clientCard",
   CONTACT_VIEW: "contactView",
   CONTACT_ADD: "contactAdd",
   TASK_ADD: "taskAdd",
   TASK_COMPLETED: "taskCompleted",
   TASK_VIEW: "taskView",
+  DEPARTMENT_CARD: "departmentCard",
+  DEPARTMENT_CHIEF_CHANGE: "departmentChiefChange",
 };
 
 export const RSQL_OPERATORS_MAP = {

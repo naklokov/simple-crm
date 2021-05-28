@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import isEmpty from "lodash/isEmpty";
+import React, { useContext, useEffect } from "react";
 import { Col, Form, Select } from "antd";
 import { useDispatch } from "react-redux";
 import {
@@ -7,7 +6,7 @@ import {
   FieldProps,
   DEFAULT_FIELD_SPAN,
 } from "../../../constants";
-import { useFetch } from "../../../utils";
+import { FormContext, useFetch } from "../../../utils";
 import { setFormLoading } from "../../../__data__";
 import { Readonly } from "../readonly";
 
@@ -25,22 +24,17 @@ export const Dictionary: React.FC<FieldProps> = ({
   span = DEFAULT_FIELD_SPAN,
 }) => {
   const dispatch = useDispatch();
-  const [dictionary, setDictionary] = useState<DictionaryProps>({});
   const url = _links?.self.href ?? "";
-  const { dictionaryValueEntities: options } = dictionary;
-  const { loading, response } = useFetch({ url });
+  const { name = "" } = useContext(FormContext);
+  const [dictionary, loading] = useFetch<DictionaryProps>({
+    url,
+    initial: {},
+  });
+  const { dictionaryValueEntities: options = [] } = dictionary;
 
   useEffect(() => {
-    dispatch(setFormLoading(loading));
-  }, [loading, dispatch]);
-
-  useEffect(() => {
-    setDictionary(response?.data ?? []);
-  }, [response]);
-
-  if (!options || isEmpty(options)) {
-    return null;
-  }
+    dispatch(setFormLoading({ name, loading }));
+  }, [loading, dispatch, name]);
 
   const formatFunc = (value: string) =>
     options.find((o) => o.valueCode === value)?.value ?? "";
@@ -56,12 +50,13 @@ export const Dictionary: React.FC<FieldProps> = ({
         validateTrigger="onBlur"
       >
         {readonly ? (
-          <Readonly format={formatFunc} />
+          <Readonly format={formatFunc} loading={loading} />
         ) : (
           <Select
             placeholder={placeholder}
             style={{ width: "100%" }}
             disabled={disabled}
+            loading={loading}
           >
             {options.map(({ id, value, valueCode }) => (
               <Option key={id} value={valueCode}>

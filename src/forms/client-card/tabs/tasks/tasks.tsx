@@ -19,7 +19,6 @@ import {
 import style from "./tasks.module.scss";
 import { Table } from "../../../../components";
 import {
-  TabProps,
   urls,
   formConfig,
   TaskEntityProps,
@@ -34,7 +33,7 @@ import {
   ViewTaskDrawer,
   CompletedTaskDrawer,
 } from "../../../../drawers";
-import { ComponentPermissionsChecker } from "../../../../wrappers";
+import { ComponentPermissionsChecker, FormWrapper } from "../../../../wrappers";
 import { setTableLoading } from "../../../../__data__";
 
 const { TabPane } = Tabs;
@@ -46,7 +45,18 @@ const taskDrawer = formConfig.clientCard.lower.drawers.find(
   (drawer) => drawer.code === "task"
 );
 
-export const Tasks = ({ tab }: TabPaneFormProps) => {
+const OMIT_COLUMNS_ACTIVE = ["note", "updateDate"];
+const OMIT_COLUMNS_COMPLETE = ["taskEndDate"];
+
+const sortByDateField = (field: string, order: "asc" | "desc") => (
+  a: any,
+  b: any
+) =>
+  order === "asc"
+    ? moment(a?.[field]).unix() - moment(b?.[field]).unix()
+    : moment(b?.[field]).unix() - moment(a?.[field]).unix();
+
+export const Tasks = ({ tab, formName }: TabPaneFormProps) => {
   const [t] = useTranslation("tasks");
   const dispatch = useDispatch();
   const { id: clientId } = useParams<QueryProps>();
@@ -54,17 +64,15 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
   const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
 
-  const { values } = useFormValues<ClientEntityProps>(FORM_NAMES.CLIENT_CARD);
-  const { update: viewFormUpdate } = useFormValues<TaskEntityProps>(
-    FORM_NAMES.TASK_VIEW
-  );
-  const { update: completedFormUpdate } = useFormValues<TaskEntityProps>(
+  const [client] = useFormValues<ClientEntityProps>(FORM_NAMES.CLIENT_CARD);
+  const [, setViewTask] = useFormValues<TaskEntityProps>(FORM_NAMES.TASK_VIEW);
+  const [, setCompleteTask] = useFormValues<TaskEntityProps>(
     FORM_NAMES.TASK_COMPLETED
   );
 
   const query = getRsqlParams([{ key: "clientId", value: clientId }]);
 
-  const { response, loading, reload } = useFetch({
+  const [tasks, loading, reload] = useFetch<TaskEntityProps[]>({
     url: urls.tasks.entity,
     params: { query },
   });
@@ -72,10 +80,6 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
   useEffect(() => {
     dispatch(setTableLoading(loading));
   }, [loading, dispatch]);
-
-  const tasks: TaskEntityProps[] = useMemo(() => response?.data ?? [], [
-    response,
-  ]);
 
   const fetchDelete = useCallback(
     async (id: string) => {
@@ -107,20 +111,18 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
 
   const handleDoneRow = useCallback(
     (id) => {
-      completedFormUpdate(
-        tasks.find((o) => o.id === id) || ({} as TaskEntityProps)
-      );
+      setCompleteTask(tasks?.find((o) => o.id === id));
       setCompletedDrawerVisible(true);
     },
-    [tasks, completedFormUpdate]
+    [tasks, setCompleteTask]
   );
 
   const handleViewRow = useCallback(
     (id) => {
-      viewFormUpdate(tasks.find((o) => o.id === id) || ({} as TaskEntityProps));
+      setViewTask(tasks?.find((o) => o.id === id));
       setViewDrawerVisible(true);
     },
-    [tasks, viewFormUpdate]
+    [tasks, setViewTask]
   );
 
   const handleCloseAddDrawer = useCallback(
@@ -156,10 +158,7 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
   const activeTasks = useMemo(
     () =>
       tasks
-        .sort(
-          (a: TaskEntityProps, b: TaskEntityProps) =>
-            moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
-        )
+        .sort(sortByDateField("taskEndDate", "asc"))
         .filter(({ taskStatus }) => taskStatus === TASK_STATUSES.NOT_COMPLETED),
     [tasks]
   );
@@ -167,22 +166,23 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
   const completedTasks = useMemo(
     () =>
       tasks
-        .sort(
-          (a: TaskEntityProps, b: TaskEntityProps) =>
-            moment(a.taskEndDate).unix() - moment(b.taskEndDate).unix()
-        )
+        .sort(sortByDateField("updateDate", "desc"))
         .filter(({ taskStatus }) => taskStatus === TASK_STATUSES.COMPLETED),
     [tasks]
   );
 
   const activeTasksTable = {
     ...tab,
-    columns:
-      tab.columns?.filter(({ columnCode }) => columnCode !== "note") ?? [],
+    columns: tab.columns?.filter(
+      ({ columnCode }) => !OMIT_COLUMNS_ACTIVE.includes(columnCode)
+    ),
   };
 
   const completedTasksTable = {
     ...tab,
+    columns: tab.columns?.filter(
+      ({ columnCode }) => !OMIT_COLUMNS_COMPLETE.includes(columnCode)
+    ),
     actions: [],
   };
 
@@ -206,12 +206,12 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
         onClose={handleCloseCompleteDrawer}
         visible={completedDrawerVisible}
       />
-      <form>
+      <FormWrapper name={formName}>
         <Tabs
           style={{ marginTop: "-8px" }}
           tabBarExtraContent={{
             left: (
-              <ComponentPermissionsChecker hasRight={values?.isOwner?.UPDATE}>
+              <ComponentPermissionsChecker hasRight={client?.isOwner?.UPDATE}>
                 <Button
                   icon={<PlusOutlined />}
                   onClick={handleAddClick}
@@ -221,25 +221,27 @@ export const Tasks = ({ tab }: TabPaneFormProps) => {
             ),
           }}
         >
+          <TabPane tab={t("tab.completed")} key="done">
+            <Table.Client
+              columns={completedTasksTable?.columns}
+              actions={completedTasksTable?.actions}
+              links={completedTasksTable?._links}
+              dataSource={completedTasks}
+            />
+          </TabPane>
           <TabPane tab={t("tab.active")} key="active">
             <Table.Client
-              table={activeTasksTable as TabProps}
+              columns={activeTasksTable?.columns}
+              actions={activeTasksTable?.actions}
+              links={activeTasksTable?._links}
               dataSource={activeTasks}
-              pagination={{ pageSize: 3 }}
               onViewRow={handleViewRow}
               onDoneRow={handleDoneRow}
               onDeleteRow={handleDeleteRow}
             />
           </TabPane>
-          <TabPane tab={t("tab.completed")} key="done">
-            <Table.Client
-              table={completedTasksTable as TabProps}
-              dataSource={completedTasks}
-              pagination={{ pageSize: 3 }}
-            />
-          </TabPane>
         </Tabs>
-      </form>
+      </FormWrapper>
     </div>
   );
 };

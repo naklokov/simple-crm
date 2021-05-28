@@ -6,3 +6,4 @@ export { Clients } from "./clients";
 export { ClientCard } from "./client-card";
 export { Profile } from "./profile";
 export { Tasks } from "./tasks";
+export { DepartmentCard } from "./department-card";

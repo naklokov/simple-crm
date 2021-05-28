@@ -89,13 +89,6 @@ export const lower: LowerProps = {
   ],
   tabs: [
     {
-      tabCode: "comments",
-      tabName: "Комментарии",
-      tabDescription: "Комментарии о клиенте",
-      type: "custom",
-      _links: {},
-    },
-    {
       tabCode: "tasks",
       tabName: "Задачи",
       tabDescription: "Задачи связанные с клиентом",
@@ -119,11 +112,22 @@ export const lower: LowerProps = {
       ],
       columns: [
         {
-          columnName: "Дата и время",
+          width: "250px",
+          columnName: "Срок выполнения задачи",
           columnCode: "taskEndDate",
           columnType: "date",
           format: "DD.MM.YYYY HH:mm",
-          columnDescription: "Запланированная дата для задачи",
+          columnDescription: "Дата запланированного выполнения задачи",
+          sorter: true,
+          columnActions: [],
+        },
+        {
+          width: "250px",
+          columnName: "Дата выполнения задачи",
+          columnCode: "updateDate",
+          columnType: "date",
+          format: "DD.MM.YYYY HH:mm",
+          columnDescription: "Дата фактического выполнения задачи",
           sorter: true,
           columnActions: [],
         },
@@ -146,6 +150,13 @@ export const lower: LowerProps = {
           columnActions: [],
         },
       ],
+      _links: {},
+    },
+    {
+      tabCode: "comments",
+      tabName: "Комментарии",
+      tabDescription: "Комментарии о клиенте",
+      type: "custom",
       _links: {},
     },
     {
@@ -412,8 +423,8 @@ export const upper: UpperProps = {
         },
       ],
       _links: {
-        userProfileId: {
-          href: urls.dictionaries.userProfiles,
+        self: {
+          href: `${urls.clientCard.entity}/{{id}}`,
         },
       },
     },
@@ -627,8 +638,8 @@ export const upper: UpperProps = {
         },
       ],
       _links: {
-        userProfileId: {
-          href: urls.dictionaries.userProfiles,
+        self: {
+          href: `${urls.clientCard.entity}/{{id}}`,
         },
       },
     },

@@ -26,8 +26,8 @@ const {
   checkLogin,
   loggerStub,
   checkToken,
-  sendSuccessResponce,
-  sendPostResponce,
+  sendSuccessResponse,
+  sendPostResponse,
 } = require("./utils");
 
 // const middlewares = jsonServer.defaults()
@@ -38,18 +38,18 @@ server.use(jsonServer.bodyParser);
 
 // auth stub
 server.use(login.submit, addAuthCookie, checkLogin);
-server.use(login.logout, sendSuccessResponce());
+server.use(login.logout, sendSuccessResponse());
 
 //logger stub
 server.post(log.base, loggerStub);
 
 //forgotPassword
-server.post(forgotPassword.submit, sendSuccessResponce());
+server.post(forgotPassword.submit, sendSuccessResponse());
 
 //checkToken
 server.post(restorePassword.check, checkToken);
-server.get(templates.entity, sendSuccessResponce(templatesResponse));
-server.post(templates.generation, sendSuccessResponce(new Int8Array(4096)));
+server.get(templates.entity, sendSuccessResponse(templatesResponse));
+server.post(templates.generation, sendSuccessResponse(new Int8Array(4096)));
 
 //restorePassword
 server.post(restorePassword.submit, (req, res) => {
@@ -57,18 +57,18 @@ server.post(restorePassword.submit, (req, res) => {
 });
 
 //getProfileInfo
-// server.get(profile.info, sendSuccessResponce(profileInfo));
-// server.put(profile.entity, sendPostResponce(profileInfo));
-server.get(profile.permissions, sendPostResponce(permissions));
+// server.get(profile.info, sendSuccessResponse(profileInfo));
+// server.put(profile.entity, sendPostResponse(profileInfo));
+server.get(profile.permissions, sendPostResponse(permissions));
 
 // клиенты
-server.get(clients.entity, sendSuccessResponce(clientsResponse));
-server.get(userProfiles.entity, sendSuccessResponce(userProfiles));
-server.get(departments.entity, sendSuccessResponce(departments));
+server.get(clients.entity, sendSuccessResponse(clientsResponse));
+server.get(userProfiles.entity, sendSuccessResponse(userProfiles));
+server.get(departments.entity, sendSuccessResponse(departments));
 
 server.get(
   dictionariesUrls.position,
-  sendSuccessResponce(dictionaries.position)
+  sendSuccessResponse(dictionaries.position)
 );
 
 server.listen(8080, () => {

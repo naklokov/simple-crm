@@ -42,13 +42,13 @@ export const AddTask = ({
   const onFinish = async (values: Store) => {
     setLoading(true);
     try {
-      const responce = await axios.post(urls.tasks.entity, {
+      const response = await axios.post(urls.tasks.entity, {
         ...metaAddingInfo,
         ...values,
       });
       defaultSuccessHandler(t("message.success.add"));
 
-      onClose<TaskEntityProps>(responce?.data ?? {});
+      onClose<TaskEntityProps>(response?.data ?? {});
     } catch (error) {
       defaultErrorHandler({ error });
     } finally {

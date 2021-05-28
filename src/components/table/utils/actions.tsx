@@ -64,9 +64,7 @@ export const renderActions = (
         key={action.actionType}
         availablePermissions={action.permissions}
       >
-        <Space size="middle">
-          {getActionComponent(entity, text, action, column)}
-        </Space>
+        {getActionComponent(entity, text, action, column)}
       </ComponentPermissionsChecker>
     ))}
   </>

@@ -3,9 +3,8 @@ import { Tabs } from "antd";
 import axios from "axios";
 
 import { useParams } from "react-router-dom";
+import { connect, useDispatch } from "react-redux";
 import { isEmpty } from "lodash";
-import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
-import { connect } from "react-redux";
 import {
   FORM_NAMES,
   PERMISSIONS,
@@ -16,7 +15,7 @@ import {
   State,
   CLIENT_NEW_ID,
 } from "../../constants";
-import { FormHeader, Loader } from "../../components";
+import { FormHeader } from "../../components";
 import {
   Main,
   Comments,
@@ -34,7 +33,6 @@ import {
 } from "../../utils";
 import { ClientCardHeader } from ".";
 import { PagePermissionsChecker } from "../../wrappers";
-import { setLoading as setLoadingAction } from "../../__data__";
 
 export const formsMap: {
   [key: string]: (props: any) => any;
@@ -65,13 +63,12 @@ export const ClientCard = () => {
   );
 
   const { id: clientId } = useParams<QueryProps>();
-  const { values: client, update, clear } = useFormValues<ClientEntityProps>(
+  const [, setClient] = useFormValues<ClientEntityProps>(
     FORM_NAMES.CLIENT_CARD
   );
 
   const isAdd = useMemo(() => clientId === CLIENT_NEW_ID, [clientId]);
 
-  const isClientEmpty = !isAdd && isEmpty(client);
   const url = getFullUrl(urls.clientCard.entity, clientId);
 
   const isTabDisabled = useMemo(
@@ -82,11 +79,11 @@ export const ClientCard = () => {
   const fetchClientCard = useCallback(async () => {
     try {
       const response = await axios.get(url);
-      update(response?.data);
+      setClient(response?.data);
     } catch (error) {
       defaultErrorHandler({ error });
     }
-  }, [update, url]);
+  }, [setClient, url]);
 
   useEffect(() => {
     if (!isAdd) {
@@ -94,13 +91,9 @@ export const ClientCard = () => {
     }
 
     return () => {
-      clear();
+      setClient();
     };
-  }, []);
-
-  if (isClientEmpty) {
-    return <Loader />;
-  }
+  }, [setClient, fetchClientCard, isAdd]);
 
   const UpperForm = formsMap[upperActiveTab?.tabCode];
   const LowerForm = formsMap[lowerActiveTab?.tabCode];
@@ -151,7 +144,4 @@ const mapStateToProps = (state: State) => ({
   profileInfo: state?.persist?.profileInfo,
 });
 
-const mapDispathToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setLoading: setLoadingAction }, dispatch);
-
-export default connect(mapStateToProps, mapDispathToProps)(ClientCard);
+export default connect(mapStateToProps)(ClientCard);

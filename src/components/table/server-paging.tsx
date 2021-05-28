@@ -1,9 +1,19 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 import { useTranslation } from "react-i18next";
-import { TablePaginationConfig } from "antd/lib/table";
 import { PaginationConfig } from "antd/lib/pagination";
 import { useDispatch } from "react-redux";
+import {
+  TablePaginationConfig,
+  TableRowSelection,
+} from "antd/lib/table/interface";
 import { Table } from ".";
 import {
   ActionProps,
@@ -43,20 +53,30 @@ const SEARCH_ALL_KEYS = ["phone", "inn", "shortName", "city"];
 export interface TableWithServerPagingProps {
   columns?: ColumnProps[];
   actions?: ActionProps[];
+  links: LinksType;
   extraTitle?: JSX.Element;
   extraRsqlParams?: RsqlParamProps[];
   withSearch?: boolean;
+  rowSelection?: TableRowSelection<any>;
+  footer?: ReactNode;
   searchPlaceholder?: string;
-  links: LinksType;
+  getTotal?: (total: number) => string;
+  reloadKey?: string;
+  defaultPageSize?: number;
 }
 
 export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
   columns = [],
   actions = [],
+  links = {},
   extraTitle,
   withSearch,
+  rowSelection,
+  footer,
   searchPlaceholder,
-  links = {},
+  getTotal,
+  reloadKey = "",
+  defaultPageSize,
 }) => {
   const [url, initialSearch] = links?.self?.href?.split("?") ?? [];
   const [t] = useTranslation("tableServer");
@@ -79,7 +99,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     setPageSize,
     setFilters,
     setSortBy,
-  } = useTableServerPagingParams();
+  } = useTableServerPagingParams(defaultPageSize);
 
   // пробрасываем значения колонок необходимые для поиска
   useEffect(() => {
@@ -113,7 +133,16 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     };
 
     fetchDataSource();
-  }, [filters, page, pageSize, initialQueries, sortBy, url, dispatch]);
+  }, [
+    filters,
+    page,
+    pageSize,
+    initialQueries,
+    sortBy,
+    url,
+    dispatch,
+    reloadKey,
+  ]);
 
   const handleSearchAll = useCallback(
     (inputSearchedAll: string) => {
@@ -179,7 +208,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     setFilters({});
   }, [setFilters]);
 
-  const totalText = pluralize(total, [
+  const defaultTotal = pluralize(total, [
     t("total.title.one", { total }),
     t("total.title.some", { total }),
     t("total.title.many", { total }),
@@ -189,7 +218,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     pageSize,
     current: page,
     total,
-    showTotal: () => totalText,
+    showTotal: () => getTotal?.(total) || defaultTotal,
   };
 
   const tableHeader = useMemo(
@@ -223,6 +252,8 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
       onResetFilter={handleResetFilter}
       searchAll={searchedAll}
       searchedColumns={searchedColumns}
+      rowSelection={rowSelection}
+      footer={footer}
     />
   );
 };

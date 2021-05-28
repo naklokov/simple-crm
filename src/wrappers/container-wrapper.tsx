@@ -1,8 +1,8 @@
-import React, { ReactNode, useEffect } from "react";
-import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
-import { connect } from "react-redux";
+import React, { ReactNode, useEffect, useMemo } from "react";
+import { connect, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { isEmpty } from "lodash";
+import { Loader } from "../components";
 import {
   State,
   ProfileInfoEntityProps,
@@ -14,54 +14,43 @@ import {
   useFetch,
   useFetchPersonalClients,
 } from "../utils";
-import {
-  setLoading as setLoadingAction,
-  setProfileInfo as setProfileInfoAction,
-  setPermissions as setPermissionsAction,
-} from "../__data__";
+import { setProfileInfo, setPermissions } from "../__data__";
 
 interface ContainerWrapperProps {
   children: ReactNode;
   error: ErrorAppState;
-  setLoading: (loading: boolean) => void;
-  setPermissions: (permissions: string[]) => void;
-  setProfileInfo: (profile: ProfileInfoEntityProps) => void;
+}
+
+interface CredentialsProps {
+  permissions: string[];
+  roles: string[];
 }
 
 export const ContainerWrapper = ({
   children,
   error,
-  setLoading,
-  setPermissions,
-  setProfileInfo,
 }: ContainerWrapperProps) => {
-  const { response: profileResponse, loading: profileLoading } = useFetch({
+  const dispatch = useDispatch();
+  const [profile] = useFetch<ProfileInfoEntityProps>({
     url: urls.profile.entity,
+    initial: {},
   });
 
-  const {
-    response: permissionsResponse,
-    loading: permissionsLoading,
-  } = useFetch({
-    url: urls.profile.permissions,
+  const [credentials] = useFetch<CredentialsProps>({
+    url: urls.profile.credentials,
   });
 
   const personalClients = useFetchPersonalClients();
 
   useEffect(() => {
-    setProfileInfo(profileResponse?.data ?? {});
-    setPermissions(permissionsResponse?.data?.permissions ?? []);
+    dispatch(setProfileInfo(profile));
+    dispatch(setPermissions(credentials?.permissions ?? []));
+  }, [credentials, profile, dispatch]);
 
-    if (!isEmpty(permissionsResponse?.data?.permissions)) {
-      // eslint-disable-next-line
-      console.log("PERMISSIONS", permissionsResponse?.data?.permissions);
-    }
-  }, [profileResponse, permissionsResponse, setProfileInfo, setPermissions]);
-
-  useEffect(() => {
-    const isLoaded = profileLoading || permissionsLoading;
-    setLoading(isLoaded);
-  }, [profileLoading, permissionsLoading, setLoading]);
+  const loading = useMemo(
+    () => isEmpty(profile) || isEmpty(credentials?.permissions),
+    [profile, credentials?.permissions]
+  );
 
   if (error.statusCode) {
     return (
@@ -74,6 +63,10 @@ export const ContainerWrapper = ({
     );
   }
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <ClientsPersonalContext.Provider value={personalClients}>
       {children}
@@ -82,20 +75,7 @@ export const ContainerWrapper = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  permissions: state?.persist?.permissions,
-  loading: state?.app?.loading,
   error: state?.app?.error,
-  auth: state?.persist?.auth,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators(
-    {
-      setPermissions: setPermissionsAction,
-      setProfileInfo: setProfileInfoAction,
-      setLoading: setLoadingAction,
-    },
-    dispatch
-  );
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContainerWrapper);
+export default connect(mapStateToProps)(ContainerWrapper);

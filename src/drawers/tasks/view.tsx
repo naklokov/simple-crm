@@ -24,17 +24,17 @@ export const ViewTask = ({
   title,
 }: DrawerFormProps) => {
   const [t] = useTranslation("tasksDrawer");
-  const { values } = useFormValues<TaskEntityProps>(FORM_NAMES.TASK_VIEW);
+  const [task] = useFormValues<TaskEntityProps>(FORM_NAMES.TASK_VIEW);
   const [loading, setLoading] = useState(false);
 
   const onFinish = async (data: Store) => {
     try {
       setLoading(true);
       const url = getFullUrl(urls.tasks.entity, data.id);
-      const responce = await axios.put(url, data);
+      const response = await axios.put(url, data);
       defaultSuccessHandler(t("message.success.edit"));
 
-      onClose<TaskEntityProps>(responce?.data ?? {});
+      onClose<TaskEntityProps>(response?.data ?? {});
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {
@@ -42,7 +42,7 @@ export const ViewTask = ({
     }
   };
 
-  if (isEmpty(values)) {
+  if (isEmpty(task)) {
     return null;
   }
 
@@ -54,7 +54,7 @@ export const ViewTask = ({
       onClose={onClose}
       visible={visible}
       submitLoading={loading}
-      initialValues={values}
+      initialValues={task}
       onFinish={onFinish}
     />
   );

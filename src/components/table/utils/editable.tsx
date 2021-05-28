@@ -27,7 +27,7 @@ const EditableRow: React.FC<EditableRowProps> = ({ index, ...props }) => {
   const [form] = Form.useForm();
   return (
     <Form key={index} form={form} component={false}>
-      <FormContext.Provider value={form}>
+      <FormContext.Provider value={{ form, name: "editableRow" }}>
         <tr {...props} />
       </FormContext.Provider>
     </Form>
@@ -46,11 +46,9 @@ const EditableCell = ({
   const [t] = useTranslation("clientCardPriceList");
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<Input>(null);
-  const form = useContext(FormContext);
+  const { form } = useContext(FormContext);
   const { onSaveRow } = useContext(TableActionsContext);
-  const { values: formValues } = useFormValues<ClientEntityProps>(
-    FORM_NAMES.CLIENT_CARD
-  );
+  const [formValues] = useFormValues<ClientEntityProps>(FORM_NAMES.CLIENT_CARD);
   const allPermissions = useSelector(
     (state: State) => state?.persist?.permissions
   );
@@ -108,7 +106,7 @@ const EditableCell = ({
           formatter={(value) =>
             `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ")
           }
-          parser={(value) => value?.replace(/\s/g, "") ?? ""}
+          parser={(value) => parseFloat(value?.replace(/\s/g, "") ?? "")}
           ref={inputRef}
           onPressEnter={save}
           onBlur={save}

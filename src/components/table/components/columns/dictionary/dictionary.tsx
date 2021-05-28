@@ -1,7 +1,9 @@
+import { isEmpty } from "lodash";
 import React, { useContext } from "react";
 import { connect } from "react-redux";
 import { State, ColumnProps, RecordType } from "../../../../../constants";
 import { HighlightTextWrapper } from "../../../../../wrappers";
+import { Skeleton } from "../../../../skeleton";
 import { SearchedAllContext, SearchedColumnsContext } from "../../../utils";
 
 interface DictionaryProps {
@@ -19,19 +21,16 @@ export const Dictionary = ({
 }: DictionaryProps) => {
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
-
   const { columnCode } = column;
-  const dictionary = dictionaries?.[columnCode];
 
-  if (!dictionary) {
-    return null;
+  const options = dictionaries?.[columnCode]?.dictionaryValueEntities ?? [];
+  const option = options?.find((o: any) => o.valueCode === value);
+
+  if (value && !option) {
+    return <Skeleton.Input />;
   }
 
-  const { dictionaryValueEntities } = dictionary;
-
-  const text =
-    dictionaryValueEntities?.find((o: any) => o.valueCode === value)?.value ??
-    "";
+  const text = option?.value ?? "";
 
   return (
     <HighlightTextWrapper

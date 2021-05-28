@@ -9,10 +9,8 @@ import { Comment } from "../../../../components";
 import { Footer, Order } from "./components";
 import {
   defaultErrorHandler,
-  getFiteredEntityArray,
   getFullUrl,
   getRsqlParams,
-  getUpdatedEntityArray,
   useFetch,
 } from "../../../../utils";
 import {
@@ -26,6 +24,7 @@ import {
 import { getPostData } from "./utils";
 
 import style from "./comments.module.scss";
+import { FormWrapper } from "../../../../wrappers";
 
 type TDirection = "asc" | "desc";
 
@@ -33,9 +32,8 @@ interface CommentsProps extends TabPaneFormProps {
   profileInfo: ProfileInfoEntityProps;
 }
 
-export const Comments = ({ profileInfo }: CommentsProps) => {
+export const Comments = ({ profileInfo, formName }: CommentsProps) => {
   const [loading, setLoading] = useState(false);
-  const [comments, setComments] = useState([] as CommentEntityProps[]);
   const [order, setOrder] = useState<TDirection>("asc");
   const listRef = useRef<HTMLDivElement>(null);
   const COMMENT_DATE_FIELD_CODE = "creationDate";
@@ -47,7 +45,7 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
     { key: "entityId", value: entityId },
   ]);
 
-  const { loading: fetchLoading, response } = useFetch({
+  const [comments, fetchLoading, reload] = useFetch<CommentEntityProps[]>({
     url: urls.comments.entity,
     params: { query },
   });
@@ -64,24 +62,19 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
   }, [fetchLoading]);
 
   useEffect(() => {
-    if (response) {
-      setComments(response?.data ?? []);
-      setTimeout(scrollToBottom, 0);
-    }
-  }, [response]);
+    setTimeout(scrollToBottom, 0);
+  }, []);
 
   const handleEditComment = useCallback(
     async (id: string, value: string) => {
       try {
         setLoading(true);
         const url = getFullUrl(urls.comments.entity, id);
-        const comment: CommentEntityProps =
-          comments.find((o) => o.id === id) || ({} as CommentEntityProps);
+        const comment = comments?.find((o) => o.id === id);
         const entity = { ...comment, commentText: value };
         await axios.put(url, entity);
 
-        const updated = getUpdatedEntityArray(entity, comments);
-        setComments(updated);
+        reload();
       } catch (error) {
         defaultErrorHandler({
           error,
@@ -91,7 +84,7 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
         setLoading(false);
       }
     },
-    [comments, t]
+    [comments, reload, t]
   );
 
   const handleDeleteComment = useCallback(
@@ -100,8 +93,8 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
         setLoading(true);
         const url = getFullUrl(urls.comments.entity, id);
         await axios.delete(url);
-        const filtered = getFiteredEntityArray(id, comments);
-        setComments(filtered);
+
+        reload();
       } catch (error) {
         defaultErrorHandler({
           error,
@@ -111,16 +104,16 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
         setLoading(false);
       }
     },
-    [comments, t]
+    [reload, t]
   );
 
   const handleSendComment = useCallback(
     async (text: string) => {
       try {
         const data = getPostData(text, entityId, profileInfo.id);
-        const responce = await axios.post(urls.comments.entity, data);
-        const entity = responce?.data ?? {};
-        setComments([...comments, entity]);
+        await axios.post(urls.comments.entity, data);
+
+        reload();
         scrollToBottom();
       } catch (error) {
         defaultErrorHandler({
@@ -129,13 +122,13 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
         });
       }
     },
-    [comments, entityId, profileInfo.id, t]
+    [reload, entityId, profileInfo.id, t]
   );
 
   return (
-    <form>
+    <FormWrapper name={formName}>
       <div ref={listRef} className={style.list}>
-        <Order onChange={setOrder} value={order} />
+        {!!comments.length && <Order onChange={setOrder} value={order} />}
         <List
           loading={loading}
           itemLayout="horizontal"
@@ -153,7 +146,7 @@ export const Comments = ({ profileInfo }: CommentsProps) => {
         />
       </div>
       <Footer onSend={handleSendComment} />
-    </form>
+    </FormWrapper>
   );
 };
 

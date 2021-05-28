@@ -16,7 +16,7 @@
   "rules": {
     "object-curly-spacing": ["warn", "always"],
     "react/prop-types": 0,
-    "no-debugger": "error",
+    "no-debugger": "warn",
     "no-underscore-dangle": 0,
     "import/no-cycle": 0,
     "no-unused-vars": [
