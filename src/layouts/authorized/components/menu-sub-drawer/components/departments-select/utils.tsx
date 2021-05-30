@@ -9,7 +9,6 @@ import { HighlightTextWrapper } from "../../../../../../wrappers";
 const DEPARMENT_HIERARCHY_DELIMETER = ".";
 
 type AllowDropInfo = {
-  id: string;
   canUpdate: boolean;
   departmentHierarchy: string;
 };
@@ -62,7 +61,6 @@ export const getAllowDropMap = (departments: DepartmentEntityProps[]) =>
     (acc, dept) => ({
       ...acc,
       [dept.id]: {
-        id: dept.id,
         canUpdate: dept?.isOwner?.UPDATE ?? false,
         departmentHierarchy: dept?.departmentHierarchy ?? "",
       },
