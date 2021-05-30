@@ -102,6 +102,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           columnCode: "position",
           columnType: "dictionary",
           columnDescription: "Должность",
+          isJsonField: true,
           sorter: false,
           filterable: true,
         },
