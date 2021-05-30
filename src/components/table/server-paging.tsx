@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 import { useTranslation } from "react-i18next";
 import { PaginationConfig } from "antd/lib/pagination";
 import { useDispatch } from "react-redux";
@@ -170,11 +169,17 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
 
   const handleChangeTable = useCallback(
     (paginationParams: PaginationConfig, tableFilters, sorter) => {
+      const sortByNext = getSortedParams(sorter);
+
       setPage(paginationParams.current || DEFAULT_PAGE_NUMBER);
       setPageSize(paginationParams.pageSize || DEFAULT_PAGE_SIZE);
-      setSortBy(getSortedParams(sorter));
+      setSortBy(sortByNext);
+
+      if (sortByNext !== sortBy) {
+        setPage(DEFAULT_PAGE_NUMBER);
+      }
     },
-    [setPage, setPageSize, setSortBy]
+    [setPage, setPageSize, setSortBy, sortBy]
   );
 
   const handleSearchColumn = useCallback(
