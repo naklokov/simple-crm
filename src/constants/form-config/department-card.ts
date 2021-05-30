@@ -212,7 +212,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           href: urls.dictionaries.position,
         },
         userProfileId: {
-          href: urls.userProfiles.entity,
+          href: `${urls.userProfiles.entity}?query=departmentId=={{departmentId}}`,
         },
         activityField: {
           href: urls.dictionaries.activityFields,
