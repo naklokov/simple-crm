@@ -271,14 +271,14 @@
     "template.name.default": "Документ"
   },
   "selectableFooter": {
-    "button.submit": "Применить",
+    "button.submit": "Переместить",
     "select.placeholder": "Переместить",
     "button.reset": "Сбросить выбранные",
     "button.delete": "Удалить выбранные",
     "message.success.staff.move": "Сотрудники успешно перемещены в другой отдел",
     "message.success.clients.move": "Компании успешно перемещены на другого сотрудника",
-    "clients.footer.select.placeholder": "Переместить на сотрудника",
-    "staff.footer.select.placeholder": "Переместить в отдел",
+    "clients.footer.select.placeholder": "Введите ФИО сотрудника",
+    "staff.footer.select.placeholder": "Введите название отдела",
     "selected.one": "Выбрана {{count}} запись",
     "selected.some": "Выбрано {{count}} записи",
     "selected.many": "Выбрано {{count}} записей"
