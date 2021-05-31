@@ -227,6 +227,12 @@ export const useSelectableFooter = ({
     onDelete?.(selectedRowKeys);
   }, [onDelete, selectedRowKeys]);
 
+  const handleFilterOption = useCallback(
+    (input, option) =>
+      option?.children?.toLowerCase()?.indexOf(input?.toLowerCase()) >= 0,
+    []
+  );
+
   const rowSelection: TableRowSelection<any> = {
     selectedRowKeys,
     onChange: handleSelectChangeTable,
@@ -249,10 +255,13 @@ export const useSelectableFooter = ({
       <Col flex="auto">
         <Space size="middle">
           <Select
-            style={{ width: 250 }}
+            value={selectedTarget}
             placeholder={placeholder || t("select.placeholder")}
             onChange={handleSelectChange}
-            value={selectedTarget}
+            filterOption={handleFilterOption}
+            optionFilterProp="children"
+            style={{ width: 250 }}
+            showSearch
           >
             {dataSource.map(({ value, title }) => (
               <Select.Option key={value} value={value}>
