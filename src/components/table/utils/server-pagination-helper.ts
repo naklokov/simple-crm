@@ -13,6 +13,7 @@ import {
   getValueFromRsql,
 } from "../../../utils";
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from "../constants";
+import { replaceLikeChars } from "./common";
 
 const filterEmptyValues = (object: RecordType) =>
   Object.keys(object)
@@ -48,7 +49,7 @@ export const getSearchedColumnsFromFilters = (filters: RecordType) =>
     if (value) {
       return {
         ...acc,
-        [filterKey]: value,
+        [filterKey]: replaceLikeChars(value),
       };
     }
 
@@ -78,7 +79,14 @@ export const getFilterColumnRsqlQuery = (
     return getRsqlParams([rsql]);
   }
 
-  return getRsqlParams([getSearchRsql([column.columnCode], searched)]);
+  return getRsqlParams([
+    getSearchRsql(
+      [column.columnCode],
+      searched,
+      "entityData",
+      column.isJsonField
+    ),
+  ]);
 };
 
 export const useTableServerPagingParams = (

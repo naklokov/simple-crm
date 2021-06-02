@@ -89,6 +89,8 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           columnType: "string",
           columnDescription: "E-mail контакта компании",
           sorter: true,
+          filterable: true,
+          isJsonField: false,
           columnActions: [
             {
               actionName: "",
