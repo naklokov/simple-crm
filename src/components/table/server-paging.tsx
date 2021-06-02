@@ -30,7 +30,7 @@ import {
   pluralize,
 } from "../../utils";
 import {
-  getDefaultSort,
+  getSortOrder,
   getFetchDataSourceQuery,
   getFilterAllRsqlQuery,
   getFilterColumnRsqlQuery,
@@ -38,6 +38,7 @@ import {
   getSearchedColumnsFromFilters,
   getSortedParams,
   useTableServerPagingParams,
+  getDefaultSortBy,
 } from "./utils";
 import {
   DEFAULT_PAGE_NUMBER,
@@ -62,6 +63,7 @@ export interface TableWithServerPagingProps {
   getTotal?: (total: number) => string;
   reloadKey?: string;
   defaultPageSize?: number;
+  defaultSortField?: string;
 }
 
 export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
@@ -76,6 +78,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
   getTotal,
   reloadKey = "",
   defaultPageSize,
+  defaultSortField,
 }) => {
   const [url, initialSearch] = links?.self?.href?.split("?") ?? [];
   const [t] = useTranslation("tableServer");
@@ -117,7 +120,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
           params: {
             page,
             pageSize,
-            sortBy,
+            sortBy: sortBy || getDefaultSortBy(columns, defaultSortField),
             query: getFetchDataSourceQuery(filters, initialQueries),
           },
         });
@@ -140,6 +143,8 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     sortBy,
     url,
     dispatch,
+    defaultSortField,
+    columns,
     reloadKey,
   ]);
 
@@ -250,7 +255,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
       tableHeader={tableHeader}
       pagination={serverPagination}
       onDeleteRow={handleDelete}
-      defaultSort={getDefaultSort(sortBy)}
+      sortOrder={getSortOrder(sortBy)}
       dataSource={dataSource}
       onChangeTable={handleChangeTable}
       onSearchColumn={handleSearchColumn}
@@ -259,6 +264,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
       searchedColumns={searchedColumns}
       rowSelection={rowSelection}
       footer={footer}
+      withLocalSort={false}
     />
   );
 };
