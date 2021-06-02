@@ -9,6 +9,7 @@ import { Button, Col, Row, Select, Space, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { TableRowSelection } from "antd/lib/table/interface";
 import { DeleteOutlined } from "@ant-design/icons";
+import { xor } from "lodash";
 import { defaultErrorHandler, pluralize } from "./common";
 import {
   State,
@@ -205,12 +206,16 @@ export const useSelectableFooter = ({
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
   const [selectedTarget, setSelectedTarget] = useState<string>();
 
-  const handleSelectChangeTable = useCallback((values) => {
-    setSelectedRowKeys(values);
-  }, []);
-
   const handleSelectChange = useCallback((value) => {
     setSelectedTarget(value);
+  }, []);
+
+  const handleSelectAllTable = useCallback((selected, selectedRows: any[]) => {
+    setSelectedRowKeys(selectedRows.map(({ id }) => id));
+  }, []);
+
+  const handleSelectTable = useCallback(({ id }) => {
+    setSelectedRowKeys((prev) => xor(prev, [id]));
   }, []);
 
   const handleResetTableSelection = useCallback(() => {
@@ -233,10 +238,14 @@ export const useSelectableFooter = ({
     []
   );
 
-  const rowSelection: TableRowSelection<any> = {
-    selectedRowKeys,
-    onChange: handleSelectChangeTable,
-  };
+  const rowSelection: TableRowSelection<any> = useMemo(
+    () => ({
+      selectedRowKeys,
+      onSelect: handleSelectTable,
+      onSelectAll: handleSelectAllTable,
+    }),
+    [selectedRowKeys, handleSelectTable, handleSelectAllTable]
+  );
 
   const selectedCount = selectedRowKeys?.length ?? 0;
 
