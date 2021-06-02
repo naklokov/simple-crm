@@ -1,7 +1,11 @@
 import { renderHook, act } from "@testing-library/react-hooks";
-import { ColumnProps } from "../../../../constants";
-import { useFetchDictionaries } from "../common";
 import * as reactRedux from "react-redux";
+import { ColumnProps } from "../../../../constants";
+import {
+  useFetchDictionaries,
+  replaceLikeChars,
+  checkColumnActionType,
+} from "../common";
 import * as fetches from "../fetch";
 
 const columns: ColumnProps[] = [
@@ -57,4 +61,31 @@ test("useFetchDictionaries", () => {
     "cards",
     dispatch
   );
+});
+
+test("replaceLikeChars", () => {
+  const withChars = "%привет%";
+  const withoutChars = "строка";
+
+  expect(replaceLikeChars(withChars)).toBe("привет");
+  expect(replaceLikeChars(withoutChars)).toBe("строка");
+});
+
+test("checkColumnActionType", () => {
+  const column: ColumnProps = {
+    columnCode: "id",
+    columnName: "Идентификатор",
+    columnType: "string",
+    columnActions: [
+      {
+        actionCode: "e-m-a-i-l",
+        actionName: "Почта",
+        actionType: "email",
+        permissions: [],
+      },
+    ],
+  };
+
+  expect(checkColumnActionType(column, "email")).toBe(true);
+  expect(checkColumnActionType(column, "call")).toBe(false);
 });

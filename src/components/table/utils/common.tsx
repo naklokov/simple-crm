@@ -6,6 +6,7 @@ import { columns as tableColumns } from "../components";
 
 import {
   ActionProps,
+  ActionType,
   ColumnProps,
   EntityOwnerProps,
   LinksType,
@@ -48,6 +49,15 @@ const getRenderProp = (column: ColumnProps) => ({
     }
   },
 });
+
+export const checkColumnActionType = (
+  column: ColumnProps,
+  actionType: ActionType
+) =>
+  column.columnActions?.some((o: ActionProps) => o.actionType === actionType);
+
+export const replaceLikeChars = (value?: string) =>
+  value?.replace(/%/g, "") ?? "";
 
 export const getColumn = (
   column: ColumnProps,

@@ -4,8 +4,8 @@ import { ColumnProps } from "../../../../constants";
 import {
   getDateBetweenRsql,
   getEqualRsql,
-  getLikeRsql,
   getRsqlParams,
+  getSearchRsql,
 } from "../../../../utils";
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from "../../constants";
 
@@ -53,7 +53,7 @@ test("getFilterColumnRsqlQuery text", () => {
   };
 
   expect(getFilterColumnRsqlQuery(searched, textColumn)).toBe(
-    getRsqlParams([getLikeRsql([textColumn.columnCode], searched)])
+    getRsqlParams([getSearchRsql([textColumn.columnCode], searched)])
   );
 });
 
@@ -62,7 +62,7 @@ test("getFilterAllRsqlQuery", () => {
   const searchedKeys = ["id", "name"];
 
   expect(getFilterAllRsqlQuery(searched, searchedKeys)).toBe(
-    'entityData=JLIKE=(id,name,"test")'
+    getRsqlParams([getSearchRsql(searchedKeys, searched)])
   );
 });
 

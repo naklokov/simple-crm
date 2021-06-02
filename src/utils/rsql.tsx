@@ -1,4 +1,5 @@
 import moment, { unitOfTime as unitProps } from "moment-timezone";
+import { replaceLikeChars } from "../components/table/utils";
 import {
   RsqlParamProps,
   RSQL_OPERATORS_MAP,
@@ -14,24 +15,33 @@ export const getRsqlParams = (params: RsqlParamProps[]) => {
   return queries.filter((o) => !!o).join(";");
 };
 
-export const getSearchRsql = (
-  keys: string[],
-  searched: string,
-  entityName = "entityData"
-) => {
-  const value = searched.replace(/"/g, '\\"').trim().toLowerCase();
-  return getLikeRsql(keys, value, entityName);
-};
+export const getLikeRsql = (key: string, value: string) => ({
+  key,
+  operator: RSQL_OPERATORS_MAP.LIKE,
+  value,
+});
 
-export const getLikeRsql = (
+export const getLikeFieldRsql = (
   keys: string[],
   value: string,
   entityName = "entityData"
 ) => ({
   key: entityName,
-  operator: RSQL_OPERATORS_MAP.LIKE,
+  operator: RSQL_OPERATORS_MAP.LIKE_FIELD,
   value: `(${keys.join(",")},"${value}")`,
 });
+
+export const getSearchRsql = (
+  keys: string[],
+  searched: string,
+  entityName = "entityData",
+  isJsonField = true
+) => {
+  const value = `%${searched.replace(/"/g, '\\"').trim().toLowerCase()}%`;
+  return isJsonField
+    ? getLikeFieldRsql(keys, value, entityName)
+    : getLikeRsql(keys?.[0], value);
+};
 
 export const getDateBetweenRsql = ({
   fieldCode = "date",
@@ -141,13 +151,16 @@ export const getEqualRsql = (key: string, value: string) => ({
 });
 
 export const getValueFromRsql = (query: string) => {
+  const SIMPLE_OPERATORS = [RSQL_OPERATORS_MAP.LIKE, RSQL_OPERATORS_MAP.EQUAL];
   const [, operator, valueArea = ""] = query.split("=");
+  const fullOperator = `=${operator}=`;
 
-  if (!operator) {
+  if (SIMPLE_OPERATORS.includes(fullOperator)) {
     return valueArea;
   }
+
   const regexp = /^.*"(.*)".*$/;
   const matches = regexp.exec(valueArea);
 
-  return matches?.[1] ?? "";
+  return replaceLikeChars(matches?.[1]);
 };

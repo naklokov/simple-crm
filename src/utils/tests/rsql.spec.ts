@@ -12,6 +12,7 @@ import {
   getDateFieldAfterRsql,
   getValueFromRsql,
   getRsqlParams,
+  getLikeFieldRsql,
 } from "../rsql";
 import { RsqlParamProps, RSQL_OPERATORS_MAP } from "../../constants";
 
@@ -38,12 +39,23 @@ test("getRsqlParams with empty params", () => {
 });
 
 test("getLikeRsql", () => {
+  const key = "id";
+  const value = "123";
+
+  expect(getLikeRsql(key, value)).toEqual({
+    key,
+    operator: RSQL_OPERATORS_MAP.LIKE,
+    value,
+  });
+});
+
+test("getLikeFieldRsql", () => {
   const keys = ["id", "name"];
   const searched = "123ghbdtnпривет !\"\"'' ";
   const entity = "someKey";
-  expect(getLikeRsql(keys, searched, entity)).toEqual({
+  expect(getLikeFieldRsql(keys, searched, entity)).toEqual({
     key: entity,
-    operator: RSQL_OPERATORS_MAP.LIKE,
+    operator: RSQL_OPERATORS_MAP.LIKE_FIELD,
     value: `(id,name,\"${searched}\")`,
   });
 });
@@ -53,8 +65,8 @@ test("getSearchRsql", () => {
   const searched = ' "КаЛина 123 \' ?!@ красная"""    ';
   expect(getSearchRsql(keys, searched)).toEqual({
     key: "entityData",
-    operator: RSQL_OPERATORS_MAP.LIKE,
-    value: '(id,name,"\\"калина 123 \' ?!@ красная\\"\\"\\"")',
+    operator: RSQL_OPERATORS_MAP.LIKE_FIELD,
+    value: '(id,name,"%\\"калина 123 \' ?!@ красная\\"\\"\\"%")',
   });
 });
 
@@ -145,6 +157,16 @@ test("getEqualRsql", () => {
 test("getValueFromRsql with EQUAL operator", () => {
   const query = "userProfileId==12345";
   expect(getValueFromRsql(query)).toBe("12345");
+});
+
+test("getValueFromRsql with JLIKE operator", () => {
+  const query = 'entityData=JLIKE=(sample,"text")';
+  expect(getValueFromRsql(query)).toBe("text");
+});
+
+test("getValueFromRsql with LIKE operator", () => {
+  const query = "sample=LIKE=text";
+  expect(getValueFromRsql(query)).toBe("text");
 });
 
 test("getValueFromRsql with date operator", () => {

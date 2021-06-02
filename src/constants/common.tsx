@@ -52,7 +52,8 @@ export const FORM_NAMES = {
 };
 
 export const RSQL_OPERATORS_MAP = {
-  LIKE: "=JLIKE=",
+  LIKE: "=LIKE=",
+  LIKE_FIELD: "=JLIKE=",
   EQUAL: "==",
   FIELD_EQUAL: "=JEQ=",
   DATE_IS_BETWEEN: "=DATEBTWN=",
