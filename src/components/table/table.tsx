@@ -30,7 +30,7 @@ import { setTableLoading } from "../../__data__";
 
 import TableServer, { TableWithServerPagingProps } from "./server-paging";
 import TableClient, { TableWithClientPagingProps } from "./client-paging";
-import { DefaultSortProps } from "./constants";
+import { SortColumnOrderProps } from "./constants";
 
 interface TableExtendsProps {
   Server: React.FC<TableWithServerPagingProps>;
@@ -57,7 +57,7 @@ interface TableProps {
   onResetAllFilters?: () => void;
   onResetFilter?: (column: ColumnProps, clearFilters: Function) => void;
   tableHeader?: () => JSX.Element;
-  defaultSort?: DefaultSortProps;
+  sortOrder?: SortColumnOrderProps;
   className?: string;
   permissions?: string[];
   onChangeTable?: (
@@ -70,6 +70,7 @@ interface TableProps {
   rowSelection?: TableRowSelection<any>;
   searchedColumns?: RecordType;
   footer?: ReactNode;
+  withLocalSort?: boolean;
   bordered?: boolean;
 }
 
@@ -88,13 +89,14 @@ export const Table: React.FC<TableProps> & TableExtendsProps = ({
   onSearchColumn = noop,
   onResetFilter = noop,
   tableHeader,
-  defaultSort,
+  sortOrder,
   onChangeTable = noop,
   permissions = [],
   searchAll = "",
   searchedColumns = {},
   rowSelection,
   bordered = false,
+  withLocalSort = true,
   footer,
 }) => {
   const [t] = useTranslation("table");
@@ -133,7 +135,8 @@ export const Table: React.FC<TableProps> & TableExtendsProps = ({
                 ...getDataColumns(
                   columns,
                   searchedColumns,
-                  defaultSort,
+                  withLocalSort,
+                  sortOrder,
                   permissions
                 ),
                 ...getActions(actions, t),

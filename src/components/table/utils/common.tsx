@@ -17,7 +17,7 @@ import { getEditableProp } from "./editable";
 import { renderActions } from "./actions";
 import { getColumnSearchProp } from "./column-search";
 import { fetchDictionary } from "./fetch";
-import { DefaultSortProps } from "../constants";
+import { SortColumnOrderProps } from "../constants";
 
 const getRenderProp = (column: ColumnProps) => ({
   render: (text: string, record: any) => {
@@ -62,7 +62,8 @@ export const replaceLikeChars = (value?: string) =>
 export const getColumn = (
   column: ColumnProps,
   searchedColumns: RecordType,
-  defaultSort?: DefaultSortProps,
+  withLocalSort: boolean,
+  sortOrder?: SortColumnOrderProps,
   permissions: string[] = []
 ) => {
   const { columnCode, columnName, fixed, ellipsis, width } = column;
@@ -74,8 +75,7 @@ export const getColumn = (
     fixed,
     width,
     ellipsis,
-    defaultSortOrder: defaultSort?.[columnCode],
-    ...getSorterProp(column),
+    ...getSorterProp(withLocalSort, column, sortOrder),
     ...getEditableProp(column, permissions),
     ...getColumnSearchProp(column, searchedColumns),
     ...getRenderProp(column),
@@ -126,14 +126,16 @@ export const getActions = (
 export const getDataColumns = (
   columns: ColumnProps[] = [],
   searchedColumns: RecordType,
-  defaultSort?: DefaultSortProps,
+  withLocalSort: boolean,
+  sortOrder?: SortColumnOrderProps,
   permissions?: string[]
 ) =>
   columns.map((column) => {
     const columnProps = getColumn(
       column,
       searchedColumns,
-      defaultSort,
+      withLocalSort,
+      sortOrder,
       permissions
     );
 
