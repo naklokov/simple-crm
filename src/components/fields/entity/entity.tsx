@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect, useContext } from "react";
 import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
 import { useDispatch } from "react-redux";
-import { OptionType } from "antd/lib/select";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import {
   defaultErrorHandler,
@@ -10,6 +9,7 @@ import {
   getRsqlParams,
   getEqualRsql,
   getSearchRsql,
+  mergeInitialParams,
 } from "../../../utils";
 import { Readonly } from "../readonly";
 import { setFormLoading } from "../../../__data__";
@@ -31,10 +31,11 @@ export const Entity = ({
   const dispatch = useDispatch();
   const [options, setOptions] = useState<{ label: string; value: string }[]>();
   const [loading, setLoading] = useState(false);
-  const url = _links?.self.href ?? "";
+  const [url, initialSearch] = _links?.self?.href?.split("?") ?? [];
 
   const fetchEntity = useCallback(
-    async (params: object, initial = false) => {
+    async (rsqlQuery: string, initial = false) => {
+      const params = mergeInitialParams(rsqlQuery, initialSearch);
       try {
         if (initial) {
           dispatch(setFormLoading({ name, loading: true }));
@@ -59,20 +60,22 @@ export const Entity = ({
         setLoading(false);
       }
     },
-    [url, dispatch, name, codeField, titleField]
+    [url, dispatch, name, codeField, titleField, initialSearch]
   );
 
   useEffect(() => {
     const initialValue = form?.getFieldValue(fieldCode);
-    const query = getRsqlParams([getEqualRsql(codeField, initialValue)]);
-    const params = initialValue ? { query } : {};
-    fetchEntity(params, true);
+    const query = initialValue
+      ? getRsqlParams([getEqualRsql(codeField, initialValue)])
+      : "";
+
+    fetchEntity(query, true);
   }, []);
 
   const handleSearch = useCallback(
     (value) => {
       const query = getRsqlParams([getSearchRsql([titleField], value)]);
-      fetchEntity({ query });
+      fetchEntity(query);
     },
     [fetchEntity, titleField]
   );

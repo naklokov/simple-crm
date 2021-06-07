@@ -1,7 +1,8 @@
 import { Col, Row } from "antd";
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import { fields } from "../../../../components";
 import {
   DepartmentEntityProps,
   FORM_NAMES,
@@ -11,7 +12,12 @@ import {
   ProfileInfoEntityProps,
   FormProps,
 } from "../../../../constants";
-import { getRsqlParams, useFetch, useFormValues } from "../../../../utils";
+import {
+  fillLinks,
+  getRsqlParams,
+  useFetch,
+  useFormValues,
+} from "../../../../utils";
 import { FormWrapper } from "../../../../wrappers";
 import { Hierarchy, Fields, Role, RoleHeader, RoleFooter } from "./components";
 import { useChangeRoleDrawer } from "./utils";
@@ -23,8 +29,11 @@ export const Information: React.FC<FormProps> = ({ tab, drawers }) => {
     FORM_NAMES.DEPARTMENT_CARD
   );
 
-  const { fields = [] } =
-    drawers.find(({ code }) => code === "changeRoleDrawer") ?? {};
+  const { fields: chiefFields = [] } =
+    drawers.find(({ code }) => code === "chiefChangeRoleDrawer") ?? {};
+
+  const { fields: deputyFields = [] } =
+    drawers.find(({ code }) => code === "deputyChangeRoleDrawer") ?? {};
 
   const [chiefs, chiefsLoading, chiefsReload] = useFetch<
     ProfileInfoEntityProps[]
@@ -50,17 +59,35 @@ export const Information: React.FC<FormProps> = ({ tab, drawers }) => {
     },
   });
 
+  const modifyChiefFields = useMemo(
+    () =>
+      chiefFields.map((field) => ({
+        ...field,
+        _links: fillLinks(field?._links ?? {}, { departmentId }),
+      })),
+    [departmentId, chiefFields]
+  );
+
   const [chiefsDrawer, showChiefsDrawer] = useChangeRoleDrawer(
     t("chiefs.drawer.title"),
-    fields,
+    modifyChiefFields,
     chiefsReload,
     t("chiefs.drawer.add.success"),
     { userRoleId: USER_ROLES_ID.ROLE_DEPT_CHIEF, departmentId }
   );
 
+  const modifyDeputyFields = useMemo(
+    () =>
+      deputyFields.map((field) => ({
+        ...field,
+        _links: fillLinks(field?._links ?? {}, { departmentId }),
+      })),
+    [departmentId, deputyFields]
+  );
+
   const [deputiesDrawer, showDeputiesDrawer] = useChangeRoleDrawer(
     t("deputies.drawer.title"),
-    fields,
+    modifyDeputyFields,
     deputiesReload,
     t("deputies.drawer.add.success"),
     { userRoleId: USER_ROLES_ID.ROLE_SUB_DEPT_CHIEF, departmentId }

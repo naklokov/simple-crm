@@ -1,10 +1,34 @@
 import moment, { unitOfTime as unitProps } from "moment-timezone";
+import { parse } from "query-string";
 import { replaceLikeChars } from "../components/table/utils";
 import {
   RsqlParamProps,
   RSQL_OPERATORS_MAP,
   TASK_DATE_FIELD_CODE,
+  RSQL_DELIMETER,
 } from "../constants";
+
+export const mergeInitialParams = (
+  rsqlQuery: string,
+  initialSearch: string
+) => {
+  const { query: initialQuery, ...initialParams } = parse(initialSearch);
+
+  if (initialQuery) {
+    const rsqlQueries = rsqlQuery.split(RSQL_DELIMETER).filter((o) => !!o);
+    const initialQueries = initialQuery
+      .toString()
+      .split(RSQL_DELIMETER)
+      .filter((o) => !!o);
+
+    return {
+      ...initialParams,
+      query: [...rsqlQueries, ...initialQueries].join(RSQL_DELIMETER),
+    };
+  }
+
+  return { ...initialParams, query: rsqlQuery };
+};
 
 export const getRsqlParams = (params: RsqlParamProps[]) => {
   const queries = params.map(
