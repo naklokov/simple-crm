@@ -1,5 +1,6 @@
 import { urls } from "..";
 import { DrawerProps, TabProps } from "../interfaces";
+import { USER_ROLES_ID } from "../permissions";
 
 const PLACEHOLDER_DEFAULT = "Введите значение";
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
@@ -9,7 +10,7 @@ const getMaxLengthMessage = (len: number) =>
 export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
   drawers: [
     {
-      code: "changeRoleDrawer",
+      code: "chiefChangeRoleDrawer",
       name: "",
       description: "",
       fields: [
@@ -28,7 +29,33 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           permissions: [],
           _links: {
             self: {
-              href: urls.userProfiles.entity,
+              href: `${urls.userProfiles.entity}?query=departmentId=={{departmentId}};userRoleId=out=(${USER_ROLES_ID.ROLE_ADMIN},${USER_ROLES_ID.ROLE_DEPT_CHIEF})`,
+            },
+          },
+        },
+      ],
+    },
+    {
+      code: "deputyChangeRoleDrawer",
+      name: "",
+      description: "",
+      fields: [
+        {
+          fieldCode: "userProfileId",
+          fieldName: "Ф.И.О.",
+          fieldDescription: "",
+          type: "entity",
+          titleField: "fullName",
+          codeField: "id",
+          readonly: false,
+          disabled: false,
+          span: { xl: 24, md: 24, lg: 24, sm: 24 },
+          placeholder: "Выберите сотрудника",
+          rules: [],
+          permissions: [],
+          _links: {
+            self: {
+              href: `${urls.userProfiles.entity}?query=departmentId=={{departmentId}};userRoleId=out=(${USER_ROLES_ID.ROLE_ADMIN},${USER_ROLES_ID.ROLE_SUB_DEPT_CHIEF},${USER_ROLES_ID.ROLE_DEPT_CHIEF})`,
             },
           },
         },
@@ -88,8 +115,8 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           columnCode: "email",
           columnType: "string",
           columnDescription: "E-mail контакта компании",
-          sorter: true,
           filterable: true,
+          sorter: true,
           isJsonField: false,
           columnActions: [
             {

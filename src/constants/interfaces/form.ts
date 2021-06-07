@@ -15,8 +15,6 @@ export type FieldType =
   | "date"
   | "dictionary"
   | "entity"
-  // TODO убрать после первого запроса (первый запрос)
-  | "entity-personal"
   | "email"
   | "href"
   | "phone";

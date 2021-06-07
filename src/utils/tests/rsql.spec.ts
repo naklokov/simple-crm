@@ -13,8 +13,28 @@ import {
   getValueFromRsql,
   getRsqlParams,
   getLikeFieldRsql,
+  mergeInitialParams,
 } from "../rsql";
 import { RsqlParamProps, RSQL_OPERATORS_MAP } from "../../constants";
+
+test("mergeInitialParams", () => {
+  const rsqlQuery = "id==3";
+  const initialSearch = "query=userProfile=JLIKE=test&field=123";
+
+  expect(mergeInitialParams(rsqlQuery, initialSearch)).toEqual({
+    query: "id==3;userProfile=JLIKE=test",
+    field: "123",
+  });
+
+  expect(mergeInitialParams("", "field=123")).toEqual({
+    field: "123",
+    query: "",
+  });
+
+  expect(mergeInitialParams("", "")).toEqual({
+    query: "",
+  });
+});
 
 test("getRsqlParams", () => {
   const params: RsqlParamProps[] = [

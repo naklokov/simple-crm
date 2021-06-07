@@ -1,16 +1,18 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Drawer as DrawerUI, Form } from "antd";
 import isEmpty from "lodash/isEmpty";
 import { Store } from "antd/lib/form/interface";
+import { useSelector } from "react-redux";
 import { FormFooter } from "../form-footer";
 import { ComponentPermissionsChecker } from "../../wrappers";
 import {
   createFormField,
+  fillLinks,
   FormContext,
   isValuesChanged,
   useFormValues,
 } from "../../utils";
-import { FieldProps } from "../../constants";
+import { FieldProps, State } from "../../constants";
 
 interface DrawerFormProps {
   name: string;
@@ -55,6 +57,9 @@ export const DrawerForm: React.FC<DrawerFormProps> = ({
   const [form] = Form.useForm();
   const [submitDisabled, setSubmitDisabled] = useState(defaultSubmitDisabled);
   const [, setValues] = useFormValues(name);
+  const userProfileId = useSelector(
+    (state: State) => state?.persist?.profileInfo?.id ?? ""
+  );
 
   const handleValuesChange = useCallback(
     (changed: Object, allValues: Object) => {
@@ -89,7 +94,16 @@ export const DrawerForm: React.FC<DrawerFormProps> = ({
     [defaultSubmitDisabled, form]
   );
 
-  if (isEmpty(fields)) {
+  const modifyFields = useMemo(
+    () =>
+      fields.map((field) => ({
+        ...field,
+        _links: fillLinks(field?._links ?? {}, { userProfileId }),
+      })),
+    [userProfileId, fields]
+  );
+
+  if (isEmpty(modifyFields)) {
     return null;
   }
 
@@ -126,7 +140,7 @@ export const DrawerForm: React.FC<DrawerFormProps> = ({
         initialValues={initialValues}
       >
         <FormContext.Provider value={{ name, form }}>
-          {fields?.map((field) => (
+          {modifyFields?.map((field) => (
             <ComponentPermissionsChecker
               key={field.fieldCode}
               availablePermissions={field.permissions}
