@@ -16,6 +16,7 @@ import {
 interface PhoneInputProps {
   value: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   placeholder?: string;
   disabled?: boolean;
   ref?: any;
@@ -25,6 +26,7 @@ interface PhoneInputProps {
 export const PhoneInput: React.FC<PhoneInputProps> = ({
   value = "",
   onChange = noop,
+  onKeyDown = noop,
   placeholder = "",
   disabled = false,
   style = {},
@@ -78,6 +80,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
       placeholder={placeholder}
       disabled={disabled}
       mask={mask}
+      onKeyDown={onKeyDown}
       onChange={handleChange}
       onBlur={handleBlur}
       value={value}

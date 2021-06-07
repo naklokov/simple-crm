@@ -3,7 +3,7 @@ import { WithTranslation, withTranslation } from "react-i18next";
 import { SearchFooter } from ".";
 
 import { ColumnProps, PHONE_PLACEHOLDER } from "../../../../constants";
-import { getNormalizePhone } from "../../../../utils";
+import { getNormalizePhone, handlePressEnter } from "../../../../utils";
 import { PhoneInput } from "../../../phone-input";
 import { TableActionsContext } from "../../utils";
 
@@ -38,13 +38,21 @@ export const PhoneSearch = ({
   const handleSearch = useCallback(() => {
     const normalizePhone = getNormalizePhone(searched);
     onSearchColumn(normalizePhone, confirm, column);
-  }, [confirm, column, searched]);
+  }, [confirm, column, searched, onSearchColumn]);
+
+  const handleKeyDown = useCallback(
+    (e) => {
+      handlePressEnter(e, handleSearch);
+    },
+    [handleSearch]
+  );
 
   return (
     <div style={{ padding: 8 }}>
       <PhoneInput
         style={{ width: 188, marginBottom: 8, display: "block" }}
         value={searched}
+        onKeyDown={handleKeyDown}
         // ref={setRef}
         onChange={handleChange}
         placeholder={PHONE_PLACEHOLDER}
