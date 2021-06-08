@@ -74,6 +74,7 @@ module.exports = {
     path: "/knowledge",
   },
   dictionaries: {
+    branchAddresses: "/crm/rest/dictionary/BRANCH_ADDRESSES",
     position: "/crm/rest/dictionary/position",
     activityFields: "/crm/rest/dictionary/ACTIVITY_FIELDS",
     positionUnit: "/crm/rest/dictionary/POSITION_UNIT",

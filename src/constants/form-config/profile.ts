@@ -1,10 +1,7 @@
 import { urls } from "..";
-import { PERMISSIONS } from "../permissions";
 import { DATE_FORMATS } from "../common";
 import { phoneRule } from "../../utils";
 import { TabProps } from "../interfaces";
-
-const { USERPROFILES } = PERMISSIONS;
 
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
 
@@ -28,7 +25,7 @@ export const FORM: { tabs: TabProps[] } = {
           readonly: false,
           disabled: false,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: [USERPROFILES["UPDATE.ALL"]],
+          permissions: [],
         },
         {
           fieldCode: "birthDate",
@@ -40,7 +37,7 @@ export const FORM: { tabs: TabProps[] } = {
           disabled: false,
           withSelectBefore: true,
           rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: [USERPROFILES["UPDATE.ALL"]],
+          permissions: [],
         },
         {
           fieldCode: "position",
@@ -50,7 +47,7 @@ export const FORM: { tabs: TabProps[] } = {
           readonly: false,
           disabled: false,
           rules: [],
-          permissions: [USERPROFILES["UPDATE.ALL"]],
+          permissions: [],
           _links: {
             self: {
               href: urls.dictionaries.position,
@@ -58,8 +55,23 @@ export const FORM: { tabs: TabProps[] } = {
           },
         },
         {
+          fieldCode: "branchAddress",
+          fieldName: "Адрес филиала",
+          fieldDescription: "",
+          type: "dictionary",
+          readonly: false,
+          disabled: false,
+          rules: [],
+          permissions: [],
+          _links: {
+            self: {
+              href: urls.dictionaries.branchAddresses,
+            },
+          },
+        },
+        {
           fieldCode: "email",
-          fieldName: "Email",
+          fieldName: "E-mail",
           fieldDescription: "",
           type: "string",
           readonly: false,
@@ -70,18 +82,7 @@ export const FORM: { tabs: TabProps[] } = {
               message: "Пожалуйста, введите корректный email",
             },
           ],
-          permissions: [USERPROFILES["UPDATE.ALL"]],
-        },
-        {
-          fieldCode: "location",
-          fieldName: "Адрес",
-          fieldDescription: "",
-          type: "string",
-          placeholder: PLACEHOLDER_DEFAULT,
-          readonly: false,
-          disabled: false,
-          rules: [{ required: true, message: REQUIRED_MESSAGE }],
-          permissions: [USERPROFILES["UPDATE.ALL"]],
+          permissions: [],
         },
         {
           fieldCode: "phone",
@@ -92,7 +93,7 @@ export const FORM: { tabs: TabProps[] } = {
           disabled: false,
           placeholder: PHONE_PLACEHOLDER,
           rules: [phoneRule],
-          permissions: [USERPROFILES["UPDATE.ALL"]],
+          permissions: [],
         },
         {
           fieldCode: "aboutMe",
@@ -103,7 +104,7 @@ export const FORM: { tabs: TabProps[] } = {
             "Введите информацию о ваших увлечениях, хобби, интересах...",
           fieldDescription: "Максимум 2000 символов",
           readonly: false,
-          permissions: [USERPROFILES["UPDATE.ALL"]],
+          permissions: [],
           disabled: false,
           rules: [
             { max: 2000, message: "Превышена максимальная длина строки" },
