@@ -35,8 +35,6 @@ const formsMap: {
   information: Information,
 };
 
-// TODO Отделы оставшиеся фичи
-// https://docs.google.com/document/d/1lBn0FFb30zbot9AfJ4Pc0YsSvVyBiYTVVRbFd9d6ecw/edit?usp=sharing
 export const DepartmentCard = () => {
   const { activeTab, onChange } = useTabs(tabs, "replace");
   const { id: departmentId } = useParams<QueryProps>();
