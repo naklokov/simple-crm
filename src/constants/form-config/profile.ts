@@ -75,7 +75,7 @@ export const FORM: { tabs: TabProps[] } = {
           fieldDescription: "",
           type: "string",
           readonly: false,
-          disabled: true,
+          disabled: false,
           rules: [
             {
               type: "email",
