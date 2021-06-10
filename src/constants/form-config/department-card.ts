@@ -24,7 +24,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           readonly: false,
           disabled: false,
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
-          placeholder: "Выберите сотрудника",
+          placeholder: "Введите ФИО сотрудника",
           rules: [],
           permissions: [],
           _links: {
@@ -50,7 +50,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           readonly: false,
           disabled: false,
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
-          placeholder: "Выберите сотрудника",
+          placeholder: "Введите ФИО сотрудника",
           rules: [],
           permissions: [],
           _links: {
