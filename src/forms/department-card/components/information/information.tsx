@@ -1,8 +1,7 @@
 import { Col, Row } from "antd";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { fields } from "../../../../components";
 import {
   DepartmentEntityProps,
   FORM_NAMES,
@@ -59,6 +58,11 @@ export const Information: React.FC<FormProps> = ({ tab, drawers }) => {
     },
   });
 
+  const handleReloadRoles = useCallback(() => {
+    chiefsReload();
+    deputiesReload();
+  }, [chiefsReload, deputiesReload]);
+
   const modifyChiefFields = useMemo(
     () =>
       chiefFields.map((field) => ({
@@ -71,7 +75,7 @@ export const Information: React.FC<FormProps> = ({ tab, drawers }) => {
   const [chiefsDrawer, showChiefsDrawer] = useChangeRoleDrawer(
     t("chiefs.drawer.title"),
     modifyChiefFields,
-    chiefsReload,
+    handleReloadRoles,
     t("chiefs.drawer.add.success"),
     { userRoleId: USER_ROLES_ID.ROLE_DEPT_CHIEF, departmentId }
   );
@@ -88,7 +92,7 @@ export const Information: React.FC<FormProps> = ({ tab, drawers }) => {
   const [deputiesDrawer, showDeputiesDrawer] = useChangeRoleDrawer(
     t("deputies.drawer.title"),
     modifyDeputyFields,
-    deputiesReload,
+    handleReloadRoles,
     t("deputies.drawer.add.success"),
     { userRoleId: USER_ROLES_ID.ROLE_SUB_DEPT_CHIEF, departmentId }
   );
