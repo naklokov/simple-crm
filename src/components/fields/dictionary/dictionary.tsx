@@ -1,14 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { Col, Form, Select } from "antd";
-import { useDispatch } from "react-redux";
 import {
   DictionaryProps,
   FieldProps,
   DEFAULT_FIELD_SPAN,
 } from "../../../constants";
-import { FormContext, useFetch } from "../../../utils";
-import { setFormLoading } from "../../../__data__";
+import { useFetch } from "../../../utils";
 import { Readonly } from "../readonly";
+import { Loading } from "../loading";
 
 const { Option } = Select;
 
@@ -23,40 +22,47 @@ export const Dictionary: React.FC<FieldProps> = ({
   _links,
   span = DEFAULT_FIELD_SPAN,
 }) => {
-  const dispatch = useDispatch();
   const url = _links?.self.href ?? "";
-  const { name = "" } = useContext(FormContext);
   const [dictionary, loading] = useFetch<DictionaryProps>({
     url,
     initial: {},
   });
   const { dictionaryValueEntities: options = [] } = dictionary;
 
-  useEffect(() => {
-    dispatch(setFormLoading({ name, loading }));
-  }, [loading, dispatch, name]);
-
   const formatFunc = (value: string) =>
     options.find((o) => o.valueCode === value)?.value ?? "";
+
+  const style = { width: "100%" };
+
+  if (loading) {
+    return (
+      <Loading
+        style={style}
+        label={fieldName}
+        extra={fieldDescription}
+        name={fieldCode}
+        span={span}
+      />
+    );
+  }
 
   return (
     <Col {...span} key={fieldCode}>
       <Form.Item
         name={fieldCode}
-        style={{ width: "100%" }}
+        style={style}
         label={fieldName}
         extra={fieldDescription}
         rules={rules}
         validateTrigger="onBlur"
       >
         {readonly ? (
-          <Readonly format={formatFunc} loading={loading} />
+          <Readonly format={formatFunc} />
         ) : (
           <Select
             placeholder={placeholder}
             style={{ width: "100%" }}
             disabled={disabled}
-            loading={loading}
           >
             {options.map(({ id, value, valueCode }) => (
               <Option key={id} value={valueCode}>
