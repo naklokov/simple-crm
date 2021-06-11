@@ -103,7 +103,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
         },
         {
           columnName: "Дата рождения",
-          columnCode: "creationDate",
+          columnCode: "birthDate",
           columnType: "date",
           format: "DD.MM.YYYY",
           filterable: true,
