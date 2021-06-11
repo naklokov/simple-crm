@@ -235,7 +235,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
       ],
       _links: {
         self: {
-          href: `${urls.departments.entity}/{{departmentId}}/child/clients/paging`,
+          href: `${urls.clients.customByDepartment}?departmentId={{departmentId}}`,
         },
         position: {
           href: urls.dictionaries.position,
