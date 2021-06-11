@@ -1,24 +1,19 @@
 import React, { Key, useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { union } from "lodash";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFullUrl,
   useFetch,
-  useFormValues,
 } from "../../../../../../utils";
-import {
-  DepartmentEntityProps,
-  FORM_NAMES,
-  urls,
-} from "../../../../../../constants";
+import { DepartmentEntityProps, urls } from "../../../../../../constants";
 
 import { DepartmentsTree } from "./components";
 import {
   findDepartmentsByDepartmentName,
   getExpandedDepartments,
-  getParentDepartments,
   getUpdatedDepartmentHierarchy,
 } from "./utils";
 import { SearchBar } from "../../../../../../components";
@@ -27,20 +22,15 @@ export const DepartmentsSelect = () => {
   const [t] = useTranslation("departmentsDrawer");
   const [expandedKeys, setExpandedKeys] = useState<Key[]>([]);
 
-  const [selectedDepartment] = useFormValues<DepartmentEntityProps>(
-    FORM_NAMES.DEPARTMENT_CARD
-  );
-
-  useEffect(() => {
-    const expanded = getParentDepartments(
-      selectedDepartment?.departmentHierarchy
-    );
-    setExpandedKeys(expanded);
-  }, [selectedDepartment?.departmentHierarchy]);
-
   const [departments, loading, reload] = useFetch<DepartmentEntityProps[]>({
     url: urls.departments.entity,
   });
+
+  // сделать все отделы раскрытыми по умолчанию
+  useEffect(() => {
+    const expanded = departments.map(({ id }) => id);
+    setExpandedKeys(expanded);
+  }, [departments]);
 
   const [value, setValue] = useState("");
   const [searched, setSearched] = useState("");
@@ -53,7 +43,8 @@ export const DepartmentsSelect = () => {
       const expanded = getExpandedDepartments(finded);
 
       if (expanded.length) {
-        setExpandedKeys(expanded);
+        // чтобы уже раскрытые отделы не "схлопнулись"
+        setExpandedKeys((keys) => union(expanded, keys));
       }
     },
     [departments]
