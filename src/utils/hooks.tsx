@@ -210,12 +210,8 @@ export const useSelectableFooter = ({
     setSelectedTarget(value);
   }, []);
 
-  const handleSelectAllTable = useCallback((selected, selectedRows: any[]) => {
-    setSelectedRowKeys(selectedRows.map(({ id }) => id));
-  }, []);
-
-  const handleSelectTable = useCallback(({ id }) => {
-    setSelectedRowKeys((prev) => xor(prev, [id]));
+  const handleChangeSelectTable = useCallback((selectedKeys: React.Key[]) => {
+    setSelectedRowKeys(selectedKeys);
   }, []);
 
   const handleResetTableSelection = useCallback(() => {
@@ -240,11 +236,11 @@ export const useSelectableFooter = ({
 
   const rowSelection: TableRowSelection<any> = useMemo(
     () => ({
+      onChange: handleChangeSelectTable,
       selectedRowKeys,
-      onSelect: handleSelectTable,
-      onSelectAll: handleSelectAllTable,
+      preserveSelectedRowKeys: true,
     }),
-    [selectedRowKeys, handleSelectTable, handleSelectAllTable]
+    [selectedRowKeys, handleChangeSelectTable]
   );
 
   const selectedCount = selectedRowKeys?.length ?? 0;
