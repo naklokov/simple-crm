@@ -28,7 +28,13 @@ export const getSortedParams = ({
 }: {
   field: string;
   order?: SortOrder;
-}) => `${field}:${order ? ORDER_MAP[order] : ORDER_MAP.ascend}`;
+}) => {
+  if (order) {
+    return `${field}:${ORDER_MAP[order]}`;
+  }
+
+  return "";
+};
 
 export const getDefaultSortBy = (
   columns: ColumnProps[],
@@ -64,18 +70,20 @@ const getSorterFunction = (
 export const getSorterProp = (
   withLocalSort: boolean,
   column: ColumnProps,
-  sortOrder?: SortColumnOrderProps
+  sortColumnOrder?: SortColumnOrderProps
 ) => {
+  const sortOrder = sortColumnOrder?.[column?.columnCode] ?? false;
+
   if (column.sorter) {
     return {
       sorter: withLocalSort
         ? getSorterFunction(column.columnCode, column.columnType)
         : true,
-      sortOrder: sortOrder?.[column?.columnCode] ?? false,
+      sortOrder,
     };
   }
 
   return {
-    sortOrder: sortOrder?.[column?.columnCode] ?? false,
+    sortOrder,
   };
 };

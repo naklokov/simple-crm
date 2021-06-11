@@ -16,7 +16,7 @@ test("getSortedParams", () => {
 
   expect(getSortedParams({ field, order: "ascend" })).toBe("name:asc");
   expect(getSortedParams({ field, order: "descend" })).toBe("name:desc");
-  expect(getSortedParams({ field })).toBe("name:asc");
+  expect(getSortedParams({ field })).toBe("");
 });
 
 test("getDefaultSortBy", () => {

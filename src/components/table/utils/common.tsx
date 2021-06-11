@@ -63,7 +63,7 @@ export const getColumn = (
   column: ColumnProps,
   searchedColumns: RecordType,
   withLocalSort: boolean,
-  sortOrder?: SortColumnOrderProps,
+  sortColumnOrder?: SortColumnOrderProps,
   permissions: string[] = []
 ) => {
   const { columnCode, columnName, fixed, ellipsis, width } = column;
@@ -75,7 +75,7 @@ export const getColumn = (
     fixed,
     width,
     ellipsis,
-    ...getSorterProp(withLocalSort, column, sortOrder),
+    ...getSorterProp(withLocalSort, column, sortColumnOrder),
     ...getEditableProp(column, permissions),
     ...getColumnSearchProp(column, searchedColumns),
     ...getRenderProp(column),
@@ -127,7 +127,7 @@ export const getDataColumns = (
   columns: ColumnProps[] = [],
   searchedColumns: RecordType,
   withLocalSort: boolean,
-  sortOrder?: SortColumnOrderProps,
+  sortColumnOrder?: SortColumnOrderProps,
   permissions?: string[]
 ) =>
   columns.map((column) => {
@@ -135,7 +135,7 @@ export const getDataColumns = (
       column,
       searchedColumns,
       withLocalSort,
-      sortOrder,
+      sortColumnOrder,
       permissions
     );
 
