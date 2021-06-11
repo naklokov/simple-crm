@@ -68,6 +68,8 @@ export const DepartmentCard = () => {
     };
   }, [departmentId, setDepartment]);
 
+  const formDepartmentKey = `${activeTab?.tabCode}-${departmentId}`;
+
   return (
     <PagePermissionsChecker
       availablePermissions={[PERMISSIONS.DEPARTMENTS["GET.ALL"]]}
@@ -85,6 +87,7 @@ export const DepartmentCard = () => {
         {activeTab && (
           <FormWrapper name={formName}>
             <FormComponent
+              key={formDepartmentKey}
               tab={{
                 ...activeTab,
                 _links: fillLinks(activeTab._links, { departmentId }),
