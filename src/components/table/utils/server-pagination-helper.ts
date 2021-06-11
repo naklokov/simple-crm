@@ -26,11 +26,13 @@ const filterEmptyValues = (object: RecordType) =>
       {}
     );
 
-export const getInitialQueries = (initialSearch: string) => {
-  const { query } = parse(initialSearch);
-  return toString(query)
+export const getInitialParams = (initialSearch: string) => {
+  const { query, ...initialSearchParams } = parse(initialSearch);
+  const initialQueries = toString(query)
     .split(RSQL_DELIMETER)
     .filter((o) => !!o);
+
+  return { initialQueries, initialSearchParams };
 };
 
 export const getFetchDataSourceQuery = (

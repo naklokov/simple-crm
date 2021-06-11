@@ -34,7 +34,7 @@ import {
   getFetchDataSourceQuery,
   getFilterAllRsqlQuery,
   getFilterColumnRsqlQuery,
-  getInitialQueries,
+  getInitialParams,
   getSearchedColumnsFromFilters,
   getSortedParams,
   useTableServerPagingParams,
@@ -88,9 +88,10 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
 
   const [dataSource, setDataSource] = useState<ClientEntityProps[]>([]);
   const [total, setTotal] = useState(0);
-  const initialQueries = useMemo(() => getInitialQueries(initialSearch), [
-    initialSearch,
-  ]);
+  const { initialQueries, initialSearchParams } = useMemo(
+    () => getInitialParams(initialSearch),
+    [initialSearch]
+  );
 
   const {
     page,
@@ -118,6 +119,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
       try {
         const response = await axios.get(url, {
           params: {
+            ...initialSearchParams,
             page,
             pageSize,
             sortBy: sortBy || getDefaultSortBy(columns, defaultSortField),
