@@ -106,6 +106,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           columnCode: "birthDate",
           columnType: "date",
           format: "DD.MM.YYYY",
+          isJsonField: true,
           filterable: true,
           sorter: true,
           columnDescription: "Дата рождения",
