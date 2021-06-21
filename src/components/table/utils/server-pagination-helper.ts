@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { ColumnProps, RecordType, RSQL_DELIMETER } from "../../../constants";
 import {
   getDateBetweenRsql,
+  getDateFieldBetweenRsql,
   getEqualRsql,
   getFieldEqualRsql,
   getRsqlParams,
@@ -68,9 +69,14 @@ export const getFilterColumnRsqlQuery = (
   column: ColumnProps
 ) => {
   if (column.columnType === "date") {
-    return getRsqlParams([
-      getDateBetweenRsql({ fieldCode: column.columnCode, searched }),
-    ]);
+    const rsql = column.isJsonField
+      ? getDateFieldBetweenRsql({
+          date: searched,
+          fieldCode: column.columnCode,
+        })
+      : getDateBetweenRsql({ fieldCode: column.columnCode, searched });
+
+    return getRsqlParams([rsql]);
   }
 
   if (column.columnType === "dictionary" || column.columnType === "entity") {
