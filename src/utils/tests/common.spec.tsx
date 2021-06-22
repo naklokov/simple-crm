@@ -11,6 +11,7 @@ import {
   getDateWithTimezone,
   getFullUrl,
   pluralize,
+  getHierarchyParentId,
 } from "../common";
 
 const mock = new MockAdapter(axios);
@@ -141,4 +142,10 @@ test("fillLinks without value", () => {
       href: "/somePath/id/user",
     },
   });
+});
+
+test("getHierarchyParentId", () => {
+  const hierarchy = "1.2.3";
+
+  expect(getHierarchyParentId(hierarchy)).toBe("3");
 });

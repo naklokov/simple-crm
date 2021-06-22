@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from "react";
-import isEmpty from "lodash/isEmpty";
+import React from "react";
 import { Col, Form, Select } from "antd";
-import { useDispatch } from "react-redux";
 import {
   DictionaryProps,
   FieldProps,
   DEFAULT_FIELD_SPAN,
 } from "../../../constants";
 import { useFetch } from "../../../utils";
-import { setFormLoading } from "../../../__data__";
 import { Readonly } from "../readonly";
+import { Loading } from "../loading";
 
 const { Option } = Select;
 
@@ -24,32 +22,35 @@ export const Dictionary: React.FC<FieldProps> = ({
   _links,
   span = DEFAULT_FIELD_SPAN,
 }) => {
-  const dispatch = useDispatch();
-  const [dictionary, setDictionary] = useState<DictionaryProps>({});
   const url = _links?.self.href ?? "";
-  const { dictionaryValueEntities: options } = dictionary;
-  const { loading, response } = useFetch({ url });
-
-  useEffect(() => {
-    dispatch(setFormLoading(loading));
-  }, [loading, dispatch]);
-
-  useEffect(() => {
-    setDictionary(response?.data ?? []);
-  }, [response]);
-
-  if (!options || isEmpty(options)) {
-    return null;
-  }
+  const [dictionary, loading] = useFetch<DictionaryProps>({
+    url,
+    initial: {},
+  });
+  const { dictionaryValueEntities: options = [] } = dictionary;
 
   const formatFunc = (value: string) =>
     options.find((o) => o.valueCode === value)?.value ?? "";
+
+  const style = { width: "100%" };
+
+  if (loading) {
+    return (
+      <Loading
+        style={style}
+        label={fieldName}
+        extra={fieldDescription}
+        name={fieldCode}
+        span={span}
+      />
+    );
+  }
 
   return (
     <Col {...span} key={fieldCode}>
       <Form.Item
         name={fieldCode}
-        style={{ width: "100%" }}
+        style={style}
         label={fieldName}
         extra={fieldDescription}
         rules={rules}

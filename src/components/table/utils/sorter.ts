@@ -1,16 +1,16 @@
 import { SortOrder } from "antd/lib/table/interface";
 import { ColumnProps, ColumnType } from "../../../constants";
 import { getDateWithTimezone } from "../../../utils";
-import { DefaultSortProps } from "../constants";
+import { SortColumnOrderProps } from "../constants";
 
 const ORDER_MAP = {
   ascend: "asc",
   descend: "desc",
 };
 
-export const getDefaultSort = (
+export const getSortOrder = (
   sortBy: string
-): DefaultSortProps | undefined => {
+): SortColumnOrderProps | undefined => {
   if (sortBy) {
     const [field, customOrder] = sortBy.split(":");
 
@@ -27,13 +27,21 @@ export const getSortedParams = ({
   order,
 }: {
   field: string;
-  order: SortOrder;
+  order?: SortOrder;
 }) => {
   if (order) {
     return `${field}:${ORDER_MAP[order]}`;
   }
 
   return "";
+};
+
+export const getDefaultSortBy = (
+  columns: ColumnProps[],
+  defaultSortField?: string
+): string => {
+  const field = defaultSortField || columns?.[0]?.columnCode;
+  return getSortedParams({ field, order: "ascend" });
 };
 
 const getSorterFunction = (
@@ -59,10 +67,23 @@ const getSorterFunction = (
   };
 };
 
-export const getSorterProp = (column: ColumnProps) => {
+export const getSorterProp = (
+  withLocalSort: boolean,
+  column: ColumnProps,
+  sortColumnOrder?: SortColumnOrderProps
+) => {
+  const defaultSortOrder = sortColumnOrder?.[column?.columnCode] ?? false;
+
   if (column.sorter) {
-    return { sorter: getSorterFunction(column.columnCode, column.columnType) };
+    return {
+      sorter: withLocalSort
+        ? getSorterFunction(column.columnCode, column.columnType)
+        : true,
+      defaultSortOrder,
+    };
   }
 
-  return {};
+  return {
+    defaultSortOrder,
+  };
 };

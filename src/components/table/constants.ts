@@ -3,7 +3,7 @@ export const DEFAULT_PAGE_SIZE = 10;
 
 export const FILTER_ALL_NAME = "all";
 
-export interface DefaultSortProps {
+export interface SortColumnOrderProps {
   [key: string]: "ascend" | "descend";
 }
 

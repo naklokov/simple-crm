@@ -7,7 +7,7 @@ import { connect, useDispatch } from "react-redux";
 
 import { useTranslation } from "react-i18next";
 import style from "./profile.module.scss";
-import { logout } from "../../../../utils";
+import { getFullUrl, logout } from "../../../../utils";
 import {
   urls,
   ProfileInfoEntityProps,
@@ -24,7 +24,9 @@ export const Profile = ({ profileInfo }: ProfileProps) => {
   const [t] = useTranslation("authorizedLayout");
   const dispatch = useDispatch();
   const history = useHistory();
-  const { fullName, avatar } = profileInfo || {};
+  const { fullName, avatar, id } = profileInfo || {};
+
+  const profilePath = getFullUrl(urls.profile.path, id);
 
   const handleClickLogout = useCallback(() => {
     history.replace("/");
@@ -34,7 +36,7 @@ export const Profile = ({ profileInfo }: ProfileProps) => {
   const menu = (
     <Menu>
       <Menu.Item>
-        <Link to={urls.profile.path}>{t("profile.view")}</Link>
+        <Link to={profilePath}>{t("profile.view")}</Link>
       </Menu.Item>
       <Menu.Item onClick={handleClickLogout}>{t("profile.logout")}</Menu.Item>
     </Menu>
@@ -46,7 +48,7 @@ export const Profile = ({ profileInfo }: ProfileProps) => {
 
   return (
     <div className={style.container}>
-      <Link to={urls.profile.path}>
+      <Link to={profilePath}>
         <Tooltip
           mouseEnterDelay={TOOLTIP_SHOW_DELAY}
           title={t("tooltip.edit.profile")}

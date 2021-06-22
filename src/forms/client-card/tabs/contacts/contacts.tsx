@@ -13,7 +13,6 @@ import {
 } from "../../../../constants";
 import { Table } from "../../../../components";
 import {
-  getUpdatedEntityArray,
   useFetch,
   getRsqlParams,
   defaultSuccessHandler,
@@ -24,6 +23,7 @@ import {
 import { Header } from "./header";
 import { AddContactDrawer, ViewContactDrawer } from "../../../../drawers";
 import { setTableLoading } from "../../../../__data__";
+import { FormWrapper } from "../../../../wrappers";
 
 const {
   clientCard: {
@@ -33,27 +33,26 @@ const {
 
 const drawer = drawers.find(({ code }) => code === "contact");
 
-export const Contacts = ({ tab }: TabPaneFormProps) => {
+export const Contacts = ({ tab, formName }: TabPaneFormProps) => {
   const [t] = useTranslation("clientCardContacts");
   const dispatch = useDispatch();
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
-  const { update: viewFormUpdate } = useFormValues<ContactEntityProps>(
+  const [, setClient] = useFormValues<ContactEntityProps>(
     FORM_NAMES.CONTACT_VIEW
   );
 
-  const [contacts, setContacts] = useState([] as any[]);
   const { id: clientId } = useParams<QueryProps>();
 
   const query = getRsqlParams([{ key: "clientId", value: clientId }]);
-  const { response, loading, reload } = useFetch({
+  const [contacts, loading, reload] = useFetch<ContactEntityProps[]>({
     url: urls.contacts.entity,
     params: { query },
   });
 
   useEffect(() => {
-    setTableLoading(loading);
-  }, [loading]);
+    dispatch(setTableLoading(loading));
+  }, [loading, dispatch]);
 
   const fetchDelete = useCallback(
     async (id: string) => {
@@ -61,6 +60,7 @@ export const Contacts = ({ tab }: TabPaneFormProps) => {
       try {
         const url = getFullUrl(urls.contacts.entity, id);
         await axios.delete(url);
+
         reload();
         defaultSuccessHandler(t("message.success.delete"));
       } catch (error) {
@@ -72,20 +72,19 @@ export const Contacts = ({ tab }: TabPaneFormProps) => {
     [reload, t, dispatch]
   );
 
-  useEffect(() => {
-    setContacts(response?.data ?? []);
-  }, [response]);
-
   const handleAddContact = useCallback(() => {
     setAddDrawerVisible(true);
   }, []);
 
   const handleViewContact = useCallback(
-    (id) => {
-      viewFormUpdate(contacts.find((o) => o.id === id));
+    (id: string) => {
+      const values = contacts?.find((o) => o.id === id);
+      if (values) {
+        setClient(values);
+      }
       setViewDrawerVisible(true);
     },
-    [contacts, viewFormUpdate]
+    [contacts, setClient]
   );
 
   const handleDeleteContact = useCallback(
@@ -96,23 +95,23 @@ export const Contacts = ({ tab }: TabPaneFormProps) => {
   );
 
   const handleCloseAddDrawer = useCallback(
-    (event: any, data: any) => {
+    (data?: any) => {
       setAddDrawerVisible(false);
       if (data) {
-        setContacts([...contacts, data]);
+        reload();
       }
     },
-    [contacts]
+    [reload]
   );
 
   const handleCloseViewDrawer = useCallback(
-    (event: any, data: any) => {
+    (data?: any) => {
       setViewDrawerVisible(false);
       if (data) {
-        setContacts(getUpdatedEntityArray(data, contacts));
+        reload();
       }
     },
-    [contacts]
+    [reload]
   );
 
   return (
@@ -128,16 +127,18 @@ export const Contacts = ({ tab }: TabPaneFormProps) => {
         fields={drawer?.fields ?? []}
         onClose={handleCloseViewDrawer}
       />
-      <form>
+      <FormWrapper name={formName}>
         <Table.Client
-          table={tab}
+          columns={tab?.columns}
+          actions={tab?.actions}
+          links={tab?._links}
           pagination={{ pageSize: 5 }}
           onViewRow={handleViewContact}
           onDeleteRow={handleDeleteContact}
           dataSource={contacts}
           extraTitle={<Header onClickAdd={handleAddContact} />}
         />
-      </form>
+      </FormWrapper>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
@@ -11,19 +11,17 @@ import {
   ProfileInfoEntityProps,
   State,
   TabPaneFormProps,
+  PositionsEntityProps,
 } from "../../../../constants";
 import { Table } from "../../../../components";
 import {
   defaultErrorHandler,
-  getUpdatedEntityArray,
   useFetch,
   getFullUrl,
   defaultSuccessHandler,
 } from "../../../../utils";
-import {
-  setLoading,
-  setTableLoading as setTableLoadingAction,
-} from "../../../../__data__";
+import { setTableLoading as setTableLoadingAction } from "../../../../__data__";
+import { FormWrapper } from "../../../../wrappers";
 
 interface ContactsProps extends TabPaneFormProps {
   profileInfo: ProfileInfoEntityProps;
@@ -34,10 +32,10 @@ interface ContactsProps extends TabPaneFormProps {
 export const PriceList: React.FC<ContactsProps> = ({
   profileInfo: { id: userProfileId },
   tab,
+  formName,
   setTableLoading,
 }) => {
   const [t] = useTranslation("clientCardPriceList");
-  const [positions, setPositions] = useState<any[]>([]);
   const { id: clientId } = useParams<QueryProps>();
   const params = useMemo(
     () => ({
@@ -47,21 +45,17 @@ export const PriceList: React.FC<ContactsProps> = ({
     [clientId, userProfileId]
   );
 
-  const { response, loading } = useFetch({
+  const [positions, loading, reload] = useFetch<PositionsEntityProps[]>({
     url: urls.priceList.entity,
     params,
   });
 
   useEffect(() => {
-    setLoading(loading);
-  }, [loading]);
-
-  useEffect(() => {
-    setPositions(response?.data ?? []);
-  }, [response]);
+    setTableLoading(loading);
+  }, [loading, setTableLoading]);
 
   const handleSaveRow = useCallback(
-    async (values: any) => {
+    async (values: PositionsEntityProps) => {
       const url = getFullUrl(urls.priceList.entity, values.itemId);
       setTableLoading(true);
       try {
@@ -73,21 +67,23 @@ export const PriceList: React.FC<ContactsProps> = ({
         setTableLoading(false);
       }
 
-      setPositions(getUpdatedEntityArray(values, positions, "itemId"));
+      reload();
     },
-    [positions, params, setTableLoading, t]
+    [reload, params, setTableLoading, t]
   );
 
   return (
-    <form>
+    <FormWrapper name={formName}>
       <Table.Client
         idValue="itemId"
-        table={tab}
+        columns={tab?.columns}
+        actions={tab?.actions}
+        links={tab?._links}
         dataSource={positions}
         onSaveRow={handleSaveRow}
         withSearch
       />
-    </form>
+    </FormWrapper>
   );
 };
 

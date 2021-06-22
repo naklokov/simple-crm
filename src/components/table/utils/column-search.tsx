@@ -6,15 +6,9 @@ import {
   DateSearch,
   PhoneSearch,
 } from "../components";
-import {
-  ColumnProps,
-  RecordType,
-  ActionProps,
-  ActionType,
-} from "../../../constants";
+import { ColumnProps, RecordType } from "../../../constants";
 
-const checkColumnActionType = (column: ColumnProps, actionType: ActionType) =>
-  column.columnActions?.some((o: ActionProps) => o.actionType === "call");
+import { checkColumnActionType } from "./common";
 
 const getSearch = (column: ColumnProps) => {
   if (checkColumnActionType(column, "call")) {

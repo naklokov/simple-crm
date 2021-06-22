@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { ColumnProps, RecordType, RSQL_DELIMETER } from "../../../constants";
 import {
   getDateBetweenRsql,
+  getDateFieldBetweenRsql,
   getEqualRsql,
   getFieldEqualRsql,
   getRsqlParams,
@@ -13,6 +14,7 @@ import {
   getValueFromRsql,
 } from "../../../utils";
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from "../constants";
+import { replaceLikeChars } from "./common";
 
 const filterEmptyValues = (object: RecordType) =>
   Object.keys(object)
@@ -25,11 +27,13 @@ const filterEmptyValues = (object: RecordType) =>
       {}
     );
 
-export const getInitialQueries = (initialSearch: string) => {
-  const { query } = parse(initialSearch);
-  return toString(query)
+export const getInitialParams = (initialSearch: string) => {
+  const { query, ...initialSearchParams } = parse(initialSearch);
+  const initialQueries = toString(query)
     .split(RSQL_DELIMETER)
     .filter((o) => !!o);
+
+  return { initialQueries, initialSearchParams };
 };
 
 export const getFetchDataSourceQuery = (
@@ -48,7 +52,7 @@ export const getSearchedColumnsFromFilters = (filters: RecordType) =>
     if (value) {
       return {
         ...acc,
-        [filterKey]: value,
+        [filterKey]: replaceLikeChars(value),
       };
     }
 
@@ -65,9 +69,14 @@ export const getFilterColumnRsqlQuery = (
   column: ColumnProps
 ) => {
   if (column.columnType === "date") {
-    return getRsqlParams([
-      getDateBetweenRsql({ fieldCode: column.columnCode, searched }),
-    ]);
+    const rsql = column.isJsonField
+      ? getDateFieldBetweenRsql({
+          date: searched,
+          fieldCode: column.columnCode,
+        })
+      : getDateBetweenRsql({ fieldCode: column.columnCode, searched });
+
+    return getRsqlParams([rsql]);
   }
 
   if (column.columnType === "dictionary" || column.columnType === "entity") {
@@ -78,7 +87,14 @@ export const getFilterColumnRsqlQuery = (
     return getRsqlParams([rsql]);
   }
 
-  return getRsqlParams([getSearchRsql([column.columnCode], searched)]);
+  return getRsqlParams([
+    getSearchRsql(
+      [column.columnCode],
+      searched,
+      "entityData",
+      column.isJsonField
+    ),
+  ]);
 };
 
 export const useTableServerPagingParams = (

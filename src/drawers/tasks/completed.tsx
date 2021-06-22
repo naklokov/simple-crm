@@ -29,16 +29,16 @@ export const CompleteTask = ({
   const metaCompletedInfo = {
     taskStatus: TASK_STATUSES.COMPLETED,
   };
-  const { values } = useFormValues<TaskEntityProps>(FORM_NAMES.TASK_COMPLETED);
+  const [task] = useFormValues<TaskEntityProps>(FORM_NAMES.TASK_COMPLETED);
 
   const onFinish = async (data: Store) => {
     setLoading(true);
     try {
-      const url = getFullUrl(urls.tasks.entity, values.id);
-      const responce = await axios.put(url, { ...data, ...metaCompletedInfo });
+      const url = getFullUrl(urls.tasks.entity, task.id);
+      const response = await axios.put(url, { ...data, ...metaCompletedInfo });
       defaultSuccessHandler(t("message.success.completed"));
 
-      onClose<TaskEntityProps>(responce?.data ?? {});
+      onClose<TaskEntityProps>(response?.data ?? {});
     } catch (error) {
       defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
     } finally {
@@ -46,7 +46,7 @@ export const CompleteTask = ({
     }
   };
 
-  if (isEmpty(values)) {
+  if (isEmpty(task)) {
     return null;
   }
 

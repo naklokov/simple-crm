@@ -24,19 +24,28 @@ module.exports = {
   },
   profile: {
     path: "/main/profile",
+    pathWithId: "/main/profile/:id",
     entity: "/crm/rest/user/profile",
-    permissions: "/crm/rest/user/permissions",
+    credentials: "/crm/rest/user/permissions",
   },
   departments: {
+    path: "/main/departments",
+    entity: "/crm/rest/entity/departments",
+  },
+  departmentCard: {
+    path: "/main/departments/:id",
     entity: "/crm/rest/entity/departments",
   },
   userProfiles: {
     entity: "/crm/rest/entity/userProfiles",
+    paging: "/crm/rest/entity/userProfiles/paging",
   },
   clients: {
     path: "/main/clients",
     entity: "/crm/rest/entity/clients",
     paging: "/crm/rest/entity/clients/paging",
+    customByDepartment:
+      "/crm/rest/entity/clients/custom/paging/clientsByDepartment",
   },
   clientCard: {
     path: "/main/clients/:id",
@@ -67,9 +76,9 @@ module.exports = {
     path: "/knowledge",
   },
   dictionaries: {
+    branchAddresses: "/crm/rest/dictionary/BRANCH_ADDRESSES",
     position: "/crm/rest/dictionary/position",
     activityFields: "/crm/rest/dictionary/ACTIVITY_FIELDS",
     positionUnit: "/crm/rest/dictionary/POSITION_UNIT",
-    userProfiles: "/crm/rest/dictionary/userProfiles",
   },
 };

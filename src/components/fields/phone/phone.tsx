@@ -19,7 +19,7 @@ export const Phone = ({
   readonly = false,
   span = DEFAULT_FIELD_SPAN,
 }: FieldProps) => {
-  const form = useContext(FormContext);
+  const { form } = useContext(FormContext);
   const value = form.getFieldValue(fieldCode);
 
   const formatFunc = (input: string) => getConformedValue(input);

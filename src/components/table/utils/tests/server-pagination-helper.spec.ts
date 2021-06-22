@@ -4,8 +4,8 @@ import { ColumnProps } from "../../../../constants";
 import {
   getDateBetweenRsql,
   getEqualRsql,
-  getLikeRsql,
   getRsqlParams,
+  getSearchRsql,
 } from "../../../../utils";
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from "../../constants";
 
@@ -13,7 +13,7 @@ import {
   getFilterColumnRsqlQuery,
   getFetchDataSourceQuery,
   getFilterAllRsqlQuery,
-  getInitialQueries,
+  getInitialParams,
   getSearchedColumnsFromFilters,
   useTableServerPagingParams,
 } from "../server-pagination-helper";
@@ -53,7 +53,7 @@ test("getFilterColumnRsqlQuery text", () => {
   };
 
   expect(getFilterColumnRsqlQuery(searched, textColumn)).toBe(
-    getRsqlParams([getLikeRsql([textColumn.columnCode], searched)])
+    getRsqlParams([getSearchRsql([textColumn.columnCode], searched)])
   );
 });
 
@@ -62,7 +62,7 @@ test("getFilterAllRsqlQuery", () => {
   const searchedKeys = ["id", "name"];
 
   expect(getFilterAllRsqlQuery(searched, searchedKeys)).toBe(
-    'entityData=JLIKE=(id,name,"test")'
+    getRsqlParams([getSearchRsql(searchedKeys, searched)])
   );
 });
 
@@ -128,28 +128,49 @@ test("getFetchDataSourceQuery filters empty", () => {
   expect(getFetchDataSourceQuery(filters, initialQueries)).toBe("one;two");
 });
 
-test("getInitialQueries", () => {
-  const initialSearch = "?query=one;two&&test=1";
+test("getInitialParams", () => {
+  const initialSearch = "?query=one;two&test=1";
 
-  expect(getInitialQueries(initialSearch)).toEqual(["one", "two"]);
+  expect(getInitialParams(initialSearch)).toEqual({
+    initialQueries: ["one", "two"],
+    initialSearchParams: { test: "1" },
+  });
 });
 
-test("getInitialQueries without ?", () => {
-  const initialSearch = "query=one;two&&test=1";
+test("getInitialParams without ?", () => {
+  const initialSearch = "query=one;two&test=1";
 
-  expect(getInitialQueries(initialSearch)).toEqual(["one", "two"]);
+  expect(getInitialParams(initialSearch)).toEqual({
+    initialQueries: ["one", "two"],
+    initialSearchParams: { test: "1" },
+  });
 });
 
-test("getInitialQueries with empty query", () => {
-  const initialSearch = "?query=&&test=1";
+test("getInitialParams with empty query", () => {
+  const initialSearch = "?query=&test=1";
 
-  expect(getInitialQueries(initialSearch)).toEqual([]);
+  expect(getInitialParams(initialSearch)).toEqual({
+    initialQueries: [],
+    initialSearchParams: { test: "1" },
+  });
 });
 
-test("getInitialQueries without query", () => {
-  const initialSearch = "?test=1";
+test("getInitialParams without query", () => {
+  const initialSearch = "?test=2";
 
-  expect(getInitialQueries(initialSearch)).toEqual([]);
+  expect(getInitialParams(initialSearch)).toEqual({
+    initialQueries: [],
+    initialSearchParams: { test: "2" },
+  });
+});
+
+test("getInitialParams without initialSearch", () => {
+  const initialSearch = "";
+
+  expect(getInitialParams(initialSearch)).toEqual({
+    initialQueries: [],
+    initialSearchParams: {},
+  });
 });
 
 test("getSearchedColumnsFromFilters", () => {

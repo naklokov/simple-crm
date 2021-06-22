@@ -6,11 +6,17 @@ import { Dispatch } from "@reduxjs/toolkit";
 import { message } from "antd";
 import { Link } from "react-router-dom";
 import { Route } from "antd/lib/breadcrumb/Breadcrumb";
-import { setLoading, logout as logoutAction } from "../__data__";
+import { logout as logoutAction } from "../__data__";
 import { COOKIES } from "../constants/http";
 import { logger } from "./index";
+import { Skeleton } from "../components";
 
-import { urls, ErrorProps, LinksType } from "../constants";
+import {
+  urls,
+  ErrorProps,
+  LinksType,
+  DepartmentEntityProps,
+} from "../constants";
 
 interface DefaultErrorHandlerProps {
   error: ErrorProps;
@@ -117,6 +123,65 @@ export const getDateWithTimezone = (date?: string) => {
   return moment.utc(date).tz(tz);
 };
 
+export const getItemLoadingRender = (
+  route: Route,
+  params: any,
+  routes: Array<Route>,
+  paths: Array<string>
+) => {
+  const last = routes.indexOf(route) === routes.length - 1;
+
+  return last ? (
+    <Skeleton.Input style={{ width: "100px", marginTop: "4px" }} />
+  ) : (
+    <Link key={route.path} to={`/${paths.join("/")}`}>
+      {route.breadcrumbName}
+    </Link>
+  );
+};
+
+export const getHierarchyParentId = (hierarchy: string) =>
+  hierarchy?.split(".")?.reverse()?.[0];
+
+export const getLoadingTwoLastDisabledItemRender = (
+  route: Route,
+  params: any,
+  routes: Array<Route>,
+  paths: Array<string>
+) => {
+  const last = routes.indexOf(route) === routes.length - 1;
+  const prev = routes.indexOf(route) === routes.length - 2;
+
+  if (prev) {
+    return <span key={route.path}>{route.breadcrumbName}</span>;
+  }
+
+  return last ? (
+    <Skeleton.Input style={{ width: "100px", marginTop: "4px" }} />
+  ) : (
+    <Link key={route.path} to={`/${paths.join("/")}`}>
+      {route.breadcrumbName}
+    </Link>
+  );
+};
+
+export const getTwoLastDisabledItemRender = (
+  route: Route,
+  params: any,
+  routes: Array<Route>,
+  paths: Array<string>
+) => {
+  const isDisabledRoute = routes.indexOf(route) >= routes.length - 2;
+
+  return isDisabledRoute ? (
+    <span key={route.path}>{route.breadcrumbName}</span>
+  ) : (
+    <Link key={route.path} to={`/${paths.join("/")}`}>
+      {route.breadcrumbName}
+    </Link>
+  );
+};
+
 export const getItemRender = (
   route: Route,
   params: any,
@@ -124,6 +189,7 @@ export const getItemRender = (
   paths: Array<string>
 ) => {
   const last = routes.indexOf(route) === routes.length - 1;
+
   return last ? (
     <span key={route.path}>{route.breadcrumbName}</span>
   ) : (

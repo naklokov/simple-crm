@@ -54,7 +54,13 @@
     "profile.logout": "Выйти",
     "tooltip.edit.profile": "Просмотр данных профиля"
   },
-  "profileMain": {
+  "menu": {
+    "clients": "Клиенты",
+    "tasks": "Задачи",
+    "departments": "Отделы",
+    "departments.drawer.title": "Отделы"
+  },
+  "profile": {
     "title": "Информация о профиле",
     "message.success": "Профиль успешно изменён",
     "message.error": "Ошибка при изменении профиля"
@@ -96,6 +102,7 @@
     "actions.email.yes": "Да"
   },
   "tableHeader": {
+    "button.enter": "Найти",
     "button.clear.all": "Очистить фильтры"
   },
   "searchBar": {
@@ -108,18 +115,13 @@
     "message.success.delete": "Компания успешно удалена",
     "confirm.delete": "Вы хотите удалить компанию?",
     "confirm.call": "Вы хотите позвонить в компанию?",
-    "title.new": "Новый клиент"
-  },
-  "clientCardMain": {
+    "title.new": "Новый клиент",
     "message.success": "Информация о клиенте обновлена",
     "save": "Сохранить"
   },
   "clientCardContacts": {
     "title.add": "＋ Добавить контакт",
     "message.success.delete": "Контакт успешно удалён"
-  },
-  "clientCardRequisites": {
-    "message.success": "Информация о реквизитах клиента обновлена"
   },
   "clientCardPriceList": {
     "rules.editable.price": "Введите стоимость",
@@ -131,6 +133,30 @@
     "title.view": "Контакт",
     "message.success.add": "Контакт успешно добавлен",
     "message.success.edit": "Контакт успешно отредактирован"
+  },
+  "departments": {
+    "title": "Отделы",
+    "tooltip.chiefs.title": "Руководитель отдела",
+    "tooltip.deputies.title": "Заместитель руководителя отдела",
+    "popover.phone.prefix": "Тел: {{phone}}",
+    "chiefs.not.found": "Руководители и заместители отдела не заданы"
+  },
+  "departmentInformation": {
+    "hierarchy.title": "Структура отдела",
+    "role.row.phone": "Тел: {{phone}}",
+    "add.title": "＋ Добавить",
+    "chiefs.drawer.title": "Добавить руководителя отдела",
+    "chiefs.drawer.add.success": "Позиция руководителя отдела успешно добавлена",
+    "deputies.drawer.title": "Добавить заместителя руководителя отдела",
+    "deputies.drawer.add.success": "Позиция заместителя руководителя отдела успешно добавлена",
+    "chiefs.title": "Руководитель отдела",
+    "chiefs.row.title": "Руководитель отдела",
+    "deputies.title": "Заместители руководителя отдела",
+    "deputies.row.title": "Заместитель руководителя отдела",
+    "actions.confirm.delete": "Вы хотите удалить позицию в отделе?",
+    "actions.delete.tooltip": "Удалить позицию из отдела",
+    "success.delete": "Позиция успешно удалена",
+    "fields.update.message.success": "Информация об отделе успешно изменена"
   },
   "tasksDrawer": {
     "additional.action.complete.title": "Выполнить",
@@ -243,5 +269,24 @@
     "button.title": "Сгенерировать",
     "select.placeholder": "Выберите документ",
     "template.name.default": "Документ"
+  },
+  "selectableFooter": {
+    "button.submit": "Переместить",
+    "select.placeholder": "Переместить",
+    "button.reset": "Сбросить выбранные",
+    "button.delete": "Удалить выбранные",
+    "message.success.staff.move": "Сотрудники успешно перемещены в другой отдел",
+    "message.success.clients.move": "Компании успешно перемещены на другого сотрудника",
+    "clients.footer.select.placeholder": "Введите ФИО сотрудника",
+    "staff.footer.select.placeholder": "Введите название отдела",
+    "selected.one": "Выбрана {{count}} запись",
+    "selected.some": "Выбрано {{count}} записи",
+    "selected.many": "Выбрано {{count}} записей"
+  },
+  "departmentsDrawer": {
+    "move.message.success": "Отдел успешно перемещён"
+  },
+  "entity": {
+    "not.found.description": "Вариантов не найдено"
   }
 }

@@ -6,7 +6,7 @@ import { setError } from "../../__data__";
 const { ERROR_SCREEN_CODES, HTTP_CODES } = http;
 const DEFAULT_ERROR_MESSAGE = "Произошла ошибка";
 
-interface ErrorResponceProps {
+interface ErrorResponseProps {
   config: any;
   response: {
     status: number;
@@ -17,7 +17,7 @@ interface ErrorResponceProps {
 export const errorsInterceptor = (
   dispatch: Dispatch,
   errorStore: ErrorAppState
-) => (errorResponse: ErrorResponceProps) => {
+) => (errorResponse: ErrorResponseProps) => {
   try {
     const { _retry: retry, method, url } = errorResponse?.config ?? {};
     const statusCode = errorResponse?.response?.status;

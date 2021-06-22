@@ -26,6 +26,10 @@ export const Date: React.FC<DateProps> = ({ value, format, column }) => {
     ? moment(columnValue).format(format)
     : "";
 
+  if (!value) {
+    return null;
+  }
+
   return (
     <HighlightTextWrapper
       loading={tableLoading}
