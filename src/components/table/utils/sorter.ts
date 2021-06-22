@@ -72,18 +72,18 @@ export const getSorterProp = (
   column: ColumnProps,
   sortColumnOrder?: SortColumnOrderProps
 ) => {
-  const sortOrder = sortColumnOrder?.[column?.columnCode] ?? false;
+  const defaultSortOrder = sortColumnOrder?.[column?.columnCode] ?? false;
 
   if (column.sorter) {
     return {
       sorter: withLocalSort
         ? getSorterFunction(column.columnCode, column.columnType)
         : true,
-      sortOrder,
+      defaultSortOrder,
     };
   }
 
   return {
-    sortOrder,
+    defaultSortOrder,
   };
 };
