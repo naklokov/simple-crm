@@ -1,9 +1,34 @@
 import moment, { unitOfTime as unitProps } from "moment-timezone";
+import { parse } from "query-string";
+import { replaceLikeChars } from "../components/table/utils";
 import {
   RsqlParamProps,
   RSQL_OPERATORS_MAP,
   TASK_DATE_FIELD_CODE,
+  RSQL_DELIMETER,
 } from "../constants";
+
+export const mergeInitialParams = (
+  rsqlQuery: string,
+  initialSearch: string
+) => {
+  const { query: initialQuery, ...initialParams } = parse(initialSearch);
+
+  if (initialQuery) {
+    const rsqlQueries = rsqlQuery.split(RSQL_DELIMETER).filter((o) => !!o);
+    const initialQueries = initialQuery
+      .toString()
+      .split(RSQL_DELIMETER)
+      .filter((o) => !!o);
+
+    return {
+      ...initialParams,
+      query: [...rsqlQueries, ...initialQueries].join(RSQL_DELIMETER),
+    };
+  }
+
+  return { ...initialParams, query: rsqlQuery };
+};
 
 export const getRsqlParams = (params: RsqlParamProps[]) => {
   const queries = params.map(
@@ -14,24 +39,33 @@ export const getRsqlParams = (params: RsqlParamProps[]) => {
   return queries.filter((o) => !!o).join(";");
 };
 
-export const getSearchRsql = (
-  keys: string[],
-  searched: string,
-  entityName = "entityData"
-) => {
-  const value = searched.replace(/"/g, '\\"').trim().toLowerCase();
-  return getLikeRsql(keys, value, entityName);
-};
+export const getLikeRsql = (key: string, value: string) => ({
+  key,
+  operator: RSQL_OPERATORS_MAP.LIKE,
+  value,
+});
 
-export const getLikeRsql = (
+export const getLikeFieldRsql = (
   keys: string[],
   value: string,
   entityName = "entityData"
 ) => ({
   key: entityName,
-  operator: RSQL_OPERATORS_MAP.LIKE,
+  operator: RSQL_OPERATORS_MAP.LIKE_FIELD,
   value: `(${keys.join(",")},"${value}")`,
 });
+
+export const getSearchRsql = (
+  keys: string[],
+  searched: string,
+  entityName = "entityData",
+  isJsonField = true
+) => {
+  const value = `%${searched.replace(/"/g, '\\"').trim().toLowerCase()}%`;
+  return isJsonField
+    ? getLikeFieldRsql(keys, value, entityName)
+    : getLikeRsql(keys?.[0], value);
+};
 
 export const getDateBetweenRsql = ({
   fieldCode = "date",
@@ -141,13 +175,16 @@ export const getEqualRsql = (key: string, value: string) => ({
 });
 
 export const getValueFromRsql = (query: string) => {
+  const SIMPLE_OPERATORS = [RSQL_OPERATORS_MAP.LIKE, RSQL_OPERATORS_MAP.EQUAL];
   const [, operator, valueArea = ""] = query.split("=");
+  const fullOperator = `=${operator}=`;
 
-  if (!operator) {
+  if (SIMPLE_OPERATORS.includes(fullOperator)) {
     return valueArea;
   }
+
   const regexp = /^.*"(.*)".*$/;
   const matches = regexp.exec(valueArea);
 
-  return matches?.[1] ?? "";
+  return replaceLikeChars(matches?.[1]);
 };

@@ -1,9 +1,10 @@
 import React from "react";
 import { parseInt, isEqual } from "lodash";
 import some from "lodash/some";
-import { fields } from "../components";
-import { FieldProps } from "../constants";
+import { fields, Table } from "../components";
+import { FieldProps, TabPaneFormProps, TabProps } from "../constants";
 import { getNormalizePhone } from "./phone";
+import { fillLinks } from "./common";
 
 interface EntityWithId {
   [key: string]: any;
@@ -19,7 +20,6 @@ const {
   Entity,
   Email,
   Href,
-  EntityPersonal,
 } = fields;
 
 export const isValuesChanged = (
@@ -28,6 +28,54 @@ export const isValuesChanged = (
 ): boolean => {
   const keys = Object.keys(next);
   return some(keys, (key) => !isEqual(prev[key], next[key]));
+};
+
+interface CreateFormInterface {
+  tab: TabProps;
+  formsMap: { [tabCode: string]: (props: TabPaneFormProps) => JSX.Element };
+  userProfileId?: string;
+}
+
+// TODO Формирование формы из конфига, пока не используется
+export const createFormTab = ({
+  tab,
+  formsMap,
+  userProfileId = "",
+}: CreateFormInterface): React.ReactNode => {
+  const { tabCode, type } = tab;
+
+  if (formsMap[tabCode]) {
+    const Form = formsMap[tabCode];
+    return <Form tab={tab} />;
+  }
+
+  if (type === "table") {
+    const {
+      tableType,
+      tabName,
+      columns,
+      actions,
+      _links: links,
+      searchPlaceholder,
+      withSearch,
+    } = tab;
+
+    if (tableType === "server") {
+      return (
+        <Table.Server
+          key={tabName}
+          columns={columns}
+          actions={actions}
+          // TODO fillLinks до реализации первого запроса
+          links={fillLinks(links, { userProfileId })}
+          searchPlaceholder={searchPlaceholder}
+          withSearch={withSearch}
+        />
+      );
+    }
+  }
+
+  return <div />;
 };
 
 export const createFormField = (field: FieldProps): JSX.Element => {
@@ -50,8 +98,6 @@ export const createFormField = (field: FieldProps): JSX.Element => {
       return <Dictionary {...field} />;
     case "entity":
       return <Entity {...field} />;
-    case "entity-personal":
-      return <EntityPersonal {...field} />;
     default:
       return <div />;
   }

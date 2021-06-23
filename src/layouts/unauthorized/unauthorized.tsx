@@ -11,7 +11,6 @@ import { setAuth as setAuthAction } from "../../__data__";
 
 interface LoginProps {
   title?: string;
-  loading: boolean;
   auth: boolean;
   setAuth: (auth: boolean) => void;
   description?: string;
@@ -21,7 +20,6 @@ interface LoginProps {
 export const Unauthorized: React.FC<LoginProps> = ({
   auth,
   setAuth,
-  loading,
   children,
 }) => {
   useEffect(() => {
@@ -38,7 +36,6 @@ export const Unauthorized: React.FC<LoginProps> = ({
           <div className={style.imgContainer}>
             <img className={style.img} alt="logo" src={logo} />
           </div>
-          {loading && <Loader />}
         </div>
         {children}
       </div>
@@ -46,7 +43,6 @@ export const Unauthorized: React.FC<LoginProps> = ({
   );
 };
 const mapStateToProps = (state: State) => ({
-  loading: state?.app?.loading,
   auth: state?.persist?.auth,
 });
 

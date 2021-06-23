@@ -1,5 +1,4 @@
 import React from "react";
-import { Space } from "antd";
 import { ActionProps, ColumnProps, EntityOwnerProps } from "../../../constants";
 import { getFullUrl } from "../../../utils";
 import { Delete, View, Call, Email, Link } from "../components";

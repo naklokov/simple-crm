@@ -16,6 +16,7 @@ import {
   ErrorScreen,
   NotFoundScreen,
   Tasks,
+  DepartmentCard,
 } from "../../forms";
 
 import { ProtectedRoute } from ".";
@@ -31,6 +32,7 @@ const {
   login,
   restorePassword,
   forgotPassword,
+  departmentCard,
 } = urls;
 
 const Routes = () => (
@@ -40,16 +42,17 @@ const Routes = () => (
         path={[
           main.path,
           clients.path,
-          profile.path,
+          profile.pathWithId,
           clientCard.path,
           tasks.path,
+          departmentCard.path,
         ]}
         component={AuthorizedLayout}
       >
         <Switch>
           <ProtectedRoute
-            key={profile.path}
-            path={profile.path}
+            key={profile.pathWithId}
+            path={profile.pathWithId}
             component={Profile}
           />
           <ProtectedRoute
@@ -68,8 +71,12 @@ const Routes = () => (
             path={tasks.path}
             component={Tasks}
           />
-
-          <Redirect from={main.path} to={{ pathname: clients.path }} exact />
+          <ProtectedRoute
+            key={departmentCard.path}
+            path={departmentCard.path}
+            component={DepartmentCard}
+          />
+          <Redirect from={main.path} to={{ pathname: clients.path }} />
         </Switch>
       </ProtectedRoute>
 

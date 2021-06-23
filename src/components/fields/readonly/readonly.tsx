@@ -31,8 +31,12 @@ export const Readonly: React.FC<ReadonlyProps> = ({
   }
 
   return (
-    <Paragraph strong ellipsis={{ rows: 2, expandable: true }}>
-      {format(value) || t("empty")}
+    <Paragraph
+      style={{ marginBottom: 0 }}
+      strong
+      ellipsis={{ rows: 2, expandable: true }}
+    >
+      {value ? format(value) : t("empty")}
     </Paragraph>
   );
 };

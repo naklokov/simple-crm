@@ -97,8 +97,4 @@ export const RestorePassword = ({ setLoading }: RestorePasswordProps) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setLoading: (loaded: boolean) => dispatch(actions.setLoading(loaded)),
-});
-
-export default connect(null, mapDispatchToProps)(RestorePassword);
+export default RestorePassword;

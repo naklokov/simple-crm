@@ -6,6 +6,7 @@ import { columns as tableColumns } from "../components";
 
 import {
   ActionProps,
+  ActionType,
   ColumnProps,
   EntityOwnerProps,
   LinksType,
@@ -16,7 +17,7 @@ import { getEditableProp } from "./editable";
 import { renderActions } from "./actions";
 import { getColumnSearchProp } from "./column-search";
 import { fetchDictionary } from "./fetch";
-import { DefaultSortProps } from "../constants";
+import { SortColumnOrderProps } from "../constants";
 
 const getRenderProp = (column: ColumnProps) => ({
   render: (text: string, record: any) => {
@@ -49,10 +50,20 @@ const getRenderProp = (column: ColumnProps) => ({
   },
 });
 
+export const checkColumnActionType = (
+  column: ColumnProps,
+  actionType: ActionType
+) =>
+  column.columnActions?.some((o: ActionProps) => o.actionType === actionType);
+
+export const replaceLikeChars = (value?: string) =>
+  value?.replace(/%/g, "") ?? "";
+
 export const getColumn = (
   column: ColumnProps,
   searchedColumns: RecordType,
-  defaultSort?: DefaultSortProps,
+  withLocalSort: boolean,
+  sortColumnOrder?: SortColumnOrderProps,
   permissions: string[] = []
 ) => {
   const { columnCode, columnName, fixed, ellipsis, width } = column;
@@ -64,8 +75,7 @@ export const getColumn = (
     fixed,
     width,
     ellipsis,
-    defaultSortOrder: defaultSort?.[columnCode],
-    ...getSorterProp(column),
+    ...getSorterProp(withLocalSort, column, sortColumnOrder),
     ...getEditableProp(column, permissions),
     ...getColumnSearchProp(column, searchedColumns),
     ...getRenderProp(column),
@@ -116,14 +126,16 @@ export const getActions = (
 export const getDataColumns = (
   columns: ColumnProps[] = [],
   searchedColumns: RecordType,
-  defaultSort?: DefaultSortProps,
+  withLocalSort: boolean,
+  sortColumnOrder?: SortColumnOrderProps,
   permissions?: string[]
 ) =>
   columns.map((column) => {
     const columnProps = getColumn(
       column,
       searchedColumns,
-      defaultSort,
+      withLocalSort,
+      sortColumnOrder,
       permissions
     );
 

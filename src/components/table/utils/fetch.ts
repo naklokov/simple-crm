@@ -1,7 +1,7 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
 import { defaultErrorHandler } from "../../../utils";
-import { setDictionaries } from "../../../__data__";
+import { setDictionaries, setTableLoading } from "../../../__data__";
 
 export const fetchDictionary = async (
   url: string,
@@ -10,8 +10,9 @@ export const fetchDictionary = async (
 ) => {
   try {
     const response = await axios.get(url);
-    const dictionary = { [dictionaryName]: response?.data ?? [] };
-    dispatch(setDictionaries(dictionary));
+    dispatch(
+      setDictionaries({ name: dictionaryName, data: response?.data ?? [] })
+    );
   } catch (error) {
     defaultErrorHandler({ error });
   }

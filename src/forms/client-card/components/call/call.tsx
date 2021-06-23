@@ -12,10 +12,10 @@ interface CallProps {
 
 export const Call = ({ onClick }: CallProps) => {
   const [t] = useTranslation("clientCard");
-  const { values } = useFormValues<ClientEntityProps>(FORM_NAMES.CLIENT_CARD);
+  const [client] = useFormValues<ClientEntityProps>(FORM_NAMES.CLIENT_CARD);
 
   return (
-    <ComponentPermissionsChecker hasRight={values?.isOwner?.UPDATE}>
+    <ComponentPermissionsChecker hasRight={client?.isOwner?.UPDATE}>
       <Popconfirm
         title={t("confirm.call")}
         onConfirm={onClick}

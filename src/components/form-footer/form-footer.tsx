@@ -1,9 +1,9 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, CSSProperties } from "react";
 import { Form, Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
 
 import { FormInstance } from "antd/lib/form";
-import style from "./form-footer.module.scss";
+import styleCss from "./form-footer.module.scss";
 import { ComponentPermissionsChecker } from "../../wrappers";
 
 interface FormFooterProps {
@@ -13,6 +13,7 @@ interface FormFooterProps {
   permissions?: string[];
   withCancel?: boolean;
   onCancel?: () => void;
+  style?: CSSProperties;
 }
 
 export const FormFooter: React.FC<FormFooterProps> = ({
@@ -21,6 +22,7 @@ export const FormFooter: React.FC<FormFooterProps> = ({
   loading = false,
   permissions = [],
   withCancel = true,
+  style = {},
   onCancel,
 }) => {
   const [visible, setVisible] = useState(false);
@@ -28,7 +30,7 @@ export const FormFooter: React.FC<FormFooterProps> = ({
 
   const handleCancel = useCallback(() => {
     setVisible(false);
-  }, [visible]);
+  }, []);
 
   const handleClick = useCallback(
     (event) => {
@@ -46,10 +48,10 @@ export const FormFooter: React.FC<FormFooterProps> = ({
     } else {
       setVisible(!visible);
     }
-  }, [visible, disabled]);
+  }, [visible, disabled, onCancel]);
 
   return (
-    <Form.Item className={style.container}>
+    <Form.Item style={style} className={styleCss.container}>
       {withCancel && (
         <Popconfirm
           placement="topRight"
@@ -59,14 +61,14 @@ export const FormFooter: React.FC<FormFooterProps> = ({
           onVisibleChange={handleVisibleChange}
           visible={visible}
         >
-          <Button className={style.cancel}>{t("cancel")}</Button>
+          <Button className={styleCss.cancel}>{t("cancel")}</Button>
         </Popconfirm>
       )}
       <ComponentPermissionsChecker availablePermissions={permissions}>
         <Button
           type="primary"
           htmlType="submit"
-          className={style.submit}
+          className={styleCss.submit}
           loading={loading}
           disabled={disabled}
           onClick={handleClick}

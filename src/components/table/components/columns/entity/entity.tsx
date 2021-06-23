@@ -1,7 +1,9 @@
+import { isEmpty } from "lodash";
 import React, { useContext } from "react";
 import { connect } from "react-redux";
 import { ColumnProps, RecordType, State } from "../../../../../constants";
 import { HighlightTextWrapper } from "../../../../../wrappers";
+import { Skeleton } from "../../../../skeleton";
 import { SearchedAllContext, SearchedColumnsContext } from "../../../utils";
 
 interface EntityProps {
@@ -21,8 +23,13 @@ export const Entity = ({
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
 
   const { columnCode, valueField = "", titleField = "" } = column;
-  const options = dictionaries?.[columnCode] ?? [];
-  const option = options?.find((o: any) => o[valueField] === value);
+  const entities = dictionaries?.[columnCode];
+  const option = entities?.find((o: any) => o[valueField] === value);
+
+  if (!option && value) {
+    return <Skeleton.Input />;
+  }
+
   const text = option?.[titleField] ?? "";
 
   return (

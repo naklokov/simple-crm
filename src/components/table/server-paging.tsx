@@ -1,9 +1,18 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { TablePaginationConfig } from "antd/lib/table";
 import { PaginationConfig } from "antd/lib/pagination";
 import { useDispatch } from "react-redux";
+import {
+  TablePaginationConfig,
+  TableRowSelection,
+} from "antd/lib/table/interface";
 import { Table } from ".";
 import {
   ActionProps,
@@ -21,14 +30,15 @@ import {
   pluralize,
 } from "../../utils";
 import {
-  getDefaultSort,
+  getSortOrder,
   getFetchDataSourceQuery,
   getFilterAllRsqlQuery,
   getFilterColumnRsqlQuery,
-  getInitialQueries,
+  getInitialParams,
   getSearchedColumnsFromFilters,
   getSortedParams,
   useTableServerPagingParams,
+  getDefaultSortBy,
 } from "./utils";
 import {
   DEFAULT_PAGE_NUMBER,
@@ -43,22 +53,32 @@ const SEARCH_ALL_KEYS = ["phone", "inn", "shortName", "city"];
 export interface TableWithServerPagingProps {
   columns?: ColumnProps[];
   actions?: ActionProps[];
+  links: LinksType;
   extraTitle?: JSX.Element;
   extraRsqlParams?: RsqlParamProps[];
   withSearch?: boolean;
+  rowSelection?: TableRowSelection<any>;
+  footer?: ReactNode;
   searchPlaceholder?: string;
+  getTotal?: (total: number) => string;
+  reloadKey?: string;
   defaultPageSize?: number;
-  links: LinksType;
+  defaultSortField?: string;
 }
 
 export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
   columns = [],
   actions = [],
+  links = {},
   extraTitle,
   withSearch,
+  rowSelection,
+  footer,
   searchPlaceholder,
-  links = {},
+  getTotal,
+  reloadKey = "",
   defaultPageSize,
+  defaultSortField,
 }) => {
   const [url, initialSearch] = links?.self?.href?.split("?") ?? [];
   const [t] = useTranslation("tableServer");
@@ -68,9 +88,10 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
 
   const [dataSource, setDataSource] = useState<ClientEntityProps[]>([]);
   const [total, setTotal] = useState(0);
-  const initialQueries = useMemo(() => getInitialQueries(initialSearch), [
-    initialSearch,
-  ]);
+  const { initialQueries, initialSearchParams } = useMemo(
+    () => getInitialParams(initialSearch),
+    [initialSearch]
+  );
 
   const {
     page,
@@ -98,9 +119,10 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
       try {
         const response = await axios.get(url, {
           params: {
+            ...initialSearchParams,
             page,
             pageSize,
-            sortBy,
+            sortBy: sortBy || getDefaultSortBy(columns, defaultSortField),
             query: getFetchDataSourceQuery(filters, initialQueries),
           },
         });
@@ -115,7 +137,18 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     };
 
     fetchDataSource();
-  }, [filters, page, pageSize, initialQueries, sortBy, url, dispatch]);
+  }, [
+    filters,
+    page,
+    pageSize,
+    initialQueries,
+    sortBy,
+    url,
+    dispatch,
+    defaultSortField,
+    columns,
+    reloadKey,
+  ]);
 
   const handleSearchAll = useCallback(
     (inputSearchedAll: string) => {
@@ -143,11 +176,17 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
 
   const handleChangeTable = useCallback(
     (paginationParams: PaginationConfig, tableFilters, sorter) => {
+      const sortByNext = getSortedParams(sorter);
+
       setPage(paginationParams.current || DEFAULT_PAGE_NUMBER);
       setPageSize(paginationParams.pageSize || DEFAULT_PAGE_SIZE);
-      setSortBy(getSortedParams(sorter));
+      setSortBy(sortByNext);
+
+      if (sortByNext !== sortBy) {
+        setPage(DEFAULT_PAGE_NUMBER);
+      }
     },
-    [setPage, setPageSize, setSortBy]
+    [setPage, setPageSize, setSortBy, sortBy]
   );
 
   const handleSearchColumn = useCallback(
@@ -181,7 +220,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     setFilters({});
   }, [setFilters]);
 
-  const totalText = pluralize(total, [
+  const defaultTotal = pluralize(total, [
     t("total.title.one", { total }),
     t("total.title.some", { total }),
     t("total.title.many", { total }),
@@ -191,7 +230,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     pageSize,
     current: page,
     total,
-    showTotal: () => totalText,
+    showTotal: () => getTotal?.(total) || defaultTotal,
   };
 
   const tableHeader = useMemo(
@@ -218,13 +257,16 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
       tableHeader={tableHeader}
       pagination={serverPagination}
       onDeleteRow={handleDelete}
-      defaultSort={getDefaultSort(sortBy)}
+      sortOrder={getSortOrder(sortBy)}
       dataSource={dataSource}
       onChangeTable={handleChangeTable}
       onSearchColumn={handleSearchColumn}
       onResetFilter={handleResetFilter}
       searchAll={searchedAll}
       searchedColumns={searchedColumns}
+      rowSelection={rowSelection}
+      footer={footer}
+      withLocalSort={false}
     />
   );
 };

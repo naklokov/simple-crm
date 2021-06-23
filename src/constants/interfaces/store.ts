@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { ProfileInfoEntityProps } from "./entities";
 
 export interface PersistState {
@@ -10,14 +11,24 @@ export interface AppState {
   dictionaries: object;
   error: ErrorAppState;
   tableLoading: boolean;
-  formLoading: boolean;
-  loading: boolean;
-  forms: any;
+}
+
+export interface MenuSubDrawerState {
+  id: string;
+  title: string;
+  width?: number;
+}
+
+export interface FormState {
+  formLoading: { [key: string]: boolean };
+  forms: { [key: string]: any };
 }
 
 export interface State {
   persist: PersistState;
   app: AppState;
+  menuSubDrawer: MenuSubDrawerState;
+  form: FormState;
 }
 
 export interface ErrorAppState {

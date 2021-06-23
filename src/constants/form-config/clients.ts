@@ -8,6 +8,7 @@ export const CLIENTS: { tabs: TabProps[] } = {
       tabName: "Мои клиенты",
       tabDescription: "",
       type: "table",
+      tableType: "server",
       actions: [],
       columns: [
         {
@@ -96,6 +97,7 @@ export const CLIENTS: { tabs: TabProps[] } = {
       tabDescription: "",
       type: "table",
       actions: [],
+      tableType: "server",
       columns: [
         {
           columnName: "Наименование",
