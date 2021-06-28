@@ -1,0 +1,797 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>CRM-MCPR - v0.10.0</title>
+	<meta name="description" content="Documentation for CRM-MCPR - v0.10.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">CRM-MCPR - v0.10.0</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>CRM-MCPR - v0.10.0</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#mcpr-crm" id="mcpr-crm" style="color: inherit; text-decoration: none;">
+					<h1>MCPR CRM</h1>
+				</a>
+				<p>Программный продукт MCPR CRM представляет собой информационную систему управления отношениями с клиентами.</p>
+				<p>Основным назначением MCPR CRM является автоматизация двух ключевых процессов обслуживания клиентов:</p>
+				<p>процесса продажи, включающего изучение потребностей клиента, привлечение и взаимодействие с клиентом, реализацию продажи;</p>
+				<p>процесса обработки заказов (прием, сопровождение и контроль выполнения заказов клиентов).</p>
+				<a href="#демо" id="демо" style="color: inherit; text-decoration: none;">
+					<h2>Демо</h2>
+				</a>
+				<p>Демо проекта можно просмотреть <a href="http://mcpr-tech.online:8000/">тут</a></p>
+				<a href="#документация" id="документация" style="color: inherit; text-decoration: none;">
+					<h2>Документация</h2>
+				</a>
+				<p>Документация по текущему проекту описана на <a href="https://olivje-group.atlassian.net/wiki/spaces/OLIVJE/overview?homepageId=262146">Confluence</a></p>
+				<a href="#локальный-запуск-приложения" id="локальный-запуск-приложения" style="color: inherit; text-decoration: none;">
+					<h2>Локальный запуск приложения</h2>
+				</a>
+				<ol>
+					<li><p>Необходимо клонировать приложение на свой ПК</p>
+						<p><code>git clone https://bitbucket.org/olivje_group/olivje.crm.pl.git</code></p>
+					</li>
+					<li><p>Перейти в папку с проектом
+						<code>cd olivje.crm.pl</code></p>
+					</li>
+					<li><p>Выполнить установку зависимостей
+						<code>npm install</code></p>
+					</li>
+					<li><p>Запустить приложение <code>npm start</code></p>
+					</li>
+				</ol>
+				<a href="#структура-git" id="структура-git" style="color: inherit; text-decoration: none;">
+					<h2>Структура git</h2>
+				</a>
+				<p><strong>Основная ветка</strong> - ветка <code>master</code>, она содержит последний стабильный релиз, который находится в промышленной эксплуатации</p>
+				<p><strong>Ветка разработки</strong> - <code>develop</code>, в ней находятся все новые фичи от ветки <code>master</code>. Могут присутствовать нестабильные изменения.</p>
+				<a href="#архитектура" id="архитектура" style="color: inherit; text-decoration: none;">
+					<h2>Архитектура</h2>
+				</a>
+				<a href="#ui-amp-ux" id="ui-amp-ux" style="color: inherit; text-decoration: none;">
+					<h3>UI &amp; UX</h3>
+				</a>
+				<p><a href="https://ant.design/">antd</a> - библиотека UI компонентов. Хорошо кастомизируется, содержит очень большое количество компонентов из “коробки”. Имеет плагин для создания макетов в Figma.</p>
+				<p><a href="https://www.figma.com/">Figma</a> - web инструмент для централизованного создания макетов и прототипов</p>
+				<a href="#разработка" id="разработка" style="color: inherit; text-decoration: none;">
+					<h3>Разработка</h3>
+				</a>
+				<p><a href="https://create-react-app.dev/docs/getting-started/">CRA (Create React App)</a> - это официальный поддерживаемый способ создания одностраничных приложений React. Он предлагает современную настройку сборки без конфигурации.</p>
+				<p><a href="https://www.typescriptlang.org/">Typescript</a> - плагин для разработки JS с поддержкой статической типизации</p>
+				<p><a href="https://reactrouter.com/">React-router</a> - маршрутизация внутри приложения (переходы по страницам, ограничение прав на просмотр определённых страниц)</p>
+				<p><a href="https://github.com/axios/axios">axios</a> - библиотека для совершения асинхронных запросов на сервер</p>
+				<p><a href="https://www.i18next.com/">i18next</a> - локализация приложения (средство перевода)</p>
+				<p><a href="https://redux.js.org/">Redux</a> - библиотека для централизованного хранения данных и обработчиков событий</p>
+				<p><a href="https://lodash.com/">LoDash</a> - набор утилит и шаблонизаторов</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="modules.html">Modules</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/__data___app.html">__data__/app</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/__data___form.html">__data__/form</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/__data___menu_sub_drawer.html">__data__/menu-<wbr>sub-<wbr>drawer</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/__data___persist.html">__data__/persist</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/__mocks___location.html">__mocks__/location</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/__mocks___matchmedia.html">__mocks__/match<wbr>Media</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/__mocks___react_i18next.html">__mocks__/react-<wbr>i18next</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/__mocks___react_router_dom.html">__mocks__/react-<wbr>router-<wbr>dom</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/__mocks___uuid.html">__mocks__/uuid</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/app_app.html">app/app</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/app_interceptors_errors.html">app/interceptors/errors</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/app_routes_protected.html">app/routes/protected</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/app_routes_routes.html">app/routes/routes</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/assets_icons_icons.html">assets/icons/icons</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_add_user_add_user.html">components/add-<wbr>user/add-<wbr>user</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_add_user_constants.html">components/add-<wbr>user/constants</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_avatar_avatar.html">components/avatar/avatar</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_button_layout_button_layout.html">components/button-<wbr>layout/button-<wbr>layout</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_comment_comment.html">components/comment/comment</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_comment_components_delete_delete.html">components/comment/components/delete/delete</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_comment_components_edit_edit.html">components/comment/components/edit/edit</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_comment_components_editor_editor.html">components/comment/components/editor/editor</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_comment_utils.html">components/comment/utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_drawer_form_drawer_form.html">components/drawer-<wbr>form/drawer-<wbr>form</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_extended_text_extended_text.html">components/extended-<wbr>text/extended-<wbr>text</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_fields_container_fields_container.html">components/fields-<wbr>container/fields-<wbr>container</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_fields_datetime_datetime.html">components/fields/date<wbr>Time/date<wbr>Time</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_fields_dictionary_dictionary.html">components/fields/dictionary/dictionary</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_fields_email_email.html">components/fields/email/email</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_fields_entity_entity.html">components/fields/entity/entity</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_fields_href_href.html">components/fields/href/href</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_fields_loading_loading.html">components/fields/loading/loading</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_fields_phone_phone.html">components/fields/phone/phone</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_fields_readonly_readonly.html">components/fields/readonly/readonly</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_fields_text_text.html">components/fields/text/text</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_fields_text_textarea.html">components/fields/text/text<wbr>Area</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_form_footer_form_footer.html">components/form-<wbr>footer/form-<wbr>footer</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_form_header_form_header.html">components/form-<wbr>header/form-<wbr>header</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_loader_loader.html">components/loader/loader</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_loader_tests_loader_spec.html">components/loader/tests/loader.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_login_header_login_header.html">components/login-<wbr>header/login-<wbr>header</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_notifications_components_button_secondary_button_secondary.html">components/notifications/components/button-<wbr>secondary/button-<wbr>secondary</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_notifications_components_notification_list_notification_list.html">components/notifications/components/notification-<wbr>list/notification-<wbr>list</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_notifications_components_notification_notification.html">components/notifications/components/notification/notification</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_notifications_notifications.html">components/notifications/notifications</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_phone_input_phone_input.html">components/phone-<wbr>input/phone-<wbr>input</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_search_bar_search_bar.html">components/search-<wbr>bar/search-<wbr>bar</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_skeleton_avatar.html">components/skeleton/avatar</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_skeleton_input.html">components/skeleton/input</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_skeleton_title.html">components/skeleton/title</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_client_paging.html">components/table/client-<wbr>paging</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_actions_call.html">components/table/components/actions/call</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_actions_delete.html">components/table/components/actions/delete</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_actions_done.html">components/table/components/actions/done</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_actions_email.html">components/table/components/actions/email</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_actions_link.html">components/table/components/actions/link</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_actions_view.html">components/table/components/actions/view</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_columns_date_date.html">components/table/components/columns/date/date</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_columns_dictionary_dictionary.html">components/table/components/columns/dictionary/dictionary</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_columns_entity_entity.html">components/table/components/columns/entity/entity</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_columns_number_number.html">components/table/components/columns/number/number</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_columns_text_text.html">components/table/components/columns/text/text</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_search_date.html">components/table/components/search/date</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_search_dictionary.html">components/table/components/search/dictionary</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_search_entity.html">components/table/components/search/entity</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_search_footer.html">components/table/components/search/footer</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_search_phone.html">components/table/components/search/phone</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_search_text.html">components/table/components/search/text</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_components_table_header_table_header.html">components/table/components/table-<wbr>header/table-<wbr>header</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_constants.html">components/table/constants</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_server_paging.html">components/table/server-<wbr>paging</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_table.html">components/table/table</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_utils_actions.html">components/table/utils/actions</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_utils_column_search.html">components/table/utils/column-<wbr>search</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_utils_common.html">components/table/utils/common</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_utils_context.html">components/table/utils/context</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_utils_editable.html">components/table/utils/editable</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_utils_fetch.html">components/table/utils/fetch</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_utils_server_pagination_helper.html">components/table/utils/server-<wbr>pagination-<wbr>helper</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_utils_sorter.html">components/table/utils/sorter</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_utils_tests_common_spec.html">components/table/utils/tests/common.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_utils_tests_fetch_spec.html">components/table/utils/tests/fetch.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_utils_tests_server_pagination_helper_spec.html">components/table/utils/tests/server-<wbr>pagination-<wbr>helper.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/components_table_utils_tests_sorter_spec.html">components/table/utils/tests/sorter.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/drawers_contact_add.html">drawers/contact/add</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/drawers_contact_view.html">drawers/contact/view</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/drawers_tasks_add.html">drawers/tasks/add</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/drawers_tasks_completed.html">drawers/tasks/completed</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/drawers_tasks_view.html">drawers/tasks/view</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_client_card.html">forms/client-<wbr>card/client-<wbr>card</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_components_call_call.html">forms/client-<wbr>card/components/call/call</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_components_delete_delete.html">forms/client-<wbr>card/components/delete/delete</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_header.html">forms/client-<wbr>card/header</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_tabs_comments_comments.html">forms/client-<wbr>card/tabs/comments/comments</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_tabs_comments_components_footer_footer.html">forms/client-<wbr>card/tabs/comments/components/footer/footer</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_tabs_comments_components_order_order.html">forms/client-<wbr>card/tabs/comments/components/order/order</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_tabs_comments_utils.html">forms/client-<wbr>card/tabs/comments/utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_tabs_contacts_contacts.html">forms/client-<wbr>card/tabs/contacts/contacts</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_tabs_contacts_header.html">forms/client-<wbr>card/tabs/contacts/header</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_tabs_documents_documents.html">forms/client-<wbr>card/tabs/documents/documents</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_tabs_main_main.html">forms/client-<wbr>card/tabs/main/main</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_tabs_price_list_price_list.html">forms/client-<wbr>card/tabs/price-<wbr>list/price-<wbr>list</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_tabs_requisites_requisites.html">forms/client-<wbr>card/tabs/requisites/requisites</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_tabs_tasks_tasks.html">forms/client-<wbr>card/tabs/tasks/tasks</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_utils_common.html">forms/client-<wbr>card/utils/common</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_client_card_utils_main.html">forms/client-<wbr>card/utils/main</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_clients_clients.html">forms/clients/clients</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_clients_header.html">forms/clients/header</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_clients_utils.html">forms/clients/utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_components_clients_clients.html">forms/department-<wbr>card/components/clients/clients</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_components_header_header.html">forms/department-<wbr>card/components/header/header</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_components_information_components_fields_fields.html">forms/department-<wbr>card/components/information/components/fields/fields</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_components_information_components_hierarchy_hierarchy.html">forms/department-<wbr>card/components/information/components/hierarchy/hierarchy</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_components_information_components_role_footer_role_footer.html">forms/department-<wbr>card/components/information/components/role-<wbr>footer/role-<wbr>footer</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_components_information_components_role_header_role_header.html">forms/department-<wbr>card/components/information/components/role-<wbr>header/role-<wbr>header</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_components_information_components_role_components_role_row_component_info_info.html">forms/department-<wbr>card/components/information/components/role/components/role-<wbr>row/component/info/info</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_components_information_components_role_components_role_row_component_person_person.html">forms/department-<wbr>card/components/information/components/role/components/role-<wbr>row/component/person/person</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_components_information_components_role_components_role_row_role_row.html">forms/department-<wbr>card/components/information/components/role/components/role-<wbr>row/role-<wbr>row</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_components_information_components_role_role.html">forms/department-<wbr>card/components/information/components/role/role</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_components_information_information.html">forms/department-<wbr>card/components/information/information</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_components_information_utils.html">forms/department-<wbr>card/components/information/utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_components_staff_staff.html">forms/department-<wbr>card/components/staff/staff</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_department_card.html">forms/department-<wbr>card/department-<wbr>card</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_tests_utils_spec.html">forms/department-<wbr>card/tests/utils.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_department_card_utils.html">forms/department-<wbr>card/utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_error_screens_components_client_error_client_error.html">forms/error-<wbr>screens/components/client-<wbr>error/client-<wbr>error</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_error_screens_components_server_error_server_error.html">forms/error-<wbr>screens/components/server-<wbr>error/server-<wbr>error</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_error_screens_error_screen.html">forms/error-<wbr>screens/error-<wbr>screen</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_error_screens_not_found_screen.html">forms/error-<wbr>screens/not-<wbr>found-<wbr>screen</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_forgot_password_constants.html">forms/forgot-<wbr>password/constants</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_forgot_password_forgot_password.html">forms/forgot-<wbr>password/forgot-<wbr>password</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_forgot_password_utils_form_builder.html">forms/forgot-<wbr>password/utils/form-<wbr>builder</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_forgot_password_utils_tests_form_builder_spec.html">forms/forgot-<wbr>password/utils/tests/form-<wbr>builder.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_login_constants.html">forms/login/constants</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_login_login.html">forms/login/login</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_login_utils_form_builder.html">forms/login/utils/form-<wbr>builder</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_profile_components_header_header.html">forms/profile/components/header/header</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_profile_profile.html">forms/profile/profile</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_profile_tabs_profile_main_profile_main.html">forms/profile/tabs/profile-<wbr>main/profile-<wbr>main</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_restore_password_constants.html">forms/restore-<wbr>password/constants</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_restore_password_restore_password.html">forms/restore-<wbr>password/restore-<wbr>password</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_restore_password_utils_conditional.html">forms/restore-<wbr>password/utils/conditional</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_restore_password_utils_form_builder.html">forms/restore-<wbr>password/utils/form-<wbr>builder</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_restore_password_utils_tests_conditional_spec.html">forms/restore-<wbr>password/utils/tests/conditional.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_tasks_components_calendar_calendar.html">forms/tasks/components/calendar/calendar</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_tasks_components_calendar_components_cell_cell.html">forms/tasks/components/calendar/components/cell/cell</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_tasks_components_calendar_components_header_header.html">forms/tasks/components/calendar/components/header/header</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_tasks_components_calendar_tests_stub.html">forms/tasks/components/calendar/tests/stub</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_tasks_components_calendar_tests_utils_spec.html">forms/tasks/components/calendar/tests/utils.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_tasks_components_calendar_utils.html">forms/tasks/components/calendar/utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_tasks_components_card_card.html">forms/tasks/components/card/card</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_tasks_components_column_column.html">forms/tasks/components/column/column</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_tasks_constants.html">forms/tasks/constants</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_tasks_header.html">forms/tasks/header</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_tasks_tasks.html">forms/tasks/tasks</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_tasks_tests_utils_spec.html">forms/tasks/tests/utils.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/forms_tasks_utils.html">forms/tasks/utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_authorized.html">layouts/authorized/authorized</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_about_about.html">layouts/authorized/components/about/about</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_logo_logo.html">layouts/authorized/components/logo/logo</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_sub_drawer_components_departments_select_components_department_info_popover_components_profiles_list_item.html">layouts/authorized/components/menu-<wbr>sub-<wbr>drawer/components/departments-<wbr>select/components/department-<wbr>info-<wbr>popover/components/profiles-<wbr>list/item</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_sub_drawer_components_departments_select_components_department_info_popover_components_profiles_list_profiles_list.html">layouts/authorized/components/menu-<wbr>sub-<wbr>drawer/components/departments-<wbr>select/components/department-<wbr>info-<wbr>popover/components/profiles-<wbr>list/profiles-<wbr>list</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_sub_drawer_components_departments_select_components_department_info_popover_department_info_popover.html">layouts/authorized/components/menu-<wbr>sub-<wbr>drawer/components/departments-<wbr>select/components/department-<wbr>info-<wbr>popover/department-<wbr>info-<wbr>popover</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_sub_drawer_components_departments_select_components_departments_tree_departments_tree.html">layouts/authorized/components/menu-<wbr>sub-<wbr>drawer/components/departments-<wbr>select/components/departments-<wbr>tree/departments-<wbr>tree</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_sub_drawer_components_departments_select_constants.html">layouts/authorized/components/menu-<wbr>sub-<wbr>drawer/components/departments-<wbr>select/constants</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_sub_drawer_components_departments_select_departments_select.html">layouts/authorized/components/menu-<wbr>sub-<wbr>drawer/components/departments-<wbr>select/departments-<wbr>select</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_sub_drawer_components_departments_select_tests_utils_spec.html">layouts/authorized/components/menu-<wbr>sub-<wbr>drawer/components/departments-<wbr>select/tests/utils.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_sub_drawer_components_departments_select_utils.html">layouts/authorized/components/menu-<wbr>sub-<wbr>drawer/components/departments-<wbr>select/utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_sub_drawer_menu_sub_drawer.html">layouts/authorized/components/menu-<wbr>sub-<wbr>drawer/menu-<wbr>sub-<wbr>drawer</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_components_item_components_drawer_drawer.html">layouts/authorized/components/menu/components/item/components/drawer/drawer</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_components_item_components_link_link.html">layouts/authorized/components/menu/components/item/components/link/link</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_components_item_item.html">layouts/authorized/components/menu/components/item/item</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_menu.html">layouts/authorized/components/menu/menu</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_tests_utils_spec.html">layouts/authorized/components/menu/tests/utils.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_menu_utils.html">layouts/authorized/components/menu/utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_profile_profile.html">layouts/authorized/components/profile/profile</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_authorized_components_profile_utils.html">layouts/authorized/components/profile/utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/layouts_unauthorized_unauthorized.html">layouts/unauthorized/unauthorized</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/react_app_env.html">react-<wbr>app-<wbr>env</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/setupproxy.html">setup<wbr>Proxy</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/setuptests.html">setup<wbr>Tests</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_common.html">utils/common</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_context.html">utils/context</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_form.html">utils/form</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_hooks.html">utils/hooks</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_local_storage.html">utils/local-<wbr>storage</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_notification_service_components_content_content.html">utils/notification-<wbr>service/components/content/content</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_notification_service_components_overdue_content_overdue_content.html">utils/notification-<wbr>service/components/overdue-<wbr>content/overdue-<wbr>content</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_notification_service_components_title_title.html">utils/notification-<wbr>service/components/title/title</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_notification_service_notification_service.html">utils/notification-<wbr>service/notification-<wbr>service</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_notification_service_tests_stubs.html">utils/notification-<wbr>service/tests/stubs</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_notification_service_tests_utils_spec.html">utils/notification-<wbr>service/tests/utils.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_notification_service_utils.html">utils/notification-<wbr>service/utils</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_phone.html">utils/phone</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_remote_logger.html">utils/remote-<wbr>logger</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_rsql.html">utils/rsql</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_sounds.html">utils/sounds</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_tasks.html">utils/tasks</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_tests_common_spec.html">utils/tests/common.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_tests_form_spec.html">utils/tests/form.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_tests_hooks_spec.html">utils/tests/hooks.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_tests_local_storage_spec.html">utils/tests/local-<wbr>storage.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_tests_phone_spec.html">utils/tests/phone.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_tests_remote_logger_spec.html">utils/tests/remote-<wbr>logger.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_tests_rsql_spec.html">utils/tests/rsql.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/utils_tests_tasks_spec.html">utils/tests/tasks.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/wrappers_container_wrapper.html">wrappers/container-<wbr>wrapper</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/wrappers_error_boundary_wrapper.html">wrappers/error-<wbr>boundary-<wbr>wrapper</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/wrappers_form_wrapper.html">wrappers/form-<wbr>wrapper</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/wrappers_highlight_text_wrapper.html">wrappers/highlight-<wbr>text-<wbr>wrapper</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/wrappers_permissions_checker_component_checker.html">wrappers/permissions-<wbr>checker/component-<wbr>checker</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/wrappers_permissions_checker_page_checker.html">wrappers/permissions-<wbr>checker/page-<wbr>checker</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/wrappers_permissions_checker_tests_utils_spec.html">wrappers/permissions-<wbr>checker/tests/utils.spec</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/wrappers_permissions_checker_utils.html">wrappers/permissions-<wbr>checker/utils</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

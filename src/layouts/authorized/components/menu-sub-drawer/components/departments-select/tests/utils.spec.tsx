@@ -237,10 +237,10 @@ test("getTreeData", () => {
   expect(treeData.length).toBe(1);
   expect(treeData[0].key).toBe(department1.id);
 
-  expect(treeData[0].children.length).toBe(2);
-  expect(treeData[0].children[0].key).toBe("222");
-  expect(treeData[0].children[1].key).toBe("333");
+  expect(treeData?.[0]?.children?.length).toBe(2);
+  expect(treeData?.[0]?.children?.[0]?.key).toBe("222");
+  expect(treeData?.[0]?.children?.[1]?.key).toBe("333");
 
-  expect(treeData[0].children[0].children.length).toBe(1);
-  expect(treeData[0].children[0].children[0].key).toBe("444");
+  expect(treeData?.[0]?.children?.[0]?.children?.length).toBe(1);
+  expect(treeData?.[0]?.children?.[0]?.children?.[0]?.key).toBe("444");
 });
