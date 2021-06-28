@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useContext, useMemo } from "react";
 import { Input, Form, InputNumber } from "antd";
-import { noop, isEqual } from "lodash";
+import { noop, isEqual, toNumber } from "lodash";
 
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -72,7 +72,6 @@ const EditableCell = ({
   const save = async () => {
     try {
       const values = await form.validateFields();
-
       toggleEdit();
       const updatedRecord = { ...record, ...values };
       if (!isEqual(updatedRecord, record)) {
@@ -87,6 +86,17 @@ const EditableCell = ({
   };
 
   let childNode = children;
+
+  const formatterFunction = useMemo(
+    () => (value?: number | string) =>
+      `${value}`?.replace(/\B(?=(\d{3})+(?!\d))/g, " "),
+    []
+  );
+
+  const parserFunction = useMemo(
+    () => (value?: string) => toNumber(value?.replace(/\s/g, "")),
+    []
+  );
 
   if (editable && canShow) {
     childNode = editing ? (
@@ -103,10 +113,9 @@ const EditableCell = ({
         <InputNumber
           min={0}
           step={100}
-          formatter={(value) =>
-            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-          }
-          parser={(value) => parseFloat(value?.replace(/\s/g, "") ?? "")}
+          maxLength={11}
+          formatter={formatterFunction}
+          parser={parserFunction}
           ref={inputRef}
           onPressEnter={save}
           onBlur={save}
