@@ -22,5 +22,6 @@
     "args": ["--no-cache"],
     "sourcemaps": "inline",
     "disableOptimisticBPs": true
-  }
+  },
+  "liveServer.settings.port": 5501
 }

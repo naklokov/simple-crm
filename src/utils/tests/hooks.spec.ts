@@ -1,11 +1,10 @@
 import * as reactRouter from "react-router-dom";
 import { renderHook, act } from "@testing-library/react-hooks";
+import { stringify } from "query-string";
 import { useTabs } from "../hooks";
 import { TabProps } from "../../constants";
-import { noop } from "lodash";
-import { stringify } from "query-string";
 
-const getHistoryMock = (search: string, push, replace) => ({
+const getHistoryMock = (search: string, push: Function, replace: Function) => ({
   location: {
     search,
   },
@@ -89,7 +88,7 @@ test("useTabs with pass all args", () => {
   // вкладка остаётся старой
   expect(result.current.activeTab).toEqual(tabs[0]);
 
-  //вызывается replace
+  // вызывается replace
   expect(replaceSpy).toHaveBeenCalledWith({
     search: stringify({ "lower:tab": "2" }),
   });
