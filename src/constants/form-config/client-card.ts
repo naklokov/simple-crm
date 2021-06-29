@@ -20,7 +20,7 @@ const EMAIL_MESSAGE = "Пожалуйста, введите корректный
 const URL_MESSAGE = "Пожалуйста, введите корректный url";
 const KPP_MESSAGE = "Некорректный формат КПП";
 const CHECKING_ACCOUNT_MESSAGE = "Некорректный формат расчётного счёта";
-const BANK_BIK_ACCOUNT_MESSAGE = "Некорректный формат расчётного счёта";
+const BANK_BIK_ACCOUNT_MESSAGE = "Некорректный формат БИК банка";
 const CORRESPONDENT_ACCOUNT_MESSAGE =
   "Некорректный формат корреспондентского счёта";
 const PLACEHOLDER_DEFAULT = "Введите значение";
