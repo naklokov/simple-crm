@@ -217,7 +217,7 @@
   },
   "card": {
     "tooltip.complete": "Выполнить задачу",
-    "tooltip.view": "Просмотр задачи",
+    "tooltip.edit": "Редактировать задачу",
     "tooltip.delete": "Удалить задачу",
     "delete.confirm": "Вы хотите удалить задачу?",
     "action.complete": "Выполнить",
