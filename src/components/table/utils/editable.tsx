@@ -72,6 +72,7 @@ const EditableCell = ({
   const save = async () => {
     try {
       const values = await form.validateFields();
+
       toggleEdit();
       const updatedRecord = { ...record, ...values };
       if (!isEqual(updatedRecord, record)) {
@@ -80,7 +81,6 @@ const EditableCell = ({
     } catch (error) {
       defaultErrorHandler({
         error,
-        defaultErrorMessage: t("message.row.save.error"),
       });
     }
   };
@@ -94,7 +94,7 @@ const EditableCell = ({
   );
 
   const parserFunction = useMemo(
-    () => (value?: string) => toNumber(value?.replace(/\s/g, "")),
+    () => (value?: string) => (value ? toNumber(value.replace(/\D/g, "")) : ""),
     []
   );
 
