@@ -124,7 +124,7 @@ export const lower: LowerProps = {
         {
           width: "250px",
           columnName: "Дата выполнения задачи",
-          columnCode: "updateDate",
+          columnCode: "taskCompletedDate",
           columnType: "date",
           format: "DD.MM.YYYY HH:mm",
           columnDescription: "Дата фактического выполнения задачи",
