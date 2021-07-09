@@ -17,8 +17,13 @@ interface AllowDropMapProps {
   [key: string]: AllowDropInfo;
 }
 
-export const getUpdatedDepartmentHierarchy = (target: DepartmentEntityProps) =>
-  target.departmentHierarchy + DEPARMENT_HIERARCHY_DELIMETER + target.id;
+export const getUpdatedDepartmentHierarchy = ({
+  departmentHierarchy,
+  id,
+}: DepartmentEntityProps) =>
+  departmentHierarchy
+    ? `${departmentHierarchy}${DEPARMENT_HIERARCHY_DELIMETER}${id}`
+    : id;
 
 export const getParentDepartments = (departmentHierarchy?: string) =>
   departmentHierarchy?.split(DEPARMENT_HIERARCHY_DELIMETER) ?? [];
