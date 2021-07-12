@@ -3,17 +3,15 @@ import { renderHook, act } from "@testing-library/react-hooks";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import * as redux from "react-redux";
-import { History } from "history";
+import { notification } from "antd";
 import {
-  getActiveTasksProps,
   showNotification,
   updateNotificationStatus,
   useActiveDateTime,
   useActiveTasks,
   useOverdueTasksTotal,
 } from "../utils";
-import { notification } from "antd";
-import { NotificationProps, TaskEntityProps, urls } from "../../../constants";
+import { NotificationProps, urls } from "../../../constants";
 import { TASKS_ENTITY_STUB, TASKS_PAGING_STUB } from "./stubs";
 import { NotificationWarning } from "../../../assets/icons";
 
@@ -47,7 +45,7 @@ test("showNotification overdue", () => {
   const content = <div />;
   const icon = (
     <div style={{ marginTop: "4px" }}>
-      <img />
+      <img alt="test" />
     </div>
   );
 

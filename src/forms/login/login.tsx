@@ -14,7 +14,7 @@ import { urls, State, LocationLogoutProps } from "../../constants";
 import { logger, defaultErrorHandler } from "../../utils";
 import { FORM_NAME, FIELDS } from "./constants";
 
-import { storeRememberMeParams, getRules, getInitialValues } from "./utils";
+import { getRules, getInitialValues } from "./utils";
 import { setAuth as setAuthAction } from "../../__data__";
 import { LoginHeader } from "../../components";
 
@@ -46,7 +46,6 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
     try {
       setSubmitLoading(true);
       await axios.post(urls.login.submit, values);
-      storeRememberMeParams();
 
       logger.debug({
         message: t("authentication.successfull"),
