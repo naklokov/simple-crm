@@ -1,6 +1,14 @@
 
 
-## [0.10.0](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.10.0..0.9.0) (22.06.2021)
+## [0.10.1](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.10.1..0.10.0) (12.07.2021)
+
+### Hotfix
+
+- Исправить некорректное формирование departmentHierarchy при переносе отдела [OLVE-705]
+
+
+
+## [0.10.0](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.10.0..0.9.0) (23.06.2021)
 
 ### Bug Fixes
 
