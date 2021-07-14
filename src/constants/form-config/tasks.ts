@@ -114,7 +114,7 @@ export const TASKS: TasksConfigProps = {
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: "Введите комментарий по выполненной задаче",
           rules: [
-            { max: 2000, message: "Превышена максимальная длина строки" },
+            { max: 2000, message: "Превышена максимальная длина строки - 2000 символов" },
           ],
           permissions: [],
         },
