@@ -153,7 +153,7 @@ export const Card: React.FC<CardProps> = ({
   );
 
   const titleSkeleton = (
-    <Skeleton.Input style={{ width: "200px" }} active={true} size="small" />
+    <Skeleton.Input style={{ width: "200px" }} active size="small" />
   );
 
   const cardTitle = loading ? titleSkeleton : titleContent;

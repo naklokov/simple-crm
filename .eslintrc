@@ -16,11 +16,9 @@
   "rules": {
     "object-curly-spacing": ["warn", "always"],
     "react/prop-types": 0,
-    "react/no-unused-prop-types": 0,
     "no-debugger": "error",
     "no-underscore-dangle": 0,
     "import/no-cycle": 0,
-    "no-param-reassign": ["error", { "props": false }],
     "no-unused-vars": [
       "warn",
       {
@@ -55,20 +53,15 @@
       "error",
       {
         "devDependencies": [
-          "**/*.test.js",
-          "**/*.test.jsx",
-          "**/*.test.ts",
-          "**/*.test.tsx",
+          "**/*.spec.js",
+          "**/*.spec.jsx",
+          "**/*.spec.ts",
+          "**/*.spec.tsx",
           "src/tests/**/*"
         ]
       }
     ],
     "react/jsx-props-no-spreading": "off",
-    "import/prefer-default-export": "off",
-    "react/jsx-boolean-value": "off",
-    "react/no-unescaped-entities": "off",
-    "react/jsx-one-expression-per-line": "off",
-    "react/jsx-wrap-multilines": "off",
-    "react/destructuring-assignment": "off"
+    "import/prefer-default-export": "off"
   }
 }

@@ -10,7 +10,6 @@ import { TableActionsContext } from "../../utils";
 interface EntitySearchProps extends WithTranslation {
   column: ColumnProps;
   setSelectedKeys: any;
-  setRef: any;
   selectedKeys: any;
   confirm: string;
   clearFilters: any;
@@ -39,7 +38,7 @@ export const EntitySearch = ({
 
   const handleSearch = useCallback(() => {
     onSearchColumn(searched, confirm, column);
-  }, [selectedKeys, confirm, column]);
+  }, [searched, confirm, column, onSearchColumn]);
 
   return (
     <div style={{ padding: 8 }}>
@@ -74,7 +73,7 @@ export const EntitySearch = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  dictionaries: state?.data?.dictionaries,
+  dictionaries: state?.app?.dictionaries,
 });
 
 export default flow([

@@ -31,9 +31,9 @@ export const Authorized = ({ children, loading }: AuthorizedProps) => {
     <ContainerWrapper>
       <Layout className={style.main}>
         <Sider
+          theme="light"
           collapsible
           collapsed={collapsed}
-          theme="light"
           className={style.sider}
           onCollapse={toogleCollapse}
         >
@@ -50,7 +50,7 @@ export const Authorized = ({ children, loading }: AuthorizedProps) => {
             </Space>
           </Header>
           {loading && <Loader />}
-          <Content className={style.content}>{children}</Content>
+          <Content>{children}</Content>
         </Layout>
       </Layout>
     </ContainerWrapper>

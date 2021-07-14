@@ -1,10 +1,7 @@
 @import "../../../../assets/styles/offsets";
 
-.container {
-  padding: var(--offset-xs) var(--offset-md);
-}
-
 .list {
+  margin-bottom: var(--offset-md);
   position: relative;
   min-height: 15vh;
   max-height: 40vh;

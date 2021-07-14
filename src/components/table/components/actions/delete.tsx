@@ -2,11 +2,12 @@ import React, { useCallback, useContext } from "react";
 import { Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
 
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { Dispatch, bindActionCreators } from "@reduxjs/toolkit";
 import { setTableLoading } from "../../../../__data__";
 import { HighlightTextWrapper } from "../../../../wrappers";
 import { TableActionsContext } from "../../utils";
+import { State } from "../../../../constants";
 
 interface DeleteProps {
   id: string;
@@ -20,6 +21,7 @@ export const Delete: React.FC<DeleteProps> = ({
   hasRight = true,
 }) => {
   const [t] = useTranslation("table");
+  const tableLoading = useSelector((state: State) => state?.app?.tableLoading);
   const { onDeleteRow } = useContext(TableActionsContext);
   const handleClick = useCallback(() => {
     onDeleteRow(id);
@@ -36,7 +38,7 @@ export const Delete: React.FC<DeleteProps> = ({
       placement="left"
     >
       <Button style={{ padding: 0 }} type="link">
-        <HighlightTextWrapper text={title} />
+        <HighlightTextWrapper loading={tableLoading} text={title} />
       </Button>
     </Popconfirm>
   );

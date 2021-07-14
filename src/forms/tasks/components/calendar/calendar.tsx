@@ -44,9 +44,8 @@ export const Calendar = ({
   }, []);
 
   const handleOpen = useCallback(() => {
-    reload();
     setVisible(true);
-  }, [reload]);
+  }, []);
 
   const handleClose = useCallback(() => {
     setVisible(false);
@@ -73,7 +72,6 @@ export const Calendar = ({
       <Drawer
         title={t("calendar.drawer.title")}
         placement="right"
-        closable={true}
         onClose={handleClose}
         visible={visible}
         width={380}
@@ -82,6 +80,7 @@ export const Calendar = ({
             {t("tasks.drawer.button.close")}
           </Button>
         }
+        closable
       >
         <Spin spinning={loading}>
           <CalendarUI

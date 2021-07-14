@@ -24,7 +24,6 @@ import {
   TaskEntityProps,
 } from "../../constants";
 
-import style from "./tasks.module.scss";
 import {
   AddTaskDrawer,
   CompletedTaskDrawer,
@@ -175,18 +174,20 @@ export const Tasks = () => {
           onClose={handleCloseCompleteDrawer}
           visible={completedDrawerVisible}
         />
-        <Row className={style.container}>
-          {columns.map((column) => (
-            <Col span={8} key={column.title}>
-              <Column
-                {...column}
-                onView={handleTaskView}
-                onDelete={handleTaskDelete}
-                onComplete={handleTaskComplete}
-              />
-            </Col>
-          ))}
-        </Row>
+        <form>
+          <Row>
+            {columns.map((column) => (
+              <Col span={8} key={column.title}>
+                <Column
+                  {...column}
+                  onView={handleTaskView}
+                  onDelete={handleTaskDelete}
+                  onComplete={handleTaskComplete}
+                />
+              </Col>
+            ))}
+          </Row>
+        </form>
         <BackTop />
       </>
     </PagePermissionsChecker>

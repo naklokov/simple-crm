@@ -8,12 +8,14 @@ interface DictionaryProps {
   value: string;
   column: ColumnProps;
   dictionaries: any;
+  tableLoading: boolean;
 }
 
 export const Dictionary = ({
   value,
   column,
   dictionaries,
+  tableLoading,
 }: DictionaryProps) => {
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
@@ -25,11 +27,7 @@ export const Dictionary = ({
     return null;
   }
 
-  const {
-    dictionaryValueEntities,
-    dictionaryName,
-    dictionaryDescription,
-  } = dictionary;
+  const { dictionaryValueEntities } = dictionary;
 
   const text =
     dictionaryValueEntities?.find((o: any) => o.valueCode === value)?.value ??
@@ -37,6 +35,7 @@ export const Dictionary = ({
 
   return (
     <HighlightTextWrapper
+      loading={tableLoading}
       text={text}
       searched={[searched, searchedColumns[column.columnCode]]}
     />
@@ -44,7 +43,8 @@ export const Dictionary = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  dictionaries: state?.data?.dictionaries,
+  dictionaries: state?.app?.dictionaries,
+  tableLoading: state?.app?.tableLoading,
 });
 
 export default connect(mapStateToProps)(Dictionary);

@@ -3,7 +3,6 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { PageHeader } from "antd";
 import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
 import {
   BREADCRUMB_ROUTES,
@@ -23,12 +22,17 @@ import {
 } from "../../utils";
 import { setLoading } from "../../__data__";
 import { Call, Delete } from "./components";
+import { FormHeader } from "../../components";
 
 interface ClientCardHeaderProps {
   client: ClientEntityProps;
+  footer?: ReactNode;
 }
 
-export const ClientCardHeader = ({ client }: ClientCardHeaderProps) => {
+export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
+  client,
+  footer,
+}) => {
   const [t] = useTranslation("clientCard");
   const history = useHistory();
   const { id } = useParams<QueryProps>();
@@ -50,6 +54,10 @@ export const ClientCardHeader = ({ client }: ClientCardHeaderProps) => {
       setLoading(false);
     }
   };
+
+  const handleGoBack = useCallback(() => {
+    history.go(-1);
+  }, [history]);
 
   const handleCall = useCallback(() => {
     if (phone) {
@@ -80,11 +88,13 @@ export const ClientCardHeader = ({ client }: ClientCardHeaderProps) => {
   };
 
   return (
-    <PageHeader
-      ghost={false}
+    <FormHeader
+      position="upper"
       breadcrumb={breadcrumb}
       title={title}
       extra={extra}
+      onBack={handleGoBack}
+      footer={footer}
     />
   );
 };

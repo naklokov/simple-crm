@@ -1,7 +1,12 @@
 const jsonServer = require("json-server");
 const server = jsonServer.create();
 
-const { dictionaries, profileInfo, permissions, clients } = require("./jsons");
+const {
+  dictionaries,
+  permissions,
+  clients: clientsResponse,
+  templates: templatesResponse,
+} = require("./jsons");
 
 const {
   login,
@@ -10,6 +15,10 @@ const {
   restorePassword,
   profile,
   dictionaries: dictionariesUrls,
+  userProfiles,
+  departments,
+  clients,
+  templates,
 } = require("../src/constants/urls");
 
 const {
@@ -39,8 +48,13 @@ server.post(forgotPassword.submit, sendSuccessResponce());
 
 //checkToken
 server.post(restorePassword.check, checkToken);
+server.get(templates.entity, sendSuccessResponce(templatesResponse));
+server.post(templates.generation, sendSuccessResponce(new Int8Array(4096)));
+
 //restorePassword
-server.post(restorePassword.submit, sendSuccessResponce());
+server.post(restorePassword.submit, (req, res) => {
+  res.status(HTTP_CODES.SUCCESS).json({});
+});
 
 //getProfileInfo
 // server.get(profile.info, sendSuccessResponce(profileInfo));
@@ -48,7 +62,9 @@ server.post(restorePassword.submit, sendSuccessResponce());
 server.get(profile.permissions, sendPostResponce(permissions));
 
 // клиенты
-server.get(clients.entity, sendSuccessResponce(clients));
+server.get(clients.entity, sendSuccessResponce(clientsResponse));
+server.get(userProfiles.entity, sendSuccessResponce(userProfiles));
+server.get(departments.entity, sendSuccessResponce(departments));
 
 server.get(
   dictionariesUrls.position,

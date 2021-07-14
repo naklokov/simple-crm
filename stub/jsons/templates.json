@@ -1,0 +1,48 @@
+[
+  {
+    "_links": {
+      "self": {
+        "href": "/crm/rest/entity/templates/229a3802-045c-478e-9fd6-aa702f0b49db"
+      }
+    },
+    "creationDate": "2021-03-30T14:18:26.262",
+    "departmentId": "6a3bf563-3b3f-4e59-b06f-082f1caeb997",
+    "fileId": "yyy",
+    "fileExtension": "docx",
+    "historyId": "86691f23-4c6a-44a8-9134-765b9f5110e4",
+    "id": "129a3802-045c-478e-9fd6-aa702f0b49db",
+    "isActive": true,
+    "isDeleted": false,
+    "isOwner": {
+      "DELETE": false,
+      "UPDATE": false
+    },
+    "linkedEntityType": "CLIENTS",
+    "templateDescription": "Первый тестовый шаблон",
+    "templateName": "Тестовый шаблон №1",
+    "updateDate": "2021-03-30T14:18:26.262"
+  },
+  {
+    "_links": {
+      "self": {
+        "href": "/crm/rest/entity/templates/229a3802-045c-478e-9fd6-aa702f0b49db"
+      }
+    },
+    "creationDate": "2021-03-30T14:18:26.262",
+    "departmentId": "6a3bf563-3b3f-4e59-b06f-082f1caeb997",
+    "fileId": "xxx",
+    "fileExtension": "docx",
+    "historyId": "86691f23-4c6a-44a8-9134-765b9f5110e4",
+    "id": "229a3802-045c-478e-9fd6-aa702f0b49db",
+    "isActive": true,
+    "isDeleted": false,
+    "isOwner": {
+      "DELETE": false,
+      "UPDATE": false
+    },
+    "linkedEntityType": "CLIENTS",
+    "templateDescription": "Второй тестовый шаблон",
+    "templateName": "Тестовый шаблон №2",
+    "updateDate": "2021-03-30T14:18:26.262"
+  }
+]

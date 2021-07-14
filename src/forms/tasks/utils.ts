@@ -1,10 +1,10 @@
 import { isEqual } from "lodash";
 import moment from "moment-timezone";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { DATE_FORMATS, EntityOwnerProps, State } from "../../constants";
+import { DATE_FORMATS, State } from "../../constants";
 import {
   getDateRsql,
   getDateWithTimezone,
@@ -118,11 +118,11 @@ export const getUpdatedColumns = (columns: ColumnTaskProps[], date: string) =>
 export const useColumns = (selectedDate: string) => {
   const [t] = useTranslation("tasks");
   const [columns, setColumns] = useState<ColumnTaskProps[]>([]);
-  const profileInfo = useSelector(
-    (state: State) => state?.data?.profileInfo ?? ({} as EntityOwnerProps)
+  const profileInfoId = useSelector(
+    (state: State) => state?.persist?.profileInfo?.id
   );
 
-  const isToday = checkDaysEqual(selectedDate);
+  const isToday = useMemo(() => checkDaysEqual(selectedDate), [selectedDate]);
 
   const reload = useCallback(
     (date: string) => {
@@ -136,14 +136,14 @@ export const useColumns = (selectedDate: string) => {
   );
 
   useEffect(() => {
-    if (profileInfo.id) {
+    if (profileInfoId) {
       const calendarColumns = isToday
-        ? getTodayColumns(selectedDate, profileInfo.id, t)
-        : getDateViewColumns(selectedDate, profileInfo.id);
+        ? getTodayColumns(selectedDate, profileInfoId, t)
+        : getDateViewColumns(selectedDate, profileInfoId);
 
       setColumns(calendarColumns);
     }
-  }, [selectedDate, profileInfo.id]);
+  }, [selectedDate, profileInfoId, isToday, t]);
 
   return { columns, reload };
 };

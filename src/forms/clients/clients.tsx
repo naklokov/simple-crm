@@ -1,21 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
-import { bindActionCreators, Dispatch } from "@reduxjs/toolkit";
-import { Table, Tabs } from "../../components";
+import { Tabs } from "antd";
+import { useTranslation } from "react-i18next";
+import { Table } from "../../components";
 import {
   formConfig,
   PERMISSIONS,
   ProfileInfoEntityProps,
   State,
-  urls,
-  TabProps,
 } from "../../constants";
 
-import style from "./clients.module.scss";
 import { ClientsHeader } from "./header";
 import { PagePermissionsChecker } from "../../wrappers";
-import { setTableLoading } from "../../__data__";
-import { getPersonalClientsRsql } from "./utils";
+import { fillLinks, useTabs } from "../../utils";
 
 interface ClientsProps {
   title?: string;
@@ -23,55 +20,52 @@ interface ClientsProps {
 }
 
 const {
-  CLIENTS: { tabs: TABS },
+  CLIENTS: { tabs },
 } = formConfig.clients;
 
 export const Clients: React.FC<ClientsProps> = ({ profileInfo }) => {
-  const personalClientsRsql = getPersonalClientsRsql(profileInfo?.id);
+  const [t] = useTranslation("clients");
+  const { activeTab, onChange } = useTabs(tabs);
 
-  const TABS_MAP: {
-    [key: string]: (props: any) => any;
-  } = {
-    clientsPersonal: ({ tab }: { tab: TabProps }) => (
-      <Table.Server
-        columns={tab?.columns}
-        actions={tab?.actions}
-        _links={tab?._links}
-        url={urls.clients.paging}
-        extraRsqlParams={personalClientsRsql}
-      />
-    ),
-    clientsAll: ({ tab }: { tab: TabProps }) => (
-      <Table.Server
-        columns={tab?.columns}
-        actions={tab?.actions}
-        _links={tab?._links}
-        url={urls.clients.paging}
-      />
-    ),
-  };
+  if (!profileInfo.id) {
+    return null;
+  }
 
   return (
     <PagePermissionsChecker
       availablePermissions={[PERMISSIONS.CLIENTS["GET.ALL"]]}
     >
-      <div>
-        <div className={style.header}>
-          <ClientsHeader />
-        </div>
-        <div className={style.container}>
-          <Tabs theme={{ tabs: style.tabs }} tabsMap={TABS_MAP} tabs={TABS} />
-        </div>
-      </div>
+      <>
+        <ClientsHeader
+          footer={
+            <Tabs onChange={onChange} activeKey={activeTab.tabCode}>
+              {tabs.map(({ tabName, tabCode }) => (
+                <Tabs.TabPane tab={tabName} key={tabCode} />
+              ))}
+            </Tabs>
+          }
+        />
+        {activeTab && (
+          <form>
+            <Table.Server
+              key={activeTab.tabName}
+              columns={activeTab.columns}
+              actions={activeTab.actions}
+              links={fillLinks(activeTab._links, {
+                userProfileId: profileInfo.id,
+              })}
+              searchPlaceholder={t("table.search.placeholder")}
+              withSearch
+            />
+          </form>
+        )}
+      </>
     </PagePermissionsChecker>
   );
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.data?.profileInfo,
+  profileInfo: state?.persist?.profileInfo,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ setTableLoading }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Clients);
+export default connect(mapStateToProps)(Clients);

@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import { useForm } from "antd/lib/form/Form";
 
 import { connect } from "react-redux";
-import style from "./requisites.module.scss";
 import { FormFooter } from "../../../../components";
 import {
   createFormField,
@@ -23,18 +22,13 @@ import {
   GUTTER_FULL_WIDTH,
   QueryProps,
   FORM_NAMES,
-  ProfileInfoEntityProps,
   State,
   urls,
   ClientEntityProps,
   TabPaneFormProps,
 } from "../../../../constants";
 
-interface RequisitesProps extends TabPaneFormProps {
-  profileInfo: ProfileInfoEntityProps;
-}
-
-export const Requisites = ({ tab }: RequisitesProps) => {
+export const Requisites = ({ tab }: TabPaneFormProps) => {
   const { id } = useParams<QueryProps>();
   const [form] = useForm();
   const [t] = useTranslation("clientCardRequisites");
@@ -57,7 +51,9 @@ export const Requisites = ({ tab }: RequisitesProps) => {
         ...clientValues,
         ...values,
       });
+
       update(response?.data ?? {});
+      form.setFieldsValue(response?.data ?? {});
 
       defaultSuccessHandler(t("message.success"));
       setSubmitDisabled(true);
@@ -69,7 +65,7 @@ export const Requisites = ({ tab }: RequisitesProps) => {
   };
 
   return (
-    <div className={style.container}>
+    <form>
       <Form
         onValuesChange={handleValuesChange}
         onFinish={onFinish}
@@ -102,12 +98,12 @@ export const Requisites = ({ tab }: RequisitesProps) => {
           />
         </ComponentPermissionsChecker>
       </Form>
-    </div>
+    </form>
   );
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.data?.profileInfo,
+  profileInfo: state?.persist?.profileInfo,
 });
 
 export default connect(mapStateToProps)(Requisites);

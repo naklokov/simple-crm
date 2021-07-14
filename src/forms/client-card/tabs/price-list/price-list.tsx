@@ -20,9 +20,10 @@ import {
   getFullUrl,
   defaultSuccessHandler,
 } from "../../../../utils";
-import { setTableLoading as setTableLoadingAction } from "../../../../__data__";
-
-import style from "./price-list.module.scss";
+import {
+  setLoading,
+  setTableLoading as setTableLoadingAction,
+} from "../../../../__data__";
 
 interface ContactsProps extends TabPaneFormProps {
   profileInfo: ProfileInfoEntityProps;
@@ -52,6 +53,10 @@ export const PriceList: React.FC<ContactsProps> = ({
   });
 
   useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
+
+  useEffect(() => {
     setPositions(response?.data ?? []);
   }, [response]);
 
@@ -74,20 +79,20 @@ export const PriceList: React.FC<ContactsProps> = ({
   );
 
   return (
-    <Table.Client
-      idValue="itemId"
-      className={style.table}
-      table={tab}
-      loading={loading}
-      dataSource={positions}
-      onSaveRow={handleSaveRow}
-      withSearch
-    />
+    <form>
+      <Table.Client
+        idValue="itemId"
+        table={tab}
+        dataSource={positions}
+        onSaveRow={handleSaveRow}
+        withSearch
+      />
+    </form>
   );
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.data?.profileInfo,
+  profileInfo: state?.persist?.profileInfo,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>

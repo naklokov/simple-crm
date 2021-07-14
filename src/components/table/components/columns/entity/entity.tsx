@@ -8,9 +8,15 @@ interface EntityProps {
   value: string;
   column: ColumnProps;
   dictionaries: any;
+  tableLoading: boolean;
 }
 
-export const Entity = ({ value, column, dictionaries }: EntityProps) => {
+export const Entity = ({
+  value,
+  column,
+  dictionaries,
+  tableLoading,
+}: EntityProps) => {
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
 
@@ -21,6 +27,7 @@ export const Entity = ({ value, column, dictionaries }: EntityProps) => {
 
   return (
     <HighlightTextWrapper
+      loading={tableLoading}
       text={text}
       searched={[searched, searchedColumns[column.columnCode]]}
     />
@@ -28,7 +35,8 @@ export const Entity = ({ value, column, dictionaries }: EntityProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  dictionaries: state?.data?.dictionaries,
+  dictionaries: state?.app?.dictionaries,
+  tableLoading: state?.app?.tableLoading,
 });
 
 export default connect(mapStateToProps)(Entity);

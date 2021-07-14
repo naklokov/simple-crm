@@ -67,6 +67,7 @@
     "confirm.no": "Нет"
   },
   "clients": {
+    "table.search.placeholder": "Наименование, телефон, город, ИНН",
     "title": "Клиенты",
     "title.my": "Мои клиенты",
     "button.add.title": "＋ Добавить клиента",
@@ -92,10 +93,14 @@
     "actions.call.yes": "Да",
     "actions.email.confirm": "Вы хотите написать письмо?",
     "actions.email.no": "Нет",
-    "actions.email.yes": "Да",
-
-    "search.all.placeholder": "Поиск",
-    "search.all.clear": "Очистить фильтры"
+    "actions.email.yes": "Да"
+  },
+  "tableHeader": {
+    "button.clear.all": "Очистить фильтры"
+  },
+  "searchBar": {
+    "placeholder": "Поиск",
+    "button": "Найти"
   },
   "clientCard": {
     "button.call": "Звонок",
@@ -144,7 +149,11 @@
     "button": "Отправить",
     "message.get.error": "Ошибка при получении списка комментариев",
     "message.add.error": "Ошибка при добавлении комментария",
-    "empty": "Нет комментариев"
+    "empty": "Нет комментариев",
+    "order.label.first.old": "Сначала старые",
+    "order.label.first.new": "Сначала новые",
+    "order.label.old": "Старые",
+    "order.label.new": "Новые"
   },
   "clientCardTasks": {
     "message.get.error": "Ошибка при получении списка задач"
@@ -162,6 +171,8 @@
     "rules.required": "Пожалуйста, введите комментарий"
   },
   "tasks": {
+    "tab.completed": "Выполненные",
+    "tab.active": "Активные",
     "button.add.title": "＋ Добавить задачу",
     "overdue.title": "Просроченные",
     "title": "Задачи",
@@ -227,5 +238,10 @@
   "fields": {
     "email.tooltip": "Написать письмо",
     "href.tooltip": "Перейти по ссылке"
+  },
+  "documents": {
+    "button.title": "Сгенерировать",
+    "select.placeholder": "Выберите документ",
+    "template.name.default": "Документ"
   }
 }

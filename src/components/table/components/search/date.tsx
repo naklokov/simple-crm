@@ -11,7 +11,6 @@ import { TableActionsContext } from "../../utils";
 interface DateSearchProps extends WithTranslation {
   column: ColumnProps;
   setSelectedKeys: any;
-  setRef: any;
   selectedKeys: any;
   confirm: string;
   clearFilters: any;
@@ -21,7 +20,6 @@ export const DateSearch = ({
   t,
   setSelectedKeys,
   column,
-  setRef,
   selectedKeys,
   confirm,
   clearFilters,
@@ -39,12 +37,11 @@ export const DateSearch = ({
 
   const handleSearch = useCallback(() => {
     onSearchColumn(searched, confirm, column);
-  }, [selectedKeys, confirm, column]);
+  }, [confirm, column, onSearchColumn, searched]);
 
   return (
     <div style={{ padding: 8 }}>
       <DatePicker
-        ref={setRef}
         autoComplete="off"
         style={{ width: 200, marginBottom: 8, display: "block" }}
         format={column.format}
@@ -63,7 +60,7 @@ export const DateSearch = ({
 };
 
 const mapStateToProps = (state: State) => ({
-  dictionaries: state?.data?.dictionaries,
+  dictionaries: state?.app?.dictionaries,
 });
 
 export default flow([

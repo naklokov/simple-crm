@@ -2,7 +2,7 @@ import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
 import { PERMISSIONS_SET } from "../permissions";
 import { DATE_FORMATS } from "../common";
-import { phoneRule, vatRule } from "../../utils";
+import { ogrnRule, phoneRule, vatRule } from "../../utils";
 import { PHONE_PLACEHOLDER } from "../phone";
 
 interface UpperProps {
@@ -146,6 +146,13 @@ export const lower: LowerProps = {
           columnActions: [],
         },
       ],
+      _links: {},
+    },
+    {
+      tabCode: "documents",
+      tabName: "Документы",
+      tabDescription: "Документы привязанные к клиенту",
+      type: "custom",
       _links: {},
     },
   ],
@@ -499,6 +506,17 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [vatRule],
+          permissions: [],
+        },
+        {
+          fieldCode: "ogrn",
+          fieldName: "ОГРН",
+          fieldDescription: "",
+          type: "string",
+          readonly: false,
+          disabled: false,
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [ogrnRule],
           permissions: [],
         },
         {

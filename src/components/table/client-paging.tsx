@@ -1,32 +1,32 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { noop } from "lodash";
 import { PaginationProps } from "antd/es/pagination";
 import { TabProps } from "../../constants";
 import { Table } from ".";
 import { getFilteredDataSource } from "./utils";
+import { TableHeader } from "./components";
 
 export interface TableWithClientPagingProps {
+  className?: any;
   table: TabProps;
   dataSource: any[];
   actionsPermissions?: string[];
   idValue?: string;
-  loading?: boolean;
-  extraHeader?: JSX.Element;
   pagination?: PaginationProps;
   onSaveRow?: (values: any) => void;
   onViewRow?: (id: string) => void;
   onDoneRow?: (id: string) => void;
   onDeleteRow?: (id: string) => void;
   withSearch?: boolean;
-  className?: any;
+  searchPlaceholder?: string;
+  extraTitle?: JSX.Element;
 }
 
 export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
+  className,
   table,
   dataSource,
   actionsPermissions = [],
-  extraHeader,
-  loading,
   idValue = "id",
   pagination = {
     pageSize: 5,
@@ -35,50 +35,61 @@ export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
   onViewRow = noop,
   onDeleteRow = noop,
   onDoneRow = noop,
-  className,
-  withSearch = false,
+  extraTitle,
+  withSearch,
+  searchPlaceholder,
 }) => {
   const [searchedAll, setSearchedAll] = useState("");
-  const [filteredDataSource, setFilteredDataSource] = useState<any[]>([]);
 
-  const handleSearch = useCallback(
-    (searched: string) => {
-      setSearchedAll(searched);
-      if (searched) {
-        const filtered = getFilteredDataSource(
-          searched,
-          dataSource,
-          table?.columns ?? [],
-          idValue
-        );
-        setFilteredDataSource(filtered);
-      } else {
-        setFilteredDataSource([]);
-      }
-    },
-    [filteredDataSource, dataSource, idValue, table]
+  const tableDataSource = useMemo(
+    () =>
+      searchedAll
+        ? getFilteredDataSource(
+            searchedAll,
+            dataSource,
+            table?.columns ?? [],
+            idValue
+          )
+        : dataSource,
+    [dataSource, searchedAll, idValue, table?.columns]
   );
 
-  const handleResetAllFilters = useCallback(() => {
+  const handleClearAll = useCallback(() => {
     setSearchedAll("");
   }, []);
+
+  const handleSearchAll = useCallback((searched: string) => {
+    setSearchedAll(searched);
+  }, []);
+
+  const tableHeader = useMemo(
+    () =>
+      withSearch || extraTitle
+        ? () => (
+            <TableHeader
+              searchPlaceholder={searchPlaceholder}
+              onClearAll={handleClearAll}
+              onSearch={handleSearchAll}
+              withSearch={withSearch}
+              extra={extraTitle}
+            />
+          )
+        : undefined,
+    [withSearch, extraTitle, handleClearAll, handleSearchAll, searchPlaceholder]
+  );
 
   return (
     <Table
       className={className}
-      onSearch={handleSearch}
       columns={table?.columns ?? []}
       actions={table?.actions ?? []}
-      _links={table?._links ?? {}}
-      loading={loading}
-      extraHeader={extraHeader}
+      links={table?._links ?? {}}
       pagination={pagination}
-      dataSource={searchedAll ? filteredDataSource : dataSource}
+      dataSource={tableDataSource}
       onSaveRow={onSaveRow}
       permissions={actionsPermissions}
       searchAll={searchedAll}
-      onResetAllFilters={handleResetAllFilters}
-      withSearch={withSearch}
+      tableHeader={tableHeader}
       onViewRow={onViewRow}
       onDoneRow={onDoneRow}
       onDeleteRow={onDeleteRow}

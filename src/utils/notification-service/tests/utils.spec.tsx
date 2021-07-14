@@ -57,8 +57,8 @@ test("showNotification overdue", () => {
 
 test("useOverdueTasksTotal", async () => {
   mock.onGet(urls.tasks.paging).reply(200, TASKS_PAGING_STUB);
-  const profileInfo = { id: "123" };
-  jest.spyOn(redux, "useSelector").mockReturnValue(profileInfo);
+  const profileInfoId = "123";
+  jest.spyOn(redux, "useSelector").mockReturnValue(profileInfoId);
   const { result } = renderHook(() => useOverdueTasksTotal());
 
   expect(result.current).toBe(0);
@@ -82,8 +82,8 @@ xtest("useActiveDateTime without waiting", () => {
 
 test("useActiveTasks", async () => {
   mock.onGet(urls.tasks.entity).reply(200, TASKS_ENTITY_STUB);
-  const profileInfo = { id: "123" };
-  jest.spyOn(redux, "useSelector").mockReturnValue(profileInfo);
+  const profileInfoId = "123";
+  jest.spyOn(redux, "useSelector").mockReturnValue(profileInfoId);
 
   const { result } = renderHook(() => useActiveTasks());
 

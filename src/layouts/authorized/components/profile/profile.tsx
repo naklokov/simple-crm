@@ -1,36 +1,42 @@
-import React from "react";
-import { Avatar, Typography, Dropdown, Menu, Tooltip } from "antd";
-import { UserOutlined, DownOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import React, { useCallback } from "react";
+import { Typography, Dropdown, Menu, Tooltip } from "antd";
+import { DownOutlined } from "@ant-design/icons";
+import { Link, useHistory } from "react-router-dom";
 
-import { Dispatch } from "@reduxjs/toolkit";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 
 import { useTranslation } from "react-i18next";
 import style from "./profile.module.scss";
-import { logout as logoutMethod } from "../../../../utils";
+import { logout } from "../../../../utils";
 import {
   urls,
   ProfileInfoEntityProps,
   State,
   TOOLTIP_SHOW_DELAY,
 } from "../../../../constants";
+import { Avatar } from "../../../../components";
 
 interface ProfileProps {
   profileInfo: ProfileInfoEntityProps;
-  logout: () => void;
 }
 
-export const Profile = ({ profileInfo, logout }: ProfileProps) => {
+export const Profile = ({ profileInfo }: ProfileProps) => {
   const [t] = useTranslation("authorizedLayout");
-  const { fullName, avatar } = profileInfo;
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { fullName, avatar } = profileInfo || {};
+
+  const handleClickLogout = useCallback(() => {
+    history.replace("/");
+    logout(dispatch);
+  }, [dispatch, history]);
 
   const menu = (
     <Menu>
       <Menu.Item>
         <Link to={urls.profile.path}>{t("profile.view")}</Link>
       </Menu.Item>
-      <Menu.Item onClick={logout}>{t("profile.logout")}</Menu.Item>
+      <Menu.Item onClick={handleClickLogout}>{t("profile.logout")}</Menu.Item>
     </Menu>
   );
 
@@ -45,7 +51,7 @@ export const Profile = ({ profileInfo, logout }: ProfileProps) => {
           mouseEnterDelay={TOOLTIP_SHOW_DELAY}
           title={t("tooltip.edit.profile")}
         >
-          <Avatar src={avatar} icon={<UserOutlined />} />
+          <Avatar src={avatar} />
         </Tooltip>
       </Link>
       <Dropdown overlay={menu} trigger={["click"]}>
@@ -59,11 +65,7 @@ export const Profile = ({ profileInfo, logout }: ProfileProps) => {
 };
 
 const mapStateToProps = (state: State) => ({
-  profileInfo: state?.data?.profileInfo,
+  profileInfo: state?.persist?.profileInfo,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  logout: () => logoutMethod(dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps)(Profile);

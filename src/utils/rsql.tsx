@@ -33,27 +33,46 @@ export const getLikeRsql = (
   value: `(${keys.join(",")},"${value}")`,
 });
 
-export const getDateBetweenRsql = (
-  date: string,
-  unitOfTime: unitProps.StartOf = "day"
-) => ({
-  key: "date",
+export const getDateBetweenRsql = ({
+  fieldCode = "date",
+  searched,
+  unitOfTime = "day",
+}: {
+  searched: string;
+  fieldCode?: string;
+  unitOfTime?: unitProps.StartOf;
+}) => ({
+  key: fieldCode,
   operator: RSQL_OPERATORS_MAP.DATE_IS_BETWEEN,
-  value: `${moment(date).startOf(unitOfTime).toISOString()},${moment(date)
+  value: `("${moment(searched).startOf(unitOfTime).toISOString()}","${moment(
+    searched
+  )
     .endOf(unitOfTime)
-    .toISOString()}`,
+    .toISOString()}")`,
 });
 
-export const getDateBeforeRsql = (date: string) => ({
-  key: "date",
+export const getDateBeforeRsql = ({
+  fieldCode = "date",
+  searched,
+}: {
+  searched: string;
+  fieldCode?: string;
+}) => ({
+  key: fieldCode,
   operator: RSQL_OPERATORS_MAP.DATE_IS_BEFORE,
-  value: date,
+  value: searched,
 });
 
-export const getDateAfterRsql = (date: string) => ({
-  key: "date",
+export const getDateAfterRsql = ({
+  fieldCode = "date",
+  searched,
+}: {
+  searched: string;
+  fieldCode?: string;
+}) => ({
+  key: fieldCode,
   operator: RSQL_OPERATORS_MAP.DATE_IS_AFTER,
-  value: date,
+  value: searched,
 });
 
 export const getDateFieldBetweenRsql = ({
@@ -120,3 +139,15 @@ export const getEqualRsql = (key: string, value: string) => ({
   key,
   value,
 });
+
+export const getValueFromRsql = (query: string) => {
+  const [, operator, valueArea = ""] = query.split("=");
+
+  if (!operator) {
+    return valueArea;
+  }
+  const regexp = /^.*"(.*)".*$/;
+  const matches = regexp.exec(valueArea);
+
+  return matches?.[1] ?? "";
+};

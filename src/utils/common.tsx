@@ -6,17 +6,11 @@ import { Dispatch } from "@reduxjs/toolkit";
 import { message } from "antd";
 import { Link } from "react-router-dom";
 import { Route } from "antd/lib/breadcrumb/Breadcrumb";
-import {
-  setAuth,
-  setClients,
-  setLoading,
-  setPermissions,
-  setProfileInfo,
-} from "../__data__";
+import { setLoading, logout as logoutAction } from "../__data__";
 import { COOKIES } from "../constants/http";
 import { logger } from "./index";
 
-import { urls, ErrorProps, ClientEntityProps } from "../constants";
+import { urls, ErrorProps, LinksType } from "../constants";
 
 interface DefaultErrorHandlerProps {
   error: ErrorProps;
@@ -30,29 +24,14 @@ const DEFAULT_SUCCESS_MESSAGE_LOGOUT = "Пользователь вышел из
 const DEFAULT_ERROR_MESSAGE_LOGOUT =
   "Произошла ошибка в процессе выхода из системы";
 
-const clearReduxStore = (dispatch: Dispatch) => {
-  dispatch(setClients([]));
-  dispatch(setProfileInfo({}));
-  dispatch(setPermissions([]));
-};
-
 export const checkAuthCookie = () =>
   !!Cookies.get(COOKIES.USERNAME) && !!Cookies.get(COOKIES.JSESSIONID);
 
-export const clearCookie = () => {
-  Cookies.remove(COOKIES.USERNAME);
-  Cookies.remove(COOKIES.JSESSIONID);
-  Cookies.remove(COOKIES.REMEMBER_ME);
-};
-
 export const logout = async (dispatch: Dispatch) => {
   const username = Cookies.get(COOKIES.USERNAME);
-  clearReduxStore(dispatch);
-  clearCookie();
-  localStorage.clear();
 
   try {
-    dispatch(setLoading(true));
+    dispatch(logoutAction());
     await axios.get(urls.login.logout);
     logger.debug({ message: DEFAULT_SUCCESS_MESSAGE_LOGOUT, username });
   } catch (error) {
@@ -61,17 +40,8 @@ export const logout = async (dispatch: Dispatch) => {
       defaultErrorMessage: DEFAULT_ERROR_MESSAGE_LOGOUT,
       username,
     });
-  } finally {
-    dispatch(setAuth(false));
-    dispatch(setLoading(false));
   }
 };
-
-export const FormContext = React.createContext<any>("");
-
-export const ClientsPersonalContext = React.createContext<ClientEntityProps[]>(
-  []
-);
 
 const getTemplateMask = (param: string) => `{{${param}}}`;
 
@@ -226,4 +196,46 @@ export const copyToClipboard = (str: string) => {
   el.select();
   document.execCommand("copy");
   document.body.removeChild(el);
+};
+
+/**
+ * Метод сохранения полученного с BH файла на компьютер
+ * @param data Бинарный ответ от сервера
+ * @param fileName Имя файла с расширением
+ */
+export const downloadFile = (data: ArrayBuffer, fileName: string) => {
+  const blob = new Blob([data]);
+  if (navigator.msSaveBlob) {
+    // IE 10+
+    navigator.msSaveBlob(blob, fileName);
+  } else {
+    const link = document.createElement("a");
+    // Browsers that support HTML5 download attribute
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", fileName);
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+};
+
+// метод заполнения links нужными данными до первого запроса
+export const fillLinks = (
+  links: LinksType,
+  values: { [key: string]: string }
+): LinksType => {
+  const keys = Object.keys(links);
+  return keys.reduce(
+    (acc, current) => ({
+      ...acc,
+      [current]: {
+        href: fillTemplate(links?.[current]?.href, values),
+      },
+    }),
+    {}
+  );
 };
