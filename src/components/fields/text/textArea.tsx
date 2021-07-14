@@ -18,7 +18,7 @@ export const TextArea = ({
   const { form } = useContext(FormContext);
 
   const handleBlur = useCallback((event:FocusEvent<HTMLTextAreaElement>) => {
-    form.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() })
+    form.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? '' })
   }, [fieldCode, form])
 
   return <Col {...span} key={fieldCode}>

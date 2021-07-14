@@ -17,7 +17,7 @@ export const Text = ({
   const { form } = useContext(FormContext);
 
   const handleBlur = useCallback((event:FocusEvent<HTMLInputElement>) => {
-    form.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() })
+    form.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? ''})
   }, [fieldCode, form])
 
   return (<Col {...span} key={fieldCode}>
