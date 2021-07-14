@@ -1,8 +1,10 @@
 import React, { useState, useCallback } from "react";
-import { Input, Button } from "antd";
+import { Input, Button, Form } from "antd";
 import { useTranslation } from "react-i18next";
 
 import style from "./footer.module.scss";
+
+const MAX_COMMENT_LENGTH = 2;
 
 const { TextArea } = Input;
 
@@ -37,16 +39,22 @@ export const Footer = ({ onSend }: FooterProps) => {
   );
 
   return (
-    <div className={style.container}>
-      <TextArea
-        className={style.textArea}
-        placeholder={t("textarea.placeholder")}
-        autoSize={{ minRows: 1, maxRows: 6 }}
-        value={comment}
-        onPressEnter={handleClick}
-        onChange={handleChange}
-        maxLength={10000}
-      />
+    <Form className={style.container}>
+
+      <Form.Item
+        name="message"
+        rules={[{ max: MAX_COMMENT_LENGTH, message: t("rules.maxLength", { count: MAX_COMMENT_LENGTH }) }]}
+      >
+        <TextArea
+          className={style.textArea}
+          placeholder={t("textarea.placeholder")}
+          autoSize={{ minRows: 1, maxRows: 6 }}
+          value={comment}
+          onPressEnter={handleClick}
+          onChange={handleChange}
+        />
+      </Form.Item>
+
       <Button
         type="primary"
         className={style.button}
@@ -55,7 +63,7 @@ export const Footer = ({ onSend }: FooterProps) => {
       >
         {t("button")}
       </Button>
-    </div>
+    </Form>
   );
 };
 

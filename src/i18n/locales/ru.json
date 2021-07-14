@@ -179,7 +179,8 @@
     "order.label.first.old": "Сначала старые",
     "order.label.first.new": "Сначала новые",
     "order.label.old": "Старые",
-    "order.label.new": "Новые"
+    "order.label.new": "Новые",
+    "rules.maxLength": "Превышена максимальная длина - {{count}} символов"
   },
   "clientCardTasks": {
     "message.get.error": "Ошибка при получении списка задач"
