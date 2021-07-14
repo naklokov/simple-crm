@@ -15,13 +15,11 @@ export const TextArea = ({
   rows = 4,
   span = DEFAULT_FIELD_SPAN,
 }: FieldProps) => {
-
   const { form } = useContext(FormContext);
 
   const handleBlur = useCallback((event:FocusEvent<HTMLTextAreaElement>) => {
-    form.setFieldsValue({ [fieldCode]: event.target.value.trim() })
+    form.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() })
   }, [fieldCode, form])
-
 
   return <Col {...span} key={fieldCode}>
     <Form.Item
