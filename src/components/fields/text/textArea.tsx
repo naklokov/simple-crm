@@ -1,7 +1,8 @@
-import React from "react";
+import React, { FocusEvent, useCallback, useContext } from "react";
 import { Form, Input, Col } from "antd";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
+import { FormContext } from "../../../utils";
 
 export const TextArea = ({
   fieldCode,
@@ -13,8 +14,14 @@ export const TextArea = ({
   readonly = false,
   rows = 4,
   span = DEFAULT_FIELD_SPAN,
-}: FieldProps) => (
-  <Col {...span} key={fieldCode}>
+}: FieldProps) => {
+  const { form } = useContext(FormContext);
+
+  const handleBlur = useCallback((event:FocusEvent<HTMLTextAreaElement>) => {
+    form.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? '' })
+  }, [fieldCode, form])
+
+  return <Col {...span} key={fieldCode}>
     <Form.Item
       name={fieldCode}
       label={fieldName}
@@ -32,10 +39,12 @@ export const TextArea = ({
           disabled={disabled}
           autoSize={{ minRows: 1, maxRows: 6 }}
           rows={rows}
+          onBlur={handleBlur}
         />
       )}
     </Form.Item>
   </Col>
-);
+
+}
 
 export default TextArea;
