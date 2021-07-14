@@ -327,7 +327,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [vatRule],
+          rules: [{ required: true, message: REQUIRED_MESSAGE }, vatRule],
           permissions: [],
         },
         {
