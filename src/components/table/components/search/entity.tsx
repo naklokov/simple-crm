@@ -1,32 +1,38 @@
 import React, { useCallback, useContext } from "react";
 import { Select } from "antd";
-import { WithTranslation, withTranslation } from "react-i18next";
 import { flow } from "lodash";
 import { connect } from "react-redux";
-import { ColumnProps, State } from "../../../../constants";
+import { useTranslation } from "react-i18next";
+import { State } from "../../../../constants";
 import { SearchFooter } from ".";
 import { TableActionsContext } from "../../utils";
+import { SearchComponentProps } from "../../constants";
 
-interface EntitySearchProps extends WithTranslation {
-  column: ColumnProps;
-  setSelectedKeys: any;
-  selectedKeys: any;
-  confirm: string;
-  clearFilters: any;
+interface EntitySearchProps extends SearchComponentProps {
   dictionaries: any;
 }
 
-export const EntitySearch = ({
-  t,
+/**
+ * Компонент поиска для поля сущности
+ * @param setSelectedKeys Метод таблицы для сохранения ключей поиска
+ * @param column Описание полей в колонке
+ * @param selectedKeys Ключи поиска в таблице
+ * @param confirm Submit событие поиска
+ * @param clearFilters Метод очистки поисковых ключей
+ * @param dictionaries Объект всех справочников в системе
+ * @returns JSX.Component
+ */
+export const EntitySearch: React.FC<EntitySearchProps> = ({
   setSelectedKeys,
   column,
   selectedKeys,
   confirm,
   clearFilters,
   dictionaries,
-}: EntitySearchProps) => {
+}) => {
   const options = dictionaries?.[column.columnCode] ?? [];
   const { onSearchColumn } = useContext(TableActionsContext);
+  const [t] = useTranslation("columnSearch");
   const [searched] = selectedKeys;
 
   const handleChange = useCallback(
@@ -76,7 +82,4 @@ const mapStateToProps = (state: State) => ({
   dictionaries: state?.app?.dictionaries,
 });
 
-export default flow([
-  connect(mapStateToProps),
-  withTranslation(["columnSearch"]),
-])(EntitySearch);
+export default flow([connect(mapStateToProps)])(EntitySearch);

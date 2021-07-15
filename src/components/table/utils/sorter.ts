@@ -36,12 +36,21 @@ export const getSortedParams = ({
   return "";
 };
 
+/**
+ * Метод формирования строки сортировки для отправки на сервер
+ * @param columns Конфигурация всех колонок в таблице
+ * @param defaultSortField Наименование поля для сортировки по умолчанию
+ * @param defaultSortOrder Порядок сортировки по умолчанию
+ * @returns Строка с полей и порядком сортировки
+ */
 export const getDefaultSortBy = (
   columns: ColumnProps[],
-  defaultSortField?: string
+  defaultSortField?: string,
+  defaultSortOrder?: "ascend" | "descend"
 ): string => {
   const field = defaultSortField || columns?.[0]?.columnCode;
-  return getSortedParams({ field, order: "ascend" });
+  const order = defaultSortOrder || "ascend";
+  return getSortedParams({ field, order });
 };
 
 const getSorterFunction = (

@@ -87,6 +87,8 @@ export const Clients: React.FC<FormProps> = ({ tab, drawers }) => {
       footer={footer}
       rowSelection={withRowSelection ? rowSelection : undefined}
       reloadKey={reloadKey}
+      defaultSortField="clientActivityDate"
+      defaultSortOrder="descend"
     />
   );
 };

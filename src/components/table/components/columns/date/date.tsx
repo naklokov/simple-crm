@@ -21,7 +21,9 @@ export const Date: React.FC<DateProps> = ({ value, format, column }) => {
 
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
-  const columnValue = searchedColumns?.[column.columnCode];
+
+  // дата хранится как массив строк [from, to]
+  const [columnValue] = searchedColumns?.[column.columnCode] ?? [];
   const seachedColumnsValue = columnValue
     ? moment(columnValue).format(format)
     : "";

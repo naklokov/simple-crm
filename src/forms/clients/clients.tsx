@@ -58,6 +58,8 @@ export const Clients: React.FC<ClientsProps> = ({ profileInfo }) => {
               links={fillLinks(activeTab._links, {
                 userProfileId,
               })}
+              defaultSortField="clientActivityDate"
+              defaultSortOrder="descend"
               searchPlaceholder={t("table.search.placeholder")}
               withSearch
             />

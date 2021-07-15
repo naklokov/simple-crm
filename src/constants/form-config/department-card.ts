@@ -157,6 +157,19 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
       actions: [],
       columns: [
         {
+          columnName: "Активность",
+          columnCode: "clientActivityDate",
+          columnType: "dateRange",
+          columnDescription: "",
+          align: "center",
+          width: "120px",
+          sorter: true,
+          filterable: false,
+          columnActions: [],
+          isJsonField: true,
+          customCode: "activity",
+        },
+        {
           columnName: "Наименование",
           columnCode: "shortName",
           columnType: "string",

@@ -288,5 +288,10 @@
   },
   "entity": {
     "not.found.description": "Вариантов не найдено"
+  },
+  "activity": {
+    "active": "Актуально",
+    "warning": "Внимание",
+    "expired": "Просрочено"
   }
 }
