@@ -12,7 +12,7 @@ export const CLIENTS: { tabs: TabProps[] } = {
       actions: [],
       columns: [
         {
-          columnName: "Активность",
+          columnName: "Актуальность",
           columnCode: "clientActivityDate",
           columnType: "dateRange",
           columnDescription: "",
@@ -104,7 +104,7 @@ export const CLIENTS: { tabs: TabProps[] } = {
       tableType: "server",
       columns: [
         {
-          columnName: "Активность",
+          columnName: "Актуальность",
           columnCode: "clientActivityDate",
           columnType: "dateRange",
           columnDescription: "",
