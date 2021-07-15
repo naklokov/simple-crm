@@ -12,7 +12,7 @@ import {
   COLUMN_STATUS_MAP,
   SearchComponentProps,
 } from "../../constants";
-import { Dot } from "../dot";
+import { Dot } from "../../../dot";
 /**
  * Компонент поиска для поля активности
  * @param setSelectedKeys Метод таблицы для сохранения ключей поиска
