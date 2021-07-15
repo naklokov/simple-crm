@@ -157,14 +157,14 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
       actions: [],
       columns: [
         {
-          columnName: "Активность",
+          columnName: "Актуальность",
           columnCode: "clientActivityDate",
           columnType: "dateRange",
           columnDescription: "",
           align: "center",
           width: "120px",
           sorter: true,
-          filterable: false,
+          filterable: true,
           columnActions: [],
           isJsonField: true,
           customCode: "activity",
