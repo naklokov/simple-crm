@@ -1,29 +1,34 @@
 import { Input } from "antd";
 import React, { useCallback, useContext } from "react";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { SearchFooter } from ".";
 
-import { ColumnProps } from "../../../../constants";
+import { SearchComponentProps } from "../../constants";
 import { TableActionsContext } from "../../utils";
 
-interface TextSearchProps extends WithTranslation {
-  column: ColumnProps;
+interface TextSearchProps extends SearchComponentProps {
   setRef: (ref: any) => void;
-  setSelectedKeys: any;
-  selectedKeys: any;
-  confirm: string;
-  clearFilters: any;
 }
 
-export const TextSearch = ({
-  t,
+/**
+ * Компонент поиска для поля текста
+ * @param setSelectedKeys Метод таблицы для сохранения ключей поиска
+ * @param column Описание полей в колонке
+ * @param setRef Метод проброса ref текущего компонента наверх для работы с ним через DOM
+ * @param selectedKeys Ключи поиска в таблице
+ * @param confirm Submit событие поиска
+ * @param clearFilters Метод очистки поисковых ключей
+ * @returns JSX.Component
+ */
+export const TextSearch: React.FC<TextSearchProps> = ({
   setSelectedKeys,
   column,
   setRef,
   selectedKeys,
   confirm,
   clearFilters,
-}: TextSearchProps) => {
+}) => {
+  const [t] = useTranslation("columnSearch");
   const { onSearchColumn } = useContext(TableActionsContext);
   const [searched] = selectedKeys;
 
@@ -38,7 +43,7 @@ export const TextSearch = ({
   const handleSearch = useCallback(() => {
     const trimmed = searched.trim();
     onSearchColumn(trimmed, confirm, column);
-  }, [selectedKeys, confirm, column]);
+  }, [searched, confirm, column, onSearchColumn]);
 
   return (
     <div style={{ padding: 8 }}>
@@ -59,4 +64,4 @@ export const TextSearch = ({
   );
 };
 
-export default withTranslation(["columnSearch"])(TextSearch);
+export default TextSearch;

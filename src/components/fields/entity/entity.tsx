@@ -7,19 +7,21 @@ import React, {
 } from "react";
 import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
-import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
+import {
+  DEFAULT_FIELD_SPAN,
+  FieldProps,
+  RSQL_DELIMETER,
+} from "../../../constants";
 import {
   defaultErrorHandler,
   FormContext,
   getRsqlParams,
   getEqualRsql,
   getSearchRsql,
-  mergeInitialParams,
+  getInitialParams,
 } from "../../../utils";
 import { Readonly } from "../readonly";
-import { setFormLoading } from "../../../__data__";
 import { Loading } from "../loading";
 import { HighlightTextWrapper } from "../../../wrappers";
 
@@ -57,10 +59,15 @@ export const Entity = ({
   const fetchEntities = useCallback(
     async (query: string) => {
       setLoading(true);
-      const params = mergeInitialParams(query, initialSearch);
+      const { initialQueries, initialSearchParams } = getInitialParams(
+        initialSearch
+      );
       try {
         const response = await axios.get(url, {
-          params,
+          params: {
+            query: [query, ...initialQueries].join(RSQL_DELIMETER),
+            ...initialSearchParams,
+          },
         });
         const mappingOptions =
           response?.data?.map((o: any) => {

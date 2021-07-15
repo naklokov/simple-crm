@@ -12,6 +12,19 @@ export const CLIENTS: { tabs: TabProps[] } = {
       actions: [],
       columns: [
         {
+          columnName: "Активность",
+          columnCode: "clientActivityDate",
+          columnType: "dateRange",
+          columnDescription: "",
+          align: "center",
+          width: "120px",
+          sorter: true,
+          filterable: true,
+          columnActions: [],
+          isJsonField: true,
+          customCode: "activity",
+        },
+        {
           columnName: "Наименование",
           columnCode: "shortName",
           columnType: "string",
@@ -90,6 +103,19 @@ export const CLIENTS: { tabs: TabProps[] } = {
       actions: [],
       tableType: "server",
       columns: [
+        {
+          columnName: "Активность",
+          columnCode: "clientActivityDate",
+          columnType: "dateRange",
+          columnDescription: "",
+          align: "center",
+          width: "120px",
+          sorter: true,
+          filterable: true,
+          columnActions: [],
+          isJsonField: true,
+          customCode: "activity",
+        },
         {
           columnName: "Наименование",
           columnCode: "shortName",
