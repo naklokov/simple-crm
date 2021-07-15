@@ -179,7 +179,9 @@
     "order.label.first.old": "Сначала старые",
     "order.label.first.new": "Сначала новые",
     "order.label.old": "Старые",
-    "order.label.new": "Новые"
+    "order.label.new": "Новые",
+    "rules.maxLength": "Превышена максимальная длина - {{count}} символов",
+    "rules.required": "Пожалуйста, введите комментарий"
   },
   "clientCardTasks": {
     "message.get.error": "Ошибка при получении списка задач"
@@ -194,7 +196,8 @@
     "delete.confirm": "Вы хотите удалить комментарий?",
     "delete.no": "Нет",
     "delete.yes": "Да",
-    "rules.required": "Пожалуйста, введите комментарий"
+    "rules.required": "Пожалуйста, введите комментарий",
+    "rules.maxLength": "Превышена максимальная длина - {{count}} символов"
   },
   "tasks": {
     "tab.completed": "Выполненные",

@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from "react";
-import { Input, Button } from "antd";
+import { Input, Button, Form } from "antd";
 import { useTranslation } from "react-i18next";
+import { handlePressEnter } from "../../../../../../utils";
+import { MAX_COMMENT_LENGTH } from "../../../../../../constants/form-config/client-card";
 
 import style from "./footer.module.scss";
-
-const { TextArea } = Input;
 
 interface FooterProps {
   onSend: (text: string) => void;
@@ -12,50 +12,71 @@ interface FooterProps {
 
 export const Footer = ({ onSend }: FooterProps) => {
   const [t] = useTranslation("clientCardComments");
-  const [comment, setComment] = useState("");
   const [disabled, setDisabled] = useState(true);
+  const [form] = Form.useForm();
 
+  /**
+   * При изменении текста комментария меняет состояние кнопки отправить
+   */
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) => {
       const { value } = event.target;
-      setComment(value);
-      setDisabled(!value);
-    },
-    [comment]
-  );
+      setDisabled(!value.trim());
+    }, []);
 
-  const handleClick = useCallback(
-    (event: any) => {
-      if (comment) {
-        setComment("");
-        setDisabled(true);
-        onSend(comment);
-        event.preventDefault();
-      }
-    },
-    [comment, onSend]
-  );
+  /**
+   * Отправка комментария на сервер, очистка формы и изменение состояния кнопки отправить на Disabled
+   */
+  const handleFinish = useCallback(async () => {
+    const { message } = await form.validateFields();
+    if (message) {
+      form.resetFields();
+      setDisabled(true);
+      onSend(message);
+    }
+  }, [form, onSend]);
+
+  /**
+   *  Отправка сообщения нажатием на Enter и перевод строки на Enter+Shift
+   * */
+  const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
+    handlePressEnter(event, handleFinish);
+  }, [handleFinish]);
 
   return (
-    <div className={style.container}>
-      <TextArea
-        className={style.textArea}
-        placeholder={t("textarea.placeholder")}
-        autoSize={{ minRows: 1, maxRows: 6 }}
-        value={comment}
-        onPressEnter={handleClick}
-        onChange={handleChange}
-        maxLength={10000}
-      />
-      <Button
-        type="primary"
-        className={style.button}
-        disabled={disabled}
-        onClick={handleClick}
+    <Form form={form} style={{ display: "flex" }} layout="horizontal">
+      <Form.Item
+        style={{ flex: 1, marginBottom: 0 }}
+        name="message"
+        rules={[
+          {
+            max: MAX_COMMENT_LENGTH,
+            message: t("rules.maxLength", { count: MAX_COMMENT_LENGTH }),
+          }
+        ]}
       >
-        {t("button")}
-      </Button>
-    </div>
+        <Input.TextArea
+          style={{ width: "100%" }}
+          className={style.textArea}
+          placeholder={t("textarea.placeholder")}
+          autoSize={{ minRows: 1, maxRows: 6 }}
+          onKeyDown={handleKeyDown}
+          onChange={handleChange}
+        />
+      </Form.Item>
+
+      <Form.Item style={{ marginBottom: 0 }}>
+        <Button
+          htmlType="submit"
+          type="primary"
+          className={style.button}
+          disabled={disabled}
+          onClick={handleFinish}
+        >
+          {t("button")}
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 

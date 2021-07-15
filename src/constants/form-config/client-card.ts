@@ -14,7 +14,6 @@ interface LowerProps {
   tabs: TabProps[];
   drawers: DrawerProps[];
 }
-
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
 const EMAIL_MESSAGE = "Пожалуйста, введите корректный e-mail";
 const URL_MESSAGE = "Пожалуйста, введите корректный url";
@@ -26,6 +25,8 @@ const CORRESPONDENT_ACCOUNT_MESSAGE =
 const PLACEHOLDER_DEFAULT = "Введите значение";
 const getMaxLengthMessage = (len: number) =>
   `Превышена максимальная длина - ${len} символов`;
+
+export const MAX_COMMENT_LENGTH = 10000
 
 export const lower: LowerProps = {
   drawers: [
