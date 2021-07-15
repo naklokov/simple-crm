@@ -5,14 +5,25 @@ import {
   DictionarySearch,
   DateSearch,
   PhoneSearch,
+  ActivitySearch,
 } from "../components";
 import { ColumnProps, RecordType } from "../../../constants";
 
 import { checkColumnActionType } from "./common";
 
+/**
+ * Получение компонента поиска по типу колонки и наличию кастомного кода
+ * @param column Описание полей в колонке
+ * @returns JSX Component поиска соответствующий типу колонки
+ */
 const getSearch = (column: ColumnProps) => {
   if (checkColumnActionType(column, "call")) {
     return PhoneSearch;
+  }
+
+  switch (column.customCode) {
+    case "activity":
+      return ActivitySearch;
   }
 
   switch (column.columnType) {

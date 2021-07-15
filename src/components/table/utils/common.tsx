@@ -19,11 +19,23 @@ import { getColumnSearchProp } from "./column-search";
 import { fetchDictionary } from "./fetch";
 import { SortColumnOrderProps } from "../constants";
 
+/**
+ * Метод получения свойства свойства отрисовки колонки в таблице
+ * @param column Описание полей в колонке
+ * @returns получение метода render для колонки
+ */
 const getRenderProp = (column: ColumnProps) => ({
   render: (text: string, record: any) => {
-    const { Entity, Date, Text, Number, Dictionary } = tableColumns;
-    const { format, columnType } = column;
+    const { Entity, Date, Text, Number, Dictionary, Activity } = tableColumns;
+    const { format, columnType, customCode } = column;
 
+    // custom поля
+    switch (customCode) {
+      case "activity":
+        return <Activity column={column} record={record} />;
+    }
+
+    // обычные поля
     switch (columnType) {
       case "entity":
         return <Entity value={text} column={column} />;
@@ -66,12 +78,20 @@ export const getColumn = (
   sortColumnOrder?: SortColumnOrderProps,
   permissions: string[] = []
 ) => {
-  const { columnCode, columnName, fixed, ellipsis, width } = column;
+  const {
+    columnCode,
+    columnName,
+    fixed,
+    ellipsis,
+    width,
+    align = "left",
+  } = column;
 
   return {
     key: columnCode,
     title: columnName,
     dataIndex: columnCode,
+    align,
     fixed,
     width,
     ellipsis,
