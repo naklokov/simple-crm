@@ -1,22 +1,44 @@
 import { ColumnProps } from "../../../../constants";
-import { getSortOrder, getSortedParams, getDefaultSortBy } from "../sorter";
+import {
+  getFieldSortOrder,
+  getSortedParams,
+  getDefaultSortBy,
+} from "../sorter";
 
 test("getSortOrder", () => {
   const sortByDesc = "id:desc";
   const sortByAsc = "id:asc";
   const sortByUnknown = "id:lol";
 
-  expect(getSortOrder(sortByAsc)).toEqual({ id: "ascend" });
-  expect(getSortOrder(sortByDesc)).toEqual({ id: "descend" });
-  expect(getSortOrder(sortByUnknown)).toEqual({ id: "ascend" });
+  expect(getFieldSortOrder(sortByAsc)).toEqual({ id: "ascend" });
+  expect(getFieldSortOrder(sortByDesc)).toEqual({ id: "descend" });
+  expect(getFieldSortOrder(sortByUnknown)).toEqual({ id: "ascend" });
 });
 
-test("getSortedParams", () => {
+test("getSortedParams without inversion", () => {
   const field = "name";
+  const columns = [] as ColumnProps[];
 
-  expect(getSortedParams({ field, order: "ascend" })).toBe("name:asc");
-  expect(getSortedParams({ field, order: "descend" })).toBe("name:desc");
-  expect(getSortedParams({ field })).toBe("");
+  expect(getSortedParams({ field, order: "ascend" }, columns)).toBe("name:asc");
+  expect(getSortedParams({ field, order: "descend" }, columns)).toBe(
+    "name:desc"
+  );
+  expect(getSortedParams({ field }, columns)).toBe("");
+});
+
+test("getSortedParams with inversion", () => {
+  const field = "id";
+  const columns = [
+    {
+      columnCode: "id",
+      sortInverse: true,
+      columnName: "Идентификатор",
+      columnType: "number",
+    },
+  ] as ColumnProps[];
+
+  expect(getSortedParams({ field, order: "ascend" }, columns)).toBe("id:desc");
+  expect(getSortedParams({ field, order: "descend" }, columns)).toBe("id:asc");
 });
 
 test("getDefaultSortBy", () => {
