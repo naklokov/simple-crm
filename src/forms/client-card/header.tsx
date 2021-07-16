@@ -21,8 +21,13 @@ import {
   useFormValues,
 } from "../../utils";
 import { Call, Delete } from "./components";
-import { FormHeader, Skeleton } from "../../components";
+import { Dot, FormHeader, Skeleton } from "../../components";
 import { setFormLoading } from "../../__data__";
+import { useActivity } from "../../components/table/utils";
+import {
+  COLUMN_COLORS_MAP,
+  COLUMN_STATUS_MAP,
+} from "../../components/table/constants";
 
 interface ClientCardHeaderProps {
   footer?: ReactNode;
@@ -33,15 +38,21 @@ const formName = FORM_NAMES.CLIENT_CARD;
 export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
   footer,
 }) => {
-  const [t] = useTranslation("clientCard");
-  const dispatch = useDispatch();
-  const history = useHistory();
   const { id } = useParams<QueryProps>();
   const isNew = id === CLIENT_NEW_ID;
 
-  const [{ shortName, phone }] = useFormValues<ClientEntityProps>(
-    FORM_NAMES.CLIENT_CARD
-  );
+  const [t] = useTranslation("clientCard");
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const [{ shortName, phone, clientActivityDate }] = useFormValues<
+    ClientEntityProps
+  >(FORM_NAMES.CLIENT_CARD);
+  const { status } = useActivity(clientActivityDate);
+
+  const dotColor = status
+    ? COLUMN_COLORS_MAP[status]
+    : COLUMN_COLORS_MAP[COLUMN_STATUS_MAP.ACTIVE];
 
   const loading = useMemo(() => !shortName && !isNew, [shortName, isNew]);
   const filledTitle = shortName || t("title.new");
@@ -95,6 +106,11 @@ export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
 
   return (
     <FormHeader
+      tags={
+        !loading ? (
+          <Dot color={dotColor} style={{ margin: "0 auto" }} />
+        ) : undefined
+      }
       position="upper"
       breadcrumb={breadcrumb}
       title={title}
