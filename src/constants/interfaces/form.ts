@@ -115,6 +115,7 @@ export interface ColumnProps {
   width?: string;
   fixed?: FixedPositionType;
   sorter?: boolean;
+  sortInverse?: boolean;
   filterable?: boolean;
   editable?: boolean;
   // до первого запроса

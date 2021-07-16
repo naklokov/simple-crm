@@ -164,6 +164,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           align: "center",
           width: "120px",
           sorter: true,
+          sortInverse: true,
           filterable: true,
           columnActions: [],
           isJsonField: true,

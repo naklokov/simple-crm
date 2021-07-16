@@ -31,7 +31,7 @@ import {
   pluralize,
 } from "../../utils";
 import {
-  getSortOrder,
+  getFieldSortOrder,
   getFetchDataSourceQuery,
   getFilterAllRsqlQuery,
   getFilterColumnRsqlQuery,
@@ -181,7 +181,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
 
   const handleChangeTable = useCallback(
     (paginationParams: PaginationConfig, tableFilters, sorter) => {
-      const sortByNext = getSortedParams(sorter);
+      const sortByNext = getSortedParams(sorter, columns);
 
       setPage(paginationParams.current || DEFAULT_PAGE_NUMBER);
       setPageSize(paginationParams.pageSize || DEFAULT_PAGE_SIZE);
@@ -191,7 +191,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
         setPage(DEFAULT_PAGE_NUMBER);
       }
     },
-    [setPage, setPageSize, setSortBy, sortBy]
+    [setPage, setPageSize, setSortBy, sortBy, columns]
   );
 
   const handleSearchColumn = useCallback(
@@ -263,7 +263,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
       tableHeader={tableHeader}
       pagination={serverPagination}
       onDeleteRow={handleDelete}
-      sortOrder={getSortOrder(sortBy)}
+      sortOrder={getFieldSortOrder(sortBy)}
       dataSource={dataSource}
       onChangeTable={handleChangeTable}
       onSearchColumn={handleSearchColumn}
