@@ -19,6 +19,7 @@ const {
   Dictionary,
   Phone,
   Entity,
+  EntityLazy,
   Email,
   Href,
 } = fields;
@@ -99,6 +100,8 @@ export const createFormField = (field: FieldProps): JSX.Element => {
       return <Dictionary {...field} />;
     case "entity":
       return <Entity {...field} />;
+    case "entity-lazy":
+      return <EntityLazy {...field} />;
     default:
       return <div />;
   }
