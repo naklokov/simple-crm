@@ -33,10 +33,16 @@ export const EntityLazy = ({
   const [hasMore, setHasMore] = useState(true);
   const [searched, setSearched] = useState("");
   const [totalCount, setTotalCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
   const [url, query] = _links?.self?.href?.split("?") ?? [];
   const style = { width: "100%" };
 
-  const fetchStaff = useCallback(
+  /**
+   * Постраничное получение списка
+   * @param queryParams Параметры rsql запроса
+   */
+  const fetchItems = useCallback(
     async (queryParams: string | null = null) => {
       try {
         setLoading(true);
@@ -44,20 +50,22 @@ export const EntityLazy = ({
         const params = mergeInitialParams(queryParams ?? "", query);
         const response = await axios.get(url, {
           params: {
-            pageSize: options.length + pageSize,
+            page,
+            pageSize,
             sortBy: `${titleField}:asc`,
             ...params,
           },
         });
-
+        setPage(page + 1);
         setTotalCount(response?.data?.totalCount ?? 0);
+        setTotalPage(Math.ceil(totalCount / pageSize));
         const mappedOptions =
           response?.data?.rows?.map((obj: any) => {
             const { [titleField]: label, [codeField]: value } = obj;
             return { label, value };
           }) ?? [];
 
-        setOptions(mappedOptions);
+        setOptions([...options, ...mappedOptions]);
       } catch (error) {
         defaultErrorHandler({
           error,
@@ -66,27 +74,44 @@ export const EntityLazy = ({
         setLoading(false);
       }
     },
-    [codeField, options, pageSize, query, titleField, url]
+    [
+      totalCount,
+      totalPage,
+      codeField,
+      options,
+      pageSize,
+      query,
+      titleField,
+      url,
+    ]
   );
 
+  /**
+   * Инициализация
+   */
   useEffect(() => {
     (async () => {
-      await fetchStaff();
+      await fetchItems();
     })();
   }, [codeField, fieldCode]);
 
+  /**
+   * Подгрузка списка
+   */
   const handleLoadMore = useCallback(async () => {
-    if (options.length >= totalCount) {
+    if (page >= totalPage && options.length >= totalCount) {
       setLoading(false);
       setHasMore(false);
       return;
     }
-
-    await fetchStaff(
+    await fetchItems(
       searched ? getRsqlParams([getSearchRsql([titleField], searched)]) : null
     );
-  }, [searched, totalCount, options, titleField]);
+  }, [page, totalPage, searched, totalCount, options, titleField]);
 
+  /**
+   * Слежение за прокруткой списка
+   */
   const handleScroll = useCallback(
     async (event: React.UIEvent<HTMLDivElement, UIEvent>) => {
       if (
@@ -101,14 +126,18 @@ export const EntityLazy = ({
     [loading, hasMore]
   );
 
+  /**
+   * Поиск по списку
+   */
   const handleSearch = useCallback(
     async (value) => {
       setSearched(value);
       setHasMore(true);
       setLoading(true);
       setOptions([]);
+      setPage(1);
 
-      await fetchStaff(
+      await fetchItems(
         value ? getRsqlParams([getSearchRsql([titleField], value)]) : null
       );
     },
