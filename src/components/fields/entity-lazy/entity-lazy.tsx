@@ -74,16 +74,7 @@ export const EntityLazy = ({
         setLoading(false);
       }
     },
-    [
-      totalCount,
-      totalPage,
-      codeField,
-      options,
-      pageSize,
-      query,
-      titleField,
-      url,
-    ]
+    [page, totalCount, codeField, options, pageSize, query, titleField, url]
   );
 
   /**
@@ -118,7 +109,7 @@ export const EntityLazy = ({
         !loading &&
         hasMore &&
         event?.currentTarget?.scrollTop + event?.currentTarget?.offsetHeight >=
-          event?.currentTarget?.scrollHeight / 2.5
+          event?.currentTarget?.scrollHeight - 100
       ) {
         await handleLoadMore();
       }
