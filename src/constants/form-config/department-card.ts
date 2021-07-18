@@ -18,7 +18,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           fieldCode: "userProfileId",
           fieldName: "Ф.И.О.",
           fieldDescription: "",
-          type: "entity",
+          type: "entity-lazy",
           titleField: "fullName",
           codeField: "id",
           readonly: false,
@@ -29,7 +29,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           permissions: [],
           _links: {
             self: {
-              href: `${urls.userProfiles.entity}?query=departmentId=={{departmentId}};userRoleId=out=(${USER_ROLES_ID.ROLE_ADMIN},${USER_ROLES_ID.ROLE_DEPT_CHIEF})`,
+              href: `${urls.userProfiles.paging}?query=departmentId=={{departmentId}};userRoleId=out=(${USER_ROLES_ID.ROLE_ADMIN},${USER_ROLES_ID.ROLE_DEPT_CHIEF})`,
             },
           },
         },

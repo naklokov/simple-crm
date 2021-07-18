@@ -109,7 +109,7 @@ export const EntityLazy = ({
         !loading &&
         hasMore &&
         event?.currentTarget?.scrollTop + event?.currentTarget?.offsetHeight >=
-          event?.currentTarget?.scrollHeight - 100
+          event?.currentTarget?.scrollHeight - 150
       ) {
         await handleLoadMore();
       }

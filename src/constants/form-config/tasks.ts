@@ -20,7 +20,7 @@ export const TASKS: TasksConfigProps = {
           fieldCode: "clientId",
           fieldName: "Компания",
           fieldDescription: "Компания связанная с задачей",
-          type: "entity",
+          type: "entity-lazy",
           titleField: "shortName",
           codeField: "id",
           readonly: false,
@@ -30,7 +30,7 @@ export const TASKS: TasksConfigProps = {
           permissions: [],
           _links: {
             self: {
-              href: `${urls.clients.entity}?query=userProfileId=={{userProfileId}}`,
+              href: `${urls.clients.paging}?query=userProfileId=={{userProfileId}}`,
             },
           },
         },
@@ -46,7 +46,7 @@ export const TASKS: TasksConfigProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [
             { required: true, message: REQUIRED_MESSAGE },
-            checkActualDate
+            checkActualDate,
           ],
           permissions: [],
         },
