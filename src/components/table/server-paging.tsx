@@ -26,15 +26,15 @@ import {
   defaultErrorHandler,
   defaultSuccessHandler,
   getFiteredEntityArray,
+  getInitialParams,
   getValueFromRsql,
   pluralize,
 } from "../../utils";
 import {
-  getSortOrder,
+  getFieldSortOrder,
   getFetchDataSourceQuery,
   getFilterAllRsqlQuery,
   getFilterColumnRsqlQuery,
-  getInitialParams,
   getSearchedColumnsFromFilters,
   getSortedParams,
   useTableServerPagingParams,
@@ -44,6 +44,7 @@ import {
   DEFAULT_PAGE_NUMBER,
   DEFAULT_PAGE_SIZE,
   FILTER_ALL_NAME,
+  SelectedKeysType,
 } from "./constants";
 import { setTableLoading } from "../../__data__";
 import { TableHeader } from "./components";
@@ -64,6 +65,7 @@ export interface TableWithServerPagingProps {
   reloadKey?: string;
   defaultPageSize?: number;
   defaultSortField?: string;
+  defaultSortOrder?: "ascend" | "descend";
 }
 
 export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
@@ -79,6 +81,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
   reloadKey = "",
   defaultPageSize,
   defaultSortField,
+  defaultSortOrder,
 }) => {
   const [url, initialSearch] = links?.self?.href?.split("?") ?? [];
   const [t] = useTranslation("tableServer");
@@ -110,7 +113,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     const searchedColumnsParsed = getSearchedColumnsFromFilters(columnsFilters);
 
     setSearchedColumns(searchedColumnsParsed);
-    setSearchedAll(getValueFromRsql(all));
+    setSearchedAll(getValueFromRsql(all) as string);
   }, [filters]);
 
   useEffect(() => {
@@ -122,7 +125,9 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
             ...initialSearchParams,
             page,
             pageSize,
-            sortBy: sortBy || getDefaultSortBy(columns, defaultSortField),
+            sortBy:
+              sortBy ||
+              getDefaultSortBy(columns, defaultSortField, defaultSortOrder),
             query: getFetchDataSourceQuery(filters, initialQueries),
           },
         });
@@ -176,7 +181,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
 
   const handleChangeTable = useCallback(
     (paginationParams: PaginationConfig, tableFilters, sorter) => {
-      const sortByNext = getSortedParams(sorter);
+      const sortByNext = getSortedParams(sorter, columns);
 
       setPage(paginationParams.current || DEFAULT_PAGE_NUMBER);
       setPageSize(paginationParams.pageSize || DEFAULT_PAGE_SIZE);
@@ -186,12 +191,13 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
         setPage(DEFAULT_PAGE_NUMBER);
       }
     },
-    [setPage, setPageSize, setSortBy, sortBy]
+    [setPage, setPageSize, setSortBy, sortBy, columns]
   );
 
   const handleSearchColumn = useCallback(
-    (searched: string, confirm: any, column: ColumnProps) => {
+    (searched: SelectedKeysType, confirm: any, column: ColumnProps) => {
       const filterColumnRsql = getFilterColumnRsqlQuery(searched, column);
+
       const updatedFilters = {
         ...filters,
         [column.columnCode]: filterColumnRsql,
@@ -257,7 +263,7 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
       tableHeader={tableHeader}
       pagination={serverPagination}
       onDeleteRow={handleDelete}
-      sortOrder={getSortOrder(sortBy)}
+      sortOrder={getFieldSortOrder(sortBy)}
       dataSource={dataSource}
       onChangeTable={handleChangeTable}
       onSearchColumn={handleSearchColumn}

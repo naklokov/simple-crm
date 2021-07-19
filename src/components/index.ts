@@ -16,5 +16,6 @@ export { FormHeader } from "./form-header";
 export { SearchBar } from "./search-bar";
 export { FieldsContainer } from "./fields-container";
 export { Skeleton } from "./skeleton";
+export { Dot } from "./dot";
 
 export { fields };

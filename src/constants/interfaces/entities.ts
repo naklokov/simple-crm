@@ -71,6 +71,7 @@ export interface ClientEntityProps extends EntityOwnerProps {
   clientId: string;
   corrdespondentAccount: string;
   creationDate: string;
+  clientActivityDate: string;
   email: string;
   fullName: string;
   inn: string;

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useCallback, useContext, FocusEvent } from "react";
 import { Form, Input, Col } from "antd";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
+import { FormContext } from "../../../utils";
 
 export const Text = ({
   fieldCode,
@@ -12,8 +13,14 @@ export const Text = ({
   disabled = false,
   readonly = false,
   span = DEFAULT_FIELD_SPAN,
-}: FieldProps) => (
-  <Col {...span} key={fieldCode}>
+}: FieldProps) => {
+  const { form } = useContext(FormContext);
+
+  const handleBlur = useCallback((event:FocusEvent<HTMLInputElement>) => {
+    form.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? ''})
+  }, [fieldCode, form])
+
+  return (<Col {...span} key={fieldCode}>
     <Form.Item
       style={{ width: "100%" }}
       name={fieldCode}
@@ -29,10 +36,11 @@ export const Text = ({
           autoComplete="off"
           placeholder={placeholder}
           disabled={disabled}
+          onBlur={handleBlur}
         />
       )}
     </Form.Item>
-  </Col>
-);
+  </Col>)
+};
 
 export default Text;

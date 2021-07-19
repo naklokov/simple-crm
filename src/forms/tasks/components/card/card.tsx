@@ -123,7 +123,7 @@ export const Card: React.FC<CardProps> = ({
     <Tooltip
       key="view"
       mouseEnterDelay={TOOLTIP_SHOW_DELAY}
-      title={t("tooltip.view")}
+      title={t("tooltip.edit")}
     >
       <FormOutlined
         className={cn(style.view, style.hovered)}

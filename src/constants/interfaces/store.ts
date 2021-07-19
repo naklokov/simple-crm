@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { ProfileInfoEntityProps } from "./entities";
 
 export interface PersistState {

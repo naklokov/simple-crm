@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useMemo } from "react";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { isEmpty } from "lodash";
 import { Loader } from "../components";
@@ -31,6 +31,11 @@ export const ContainerWrapper = ({
   error,
 }: ContainerWrapperProps) => {
   const dispatch = useDispatch();
+
+  const { permissions, profileInfo } = useSelector(
+    (state: State) => state?.persist
+  );
+
   const [profile] = useFetch<ProfileInfoEntityProps>({
     url: urls.profile.entity,
     initial: {},
@@ -47,10 +52,10 @@ export const ContainerWrapper = ({
     dispatch(setPermissions(credentials?.permissions ?? []));
   }, [credentials, profile, dispatch]);
 
-  const loading = useMemo(
-    () => isEmpty(profile) || isEmpty(credentials?.permissions),
-    [profile, credentials?.permissions]
-  );
+  const loading = useMemo(() => isEmpty(profileInfo) || isEmpty(permissions), [
+    profileInfo,
+    permissions,
+  ]);
 
   if (error.statusCode) {
     return (

@@ -1,43 +1,48 @@
 import React, { useCallback, useContext } from "react";
 import moment from "moment-timezone";
 import { DatePicker } from "antd";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { flow } from "lodash";
 import { connect } from "react-redux";
-import { ColumnProps, State } from "../../../../constants";
+import { State } from "../../../../constants";
 import { SearchFooter } from ".";
 import { TableActionsContext } from "../../utils";
+import { SearchComponentProps } from "../../constants";
 
-interface DateSearchProps extends WithTranslation {
-  column: ColumnProps;
-  setSelectedKeys: any;
-  selectedKeys: any;
-  confirm: string;
-  clearFilters: any;
-}
-
-export const DateSearch = ({
-  t,
+/**
+ * Компонент поиска для поля даты
+ * @param setSelectedKeys Метод таблицы для сохранения ключей поиска
+ * @param column Описание полей в колонке
+ * @param selectedKeys Ключи поиска в таблице
+ * @param confirm Submit событие поиска
+ * @param clearFilters Метод очистки поисковых ключей
+ * @returns JSX.Component
+ */
+export const DateSearch: React.FC<SearchComponentProps> = ({
   setSelectedKeys,
   column,
   selectedKeys,
   confirm,
   clearFilters,
-}: DateSearchProps) => {
+}) => {
+  const [t] = useTranslation("columnSearch");
+  // массив значений (начало дня и конец дня)
+  const [searchedRange] = selectedKeys;
   const showTime = /hh:mm/gi.test(column?.format ?? "");
-  const [searched] = selectedKeys;
   const { onSearchColumn } = useContext(TableActionsContext);
 
   const handleChange = useCallback(
     (value: moment.Moment | null) => {
-      setSelectedKeys([value?.toISOString()]);
+      const from = value?.startOf("day").toISOString() ?? "";
+      const to = value?.endOf("day").toISOString() ?? "";
+      setSelectedKeys([[from, to]]);
     },
     [setSelectedKeys]
   );
 
   const handleSearch = useCallback(() => {
-    onSearchColumn(searched, confirm, column);
-  }, [confirm, column, onSearchColumn, searched]);
+    onSearchColumn(searchedRange, confirm, column);
+  }, [confirm, column, onSearchColumn, searchedRange]);
 
   return (
     <div style={{ padding: 8 }}>
@@ -47,7 +52,7 @@ export const DateSearch = ({
         format={column.format}
         placeholder={t("placeholder.date")}
         showTime={showTime}
-        value={searched ? moment(searched) : null}
+        value={searchedRange?.[0] ? moment(searchedRange?.[0]) : null}
         onChange={handleChange}
       />
       <SearchFooter
@@ -63,7 +68,4 @@ const mapStateToProps = (state: State) => ({
   dictionaries: state?.app?.dictionaries,
 });
 
-export default flow([
-  connect(mapStateToProps),
-  withTranslation(["columnSearch"]),
-])(DateSearch);
+export default flow([connect(mapStateToProps)])(DateSearch);

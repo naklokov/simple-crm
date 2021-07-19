@@ -27,6 +27,7 @@ export type ActionType = "href" | "delete" | "call" | "email" | "view" | "done";
 export type ColumnType =
   | "string"
   | "date"
+  | "dateRange"
   | "number"
   | "dictionary"
   | "entity"
@@ -103,6 +104,7 @@ export type TableSearchColumnsType = {
 };
 
 export interface ColumnProps {
+  align?: "left" | "right" | "center";
   columnName: string;
   columnDescription?: string;
   columnCode: string;
@@ -114,11 +116,13 @@ export interface ColumnProps {
   width?: string;
   fixed?: FixedPositionType;
   sorter?: boolean;
+  sortInverse?: boolean;
   filterable?: boolean;
   editable?: boolean;
   // до первого запроса
   isJsonField?: boolean;
   columnActions?: ActionProps[];
+  customCode?: string;
 }
 
 export interface ActionProps {
