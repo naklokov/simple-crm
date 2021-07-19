@@ -27,6 +27,8 @@ const PLACEHOLDER_DEFAULT = "Введите значение";
 const getMaxLengthMessage = (len: number) =>
   `Превышена максимальная длина - ${len} символов`;
 
+export const MAX_COMMENT_LENGTH = 10000;
+
 export const lower: LowerProps = {
   drawers: [
     {
