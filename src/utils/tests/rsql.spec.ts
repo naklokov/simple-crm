@@ -13,26 +13,71 @@ import {
   getValueFromRsql,
   getRsqlParams,
   getLikeFieldRsql,
-  mergeInitialParams,
+  getInitialParams,
 } from "../rsql";
 import { RsqlParamProps, RSQL_OPERATORS_MAP } from "../../constants";
 
-test("mergeInitialParams", () => {
-  const rsqlQuery = "id==3";
-  const initialSearch = "query=userProfile=JLIKE=test&field=123";
+test("getInitialParams", () => {
+  const initialSearch = "?query=one;two&test=1";
 
-  expect(mergeInitialParams(rsqlQuery, initialSearch)).toEqual({
-    query: "id==3;userProfile=JLIKE=test",
-    field: "123",
+  expect(getInitialParams(initialSearch)).toEqual({
+    initialQueries: ["one", "two"],
+    initialSearchParams: { test: "1" },
+  });
+});
+
+test("getInitialParams without ?", () => {
+  const initialSearch = "query=one;two&test=1";
+
+  expect(getInitialParams(initialSearch)).toEqual({
+    initialQueries: ["one", "two"],
+    initialSearchParams: { test: "1" },
+  });
+});
+
+test("getInitialParams with empty query", () => {
+  const initialSearch = "?query=&test=1";
+
+  expect(getInitialParams(initialSearch)).toEqual({
+    initialQueries: [],
+    initialSearchParams: { test: "1" },
+  });
+});
+
+test("getInitialParams without query", () => {
+  const initialSearch = "?test=2";
+
+  expect(getInitialParams(initialSearch)).toEqual({
+    initialQueries: [],
+    initialSearchParams: { test: "2" },
+  });
+});
+
+test("getInitialParams without initialSearch", () => {
+  const initialSearch = "";
+
+  expect(getInitialParams(initialSearch)).toEqual({
+    initialQueries: [],
+    initialSearchParams: {},
+  });
+});
+
+test("getInitialParams", () => {
+  const initialSearch = "query=userProfile=JLIKE=test;id==4321&field=123";
+
+  expect(getInitialParams(initialSearch)).toEqual({
+    initialQueries: ["userProfile=JLIKE=test", "id==4321"],
+    initialSearchParams: { field: "123" },
   });
 
-  expect(mergeInitialParams("", "field=123")).toEqual({
-    field: "123",
-    query: "",
+  expect(getInitialParams("field=123")).toEqual({
+    initialQueries: [],
+    initialSearchParams: { field: "123" },
   });
 
-  expect(mergeInitialParams("", "")).toEqual({
-    query: "",
+  expect(getInitialParams("")).toEqual({
+    initialQueries: [],
+    initialSearchParams: {},
   });
 });
 
@@ -191,10 +236,10 @@ test("getValueFromRsql with LIKE operator", () => {
 
 test("getValueFromRsql with date operator", () => {
   const query = 'entityData=JDATEBETWEEN=(dateFrom,"lololo1","lololo")';
-  expect(getValueFromRsql(query)).toBe("lololo");
+  expect(getValueFromRsql(query)).toEqual(["lololo1", "lololo"]);
 });
 
 test("getValueFromRsql with another operator", () => {
   const query = 'entityData=JDATEBETWEEN=(dateFrom,"lololo")';
-  expect(getValueFromRsql(query)).toBe("lololo");
+  expect(getValueFromRsql(query)).toEqual("lololo");
 });

@@ -1,29 +1,28 @@
 import React, { useCallback, useContext } from "react";
-import { WithTranslation, withTranslation } from "react-i18next";
 import { SearchFooter } from ".";
 
-import { ColumnProps, PHONE_PLACEHOLDER } from "../../../../constants";
+import { PHONE_PLACEHOLDER } from "../../../../constants";
 import { getNormalizePhone, handlePressEnter } from "../../../../utils";
 import { PhoneInput } from "../../../phone-input";
+import { SearchComponentProps } from "../../constants";
 import { TableActionsContext } from "../../utils";
 
-interface PhoneSearchProps extends WithTranslation {
-  column: ColumnProps;
-  setRef: (ref: any) => void;
-  setSelectedKeys: any;
-  selectedKeys: any;
-  confirm: string;
-  clearFilters: any;
-}
-
-export const PhoneSearch = ({
+/**
+ * Компонент поиска для поля маскированного телефона
+ * @param setSelectedKeys Метод таблицы для сохранения ключей поиска
+ * @param column Описание полей в колонке
+ * @param selectedKeys Ключи поиска в таблице
+ * @param confirm Submit событие поиска
+ * @param clearFilters Метод очистки поисковых ключей
+ * @returns JSX.Component
+ */
+export const PhoneSearch: React.FC<SearchComponentProps> = ({
   setSelectedKeys,
   column,
-  setRef,
   selectedKeys,
   confirm,
   clearFilters,
-}: PhoneSearchProps) => {
+}) => {
   const { onSearchColumn } = useContext(TableActionsContext);
   const [searched] = selectedKeys;
 
@@ -53,7 +52,6 @@ export const PhoneSearch = ({
         style={{ width: 188, marginBottom: 8, display: "block" }}
         value={searched}
         onKeyDown={handleKeyDown}
-        // ref={setRef}
         onChange={handleChange}
         placeholder={PHONE_PLACEHOLDER}
       />
@@ -67,4 +65,4 @@ export const PhoneSearch = ({
   );
 };
 
-export default withTranslation(["columnSearch"])(PhoneSearch);
+export default PhoneSearch;

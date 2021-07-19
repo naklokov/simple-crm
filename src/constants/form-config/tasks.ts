@@ -4,7 +4,7 @@ import { checkActualDate } from "../../utils";
 
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
 const PLACEHOLDER_DEFAULT = "Введите значение";
-const TASK_DESCRIPTION_MAX_LENGTH = 2000;
+const TEXTAREA_MAX_LENGTH = 2000;
 
 interface TasksConfigProps {
   drawers: DrawerProps[];
@@ -63,8 +63,8 @@ export const TASKS: TasksConfigProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [
             {
-              max: TASK_DESCRIPTION_MAX_LENGTH,
-              message: `Превышена максимальная длина - ${TASK_DESCRIPTION_MAX_LENGTH} символов`,
+              max: TEXTAREA_MAX_LENGTH,
+              message: `Превышена максимальная длина - ${TEXTAREA_MAX_LENGTH} символов`,
             },
           ],
           permissions: [],
@@ -122,7 +122,10 @@ export const TASKS: TasksConfigProps = {
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: "Введите комментарий по выполненной задаче",
           rules: [
-            { max: 2000, message: "Превышена максимальная длина строки" },
+            {
+              max: TEXTAREA_MAX_LENGTH,
+              message: `Превышена максимальная длина строки - ${TEXTAREA_MAX_LENGTH} символов`,
+            },
           ],
           permissions: [],
         },

@@ -27,7 +27,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
   const [t] = useTranslation("tableHeader");
   const { filters } = useTableServerPagingParams();
   const [value, setValue] = useState(
-    getValueFromRsql(filters?.[FILTER_ALL_NAME] ?? "")
+    getValueFromRsql(filters?.[FILTER_ALL_NAME] ?? "") as string
   );
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +51,7 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
       {withSearch && (
         <div className={style.search}>
           <SearchBar
-            value={value}
+            value={value as string}
             placeholder={searchPlaceholder}
             onChange={handleChange}
             onSearch={handleSearch}

@@ -1,5 +1,4 @@
-import { SortOrder } from "antd/lib/table/interface";
-import { ColumnProps, ColumnType } from "../../../constants";
+import { ColumnProps } from "../../../constants";
 import { getDateWithTimezone } from "../../../utils";
 import { SortColumnOrderProps } from "../constants";
 
@@ -8,7 +7,7 @@ const ORDER_MAP = {
   descend: "desc",
 };
 
-export const getSortOrder = (
+export const getFieldSortOrder = (
   sortBy: string
 ): SortColumnOrderProps | undefined => {
   if (sortBy) {
@@ -22,37 +21,58 @@ export const getSortOrder = (
   return undefined;
 };
 
-export const getSortedParams = ({
-  field,
-  order,
-}: {
+interface SorterProps {
   field: string;
-  order?: SortOrder;
-}) => {
+  order?: "ascend" | "descend";
+}
+
+export const getSortedParams = (
+  sorter: SorterProps,
+  columns: ColumnProps[]
+) => {
+  const { field, order } = sorter;
+
   if (order) {
+    const column = columns.find((item) => item.columnCode === field);
+    const sortInverse = column?.sortInverse ?? false;
+
+    if (sortInverse) {
+      const invertedOrder =
+        sortInverse && order === "ascend" ? "descend" : "ascend";
+      return `${field}:${ORDER_MAP[invertedOrder]}`;
+    }
+
     return `${field}:${ORDER_MAP[order]}`;
   }
 
   return "";
 };
 
+/**
+ * Метод формирования строки сортировки для отправки на сервер
+ * @param columns Конфигурация всех колонок в таблице
+ * @param defaultSortField Наименование поля для сортировки по умолчанию
+ * @param defaultSortOrder Порядок сортировки по умолчанию
+ * @returns Строка с полей и порядком сортировки
+ */
 export const getDefaultSortBy = (
   columns: ColumnProps[],
-  defaultSortField?: string
+  defaultSortField?: string,
+  defaultSortOrder?: "ascend" | "descend"
 ): string => {
   const field = defaultSortField || columns?.[0]?.columnCode;
-  return getSortedParams({ field, order: "ascend" });
+  const order = defaultSortOrder || "ascend";
+  return getSortedParams({ field, order }, columns);
 };
 
-const getSorterFunction = (
-  columnCode: string,
-  columnType: ColumnType
-): ((a: any, b: any) => any) => {
+const getSorterFunction = (column: ColumnProps): ((a: any, b: any) => any) => {
+  const { columnCode, columnType } = column;
+
   if (columnType === "number") {
     return (a: any, b: any) => a?.[columnCode] - b?.[columnCode];
   }
 
-  if (columnType === "date") {
+  if (columnType === "date" || columnType === "dateRange") {
     return (a: any, b: any) =>
       getDateWithTimezone(a?.[columnCode]).diff(
         getDateWithTimezone(b?.[columnCode])
@@ -67,23 +87,37 @@ const getSorterFunction = (
   };
 };
 
+const getSortOrder = (
+  sortColumnValue?: "ascend" | "descend",
+  needInverse = false
+) => {
+  if (sortColumnValue) {
+    if (needInverse) {
+      return sortColumnValue === "ascend" ? "descend" : "ascend";
+    }
+
+    return sortColumnValue;
+  }
+
+  return false;
+};
+
 export const getSorterProp = (
   withLocalSort: boolean,
   column: ColumnProps,
   sortColumnOrder?: SortColumnOrderProps
 ) => {
-  const defaultSortOrder = sortColumnOrder?.[column?.columnCode] ?? false;
+  const { columnCode, sortInverse, sorter } = column;
+  const sortColumnValue = sortColumnOrder?.[columnCode];
 
-  if (column.sorter) {
+  if (sorter) {
     return {
-      sorter: withLocalSort
-        ? getSorterFunction(column.columnCode, column.columnType)
-        : true,
-      defaultSortOrder,
+      sorter: withLocalSort ? getSorterFunction(column) : true,
+      sortOrder: getSortOrder(sortColumnValue, sortInverse),
     };
   }
 
   return {
-    defaultSortOrder,
+    sortOrder: false,
   };
 };

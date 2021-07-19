@@ -157,6 +157,20 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
       actions: [],
       columns: [
         {
+          columnName: "Актуальность",
+          columnCode: "clientActivityDate",
+          columnType: "dateRange",
+          columnDescription: "",
+          align: "center",
+          width: "120px",
+          sorter: true,
+          sortInverse: true,
+          filterable: true,
+          columnActions: [],
+          isJsonField: true,
+          customCode: "activity",
+        },
+        {
           columnName: "Наименование",
           columnCode: "shortName",
           columnType: "string",
@@ -196,15 +210,6 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           columnDescription: "Город",
           filterable: true,
           sorter: true,
-        },
-        {
-          columnName: "Дата регистрации",
-          columnCode: "creationDate",
-          columnType: "date",
-          filterable: true,
-          format: "DD.MM.YYYY",
-          sorter: true,
-          columnDescription: "Дата регистрации",
         },
         {
           columnName: "ИНН",
