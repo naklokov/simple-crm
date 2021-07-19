@@ -2,12 +2,15 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Form, Col, Select } from "antd";
 import axios from "axios";
 
-import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
+import { useSelector } from "react-redux";
+import { DEFAULT_FIELD_SPAN, FieldProps, State } from "../../../constants";
 import {
   defaultErrorHandler,
+  fillLinks,
   getRsqlParams,
   getSearchRsql,
-  mergeInitialParams,
+  getConcatenationQueryRsql,
+  getInitialParams,
 } from "../../../utils";
 import { HighlightTextWrapper } from "../../../wrappers";
 import { Readonly } from "../readonly";
@@ -21,12 +24,13 @@ export const EntityLazy = ({
   fieldDescription,
   placeholder = "Выберите значение",
   disabled = false,
-  _links,
+  _links = {},
   readonly = false,
   span = DEFAULT_FIELD_SPAN,
   pageSize = 10,
 }: FieldProps) => {
   const [loading, setLoading] = useState(false);
+
   const [options, setOptions] = useState<{ label: string; value: string }[]>(
     []
   );
@@ -35,7 +39,14 @@ export const EntityLazy = ({
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [url, query] = _links?.self?.href?.split("?") ?? [];
+
+  const profileInfo = useSelector((state: State) => state.persist.profileInfo);
+  const filledLinks = fillLinks(_links, {
+    userProfileId: profileInfo?.id ?? "",
+  });
+
+  const [url, query] = filledLinks?.self?.href?.split("?") ?? [];
+
   const style = { width: "100%" };
 
   /**
@@ -46,14 +57,18 @@ export const EntityLazy = ({
     async (queryParams: string | null = null) => {
       try {
         setLoading(true);
-
-        const params = mergeInitialParams(queryParams ?? "", query);
+        const { initialQueries, initialSearchParams } = getInitialParams(query);
+        const params = getConcatenationQueryRsql(
+          queryParams ?? "",
+          initialQueries
+        );
         const response = await axios.get(url, {
           params: {
             page,
             pageSize,
             sortBy: `${titleField}:asc`,
-            ...params,
+            query: params,
+            ...initialSearchParams,
           },
         });
         setPage(page + 1);
@@ -81,9 +96,7 @@ export const EntityLazy = ({
    * Инициализация
    */
   useEffect(() => {
-    (async () => {
-      await fetchItems();
-    })();
+    fetchItems();
   }, [codeField, fieldCode]);
 
   /**
