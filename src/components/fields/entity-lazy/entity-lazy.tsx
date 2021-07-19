@@ -39,12 +39,10 @@ export const EntityLazy = ({
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-
   const profileInfo = useSelector((state: State) => state.persist.profileInfo);
   const filledLinks = fillLinks(_links, {
     userProfileId: profileInfo?.id ?? "",
   });
-
   const [url, query] = filledLinks?.self?.href?.split("?") ?? [];
 
   const style = { width: "100%" };
