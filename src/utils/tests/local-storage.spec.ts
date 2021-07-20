@@ -4,6 +4,7 @@ const state = {
   persist: {
     permissions: [],
     auth: true,
+    profileInfo: {},
   },
 };
 

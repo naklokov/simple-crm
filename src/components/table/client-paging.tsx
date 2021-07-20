@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { noop } from "lodash";
 import { PaginationProps } from "antd/es/pagination";
+import { PaginationConfig } from "antd/lib/pagination";
 import {
   ActionProps,
   ColumnProps,
@@ -8,8 +9,13 @@ import {
   RecordType,
 } from "../../constants";
 import { Table } from ".";
-import { getFilteredDataSource } from "./utils";
+import {
+  getFieldSortOrder,
+  getFilteredDataSource,
+  getSortedParams,
+} from "./utils";
 import { TableHeader } from "./components";
+import { DEFAULT_PAGE_NUMBER } from "./constants";
 
 export interface TableWithClientPagingProps {
   className?: any;
@@ -50,6 +56,8 @@ export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
 }) => {
   const [searchedAll, setSearchedAll] = useState("");
   const [searchedColumns, setSearchedColumns] = useState<RecordType>({});
+  const [sortBy, setSortBy] = useState("");
+  const [page, setPage] = useState(DEFAULT_PAGE_NUMBER);
 
   const tableDataSource = useMemo(
     () =>
@@ -75,6 +83,19 @@ export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
     [searchedColumns]
   );
 
+  const handleChangeTable = useCallback(
+    (paginationParams: PaginationConfig, tableFilters, sorter) => {
+      const sortByNext = getSortedParams(sorter, columns);
+      setSortBy(sortByNext);
+      setPage(paginationParams.current || DEFAULT_PAGE_NUMBER);
+
+      if (sortByNext !== sortBy) {
+        setPage(DEFAULT_PAGE_NUMBER);
+      }
+    },
+    [sortBy, columns]
+  );
+
   const tableHeader = useMemo(
     () =>
       withSearch || extraTitle
@@ -97,15 +118,20 @@ export const TableWithClientPaging: React.FC<TableWithClientPagingProps> = ({
       columns={columns}
       actions={actions}
       links={links}
-      pagination={pagination}
+      pagination={{
+        ...pagination,
+        current: page,
+      }}
       dataSource={tableDataSource}
       onSaveRow={onSaveRow}
       permissions={actionsPermissions}
       searchAll={searchedAll}
+      sortOrder={getFieldSortOrder(sortBy)}
       tableHeader={tableHeader}
       onViewRow={onViewRow}
       onDoneRow={onDoneRow}
       onSearchColumn={handleSearchColumn}
+      onChangeTable={handleChangeTable}
       searchedColumns={searchedColumns}
       onDeleteRow={onDeleteRow}
     />

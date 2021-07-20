@@ -2,6 +2,7 @@ const SftpClient = require("ssh2-sftp-client");
 const path = require("path");
 
 const dotenvPath = path.join(__dirname, "..", ".env");
+
 require("dotenv").config({ path: dotenvPath });
 
 const {
@@ -9,6 +10,8 @@ const {
   USERNAME: username,
   PASSWORD: password,
   PORT: port = 22,
+  SOURCE_FOLDER: srcFolder = "build",
+  TARGET_FOLDER: targetFolder = "",
 } = process.env;
 
 const config = {
@@ -20,9 +23,9 @@ const config = {
 
 async function main() {
   const client = new SftpClient("upload-test");
-  console.log(__dirname);
-  const src = path.join(__dirname, "..", "build");
-  const dst = "/var/www/crm";
+
+  const src = path.join(__dirname, "..", srcFolder);
+  const dst = "/var/www/crm/" + targetFolder;
 
   try {
     await client.connect(config);

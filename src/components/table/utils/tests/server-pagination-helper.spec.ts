@@ -2,7 +2,7 @@ import { renderHook, act } from "@testing-library/react-hooks";
 import * as reactRouter from "react-router-dom";
 import { ColumnProps } from "../../../../constants";
 import {
-  getDateBetweenRsql,
+  getDateRangeBetweenRsql,
   getEqualRsql,
   getRsqlParams,
   getSearchRsql,
@@ -13,7 +13,6 @@ import {
   getFilterColumnRsqlQuery,
   getFetchDataSourceQuery,
   getFilterAllRsqlQuery,
-  getInitialParams,
   getSearchedColumnsFromFilters,
   useTableServerPagingParams,
 } from "../server-pagination-helper";
@@ -28,10 +27,14 @@ const column: ColumnProps = {
 };
 
 test("getFilterColumnRsqlQuery date", () => {
-  const searched = "поиск";
+  const searched = ["2010-11-12", "2020-11-12"];
   expect(getFilterColumnRsqlQuery(searched, column)).toBe(
     getRsqlParams([
-      getDateBetweenRsql({ searched, fieldCode: column.columnCode }),
+      getDateRangeBetweenRsql({
+        from: searched?.[0],
+        to: searched?.[1],
+        fieldCode: column.columnCode,
+      }),
     ])
   );
 });
@@ -126,51 +129,6 @@ test("getFetchDataSourceQuery filters empty", () => {
   const initialQueries = ["one", "two"];
 
   expect(getFetchDataSourceQuery(filters, initialQueries)).toBe("one;two");
-});
-
-test("getInitialParams", () => {
-  const initialSearch = "?query=one;two&test=1";
-
-  expect(getInitialParams(initialSearch)).toEqual({
-    initialQueries: ["one", "two"],
-    initialSearchParams: { test: "1" },
-  });
-});
-
-test("getInitialParams without ?", () => {
-  const initialSearch = "query=one;two&test=1";
-
-  expect(getInitialParams(initialSearch)).toEqual({
-    initialQueries: ["one", "two"],
-    initialSearchParams: { test: "1" },
-  });
-});
-
-test("getInitialParams with empty query", () => {
-  const initialSearch = "?query=&test=1";
-
-  expect(getInitialParams(initialSearch)).toEqual({
-    initialQueries: [],
-    initialSearchParams: { test: "1" },
-  });
-});
-
-test("getInitialParams without query", () => {
-  const initialSearch = "?test=2";
-
-  expect(getInitialParams(initialSearch)).toEqual({
-    initialQueries: [],
-    initialSearchParams: { test: "2" },
-  });
-});
-
-test("getInitialParams without initialSearch", () => {
-  const initialSearch = "";
-
-  expect(getInitialParams(initialSearch)).toEqual({
-    initialQueries: [],
-    initialSearchParams: {},
-  });
 });
 
 test("getSearchedColumnsFromFilters", () => {

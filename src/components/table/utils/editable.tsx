@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useContext, useMemo } from "react";
 import { Input, Form, InputNumber } from "antd";
-import { noop, isEqual } from "lodash";
+import { noop, isEqual, toNumber } from "lodash";
 
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -81,12 +81,22 @@ const EditableCell = ({
     } catch (error) {
       defaultErrorHandler({
         error,
-        defaultErrorMessage: t("message.row.save.error"),
       });
     }
   };
 
   let childNode = children;
+
+  const formatterFunction = useMemo(
+    () => (value?: number | string) =>
+      `${value}`?.replace(/\B(?=(\d{3})+(?!\d))/g, " "),
+    []
+  );
+
+  const parserFunction = useMemo(
+    () => (value?: string) => (value ? toNumber(value.replace(/\D/g, "")) : ""),
+    []
+  );
 
   if (editable && canShow) {
     childNode = editing ? (
@@ -103,10 +113,9 @@ const EditableCell = ({
         <InputNumber
           min={0}
           step={100}
-          formatter={(value) =>
-            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-          }
-          parser={(value) => parseFloat(value?.replace(/\s/g, "") ?? "")}
+          maxLength={11}
+          formatter={formatterFunction}
+          parser={parserFunction}
           ref={inputRef}
           onPressEnter={save}
           onBlur={save}

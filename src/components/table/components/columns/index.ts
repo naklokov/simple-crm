@@ -1,3 +1,4 @@
+export { Activity } from "./custom";
 export { Text } from "./text";
 export { Entity } from "./entity";
 export { Dictionary } from "./dictionary";

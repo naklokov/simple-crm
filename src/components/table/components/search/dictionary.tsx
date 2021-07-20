@@ -1,33 +1,37 @@
 import React, { useCallback, useContext } from "react";
 import { Select } from "antd";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { useTranslation, withTranslation } from "react-i18next";
 import { flow } from "lodash";
 import { connect } from "react-redux";
-import { ColumnProps, State, DictionaryProps } from "../../../../constants";
+import { State, DictionaryProps } from "../../../../constants";
 import { SearchFooter } from ".";
 import { TableActionsContext } from "../../utils";
+import { SearchComponentProps } from "../../constants";
 
-interface DictionarySearchProps extends WithTranslation {
-  column: ColumnProps;
-  setSelectedKeys: any;
-  setRef: any;
-  selectedKeys: any;
-  confirm: string;
-  clearFilters: any;
+interface DictionarySearchProps extends SearchComponentProps {
   dictionaries: { [key: string]: DictionaryProps };
 }
 
-export const DictionarySearch = ({
-  t,
+/**
+ * Компонент поиска для поля справочника
+ * @param setSelectedKeys Метод таблицы для сохранения ключей поиска
+ * @param column Описание полей в колонке
+ * @param selectedKeys Ключи поиска в таблице
+ * @param confirm Submit событие поиска
+ * @param clearFilters Метод очистки поисковых ключей
+ * @param dictionaries Объект всех справочников в системе
+ * @returns JSX.Component
+ */
+export const DictionarySearch: React.FC<DictionarySearchProps> = ({
   setSelectedKeys,
   column,
-  setRef,
   selectedKeys,
   confirm,
   clearFilters,
   dictionaries,
-}: DictionarySearchProps) => {
+}) => {
   const { onSearchColumn } = useContext(TableActionsContext);
+  const [t] = useTranslation("columnSearch");
   const [searched] = selectedKeys;
 
   const handleChange = useCallback(
