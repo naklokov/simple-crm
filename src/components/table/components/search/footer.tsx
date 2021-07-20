@@ -1,21 +1,34 @@
 import React, { useCallback, useContext } from "react";
 import { Button, Space } from "antd";
-import { WithTranslation, withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { SearchOutlined } from "@ant-design/icons";
 import { TableActionsContext } from "../../utils";
 import { ColumnProps } from "../../../../constants";
 
-interface FooterProps extends WithTranslation {
+interface FooterProps {
   column: ColumnProps;
-  clearFilters: any;
+  clearFilters: () => void;
   onSearch: () => void;
 }
 
-export const Footer = ({ column, clearFilters, t, onSearch }: FooterProps) => {
+/**
+ * Общий компонент подвала для всех полей поиска
+ * @param column Описание полей в колонке
+ * @param clearFilters Метод очистки поисковых ключей
+ * @param onSearch Метод для проброса значений поиска
+ * @returns JSX.Component
+ */
+export const Footer: React.FC<FooterProps> = ({
+  column,
+  clearFilters,
+  onSearch,
+}) => {
+  const [t] = useTranslation("columnSearch");
   const { onResetFilter } = useContext(TableActionsContext);
+
   const handleResetFilter = useCallback(() => {
     onResetFilter(column, clearFilters);
-  }, [column, clearFilters]);
+  }, [column, clearFilters, onResetFilter]);
 
   return (
     <Space>
@@ -35,4 +48,4 @@ export const Footer = ({ column, clearFilters, t, onSearch }: FooterProps) => {
   );
 };
 
-export default withTranslation(["columnSearch"])(Footer);
+export default Footer;

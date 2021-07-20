@@ -109,6 +109,7 @@ export const Comments = ({ profileInfo, formName }: CommentsProps) => {
 
   const handleSendComment = useCallback(
     async (text: string) => {
+      if (!text.trim()) return;
       try {
         const data = getPostData(text, entityId, profileInfo.id);
         await axios.post(urls.comments.entity, data);

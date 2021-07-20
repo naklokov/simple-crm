@@ -288,8 +288,12 @@ export const downloadFile = (data: ArrayBuffer, fileName: string) => {
     }
   }
 };
-
-// метод заполнения links нужными данными до первого запроса
+/**
+ * Метод заполнения links нужными данными до первого запроса
+ * @param links Объект HATEOAS ссылыкок для сущности
+ * @param values Объект с подменяемыми значениями
+ * @returns Объект links с подменёнными значениями из values
+ */
 export const fillLinks = (
   links: LinksType,
   values: { [key: string]: string }

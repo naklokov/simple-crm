@@ -16,6 +16,10 @@
 
 Документация по текущему проекту описана на [Confluence](https://olivje-group.atlassian.net/wiki/spaces/OLIVJE/overview?homepageId=262146)
 
+## Дизайн макеты
+
+[Figma](https://www.figma.com/file/3O6FGDB86v3fONaWSuazXN/Olivje-CRM?node-id=2288%3A106818)
+
 ## Локальный запуск приложения
 
 1. Необходимо клонировать приложение на свой ПК

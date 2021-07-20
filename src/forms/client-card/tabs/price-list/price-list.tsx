@@ -61,13 +61,12 @@ export const PriceList: React.FC<ContactsProps> = ({
       try {
         await axios({ url, method: "put", data: values, params });
         defaultSuccessHandler(t("message.row.save.success"));
+        reload();
       } catch (error) {
         defaultErrorHandler({ error });
       } finally {
         setTableLoading(false);
       }
-
-      reload();
     },
     [reload, params, setTableLoading, t]
   );

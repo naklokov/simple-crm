@@ -1,12 +1,12 @@
-import { toNumber, toString } from "lodash";
+import { isEmpty, toNumber, toString } from "lodash";
 import { parse, stringify } from "query-string";
 import { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import { ColumnProps, RecordType, RSQL_DELIMETER } from "../../../constants";
 import {
-  getDateBetweenRsql,
-  getDateFieldBetweenRsql,
+  getDateRangeBetweenRsql,
+  getDateRangeFieldBetweenRsql,
   getEqualRsql,
   getFieldEqualRsql,
   getRsqlParams,
@@ -14,8 +14,12 @@ import {
   getValueFromRsql,
 } from "../../../utils";
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from "../constants";
-import { replaceLikeChars } from "./common";
 
+/**
+ * Метод удаления из объекта параметров null, undefined, false, ''
+ * @param object Объект для фильтрации
+ * @returns Объект без "пустых" параметров
+ */
 const filterEmptyValues = (object: RecordType) =>
   Object.keys(object)
     .filter((key) => !!object[key])
@@ -27,15 +31,12 @@ const filterEmptyValues = (object: RecordType) =>
       {}
     );
 
-export const getInitialParams = (initialSearch: string) => {
-  const { query, ...initialSearchParams } = parse(initialSearch);
-  const initialQueries = toString(query)
-    .split(RSQL_DELIMETER)
-    .filter((o) => !!o);
-
-  return { initialQueries, initialSearchParams };
-};
-
+/**
+ * Метод конкатенации начальных параметров и параметров фильтра в строку RSQL
+ * @param filters Значения фильтров из таблицы
+ * @param initialQueries Переданные начальные значения из url
+ * @returns RSQL строка для отправки на сервер
+ */
 export const getFetchDataSourceQuery = (
   filters: RecordType = {},
   initialQueries: string[]
@@ -46,36 +47,55 @@ export const getFetchDataSourceQuery = (
     .join(RSQL_DELIMETER);
 };
 
+/**
+ * Метод получения значений фильтров из RSQL строки
+ * @param filters Объект состоящий из кода поля и значения RSQL соответствующего этому полю
+ * @returns Объект состоящий из кода и текстового значения введённого в поле фильтра
+ */
 export const getSearchedColumnsFromFilters = (filters: RecordType) =>
   Object.keys(filters).reduce((acc, filterKey) => {
     const value = getValueFromRsql(filters[filterKey]);
-    if (value) {
+
+    if (!isEmpty(value)) {
       return {
         ...acc,
-        [filterKey]: replaceLikeChars(value),
+        [filterKey]: value,
       };
     }
 
     return acc;
   }, {});
 
+/**
+ * Метод получения RSQL объекта для поиска по всей таблице
+ * @param searched Значение для поиска
+ * @param searchedKeys Поля по которым необходимо осуществлять поиск
+ * @returns Объект с RSQL параметрами
+ */
 export const getFilterAllRsqlQuery = (
   searched: string,
   searchedKeys: string[]
 ) => getRsqlParams([getSearchRsql(searchedKeys, searched)]);
 
+/**
+ * Метод получения RSQL объекта для поиска по одной колонке в таблице
+ * @param searched Значение для поиска
+ * @param column Описание полей в колонке
+ * @returns Объект с RSQL параметрами
+ */
 export const getFilterColumnRsqlQuery = (
-  searched: string,
+  searched: any,
   column: ColumnProps
 ) => {
-  if (column.columnType === "date") {
+  if (column.columnType === "date" || column.columnType === "dateRange") {
+    const [from, to] = searched;
     const rsql = column.isJsonField
-      ? getDateFieldBetweenRsql({
-          date: searched,
+      ? getDateRangeFieldBetweenRsql({
+          from,
+          to,
           fieldCode: column.columnCode,
         })
-      : getDateBetweenRsql({ fieldCode: column.columnCode, searched });
-
+      : getDateRangeBetweenRsql({ from, to, fieldCode: column.columnCode });
     return getRsqlParams([rsql]);
   }
 
@@ -97,6 +117,11 @@ export const getFilterColumnRsqlQuery = (
   ]);
 };
 
+/**
+ * hook для получения параметров и методов для изменения параметров необходимых для серверного рендеринга
+ * @param defaultPageSize Количество отображаемых строк в таблице по умолчанию
+ * @returns Параметры серверного пейджинга для запроса и методы их изменяющие
+ */
 export const useTableServerPagingParams = (
   defaultPageSize: number = DEFAULT_PAGE_SIZE
 ) => {
