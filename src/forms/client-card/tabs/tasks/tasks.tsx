@@ -45,7 +45,7 @@ const taskDrawer = formConfig.clientCard.lower.drawers.find(
   (drawer) => drawer.code === "task"
 );
 
-const OMIT_COLUMNS_ACTIVE = ["note", "updateDate"];
+const OMIT_COLUMNS_ACTIVE = ["note", "taskCompletedDate"];
 const OMIT_COLUMNS_COMPLETE = ["taskEndDate"];
 
 const sortByDateField = (field: string, order: "asc" | "desc") => (
