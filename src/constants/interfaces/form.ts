@@ -17,7 +17,8 @@ export type FieldType =
   | "entity"
   | "email"
   | "href"
-  | "phone";
+  | "phone"
+  | "switch";
 
 export type RecordType = { [key: string]: string };
 
@@ -150,6 +151,10 @@ export interface FieldProps {
   permissions: string[];
   placeholder?: string;
   _links?: LinksType;
+  checkedText?: {
+    checkedChildren: string,
+    unCheckedChildren: string
+  }
 }
 
 export interface TabPaneFormProps {

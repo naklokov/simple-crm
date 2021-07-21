@@ -1,4 +1,5 @@
-import { urls } from "..";
+import urls from "../urls";
+import { PERMISSIONS_SET } from "../permissions";
 import { DATE_FORMATS } from "../common";
 import { phoneRule } from "../../utils";
 import { TabProps } from "../interfaces";
@@ -100,16 +101,24 @@ export const FORM: { tabs: TabProps[] } = {
           fieldName: "О себе",
           type: "string",
           format: "textarea",
-          placeholder:
-            "Введите информацию о ваших увлечениях, хобби, интересах...",
+          placeholder: "Введите информацию о ваших увлечениях, хобби, интересах...",
           fieldDescription: "Максимум 2000 символов",
           readonly: false,
           permissions: [],
           disabled: false,
           rules: [
             { max: 2000, message: "Превышена максимальная длина строки" },
-          ],
-          span: { lg: 12, xl: 10 },
+          ]
+        },
+        {
+          fieldCode: "isLocked",
+          fieldName: "Профиль активен",
+          fieldDescription: "",
+          type: "switch",
+          readonly: false,
+          disabled: false,
+          rules: [],
+          permissions: PERMISSIONS_SET.CLIENT_UPDATE_DEPARTMENT,
         },
       ],
       _links: {

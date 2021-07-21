@@ -1,18 +1,18 @@
 import React from "react";
 import { Typography } from "antd";
 import { useTranslation } from "react-i18next";
-import { noop } from "lodash";
+import { noop, isNil } from "lodash";
 
 const { Link, Paragraph } = Typography;
 
 interface ReadonlyProps {
-  value?: string;
-  format?: (value: string) => string;
+  value?: any;
+  format?: (value: any) => string;
   type?: "href" | "text";
   onClickLink?: () => void;
 }
 
-const DEFAULT_FORMAT = (value: string) => value;
+const DEFAULT_FORMAT = (value: string | boolean) => value.toString();
 
 export const Readonly: React.FC<ReadonlyProps> = ({
   value = "",
@@ -30,13 +30,18 @@ export const Readonly: React.FC<ReadonlyProps> = ({
     );
   }
 
+  const isFilledValue = value || value === false
+
+  console.log('isFilledValue', isFilledValue);
+
   return (
     <Paragraph
       style={{ marginBottom: 0 }}
       strong
       ellipsis={{ rows: 2, expandable: true }}
     >
-      {value ? format(value) : t("empty")}
+      {isFilledValue ? format(value) : t("empty")}
     </Paragraph>
   );
-};
+}
+
