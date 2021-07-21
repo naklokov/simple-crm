@@ -6,13 +6,13 @@ import { noop } from "lodash";
 const { Link, Paragraph } = Typography;
 
 interface ReadonlyProps {
-  value?: string;
-  format?: (value: string) => string;
+  value?: any;
+  format?: (value: any) => string;
   type?: "href" | "text";
   onClickLink?: () => void;
 }
 
-const DEFAULT_FORMAT = (value: string) => value;
+const DEFAULT_FORMAT = (value: any) => value.toString();
 
 export const Readonly: React.FC<ReadonlyProps> = ({
   value = "",
@@ -36,7 +36,7 @@ export const Readonly: React.FC<ReadonlyProps> = ({
       strong
       ellipsis={{ rows: 2, expandable: true }}
     >
-      {value ? format(value) : t("empty")}
+      {value || value === false ? format(value) : t("empty")}
     </Paragraph>
   );
 };

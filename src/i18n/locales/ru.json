@@ -293,5 +293,9 @@
     "active": "Актуально",
     "warning": "Внимание",
     "expired": "Просрочено"
+  },
+  "switch": {
+    "title.true": "Да",
+    "title.false": "Нет"
   }
 }
