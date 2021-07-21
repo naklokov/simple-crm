@@ -86,7 +86,10 @@ export const TASKS: TasksConfigProps = {
           disabled: false,
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          rules: [
+            { required: true, message: REQUIRED_MESSAGE },
+            checkActualDate,
+          ],
           permissions: [],
         },
         {

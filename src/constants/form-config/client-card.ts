@@ -2,7 +2,7 @@ import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
 import { PERMISSIONS_SET } from "../permissions";
 import { DATE_FORMATS } from "../common";
-import { ogrnRule, phoneRule, vatRule } from "../../utils";
+import { checkActualDate, ogrnRule, phoneRule, vatRule } from "../../utils";
 import { PHONE_PLACEHOLDER } from "../phone";
 
 interface UpperProps {
@@ -46,7 +46,10 @@ export const lower: LowerProps = {
           disabled: false,
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          rules: [
+            { required: true, message: REQUIRED_MESSAGE },
+            checkActualDate,
+          ],
           permissions: [],
         },
         {
