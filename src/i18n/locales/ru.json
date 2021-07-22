@@ -263,7 +263,9 @@
   },
   "fields": {
     "email.tooltip": "Написать письмо",
-    "href.tooltip": "Перейти по ссылке"
+    "href.tooltip": "Перейти по ссылке",
+    "switch.title.true": "Да",
+    "switch.title.false": "Нет"
   },
   "documents": {
     "button.title": "Сгенерировать",
