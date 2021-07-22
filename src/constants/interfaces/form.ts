@@ -151,10 +151,6 @@ export interface FieldProps {
   permissions: string[];
   placeholder?: string;
   _links?: LinksType;
-  checkedText?: {
-    checkedChildren: string,
-    unCheckedChildren: string
-  }
 }
 
 export interface TabPaneFormProps {
