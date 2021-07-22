@@ -12,7 +12,7 @@ interface ReadonlyProps {
   onClickLink?: () => void;
 }
 
-const DEFAULT_FORMAT = (value: any) => value.toString();
+const DEFAULT_FORMAT = (value: any) => value;
 
 export const Readonly: React.FC<ReadonlyProps> = ({
   value = "",

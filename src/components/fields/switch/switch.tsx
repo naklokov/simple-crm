@@ -17,9 +17,9 @@ export const Switch = ({
 }: FieldProps) => {
   const { form } = useContext(FormContext);
   const value = form.getFieldValue(fieldCode);
-  const [t] = useTranslation("switch");
+  const [t] = useTranslation("fields");
 
-  const formatText = (data: any) => t(`title.${data}`);
+  const formatText = (data: any) => t(`switch.title.${data}`);
 
   return (
     <Col {...span} key={fieldCode}>
@@ -37,8 +37,8 @@ export const Switch = ({
           <SwitchUI
             checked={value}
             disabled={disabled}
-            checkedChildren={t(`title.true`)}
-            unCheckedChildren={t(`title.false`)}
+            checkedChildren={t(`switch.title.true`)}
+            unCheckedChildren={t(`switch.title.false`)}
           />
         )}
       </Form.Item>

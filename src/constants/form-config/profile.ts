@@ -101,14 +101,15 @@ export const FORM: { tabs: TabProps[] } = {
           fieldName: "О себе",
           type: "string",
           format: "textarea",
-          placeholder: "Введите информацию о ваших увлечениях, хобби, интересах...",
+          placeholder:
+            "Введите информацию о ваших увлечениях, хобби, интересах...",
           fieldDescription: "Максимум 2000 символов",
           readonly: false,
           permissions: [],
           disabled: false,
           rules: [
             { max: 2000, message: "Превышена максимальная длина строки" },
-          ]
+          ],
         },
         {
           fieldCode: "isLocked",
@@ -118,7 +119,7 @@ export const FORM: { tabs: TabProps[] } = {
           readonly: false,
           disabled: false,
           rules: [],
-          permissions: PERMISSIONS_SET.USERPROFILES,
+          permissions: PERMISSIONS_SET.USERPROFILES_UPDATE_DEPARTMENT,
         },
       ],
       _links: {
