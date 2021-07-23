@@ -10,6 +10,8 @@ export interface ColumnTaskProps {
   dateFormat: string;
 }
 
+export type TaskSortType = "asc" | "desc";
+
 export const DIVIDER_COLORS = ["#FAAD14", "#1890FF", "#B6232C"];
 export const INFINITY_SCROLL_STEP = 10;
 
@@ -17,4 +19,9 @@ export const CELL_COLORS = {
   VIEW: "rgba(0, 0, 0)",
   NOT_VIEW: "rgba(0, 0, 0, 0.25)",
   SELECTED: "rgba(255, 255, 255)",
+};
+
+export const SORT_ARROW_COLORS = {
+  DEFAULT: "#bfbfbf",
+  ACTIVE: "#1890ff",
 };

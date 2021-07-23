@@ -11,6 +11,7 @@ import {
   getFieldEqualRsql,
   getRsqlParams,
 } from "./rsql";
+import { TaskSortType } from "../forms/tasks/constants";
 
 export const getExtraRsql = (profileInfoId: string): RsqlParamProps[] => [
   { key: "userProfileId", value: profileInfoId },
@@ -20,7 +21,7 @@ export const getExtraRsql = (profileInfoId: string): RsqlParamProps[] => [
   }),
 ];
 
-export const getTasksSorted = (order: "asc" | "desc" = "asc") =>
+export const getTasksSorted = (order: TaskSortType = "asc") =>
   `${TASK_DATE_FIELD_CODE}:${order}`;
 
 export const getDateRsql = (

@@ -213,7 +213,9 @@
     "button.load.more": "Загрузить ещё",
     "list.empty": "Нет задач",
     "spin.loading": "Загрузка...",
-    "drawer.add.title": "Новая задача"
+    "drawer.add.title": "Новая задача",
+    "sort.tooltip.asc": "Сортировка по возрастанию",
+    "sort.tooltip.desc": "Сортировка по убыванию"
   },
   "card": {
     "tooltip.complete": "Выполнить задачу",

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Divider, Typography, List, Empty } from "antd";
+import { Divider, List, Empty } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroller";
@@ -8,7 +8,12 @@ import { Card } from "..";
 import style from "./column.module.scss";
 import { TaskEntityProps, urls } from "../../../../constants";
 import { defaultErrorHandler, getTasksSorted } from "../../../../utils";
-import { ColumnTaskProps, INFINITY_SCROLL_STEP } from "../../constants";
+import {
+  ColumnTaskProps,
+  INFINITY_SCROLL_STEP,
+  TaskSortType,
+} from "../../constants";
+import { Header } from "./header";
 
 interface ColumnProps extends ColumnTaskProps {
   onComplete: (task: TaskEntityProps) => void;
@@ -32,11 +37,12 @@ export const Column = ({
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const [sort, setSort] = useState<TaskSortType>("asc");
 
   const fetchTasks = async ({ pageSize }: any) => {
     setLoading(true);
     try {
-      const sortBy = getTasksSorted();
+      const sortBy = getTasksSorted(sort);
       const response = await axios.get(urls.tasks.paging, {
         params: { query, pageSize, sortBy },
       });
@@ -60,17 +66,25 @@ export const Column = ({
     }
 
     fetchTasks({ pageSize: tasks.length + INFINITY_SCROLL_STEP });
-  }, [tasks, count]);
+  }, [tasks, count, sort]);
 
   useEffect(() => {
     fetchTasks({ pageSize: INFINITY_SCROLL_STEP });
-  }, [reloadKey]);
+  }, [reloadKey, sort]);
+
+  const setSortOrder = useCallback((order: TaskSortType) => {
+    setSort(order);
+  }, []);
 
   return (
     <div className={style.container}>
-      <Typography.Title type={titleType} level={5} className={style.title}>
-        {`${title} - ${count}`}
-      </Typography.Title>
+      <Header
+        titleType={titleType}
+        title={title}
+        count={count}
+        sort={sort}
+        setSort={setSortOrder}
+      />
       <Divider
         className={style.divider}
         style={{ backgroundColor: dividerColor }}
