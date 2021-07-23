@@ -60,7 +60,7 @@
     "rest": "npm start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:coverage": "npm test -- --coverage",
+    "test:coverage": "npm test -- --coverage --watchAll",
     "eject": "react-scripts eject",
     "changelog": "git-chglog -o CHANGELOG.md",
     "version": "node scripts/create-changelog.js",

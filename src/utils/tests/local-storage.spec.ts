@@ -1,4 +1,4 @@
-import { loadState, saveState } from "../local-storage";
+import { clear, loadState, saveState } from "../local-storage";
 
 const state = {
   persist: {
@@ -22,4 +22,10 @@ test("saveState", () => {
 
   saveState(state);
   expect(localStorage.getItem("state")).toBe(JSON.stringify(state));
+});
+
+test("clear", () => {
+  expect(loadState()).toEqual(state);
+  clear();
+  expect(localStorage.getItem("state")).toBe(null);
 });
