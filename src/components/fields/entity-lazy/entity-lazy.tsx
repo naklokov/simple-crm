@@ -1,19 +1,16 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Form, Col, Select } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Form, Col, Select, Spin } from "antd";
 import axios from "axios";
 
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { LabeledValue } from "antd/lib/select";
 import { DEFAULT_FIELD_SPAN, FieldProps, State } from "../../../constants";
-import {
-  defaultErrorHandler,
-  fillLinks,
-  getRsqlParams,
-  getSearchRsql,
-  getConcatenationQueryRsql,
-  getInitialParams,
-} from "../../../utils";
+import { defaultErrorHandler, fillLinks } from "../../../utils";
+import { getFetchParams, getMappedOptions, isScrollBottom } from "./utils";
 import { HighlightTextWrapper } from "../../../wrappers";
 import { Readonly } from "../readonly";
+import { DEFAULT_PAGE_SIZE } from "../../table/constants";
 
 export const EntityLazy = ({
   fieldCode,
@@ -27,58 +24,50 @@ export const EntityLazy = ({
   _links = {},
   readonly = false,
   span = DEFAULT_FIELD_SPAN,
-  pageSize = 10,
+  pageSize = DEFAULT_PAGE_SIZE,
 }: FieldProps) => {
+  const [t] = useTranslation("fields");
   const [loading, setLoading] = useState(false);
-
-  const [options, setOptions] = useState<{ label: string; value: string }[]>(
-    []
-  );
+  const [options, setOptions] = useState<LabeledValue[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [searched, setSearched] = useState("");
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(1);
-  const profileInfo = useSelector((state: State) => state.persist.profileInfo);
-  const filledLinks = fillLinks(_links, {
-    userProfileId: profileInfo?.id ?? "",
-  });
-  const [url, query] = filledLinks?.self?.href?.split("?") ?? [];
 
-  const style = { width: "100%" };
+  const profileInfo = useSelector((state: State) => state.persist.profileInfo);
+  const filledLinks = useMemo(
+    () =>
+      fillLinks(_links, {
+        userProfileId: profileInfo?.id ?? "",
+      }),
+    [_links, profileInfo?.id]
+  );
 
   /**
-   * Постраничное получение списка
-   * @param queryParams Параметры rsql запроса
+   * Запрос к серверу с пагинацией
    */
-  const fetchItems = useCallback(
-    async (queryParams: string | null = null) => {
-      try {
-        setLoading(true);
-        const { initialQueries, initialSearchParams } = getInitialParams(query);
-        const params = getConcatenationQueryRsql(
-          queryParams ?? "",
-          initialQueries
-        );
-        const response = await axios.get(url, {
-          params: {
-            page,
-            pageSize,
-            sortBy: `${titleField}:asc`,
-            query: params,
-            ...initialSearchParams,
-          },
-        });
-        setPage(page + 1);
-        setTotalCount(response?.data?.totalCount ?? 0);
-        setTotalPage(Math.ceil(totalCount / pageSize));
-        const mappedOptions =
-          response?.data?.rows?.map((obj: any) => {
-            const { [titleField]: label, [codeField]: value } = obj;
-            return { label, value };
-          }) ?? [];
+  useEffect(() => {
+    const fetchLazyOptions = async () => {
+      setLoading(true);
+      const { url, params, query } = getFetchParams(
+        searched,
+        titleField,
+        filledLinks
+      );
 
-        setOptions([...options, ...mappedOptions]);
+      try {
+        const { data } = await axios.get(url, {
+          params: { ...params, query, pageSize, page },
+        });
+
+        const mappedOptions = getMappedOptions(
+          data?.rows,
+          titleField,
+          codeField
+        );
+
+        setTotalCount(data?.totalCount);
+        setOptions((prevOptions) => [...prevOptions, ...mappedOptions]);
       } catch (error) {
         defaultErrorHandler({
           error,
@@ -86,75 +75,60 @@ export const EntityLazy = ({
       } finally {
         setLoading(false);
       }
-    },
-    [page, totalCount, codeField, options, pageSize, query, titleField, url]
-  );
+    };
 
-  /**
-   * Инициализация
-   */
-  useEffect(() => {
-    fetchItems();
-  }, [codeField, fieldCode]);
-
-  /**
-   * Подгрузка списка
-   */
-  const handleLoadMore = useCallback(async () => {
-    if (page >= totalPage && options.length >= totalCount) {
-      setLoading(false);
-      setHasMore(false);
-      return;
-    }
-    await fetchItems(
-      searched ? getRsqlParams([getSearchRsql([titleField], searched)]) : null
-    );
-  }, [page, totalPage, searched, totalCount, options, titleField]);
+    fetchLazyOptions();
+  }, [codeField, page, pageSize, searched, filledLinks, titleField]);
 
   /**
    * Слежение за прокруткой списка
    */
   const handleScroll = useCallback(
-    async (event: React.UIEvent<HTMLDivElement, UIEvent>) => {
-      if (
-        !loading &&
-        hasMore &&
-        event?.currentTarget?.scrollTop + event?.currentTarget?.offsetHeight >=
-          event?.currentTarget?.scrollHeight - 150
-      ) {
-        await handleLoadMore();
+    (event: React.UIEvent<HTMLDivElement, UIEvent>) => {
+      const needLoadMore = !loading && hasMore && isScrollBottom(event);
+
+      if (needLoadMore) {
+        if (options.length >= totalCount) {
+          setLoading(false);
+          setHasMore(false);
+          return;
+        }
+
+        setPage(page + 1);
       }
     },
-    [loading, hasMore]
+    [loading, hasMore, options.length, page, totalCount]
   );
 
   /**
    * Поиск по списку
    */
-  const handleSearch = useCallback(
-    async (value) => {
-      setSearched(value);
-      setHasMore(true);
-      setLoading(true);
-      setOptions([]);
-      setPage(1);
+  const handleSearch = useCallback(async (value) => {
+    setSearched(value);
+    setHasMore(true);
+    setOptions([]);
+    setPage(1);
+  }, []);
 
-      await fetchItems(
-        value ? getRsqlParams([getSearchRsql([titleField], value)]) : null
-      );
-    },
-    [titleField]
+  const notFoundContent = useMemo(
+    () =>
+      loading ? (
+        <Spin size="small" />
+      ) : (
+        <span>{t("entity.not.found.description")}</span>
+      ),
+    [loading, t]
   );
 
   const formatFunc = (value: string) =>
-    options?.find((o) => o.value === value)?.label ?? "";
+    (options?.find((o) => o.value === value)?.label as string) ?? "";
 
   return (
     <Col {...span} key={fieldCode}>
       <Form.Item
         name={fieldCode}
         label={fieldName}
-        style={style}
+        style={{ width: "100%" }}
         extra={fieldDescription}
         rules={rules}
         validateTrigger="onBlur"
@@ -167,16 +141,19 @@ export const EntityLazy = ({
             placeholder={placeholder}
             onPopupScroll={handleScroll}
             onSearch={handleSearch}
-            autoClearSearchValue={false}
             defaultActiveFirstOption={false}
             filterOption={false}
             disabled={disabled}
+            notFoundContent={notFoundContent}
             allowClear
             showSearch
           >
             {options?.map(({ value, label }) => (
               <Select.Option key={value} value={value}>
-                <HighlightTextWrapper searched={[searched]} text={label} />
+                <HighlightTextWrapper
+                  searched={[searched]}
+                  text={label as string}
+                />
               </Select.Option>
             ))}
           </Select>

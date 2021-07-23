@@ -395,7 +395,7 @@ export const upper: UpperProps = {
         {
           fieldCode: "userProfileId",
           fieldName: "Куратор",
-          type: "entity",
+          type: "entity-lazy",
           titleField: "fullName",
           codeField: "id",
           readonly: false,

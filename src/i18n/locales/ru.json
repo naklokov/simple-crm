@@ -263,7 +263,8 @@
   },
   "fields": {
     "email.tooltip": "Написать письмо",
-    "href.tooltip": "Перейти по ссылке"
+    "href.tooltip": "Перейти по ссылке",
+    "entity.not.found.description": "Вариантов не найдено"
   },
   "documents": {
     "button.title": "Сгенерировать",
@@ -285,9 +286,6 @@
   },
   "departmentsDrawer": {
     "move.message.success": "Отдел успешно перемещён"
-  },
-  "entity": {
-    "not.found.description": "Вариантов не найдено"
   },
   "activity": {
     "active": "Актуально",
