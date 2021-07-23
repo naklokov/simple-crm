@@ -27,6 +27,8 @@ const PLACEHOLDER_DEFAULT = "Введите значение";
 const getMaxLengthMessage = (len: number) =>
   `Превышена максимальная длина - ${len} символов`;
 
+const TEXT_MAX_LENGTH_2000 = 2000;
+
 export const lower: LowerProps = {
   drawers: [
     {
@@ -80,7 +82,10 @@ export const lower: LowerProps = {
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: "Введите комментарий по выполненной задаче",
           rules: [
-            { max: 2000, message: "Превышена максимальная длина строки" },
+            {
+              max: TEXT_MAX_LENGTH_2000,
+              message: getMaxLengthMessage(TEXT_MAX_LENGTH_2000),
+            },
           ],
           permissions: [],
         },
