@@ -40,7 +40,6 @@ export const Title: React.FC<TitleProps> = ({
   const handleClickCurrent = useCallback(() => {
     onClickLink?.(id);
     notification.close(id);
-    history.push(getFullUrl(urls.clients.path, clientId));
   }, [history, onClickLink, clientId, id]);
 
   useEffect(() => {
@@ -63,7 +62,11 @@ export const Title: React.FC<TitleProps> = ({
       {loading ? (
         skeleton
       ) : (
-        <Typography.Link onClick={handleClickCurrent} target="_blank">
+        <Typography.Link
+          href={getFullUrl(urls.clients.path, clientId)}
+          onClick={handleClickCurrent}
+          target="_blank"
+        >
           {client.shortName}
         </Typography.Link>
       )}

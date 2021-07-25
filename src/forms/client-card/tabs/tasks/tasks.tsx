@@ -45,8 +45,19 @@ const taskDrawer = formConfig.clientCard.lower.drawers.find(
   (drawer) => drawer.code === "task"
 );
 
-const OMIT_COLUMNS_ACTIVE = ["note", "taskCompletedDate"];
-const OMIT_COLUMNS_COMPLETE = ["taskEndDate"];
+const FIELD_CODES = {
+  // комментарий о выполнении
+  NOTE: "note",
+  // дата фактического выполнения задачи
+  TASK_COMPLETED_DATE: "taskCompletedDate",
+  // дата для уведомления
+  TASK_END_DATE: "taskEndDate",
+  // идентификатор компании
+  CLIENT_ID: "clientId",
+};
+
+const OMIT_COLUMNS_ACTIVE = [FIELD_CODES.NOTE, FIELD_CODES.TASK_COMPLETED_DATE];
+const OMIT_COLUMNS_COMPLETE = [FIELD_CODES.TASK_END_DATE];
 
 const sortByDateField = (field: string, order: "asc" | "desc") => (
   a: any,
@@ -70,7 +81,9 @@ export const Tasks = ({ tab, formName }: TabPaneFormProps) => {
     FORM_NAMES.TASK_COMPLETED
   );
 
-  const query = getRsqlParams([{ key: "clientId", value: clientId }]);
+  const query = getRsqlParams([
+    { key: FIELD_CODES.CLIENT_ID, value: clientId },
+  ]);
 
   const [tasks, loading, reload] = useFetch<TaskEntityProps[]>({
     url: urls.tasks.entity,
@@ -158,7 +171,7 @@ export const Tasks = ({ tab, formName }: TabPaneFormProps) => {
   const activeTasks = useMemo(
     () =>
       tasks
-        .sort(sortByDateField("taskEndDate", "asc"))
+        .sort(sortByDateField(FIELD_CODES.TASK_END_DATE, "asc"))
         .filter(({ taskStatus }) => taskStatus === TASK_STATUSES.NOT_COMPLETED),
     [tasks]
   );
@@ -166,7 +179,7 @@ export const Tasks = ({ tab, formName }: TabPaneFormProps) => {
   const completedTasks = useMemo(
     () =>
       tasks
-        .sort(sortByDateField("updateDate", "desc"))
+        .sort(sortByDateField(FIELD_CODES.TASK_COMPLETED_DATE, "desc"))
         .filter(({ taskStatus }) => taskStatus === TASK_STATUSES.COMPLETED),
     [tasks]
   );

@@ -1,8 +1,9 @@
-import React, { useCallback, useRef, useEffect } from "react";
+import React, { useCallback, useRef, useEffect, useState } from "react";
 import { Input, Form, Button } from "antd";
 import { useTranslation } from "react-i18next";
 import { TextAreaRef } from "antd/lib/input/TextArea";
 import { handlePressEnter } from "../../../../utils";
+import { formConfig } from "../../../../constants";
 
 const { TextArea } = Input;
 
@@ -13,24 +14,34 @@ interface EditableTextProps {
 
 export const Editor = ({ initialValue, onFinish }: EditableTextProps) => {
   const [t] = useTranslation("comment");
-  const inputRef = useRef<TextAreaRef>(null);
+  const [disabled, setDisabled] = useState(true);
   const [form] = Form.useForm();
+  const inputRef = useRef<TextAreaRef>(null);
 
   useEffect(() => {
     inputRef?.current?.focus?.();
   }, []);
 
+  const handleFinish = useCallback(async () => {
+    const { comment } = await form.validateFields();
+    onFinish(comment?.trim());
+    setDisabled(true);
+  }, [form, onFinish]);
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       handlePressEnter(e, handleFinish);
     },
-    [form]
+    [handleFinish]
   );
 
-  const handleFinish = useCallback(async () => {
-    const { comment } = await form.validateFields();
-    onFinish(comment);
-  }, [form]);
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const { value } = event.target;
+      setDisabled(!value?.trim());
+    },
+    []
+  );
 
   return (
     <Form form={form} layout="inline" initialValues={{ comment: initialValue }}>
@@ -39,20 +50,22 @@ export const Editor = ({ initialValue, onFinish }: EditableTextProps) => {
         name="comment"
         rules={[
           {
-            required: true,
-            message: t("rules.required"),
+            max: formConfig.clientCard.MAX_COMMENT_LENGTH,
+            message: t("rules.maxLength", {
+              count: formConfig.clientCard.MAX_COMMENT_LENGTH,
+            }),
           },
         ]}
       >
         <TextArea
           ref={inputRef}
           onKeyDown={handleKeyDown}
-          onBlur={handleFinish}
           autoSize={{ minRows: 1, maxRows: 6 }}
+          onChange={handleChange}
         />
       </Form.Item>
       <Form.Item style={{ width: "10px", marginLeft: "8px" }}>
-        <Button type="primary" onClick={handleFinish}>
+        <Button type="primary" onClick={handleFinish} disabled={disabled}>
           {t("comment.save")}
         </Button>
       </Form.Item>
