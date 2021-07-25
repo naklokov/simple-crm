@@ -1,4 +1,4 @@
-import { toString } from "lodash";
+import { compact, toString } from "lodash";
 import moment, { unitOfTime as unitProps } from "moment-timezone";
 import { parse } from "query-string";
 import { replaceLikeChars } from "../components/table/utils";
@@ -321,4 +321,20 @@ export const getInitialParams = (initialSearch: string) => {
     .filter((o) => !!o);
 
   return { initialQueries, initialSearchParams };
+};
+
+/**
+ * Метод объединения начальных параметров query (из url) и переданной строки в единую rsql query строку
+ * @param query Переданная RSQL query строка
+ * @param initialQueries Начальные значения параметров из url
+ * @returns RSQL query строка
+ */
+export const getConcatenationQueryRsql = (
+  query: string,
+  initialQueries: string[]
+) => {
+  const clearQueryArray = [query].filter((i) => !!i);
+  const clearInitialQueriesArray = initialQueries.filter((i) => !!i);
+
+  return clearQueryArray.concat(clearInitialQueriesArray).join(RSQL_DELIMETER);
 };

@@ -67,6 +67,7 @@ export const Comments = ({ profileInfo, formName }: CommentsProps) => {
 
   const handleEditComment = useCallback(
     async (id: string, value: string) => {
+      if (!value.trim()) return;
       try {
         setLoading(true);
         const url = getFullUrl(urls.comments.entity, id);

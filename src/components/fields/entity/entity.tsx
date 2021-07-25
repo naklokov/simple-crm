@@ -8,11 +8,7 @@ import React, {
 import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
 import { useTranslation } from "react-i18next";
-import {
-  DEFAULT_FIELD_SPAN,
-  FieldProps,
-  RSQL_DELIMETER,
-} from "../../../constants";
+import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import {
   defaultErrorHandler,
   FormContext,
@@ -20,6 +16,7 @@ import {
   getEqualRsql,
   getSearchRsql,
   getInitialParams,
+  getConcatenationQueryRsql,
 } from "../../../utils";
 import { Readonly } from "../readonly";
 import { Loading } from "../loading";
@@ -65,7 +62,7 @@ export const Entity = ({
       try {
         const response = await axios.get(url, {
           params: {
-            query: [query, ...initialQueries].join(RSQL_DELIMETER),
+            query: getConcatenationQueryRsql(query, initialQueries),
             ...initialSearchParams,
           },
         });
