@@ -1,6 +1,11 @@
 import { noop } from "lodash";
 import { LinksType } from "../../../../constants";
-import { getFetchParams, getMappedOptions, isScrollBottom } from "../utils";
+import {
+  getFetchParams,
+  getInitialFetchParams,
+  getMappedOptions,
+  isScrollBottom,
+} from "../utils";
 
 test("getMappedOptions", () => {
   const rows = [
@@ -144,5 +149,24 @@ test("getFetchParams without query and params", () => {
     url: "/url",
     query: "",
     params: {},
+  });
+});
+
+test("getInitialFetchParams", () => {
+  const links = {
+    self: {
+      href: "/url?first=text",
+    },
+  } as LinksType;
+
+  const codeField = "id";
+  const value = "test";
+
+  expect(getInitialFetchParams(value, codeField, links)).toEqual({
+    url: "/url",
+    query: "id==test",
+    params: {
+      first: "text",
+    },
   });
 });

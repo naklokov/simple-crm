@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { Form, Col, Select, Spin } from "antd";
 import axios from "axios";
 
@@ -6,11 +12,17 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { LabeledValue } from "antd/lib/select";
 import { DEFAULT_FIELD_SPAN, FieldProps, State } from "../../../constants";
-import { defaultErrorHandler, fillLinks } from "../../../utils";
-import { getFetchParams, getMappedOptions, isScrollBottom } from "./utils";
+import { defaultErrorHandler, fillLinks, FormContext } from "../../../utils";
+import { Loading } from "../loading";
+import {
+  getFetchParams,
+  getInitialFetchParams,
+  getMappedOptions,
+  isScrollBottom,
+} from "./utils";
 import { HighlightTextWrapper } from "../../../wrappers";
 import { Readonly } from "../readonly";
-import { DEFAULT_PAGE_SIZE } from "../../table/constants";
+import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from "../../table/constants";
 
 export const EntityLazy = ({
   fieldCode,
@@ -28,12 +40,17 @@ export const EntityLazy = ({
 }: FieldProps) => {
   const [t] = useTranslation("fields");
   const [loading, setLoading] = useState(false);
+  const [initial, setInitial] = useState(true);
   const [options, setOptions] = useState<LabeledValue[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [searched, setSearched] = useState("");
   const [totalCount, setTotalCount] = useState(0);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(DEFAULT_PAGE_NUMBER);
 
+  const style = { width: "100%" };
+
+  const { form } = useContext(FormContext);
+  const fieldValue = form?.getFieldValue(fieldCode);
   const profileInfo = useSelector((state: State) => state.persist.profileInfo);
   const filledLinks = useMemo(
     () =>
@@ -42,6 +59,53 @@ export const EntityLazy = ({
       }),
     [_links, profileInfo?.id]
   );
+
+  /**
+   * Инициализация опций для начального значения
+   */
+  useEffect(() => {
+    const fetchInitial = async (value: string) => {
+      setLoading(true);
+      const { url, params, query } = getInitialFetchParams(
+        value,
+        codeField,
+        filledLinks
+      );
+
+      try {
+        const { data } = await axios.get(url, {
+          params: {
+            ...params,
+            query,
+            pageSize: DEFAULT_PAGE_SIZE,
+            page: DEFAULT_PAGE_NUMBER,
+          },
+        });
+
+        const initialOptions = getMappedOptions(
+          data?.rows,
+          titleField,
+          codeField
+        );
+
+        setTotalCount(data?.totalCount);
+        setOptions(initialOptions);
+      } catch (error) {
+        defaultErrorHandler({
+          error,
+        });
+      } finally {
+        setLoading(false);
+        setInitial(false);
+      }
+    };
+
+    if (fieldValue && initial) {
+      fetchInitial(fieldValue);
+    } else {
+      setInitial(false);
+    }
+  }, [codeField, fieldCode, filledLinks, titleField, fieldValue, initial]);
 
   /**
    * Запрос к серверу с пагинацией
@@ -123,12 +187,24 @@ export const EntityLazy = ({
   const formatFunc = (value: string) =>
     (options?.find((o) => o.value === value)?.label as string) ?? "";
 
+  if (initial) {
+    return (
+      <Loading
+        style={style}
+        label={fieldName}
+        extra={fieldDescription}
+        name={fieldCode}
+        span={span}
+      />
+    );
+  }
+
   return (
     <Col {...span} key={fieldCode}>
       <Form.Item
         name={fieldCode}
         label={fieldName}
-        style={{ width: "100%" }}
+        style={style}
         extra={fieldDescription}
         rules={rules}
         validateTrigger="onBlur"

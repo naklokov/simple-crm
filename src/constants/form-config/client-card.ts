@@ -404,7 +404,7 @@ export const upper: UpperProps = {
           permissions: PERMISSIONS_SET.CLIENT_UPDATE_DEPARTMENT,
           _links: {
             self: {
-              href: urls.userProfiles.entity,
+              href: urls.userProfiles.paging,
             },
           },
         },

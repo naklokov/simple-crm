@@ -2,6 +2,7 @@ import { LabeledValue } from "antd/lib/select";
 import { LinksType } from "../../../constants";
 import {
   getConcatenationQueryRsql,
+  getEqualRsql,
   getInitialParams,
   getRsqlParams,
   getSearchRsql,
@@ -38,6 +39,21 @@ export const getFetchParams = (
     searchString
   );
   const query = getConcatenationQueryRsql(querySearch, initialQueries);
+
+  return { url, params: initialSearchParams, query };
+};
+
+export const getInitialFetchParams = (
+  value: string,
+  codeField: string,
+  links: LinksType
+) => {
+  const [url, searchString] = links?.self?.href?.split("?") ?? [];
+  const queryInitial = getRsqlParams([getEqualRsql(codeField, value)]);
+  const { initialQueries, initialSearchParams } = getInitialParams(
+    searchString
+  );
+  const query = getConcatenationQueryRsql(queryInitial, initialQueries);
 
   return { url, params: initialSearchParams, query };
 };
