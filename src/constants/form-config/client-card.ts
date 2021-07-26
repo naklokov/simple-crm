@@ -400,7 +400,7 @@ export const upper: UpperProps = {
         {
           fieldCode: "userProfileId",
           fieldName: "Куратор",
-          type: "entity",
+          type: "entity-lazy",
           titleField: "fullName",
           codeField: "id",
           readonly: false,
@@ -409,7 +409,7 @@ export const upper: UpperProps = {
           permissions: PERMISSIONS_SET.CLIENT_UPDATE_DEPARTMENT,
           _links: {
             self: {
-              href: urls.userProfiles.entity,
+              href: urls.userProfiles.paging,
             },
           },
         },

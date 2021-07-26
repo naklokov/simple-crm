@@ -38,7 +38,7 @@ export const Entity = ({
   let delayTimer: NodeJS.Timeout;
 
   const { form } = useContext(FormContext) ?? {};
-  const [t] = useTranslation("entity");
+  const [t] = useTranslation("fields");
   const [initial, setInitial] = useState(false);
   const [searched, setSearched] = useState("");
   const [options, setOptions] = useState<{ label: string; value: string }[]>();
@@ -135,7 +135,7 @@ export const Entity = ({
       loading ? (
         <Spin size="small" />
       ) : (
-        <span>{t("not.found.description")}</span>
+        <span>{t("entity.not.found.description")}</span>
       ),
     [loading, t]
   );
