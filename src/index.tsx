@@ -6,6 +6,7 @@ import { App } from "./app";
 import "./i18n";
 import "moment/locale/ru";
 import "./assets/themes/light.css";
+import "./assets/styles/_jivo.scss";
 
 _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
 

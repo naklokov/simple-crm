@@ -114,9 +114,14 @@ export const getFilteredDataSource = (
   });
 
   const filteredIds = visibleColumns
-    .filter((row: Object) =>
-      Object.values(row).some((value: string) =>
-        value?.toString()?.toLowerCase()?.includes(searched?.toLowerCase())
+    .filter((row: { [key: string]: string }) =>
+      Object.values(row).some(
+        (value: string) =>
+          row[idField] !== value &&
+          value
+            ?.toString()
+            ?.toLowerCase()
+            ?.includes(searched?.toLowerCase() ?? "")
       )
     )
     .map((o) => o?.[idField]);
