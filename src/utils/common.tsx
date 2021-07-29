@@ -309,3 +309,14 @@ export const fillLinks = (
     {}
   );
 };
+
+export const callAfterDelay = (() => {
+  let delayTimer: NodeJS.Timeout;
+
+  return (callback: Function, delay: number) => {
+    clearTimeout(delayTimer);
+    delayTimer = setTimeout(() => {
+      callback?.();
+    }, delay);
+  };
+})();

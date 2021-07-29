@@ -12,7 +12,12 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { LabeledValue } from "antd/lib/select";
 import { DEFAULT_FIELD_SPAN, FieldProps, State } from "../../../constants";
-import { defaultErrorHandler, fillLinks, FormContext } from "../../../utils";
+import {
+  callAfterDelay,
+  defaultErrorHandler,
+  fillLinks,
+  FormContext,
+} from "../../../utils";
 import { Loading } from "../loading";
 import {
   getFetchParams,
@@ -168,10 +173,18 @@ export const EntityLazy = ({
    * Поиск по списку
    */
   const handleSearch = useCallback(async (value) => {
-    setSearched(value);
-    setHasMore(true);
-    setOptions([]);
-    setPage(1);
+    const callback = () => {
+      setSearched(value);
+      setHasMore(true);
+      setOptions([]);
+      setPage(1);
+    };
+
+    callAfterDelay(callback, 300);
+  }, []);
+
+  const handleSelect = useCallback(() => {
+    setSearched("");
   }, []);
 
   const notFoundContent = useMemo(
@@ -217,6 +230,7 @@ export const EntityLazy = ({
             placeholder={placeholder}
             onPopupScroll={handleScroll}
             onSearch={handleSearch}
+            onSelect={handleSelect}
             defaultActiveFirstOption={false}
             filterOption={false}
             disabled={disabled}
