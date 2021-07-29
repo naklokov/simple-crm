@@ -216,8 +216,8 @@
     "spin.loading": "Загрузка...",
     "drawer.add.title": "Новая задача",
     "sort.tooltip.default": "Нажмите для сортировки по возрастанию",
-    "sort.tooltip.asc": "Нажмите, чтобы отменить сортировку",
-    "sort.tooltip.desc": "Нажмите для сортировки по убыванию"
+    "sort.tooltip.asc": "Нажмите для сортировки по убыванию",
+    "sort.tooltip.desc": "Нажмите, чтобы отменить сортировку"
   },
   "card": {
     "tooltip.complete": "Выполнить задачу",
