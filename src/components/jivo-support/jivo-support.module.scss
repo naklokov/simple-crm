@@ -1,0 +1,46 @@
+.supportWidgets {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2147483640;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  height: 60px;
+  width: 60px;
+  align-items: center;
+  justify-content: center;
+}
+
+.hiddenSupport{
+  display: none;
+  visibility: hidden;
+}
+
+.supportBtn{
+  height: 54px;
+  width: 54px;
+  background: white;
+  display: block;
+  border-radius: 54px;
+  box-shadow: 0 0 20px rgba(0,0,0,.1);
+  text-align: center;
+
+  svg{
+    fill: #1890ff;
+    transition: width .5s, height .5s, transform .5s;
+  }
+
+  &:hover{
+    transition: width .2s, height .2s;
+
+    height: 60px;
+    width: 60px;
+    box-shadow: 0 0 25px rgba(0,0,0,.13);
+
+    svg{
+      transform: rotate(5deg);
+      fill: #0081ff;
+    }
+  }
+}

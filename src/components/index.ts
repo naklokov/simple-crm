@@ -17,6 +17,7 @@ export { SearchBar } from "./search-bar";
 export { FieldsContainer } from "./fields-container";
 export { Skeleton } from "./skeleton";
 export { Dot } from "./dot";
+export { JivoSupport } from "./jivo-support";
 export { Arrow } from "./arrow";
 
 export { fields };
