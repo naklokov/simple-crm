@@ -64,6 +64,29 @@ export const RSQL_OPERATORS_MAP = {
   DATE_FIELD_IS_AFTER: "=JDATEAFTER=",
 };
 
+export const RSQL_OPERATORS_REGEXP_MAP = {
+  // id=LIKE=%test%
+  [RSQL_OPERATORS_MAP.LIKE]: /^.*=(.*)$/,
+  // entityData=JLIKE=(id,name,"text")
+  [RSQL_OPERATORS_MAP.LIKE_FIELD]: /^.*,"(.*)".*$/,
+  // id==12345
+  [RSQL_OPERATORS_MAP.EQUAL]: /^.*==(.*)$/,
+  // entityData=JEQ=(id,name,"text")
+  [RSQL_OPERATORS_MAP.FIELD_EQUAL]: /^.*"(.*)".*$/,
+  // date=DATEBTWN=("2020-10-01T00:00:00", "2020-11-01T00:00:00")
+  [RSQL_OPERATORS_MAP.DATE_IS_BETWEEN]: /^.*=\w+=\("(.*)",\s?"(.*)"\)$/,
+  // date=DATEBEFORE=2020-11-01T00:00:00
+  [RSQL_OPERATORS_MAP.DATE_IS_BEFORE]: /^.*=(.*)$/,
+  // date=DATEAFTER=2020-11-01T00:00:00
+  [RSQL_OPERATORS_MAP.DATE_IS_AFTER]: /^.*=(.*)$/,
+  // entityData=JDATEBTWN=(fieldCode,"2020-10-01T00:00:00", "2020-11-01T00:00:00")
+  [RSQL_OPERATORS_MAP.DATE_FIELD_IS_BETWEEN]: /^.*=\w+=\(.*"(.*)",\s?"(.*)"\)$/,
+  // entityData=JDATEBEFORE=(fieldCode,"2020-10-01T00:00:00")
+  [RSQL_OPERATORS_MAP.DATE_FIELD_IS_BEFORE]: /^.*=\w+=\(.*"(.*)"\)$/,
+  // entityData=JDATEAFTER=(fieldCode,"2020-10-01T00:00:00")
+  [RSQL_OPERATORS_MAP.DATE_FIELD_IS_AFTER]: /^.*=\w+=\(.*"(.*)"\)$/,
+};
+
 export const TOOLTIP_SHOW_DELAY = 1;
 
 export const RSQL_DELIMETER = ";";

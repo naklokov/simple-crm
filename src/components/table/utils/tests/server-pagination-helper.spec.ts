@@ -72,14 +72,14 @@ test("getFilterAllRsqlQuery", () => {
 test("getFetchDataSourceQuery", () => {
   const filters = {
     k1: "user==123",
-    k2: 'entityData=JDATEBETWEEN=("2011-12-01T12:04:11")',
+    k2: 'entityData=JDATEBTWN=(code,"2011-12-01T12:04:11")',
     all: "dasda",
   };
 
   const initialQueries = ["one", "two"];
 
   expect(getFetchDataSourceQuery(filters, initialQueries)).toBe(
-    'user==123;entityData=JDATEBETWEEN=("2011-12-01T12:04:11");dasda;one;two'
+    'user==123;entityData=JDATEBTWN=(code,"2011-12-01T12:04:11");dasda;one;two'
   );
 });
 
@@ -134,7 +134,7 @@ test("getFetchDataSourceQuery filters empty", () => {
 test("getSearchedColumnsFromFilters", () => {
   const filters = {
     k1: "user==123",
-    k2: 'entityData=JDATEBETWEEN=("2011-12-01T12:04:11")',
+    k2: 'entityData=JDATEAFTER=(code,"2011-12-01T12:04:11")',
   };
 
   expect(getSearchedColumnsFromFilters(filters)).toEqual({
@@ -146,7 +146,7 @@ test("getSearchedColumnsFromFilters", () => {
 test("getSearchedColumnsFromFilters with empty key", () => {
   const filters = {
     k1: "",
-    k2: 'entityData=JDATEBETWEEN=("2011-12-01T12:04:11")',
+    k2: 'entityData=JDATEAFTER=(code,"2011-12-01T12:04:11")',
   };
 
   expect(getSearchedColumnsFromFilters(filters)).toEqual({
