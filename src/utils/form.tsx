@@ -5,7 +5,7 @@ import moment, { Moment } from "moment";
 import { fields, Table } from "../components";
 import { FieldProps, TabPaneFormProps, TabProps } from "../constants";
 import { getNormalizePhone } from "./phone";
-import { fillLinks } from "./common";
+import { fillLinks, getDateWithTimezone } from "./common";
 
 interface EntityWithId {
   [key: string]: any;
@@ -273,9 +273,16 @@ export const checkEmail = (email: string) => {
 
 export const checkActualDate = {
   validator: async (_: any, value: Moment) => {
-    const currentDate = moment().startOf("minute");
-    if (value?.isBefore(currentDate)) {
-      throw new Error("Задачу можно установить на данный момент или в будущем");
+    const currentDate = moment().startOf("day");
+
+    if (value) {
+      const valueMoment = getDateWithTimezone(value);
+
+      if (valueMoment.isBefore(currentDate)) {
+        throw new Error(
+          "Задачу можно установить на данный момент или в будущем"
+        );
+      }
     }
   },
 };
