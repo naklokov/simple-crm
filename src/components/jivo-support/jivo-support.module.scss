@@ -1,46 +1,44 @@
+@import '../../assets/styles/offsets';
+@import '../../assets/styles/colors';
+
+$size: 60px;
+
 .supportWidgets {
   position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 2147483640;
-  display: flex;
-  flex-direction: column;
+  right: var(--offset-md);
+  bottom: var(--offset-md);
   cursor: pointer;
-  height: 60px;
-  width: 60px;
-  align-items: center;
-  justify-content: center;
 }
 
-.hiddenSupport{
+.hiddenSupport {
   display: none;
   visibility: hidden;
 }
 
-.supportBtn{
-  height: 54px;
-  width: 54px;
-  background: white;
+.supportBtn {
+  height: $size;
+  width: $size;
+  background: var(--background-color-form);
   display: block;
-  border-radius: 54px;
+  border-radius: $size;
   box-shadow: 0 0 20px rgba(0,0,0,.1);
   text-align: center;
 
-  svg{
-    fill: #1890ff;
+  svg {
+    fill: var(--primary-color);
     transition: width .5s, height .5s, transform .5s;
   }
 
-  &:hover{
+  &:hover {
     transition: width .2s, height .2s;
 
-    height: 60px;
-    width: 60px;
+    height: $size + 5px;
+    width: $size + 5px;
     box-shadow: 0 0 25px rgba(0,0,0,.13);
 
-    svg{
-      transform: rotate(5deg);
-      fill: #0081ff;
+    svg {
+      transform: rotate(10deg);
+      opacity: 0.8;
     }
   }
 }

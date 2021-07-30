@@ -17,7 +17,7 @@ const JivoSupport: React.FC = () => {
   }, []);
 
   const [isOpen, setIsOpen] = useState(false);
-  const { profileInfo, auth } = useSelector((state: State) => state.persist);
+  const { profileInfo } = useSelector((state: State) => state.persist);
 
   window.jivo_onClose = () => {
     setIsOpen(false);
@@ -34,7 +34,7 @@ const JivoSupport: React.FC = () => {
     setJivoUserInfo(profileInfo);
   }, [profileInfo]);
 
-  return auth ? (
+  return (
     <Space
       className={cn(style.supportWidgets, {
         [style.hiddenSupport]: isOpen,
@@ -44,7 +44,7 @@ const JivoSupport: React.FC = () => {
         <SupportIcon />
       </Typography.Link>
     </Space>
-  ) : null;
+  );
 };
 
 export default JivoSupport;
