@@ -18,7 +18,8 @@ export type FieldType =
   | "entity-lazy"
   | "email"
   | "href"
-  | "phone";
+  | "phone"
+  | "switch";
 
 export type RecordType = { [key: string]: string };
 

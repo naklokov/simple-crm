@@ -22,6 +22,7 @@ const {
   EntityLazy,
   Email,
   Href,
+  Switch,
 } = fields;
 
 export const isValuesChanged = (
@@ -100,6 +101,8 @@ export const createFormField = (field: FieldProps): JSX.Element => {
       return <Dictionary {...field} />;
     case "entity":
       return <Entity {...field} />;
+    case "switch":
+      return <Switch {...field} />;
     case "entity-lazy":
       return <EntityLazy {...field} />;
     default:
