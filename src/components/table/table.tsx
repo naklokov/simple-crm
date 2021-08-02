@@ -1,5 +1,5 @@
 import React, { ReactNode, useMemo } from "react";
-import { Table as TableUI } from "antd";
+import { BackTop, Table as TableUI } from "antd";
 
 import { useTranslation } from "react-i18next";
 import noop from "lodash/noop";
@@ -154,6 +154,7 @@ export const Table: React.FC<TableProps> & TableExtendsProps = ({
           </TableActionsContext.Provider>
         </SearchedColumnsContext.Provider>
       </SearchedAllContext.Provider>
+      <BackTop style={{ marginBottom: "50px" }} />
     </>
   );
 };

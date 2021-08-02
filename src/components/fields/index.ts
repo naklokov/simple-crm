@@ -7,4 +7,5 @@ export { DateTime } from "./dateTime";
 export { Dictionary } from "./dictionary";
 export { Entity } from "./entity";
 export { Switch } from "./switch";
+export { EntityLazy } from "./entity-lazy";
 export { Readonly } from "./readonly";

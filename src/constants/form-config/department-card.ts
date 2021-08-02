@@ -18,7 +18,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           fieldCode: "userProfileId",
           fieldName: "Ф.И.О.",
           fieldDescription: "",
-          type: "entity",
+          type: "entity-lazy",
           titleField: "fullName",
           codeField: "id",
           readonly: false,
@@ -29,7 +29,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           permissions: [],
           _links: {
             self: {
-              href: `${urls.userProfiles.entity}?query=departmentId=={{departmentId}};userRoleId=out=(${USER_ROLES_ID.ROLE_ADMIN},${USER_ROLES_ID.ROLE_DEPT_CHIEF})`,
+              href: `${urls.userProfiles.paging}?query=departmentId=={{departmentId}};userRoleId=out=(${USER_ROLES_ID.ROLE_ADMIN},${USER_ROLES_ID.ROLE_DEPT_CHIEF})`,
             },
           },
         },
@@ -44,7 +44,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           fieldCode: "userProfileId",
           fieldName: "Ф.И.О.",
           fieldDescription: "",
-          type: "entity",
+          type: "entity-lazy",
           titleField: "fullName",
           codeField: "id",
           readonly: false,
@@ -53,9 +53,10 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           placeholder: "Введите ФИО сотрудника",
           rules: [],
           permissions: [],
+          pageSize: 20,
           _links: {
             self: {
-              href: `${urls.userProfiles.entity}?query=departmentId=={{departmentId}};userRoleId=out=(${USER_ROLES_ID.ROLE_ADMIN},${USER_ROLES_ID.ROLE_SUB_DEPT_CHIEF},${USER_ROLES_ID.ROLE_DEPT_CHIEF})`,
+              href: `${urls.userProfiles.paging}?query=departmentId=={{departmentId}};userRoleId=out=(${USER_ROLES_ID.ROLE_ADMIN},${USER_ROLES_ID.ROLE_SUB_DEPT_CHIEF},${USER_ROLES_ID.ROLE_DEPT_CHIEF})`,
             },
           },
         },
@@ -210,6 +211,15 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           columnDescription: "Город",
           filterable: true,
           sorter: true,
+        },
+        {
+          columnName: "Дата регистрации",
+          columnCode: "creationDate",
+          columnType: "date",
+          filterable: true,
+          format: "DD.MM.YYYY",
+          sorter: true,
+          columnDescription: "Дата регистрации",
         },
         {
           columnName: "ИНН",

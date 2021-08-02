@@ -1,9 +1,10 @@
 import { DATE_FORMATS } from "../common";
 import { urls, DrawerProps } from "..";
+import { checkActualDate } from "../../utils";
 
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
 const PLACEHOLDER_DEFAULT = "Введите значение";
-const TASK_COMMENT_MAX_LENGTH =  2000;
+const TEXTAREA_MAX_LENGTH = 2000;
 
 interface TasksConfigProps {
   drawers: DrawerProps[];
@@ -20,7 +21,7 @@ export const TASKS: TasksConfigProps = {
           fieldCode: "clientId",
           fieldName: "Компания",
           fieldDescription: "Компания связанная с задачей",
-          type: "entity",
+          type: "entity-lazy",
           titleField: "shortName",
           codeField: "id",
           readonly: false,
@@ -30,7 +31,7 @@ export const TASKS: TasksConfigProps = {
           permissions: [],
           _links: {
             self: {
-              href: `${urls.clients.entity}?query=userProfileId=={{userProfileId}}`,
+              href: `${urls.clients.paging}?query=userProfileId=={{userProfileId}}`,
             },
           },
         },
@@ -44,7 +45,10 @@ export const TASKS: TasksConfigProps = {
           disabled: false,
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          rules: [
+            { required: true, message: REQUIRED_MESSAGE },
+            checkActualDate,
+          ],
           permissions: [],
         },
         {
@@ -58,7 +62,10 @@ export const TASKS: TasksConfigProps = {
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [
-            { max: 2000, message: "Превышена максимальная длина строки" },
+            {
+              max: TEXTAREA_MAX_LENGTH,
+              message: `Превышена максимальная длина - ${TEXTAREA_MAX_LENGTH} символов`,
+            },
           ],
           permissions: [],
         },
@@ -79,7 +86,10 @@ export const TASKS: TasksConfigProps = {
           disabled: false,
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          rules: [
+            { required: true, message: REQUIRED_MESSAGE },
+            checkActualDate,
+          ],
           permissions: [],
         },
         {
@@ -115,7 +125,10 @@ export const TASKS: TasksConfigProps = {
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: "Введите комментарий по выполненной задаче",
           rules: [
-            { max: TASK_COMMENT_MAX_LENGTH, message: `Превышена максимальная длина строки - ${TASK_COMMENT_MAX_LENGTH} символов` },
+            {
+              max: TEXTAREA_MAX_LENGTH,
+              message: `Превышена максимальная длина строки - ${TEXTAREA_MAX_LENGTH} символов`,
+            },
           ],
           permissions: [],
         },

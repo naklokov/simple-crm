@@ -2,7 +2,7 @@ import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
 import { PERMISSIONS_SET } from "../permissions";
 import { DATE_FORMATS } from "../common";
-import { ogrnRule, phoneRule, vatRule } from "../../utils";
+import { checkActualDate, ogrnRule, phoneRule, vatRule } from "../../utils";
 import { PHONE_PLACEHOLDER } from "../phone";
 
 interface UpperProps {
@@ -27,6 +27,10 @@ const PLACEHOLDER_DEFAULT = "Введите значение";
 const getMaxLengthMessage = (len: number) =>
   `Превышена максимальная длина - ${len} символов`;
 
+const TEXT_MAX_LENGTH_2000 = 2000;
+
+export const MAX_COMMENT_LENGTH = 10000;
+
 export const lower: LowerProps = {
   drawers: [
     {
@@ -44,7 +48,10 @@ export const lower: LowerProps = {
           disabled: false,
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [{ required: true, message: REQUIRED_MESSAGE }],
+          rules: [
+            { required: true, message: REQUIRED_MESSAGE },
+            checkActualDate,
+          ],
           permissions: [],
         },
         {
@@ -80,7 +87,10 @@ export const lower: LowerProps = {
           span: { xl: 24, md: 24, lg: 24, sm: 24 },
           placeholder: "Введите комментарий по выполненной задаче",
           rules: [
-            { max: 2000, message: "Превышена максимальная длина строки" },
+            {
+              max: TEXT_MAX_LENGTH_2000,
+              message: getMaxLengthMessage(TEXT_MAX_LENGTH_2000),
+            },
           ],
           permissions: [],
         },
@@ -395,7 +405,7 @@ export const upper: UpperProps = {
         {
           fieldCode: "userProfileId",
           fieldName: "Куратор",
-          type: "entity",
+          type: "entity-lazy",
           titleField: "fullName",
           codeField: "id",
           readonly: false,
@@ -404,7 +414,7 @@ export const upper: UpperProps = {
           permissions: PERMISSIONS_SET.CLIENT_UPDATE_DEPARTMENT,
           _links: {
             self: {
-              href: urls.userProfiles.entity,
+              href: urls.userProfiles.paging,
             },
           },
         },

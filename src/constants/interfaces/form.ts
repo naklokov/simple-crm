@@ -15,6 +15,7 @@ export type FieldType =
   | "date"
   | "dictionary"
   | "entity"
+  | "entity-lazy"
   | "email"
   | "href"
   | "phone"
@@ -150,6 +151,7 @@ export interface FieldProps {
   rows?: number;
   permissions: string[];
   placeholder?: string;
+  pageSize?: number;
   _links?: LinksType;
 }
 

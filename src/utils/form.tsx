@@ -1,10 +1,11 @@
 import React from "react";
 import { parseInt, isEqual } from "lodash";
 import some from "lodash/some";
+import moment, { Moment } from "moment";
 import { fields, Table } from "../components";
 import { FieldProps, TabPaneFormProps, TabProps } from "../constants";
 import { getNormalizePhone } from "./phone";
-import { fillLinks } from "./common";
+import { fillLinks, getDateWithTimezone } from "./common";
 
 interface EntityWithId {
   [key: string]: any;
@@ -18,9 +19,10 @@ const {
   Dictionary,
   Phone,
   Entity,
+  EntityLazy,
   Email,
   Href,
-  Switch
+  Switch,
 } = fields;
 
 export const isValuesChanged = (
@@ -101,6 +103,8 @@ export const createFormField = (field: FieldProps): JSX.Element => {
       return <Entity {...field} />;
     case "switch":
       return <Switch {...field} />;
+    case "entity-lazy":
+      return <EntityLazy {...field} />;
     default:
       return <div />;
   }
@@ -268,4 +272,20 @@ export const checkINN = (value: any) => {
 export const checkEmail = (email: string) => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
+};
+
+export const checkActualDate = {
+  validator: async (_: any, value: Moment) => {
+    const currentDate = moment().startOf("day");
+
+    if (value) {
+      const valueMoment = getDateWithTimezone(value);
+
+      if (valueMoment.isBefore(currentDate)) {
+        throw new Error(
+          "Задачу можно установить на данный момент или в будущем"
+        );
+      }
+    }
+  },
 };

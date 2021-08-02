@@ -63,11 +63,19 @@ test("useFetchDictionaries", () => {
   );
 });
 
-test("replaceLikeChars", () => {
-  const withChars = "%привет%";
+test("replaceLikeChars with like char", () => {
+  const withLikeChars = "%привет%";
+  const withoutLikeChars = "строка";
+
+  expect(replaceLikeChars(withLikeChars)).toBe("привет");
+  expect(replaceLikeChars(withoutLikeChars)).toBe("строка");
+});
+
+test("replaceLikeChars with like char and question mark", () => {
+  const withChars = `%при\"вет%`;
   const withoutChars = "строка";
 
-  expect(replaceLikeChars(withChars)).toBe("привет");
+  expect(replaceLikeChars(withChars)).toBe('при"вет');
   expect(replaceLikeChars(withoutChars)).toBe("строка");
 });
 

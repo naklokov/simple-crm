@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 
 import { ColumnProps, RecordType, RSQL_DELIMETER } from "../../../constants";
 import {
+  getConcatenationQueryRsql,
   getDateRangeBetweenRsql,
   getDateRangeFieldBetweenRsql,
   getEqualRsql,
@@ -42,9 +43,9 @@ export const getFetchDataSourceQuery = (
   initialQueries: string[]
 ) => {
   const notEmptyFilters = filterEmptyValues(filters);
-  return Object.values(notEmptyFilters)
-    .concat(initialQueries.filter((q) => !!q))
-    .join(RSQL_DELIMETER);
+  const filtersQueryRsql = Object.values(notEmptyFilters).join(RSQL_DELIMETER);
+
+  return getConcatenationQueryRsql(filtersQueryRsql, initialQueries);
 };
 
 /**

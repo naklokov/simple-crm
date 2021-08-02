@@ -10,9 +10,11 @@ import { getDateWithTimezone } from "../../../utils";
 import { Readonly } from "../readonly";
 
 const getDisabledDate = (currentDate: moment.Moment) =>
-  getDateWithTimezone(currentDate.toISOString()).isBefore(
-    moment().startOf("day")
-  );
+  currentDate
+    ? getDateWithTimezone(currentDate.toISOString()).isBefore(
+        moment().startOf("day")
+      )
+    : true;
 
 function range(start: number, end: number) {
   const result = [];

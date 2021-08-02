@@ -118,7 +118,7 @@ export const defaultErrorHandler = ({
   }
 };
 
-export const getDateWithTimezone = (date?: string) => {
+export const getDateWithTimezone = (date?: string | moment.Moment) => {
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
   return moment.utc(date).tz(tz);
 };
@@ -309,3 +309,14 @@ export const fillLinks = (
     {}
   );
 };
+
+export const callAfterDelay = (() => {
+  let delayTimer: NodeJS.Timeout;
+
+  return (callback: Function, delay: number) => {
+    clearTimeout(delayTimer);
+    delayTimer = setTimeout(() => {
+      callback?.();
+    }, delay);
+  };
+})();

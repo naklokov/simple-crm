@@ -7,6 +7,7 @@ import {
   RSQL_OPERATORS_MAP,
   TASK_DATE_FIELD_CODE,
   RSQL_DELIMETER,
+  RSQL_OPERATORS_REGEXP_MAP,
 } from "../constants";
 
 /**
@@ -66,7 +67,11 @@ export const getSearchRsql = (
   entityName = "entityData",
   isJsonField = true
 ) => {
-  const value = `%${searched.replace(/"/g, '\\"').trim().toLowerCase()}%`;
+  const value = `%${searched
+    .replace(/\\/g, "\\\\")
+    .replace(/"/g, '\\"')
+    .trim()
+    .toLowerCase()}%`;
   return isJsonField
     ? getLikeFieldRsql(keys, value, entityName)
     : getLikeRsql(keys?.[0], value);
@@ -283,30 +288,17 @@ export const getEqualRsql = (key: string, value: string) => ({
  * @returns Строка со значением или массив строк, где первое значение это min, а второе - max
  */
 export const getValueFromRsql = (query: string) => {
-  const SIMPLE_OPERATORS = [RSQL_OPERATORS_MAP.LIKE, RSQL_OPERATORS_MAP.EQUAL];
-  const [, operator, valueArea] = query.split("=");
-  const fullOperator = `=${operator}=`;
+  const [, operatorTrim] = query.split("=");
+  const operator = `=${operatorTrim}=`;
 
-  if (valueArea) {
-    if (SIMPLE_OPERATORS.includes(fullOperator)) {
-      return replaceLikeChars(valueArea);
-    }
+  const [, from = "", to] =
+    query?.match(RSQL_OPERATORS_REGEXP_MAP[operator]) ?? [];
 
-    const regexp = /"(.*?)"/g;
-
-    const matches = valueArea.matchAll(regexp);
-    const values = [];
-
-    for (const match of matches) {
-      const value = replaceLikeChars(match?.[1] ?? "");
-      values.push(value);
-    }
-
-    // если в rsql строке передано 2 значения, то возвращаем массив, а если одно - первую строку
-    return values.length > 1 ? values : values[0];
+  if (to) {
+    return [replaceLikeChars(from), replaceLikeChars(to)];
   }
 
-  return "";
+  return replaceLikeChars(from);
 };
 
 /**
@@ -321,4 +313,20 @@ export const getInitialParams = (initialSearch: string) => {
     .filter((o) => !!o);
 
   return { initialQueries, initialSearchParams };
+};
+
+/**
+ * Метод объединения начальных параметров query (из url) и переданной строки в единую rsql query строку
+ * @param query Переданная RSQL query строка
+ * @param initialQueries Начальные значения параметров из url
+ * @returns RSQL query строка
+ */
+export const getConcatenationQueryRsql = (
+  query: string,
+  initialQueries: string[]
+) => {
+  const clearQueryArray = [query].filter((i) => !!i);
+  const clearInitialQueriesArray = initialQueries.filter((i) => !!i);
+
+  return clearQueryArray.concat(clearInitialQueriesArray).join(RSQL_DELIMETER);
 };
