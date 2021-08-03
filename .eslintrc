@@ -1,7 +1,7 @@
 // .eslintrc
 {
-  "plugins": ["prettier", "@typescript-eslint"],
-  "extends": ["airbnb-typescript", "react-app", "prettier"],
+  "plugins": ["prettier", "@typescript-eslint", "testcafe"],
+  "extends": ["airbnb-typescript", "react-app", "prettier", "plugin:testcafe/recommended"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json"
