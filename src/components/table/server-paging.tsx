@@ -27,7 +27,9 @@ import {
   defaultSuccessHandler,
   getFiteredEntityArray,
   getInitialParams,
+  getNormalizePhone,
   getValueFromRsql,
+  isPhone,
   pluralize,
 } from "../../utils";
 import {
@@ -157,10 +159,13 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
 
   const handleSearchAll = useCallback(
     (inputSearchedAll: string) => {
-      const filterAllRsql = getFilterAllRsqlQuery(
-        inputSearchedAll,
-        SEARCH_ALL_KEYS
-      );
+      let searchData: string = inputSearchedAll.trim();
+
+      searchData = isPhone(searchData)
+        ? getNormalizePhone(searchData)
+        : searchData;
+
+      const filterAllRsql = getFilterAllRsqlQuery(searchData, SEARCH_ALL_KEYS);
 
       setPage(DEFAULT_PAGE_NUMBER);
       setFilters({

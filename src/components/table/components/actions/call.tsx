@@ -3,7 +3,7 @@ import { Popconfirm, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { HighlightTextWrapper } from "../../../../wrappers";
-import { callTel, getConformedValue } from "../../../../utils";
+import { callTel, getConformedValue, isPhone } from "../../../../utils";
 import { SearchedAllContext, SearchedColumnsContext } from "../../utils";
 import { ColumnProps, RecordType, State } from "../../../../constants";
 
@@ -20,7 +20,6 @@ export const Call: React.FC<CallProps> = ({ phone, column }) => {
   const searchedColumnValue = searchedColumns[column?.columnCode ?? ""] ?? "";
 
   let searchedOptions = [searchedColumnValue, searched || ""];
-  const isPhone = (val: string) => /^\+7[\d]+$/.test(val);
 
   if (isPhone(searched)) {
     searchedOptions = [...searchedOptions, getConformedValue(searched)];

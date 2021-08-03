@@ -1,16 +1,15 @@
 import React, { useCallback, useState } from "react";
 import { noop } from "lodash";
-import MaskedInput, { conformToMask } from "react-text-mask";
+import MaskedInput from "react-text-mask";
 import {
   getMask,
   getNormalizePhone,
-  isNeedReplaceFirstChar,
+  phoneReplaceCountryCode,
 } from "../../utils";
 import {
   NORMALIZE_PHONE_LENGTH,
   PHONE_MASK,
   PHONE_MASK_WITH_CODE,
-  RU_PHONE_CODE,
 } from "../../constants";
 
 interface PhoneInputProps {
@@ -58,14 +57,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
       const normalizePhone = getNormalizePhone(config.rawValue).trim();
 
       // заменяем не кошерные первые символы кода ("7", "8") на кошерную "+7"
-      if (isNeedReplaceFirstChar(normalizePhone)) {
-        const phoneWithReplacedCode =
-          RU_PHONE_CODE + normalizePhone.substring(1);
-        return conformToMask(phoneWithReplacedCode, mask, config)
-          .conformedValue;
-      }
-
-      return conformToMask(normalizePhone, mask, config).conformedValue;
+      return phoneReplaceCountryCode(normalizePhone, mask, config);
     },
     [mask]
   );
