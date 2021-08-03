@@ -113,7 +113,7 @@ export const FORM: { tabs: TabProps[] } = {
         },
         {
           fieldCode: "isLocked",
-          fieldName: "Профиль активен",
+          fieldName: "Профиль заблокирован",
           fieldDescription: "",
           type: "switch",
           readonly: false,
