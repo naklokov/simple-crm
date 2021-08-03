@@ -66,18 +66,14 @@
     "version": "node scripts/create-changelog.js",
     "postversion": "git push && git push --tags",
     "docs": "npx typedoc",
-    "e2e": "testcafe chrome e2e/",
+    "e2e": "testcafe chrome e2e/ -r jenkins:report.xml",
     "build:less:theme": "npx lessc \"./src/assets/themes/light.less ./src/assets/themes/light.css\" --js"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -108,14 +104,12 @@
     "redux-mock-store": "^1.5.4",
     "ssh2-sftp-client": "^5.3.2",
     "testcafe": "^1.15.1",
+    "testcafe-reporter-jenkins": "^1.0.1",
     "testcafe-reporter-xunit": "^2.1.0",
     "typedoc": "^0.21.0",
     "typedoc-neo-theme": "^1.1.1"
   },
   "jest": {
-    "testMatch": [
-      "**/*.spec.ts",
-      "**/*.spec.tsx"
-    ]
+    "testMatch": ["**/*.spec.ts", "**/*.spec.tsx"]
   }
 }
