@@ -1,0 +1,9 @@
+{
+  "browsers": ["chrome"],
+  "src": "e2e",
+  "reporter": [],
+  "screenshots": {
+    "takeOnFails": true,
+    "fullPage": true
+  }
+}
