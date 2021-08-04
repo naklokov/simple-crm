@@ -1,7 +1,7 @@
 import * as reactRouter from "react-router-dom";
 import { renderHook, act } from "@testing-library/react-hooks";
 import { stringify } from "query-string";
-import { useTabs } from "../hooks";
+import { useTabs, useValidationService } from "../hooks";
 import { TabProps } from "../../constants";
 
 const getHistoryMock = (search: string, push: Function, replace: Function) => ({
@@ -112,4 +112,12 @@ test("useTabs get activeTab from query", () => {
   expect(result.current.activeTab).toEqual(tabs[1]);
   expect(pushSpy).not.toHaveBeenCalled();
   expect(replaceSpy).not.toHaveBeenCalled();
+});
+
+test("useValidationService", () => {
+  const {
+    wrappedRules,
+    validationStyle,
+    validationIcon,
+  } = useValidationService([], {}, "");
 });

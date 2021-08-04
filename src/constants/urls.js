@@ -46,6 +46,7 @@ module.exports = {
     paging: "/crm/rest/entity/clients/paging",
     customByDepartment:
       "/crm/rest/entity/clients/custom/paging/clientsByDepartment",
+    validation: "/crm/rest/entity/clients/validation",
   },
   clientCard: {
     path: "/main/clients/:id",

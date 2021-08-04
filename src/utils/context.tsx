@@ -1,5 +1,5 @@
 import React from "react";
-import { ClientEntityProps } from "../constants";
+import { ClientEntityProps, ValidationStatusType } from "../constants";
 
 interface FormContextProps {
   name?: string;

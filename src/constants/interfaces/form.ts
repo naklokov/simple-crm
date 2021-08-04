@@ -32,6 +32,10 @@ export type ColumnType =
   | "entity"
   | "boolean";
 
+export type ValidationStatusType = "info" | "warning" | "error";
+
+export type ExtendedRuleType = { type: "VALIDATION_SERVICE" } | Rule;
+
 export interface SpanProps {
   xxl?: number;
   xl?: number;
@@ -142,7 +146,7 @@ export interface FieldProps {
   type: FieldType;
   readonly?: boolean;
   disabled?: boolean;
-  rules?: Rule[];
+  rules?: ExtendedRuleType[];
   withSelectBefore?: boolean;
   format?: FieldFormatType;
   span?: SpanProps;
@@ -187,3 +191,16 @@ export interface MenuItemProps {
   url?: string;
   subIcon?: ReactNode;
 }
+
+export interface ValidationTooltipProps {
+  title?: string;
+  message?: string;
+  messageType?: ValidationStatusType;
+  href?: {
+    url: string;
+    text: string;
+    external: boolean;
+  }[];
+}
+
+// ValidationTooltipProps.messageType.prototype.isError = () => {};

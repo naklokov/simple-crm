@@ -9,7 +9,7 @@ import { Button, Col, Row, Select, Space, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { TableRowSelection } from "antd/lib/table/interface";
 import { DeleteOutlined } from "@ant-design/icons";
-import { xor } from "lodash";
+import { Rule } from "antd/lib/form";
 import { defaultErrorHandler, pluralize } from "./common";
 import {
   State,
@@ -18,9 +18,15 @@ import {
   TabProps,
   TabPositionType,
   MethodType,
+  ExtendedRuleType,
+  ValidationTooltipProps,
+  VALIDATION_SERVICE,
+  VALIDATION_COLOR,
+  ValidationStatusType,
 } from "../constants";
 import { updateForm } from "../__data__";
 import { getRsqlParams } from "./rsql";
+import { ValidationTooltip } from "../components/validation-tooltip/validation-tooltip";
 
 interface FetchProps {
   url: string;
@@ -259,6 +265,7 @@ export const useSelectableFooter = ({
     <Row justify="space-between">
       <Col flex="auto">
         <Space size="middle">
+          ent
           <Select
             value={selectedTarget}
             placeholder={placeholder || t("select.placeholder")}
@@ -298,6 +305,59 @@ export const useSelectableFooter = ({
       </Col>
     </Row>
   );
-
   return { rowSelection, footer };
+};
+
+export const useValidationService = (
+  rules: ExtendedRuleType[] | undefined,
+  formName: string,
+  validationLink: string
+) => {
+  const [result, setResult] = useState<ValidationTooltipProps>({});
+  const [formFields] = useFormValues(formName);
+
+  const validator = {
+    async validator(rule: any, value: any) {
+      let validationData: ValidationTooltipProps = {};
+      try {
+        const response = await axios.post(validationLink, {
+          fieldCode: rule.field,
+          fieldValue: value,
+          otherFieldValues: formFields,
+        });
+
+        validationData =
+          {
+            ...response?.data?.[0],
+            messageType: response.data?.[0].messageType.toLowerCase(),
+          } ?? {};
+      } catch (error) {
+        defaultErrorHandler({ error });
+      } finally {
+        setResult(validationData);
+      }
+
+      return validationData?.messageType === "error"
+        ? Promise.reject(new Error(validationData?.title))
+        : Promise.resolve();
+    },
+  };
+
+  const validationIcon = result?.messageType ? (
+    <ValidationTooltip {...result} />
+  ) : (
+    <span />
+  );
+
+  const validationStyle = result?.messageType && {
+    border: `1px solid ${VALIDATION_COLOR[result.messageType]}`,
+  };
+
+  return {
+    wrappedRules: rules?.map((x: ExtendedRuleType) =>
+      x === VALIDATION_SERVICE ? validator : x
+    ) as Rule[],
+    validationIcon,
+    validationStyle,
+  };
 };

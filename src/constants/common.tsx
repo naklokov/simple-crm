@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import { PhoneColored } from "../assets/icons";
+import { ExtendedRuleType } from "./interfaces";
 
 export const DATE_FORMATS = {
   DATE: "DD.MM.YYYY",
@@ -67,3 +68,13 @@ export const RSQL_OPERATORS_MAP = {
 export const TOOLTIP_SHOW_DELAY = 1;
 
 export const RSQL_DELIMETER = ";";
+
+export const VALIDATION_SERVICE: ExtendedRuleType = {
+  type: "VALIDATION_SERVICE",
+};
+
+export const VALIDATION_COLOR = {
+  info: "#1890ff",
+  warning: "#faad14",
+  error: "#f5222d",
+};

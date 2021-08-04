@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { parseInt, isEqual } from "lodash";
 import some from "lodash/some";
 import moment, { Moment } from "moment";
@@ -6,9 +6,11 @@ import { fields, Table } from "../components";
 import { FieldProps, TabPaneFormProps, TabProps } from "../constants";
 import { getNormalizePhone } from "./phone";
 import { fillLinks } from "./common";
+import { FormContext } from "./context";
 
 interface EntityWithId {
   [key: string]: any;
+
   id: string;
 }
 
@@ -117,7 +119,6 @@ export const getFiteredEntityArray = (id: string, array: any[]) =>
 
 export const vatRule = {
   validator: (_: any, value: string) => {
-    // может быть пустым
     if (!value) {
       return Promise.resolve();
     }

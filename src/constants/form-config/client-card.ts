@@ -1,7 +1,7 @@
 import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
 import { PERMISSIONS_SET } from "../permissions";
-import { DATE_FORMATS } from "../common";
+import { DATE_FORMATS, VALIDATION_SERVICE } from "../common";
 import { checkActualDate, ogrnRule, phoneRule, vatRule } from "../../utils";
 import { PHONE_PLACEHOLDER } from "../phone";
 
@@ -332,8 +332,16 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [{ required: true, message: REQUIRED_MESSAGE }, vatRule],
+          rules: [
+            { required: true, message: REQUIRED_MESSAGE },
+            VALIDATION_SERVICE,
+          ],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.clients.validation,
+            },
+          },
         },
         {
           fieldCode: "fullName",
@@ -521,8 +529,13 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [vatRule],
+          rules: [VALIDATION_SERVICE],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.clients.validation,
+            },
+          },
         },
         {
           fieldCode: "ogrn",
