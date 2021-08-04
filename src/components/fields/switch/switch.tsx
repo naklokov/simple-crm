@@ -1,27 +1,25 @@
-import React, { useCallback, useContext, FocusEvent } from "react";
-import { Form, Input, Col } from "antd";
+import { Col, Form, Switch as SwitchUI } from "antd";
+import React, { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
 import { FormContext } from "../../../utils";
 
-export const Text = ({
+export const Switch = ({
   fieldCode,
   rules,
   fieldName,
   fieldDescription,
-  placeholder,
   disabled = false,
+  _links,
   readonly = false,
   span = DEFAULT_FIELD_SPAN,
 }: FieldProps) => {
   const { form } = useContext(FormContext);
+  const value = form?.getFieldValue(fieldCode);
+  const [t] = useTranslation("fields");
 
-  const handleBlur = useCallback(
-    (event: FocusEvent<HTMLInputElement>) => {
-      form?.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? "" });
-    },
-    [fieldCode, form]
-  );
+  const formatText = (data: any) => t(`switch.title.${data}`);
 
   return (
     <Col {...span} key={fieldCode}>
@@ -34,18 +32,16 @@ export const Text = ({
         rules={rules}
       >
         {readonly ? (
-          <Readonly />
+          <Readonly value={value} format={formatText} />
         ) : (
-          <Input
-            autoComplete="off"
-            placeholder={placeholder}
+          <SwitchUI
+            checked={value}
             disabled={disabled}
-            onBlur={handleBlur}
+            checkedChildren={t(`switch.title.true`)}
+            unCheckedChildren={t(`switch.title.false`)}
           />
         )}
       </Form.Item>
     </Col>
   );
 };
-
-export default Text;

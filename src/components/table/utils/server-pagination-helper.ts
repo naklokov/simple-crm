@@ -45,8 +45,6 @@ export const getFetchDataSourceQuery = (
   const notEmptyFilters = filterEmptyValues(filters);
   const filtersQueryRsql = Object.values(notEmptyFilters).join(RSQL_DELIMETER);
 
-  debugger;
-
   return getConcatenationQueryRsql(filtersQueryRsql, initialQueries);
 };
 
