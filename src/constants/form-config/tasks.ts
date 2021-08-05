@@ -21,7 +21,7 @@ export const TASKS: TasksConfigProps = {
           fieldCode: "clientId",
           fieldName: "Компания",
           fieldDescription: "Компания связанная с задачей",
-          type: "entity",
+          type: "entity-lazy",
           titleField: "shortName",
           codeField: "id",
           readonly: false,
@@ -31,7 +31,7 @@ export const TASKS: TasksConfigProps = {
           permissions: [],
           _links: {
             self: {
-              href: `${urls.clients.entity}?query=userProfileId=={{userProfileId}}`,
+              href: `${urls.clients.paging}?query=userProfileId=={{userProfileId}}`,
             },
           },
         },

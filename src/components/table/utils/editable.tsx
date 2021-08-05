@@ -66,12 +66,12 @@ const EditableCell = ({
 
   const toggleEdit = () => {
     setEditing(!editing);
-    form.setFieldsValue({ [dataIndex]: record[dataIndex] });
+    form?.setFieldsValue({ [dataIndex]: record[dataIndex] });
   };
 
   const save = async () => {
     try {
-      const values = await form.validateFields();
+      const values = await form?.validateFields();
 
       toggleEdit();
       const updatedRecord = { ...record, ...values };

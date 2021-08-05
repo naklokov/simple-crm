@@ -135,6 +135,16 @@ test("getSearchRsql", () => {
   });
 });
 
+test("getSearchRsql with slash", () => {
+  const keys = ["id", "name"];
+  const searched = '\\" hello';
+  expect(getSearchRsql(keys, searched)).toEqual({
+    key: "entityData",
+    operator: RSQL_OPERATORS_MAP.LIKE_FIELD,
+    value: '(id,name,"%\\\\\\" hello%")',
+  });
+});
+
 test("getDateIsBetweenRsql", () => {
   const date = moment().toISOString();
 
@@ -219,27 +229,60 @@ test("getEqualRsql", () => {
   expect(getEqualRsql(key, value)).toEqual({ key, value });
 });
 
-test("getValueFromRsql with EQUAL operator", () => {
-  const query = "userProfileId==12345";
+test("getValueFromRsql with LIKE operator", () => {
+  const query = `userProfileId${RSQL_OPERATORS_MAP.LIKE}12345`;
   expect(getValueFromRsql(query)).toBe("12345");
 });
 
-test("getValueFromRsql with JLIKE operator", () => {
-  const query = 'entityData=JLIKE=(sample,"text")';
+test("getValueFromRsql with LIKE_FIELD operator", () => {
+  const query = `entityData${RSQL_OPERATORS_MAP.LIKE_FIELD}(id,name,"text")`;
   expect(getValueFromRsql(query)).toBe("text");
 });
 
-test("getValueFromRsql with LIKE operator", () => {
-  const query = "sample=LIKE=text";
+test("getValueFromRsql with LIKE_FIELD operator with chars", () => {
+  /* eslint-disable */
+  const query = `entityData${RSQL_OPERATORS_MAP.LIKE_FIELD}(phone,inn,shortName,city,"%тц \"12312\"%")`;
+  expect(getValueFromRsql(query)).toBe(`тц \"12312\"`);
+  /* eslint-enable */
+});
+
+test("getValueFromRsql with EQUAL operator", () => {
+  const query = `name${RSQL_OPERATORS_MAP.EQUAL}text`;
   expect(getValueFromRsql(query)).toBe("text");
 });
 
-test("getValueFromRsql with date operator", () => {
-  const query = 'entityData=JDATEBETWEEN=(dateFrom,"lololo1","lololo")';
-  expect(getValueFromRsql(query)).toEqual(["lololo1", "lololo"]);
+test("getValueFromRsql with FIELD_EQUAL operator", () => {
+  const query = `name${RSQL_OPERATORS_MAP.FIELD_EQUAL}(id,name,"text")`;
+  expect(getValueFromRsql(query)).toBe("text");
+});
+
+test("getValueFromRsql with DATE_IS_BETWEEN operator", () => {
+  const query = `field${RSQL_OPERATORS_MAP.DATE_IS_BETWEEN}("2020-10-01T00:00:00", "2020-11-01T00:00:00")`;
+  expect(getValueFromRsql(query)).toEqual([
+    "2020-10-01T00:00:00",
+    "2020-11-01T00:00:00",
+  ]);
+});
+
+test("getValueFromRsql with DATE_FIELD_IS_BETWEEN operator", () => {
+  const query = `entityData${RSQL_OPERATORS_MAP.DATE_FIELD_IS_BETWEEN}(fieldCode,"2020-10-01T00:00:00", "2020-11-01T00:00:00")`;
+  expect(getValueFromRsql(query)).toEqual([
+    "2020-10-01T00:00:00",
+    "2020-11-01T00:00:00",
+  ]);
+});
+
+test("getValueFromRsql with DATE_FIELD_IS_BEFORE operator", () => {
+  const query = `entityData${RSQL_OPERATORS_MAP.DATE_FIELD_IS_BEFORE}(fieldCode,"2020-10-01T00:00:00")`;
+  expect(getValueFromRsql(query)).toBe("2020-10-01T00:00:00");
+});
+
+test("getValueFromRsql with DATE_FIELD_IS_AFTER operator", () => {
+  const query = `entityData${RSQL_OPERATORS_MAP.DATE_FIELD_IS_AFTER}(fieldCode,"2020-10-01T00:00:00")`;
+  expect(getValueFromRsql(query)).toBe("2020-10-01T00:00:00");
 });
 
 test("getValueFromRsql with another operator", () => {
-  const query = 'entityData=JDATEBETWEEN=(dateFrom,"lololo")';
-  expect(getValueFromRsql(query)).toEqual("lololo");
+  const query = 'entityData=1234=(dateFrom,"lololo")';
+  expect(getValueFromRsql(query)).toEqual("");
 });

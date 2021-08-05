@@ -59,7 +59,7 @@ export const FIELDS: FieldProps[] = [
   {
     fieldCode: "departmentId",
     fieldName: "Отдел",
-    type: "entity",
+    type: "entity-lazy",
     titleField: "departmentName",
     codeField: "id",
     readonly: false,
@@ -69,7 +69,7 @@ export const FIELDS: FieldProps[] = [
     span: { xl: 24, md: 24, lg: 24, sm: 24 },
     _links: {
       self: {
-        href: urls.departments.entity,
+        href: urls.departments.paging,
       },
     },
   },

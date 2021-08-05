@@ -67,6 +67,15 @@ export const CLIENTS: { tabs: TabProps[] } = {
           sorter: true,
         },
         {
+          columnName: "Дата регистрации",
+          columnCode: "creationDate",
+          columnType: "date",
+          filterable: true,
+          format: "DD.MM.YYYY",
+          sorter: true,
+          columnDescription: "Дата регистрации",
+        },
+        {
           columnName: "ИНН",
           columnCode: "inn",
           columnType: "string",
@@ -158,6 +167,15 @@ export const CLIENTS: { tabs: TabProps[] } = {
           columnDescription: "Город",
           filterable: true,
           sorter: true,
+        },
+        {
+          columnName: "Дата регистрации",
+          columnCode: "creationDate",
+          columnType: "date",
+          filterable: true,
+          format: "DD.MM.YYYY",
+          sorter: true,
+          columnDescription: "Дата регистрации",
         },
         {
           columnName: "ИНН",

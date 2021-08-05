@@ -40,5 +40,6 @@
     "out": "docs",
     "includeVersion": true,
     "name": "CRM-MCPR",
+    "disableOutputCheck": true
   }
 }
