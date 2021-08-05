@@ -1,4 +1,4 @@
-import { toString } from "lodash";
+import { compact, toString } from "lodash";
 import moment, { unitOfTime as unitProps } from "moment-timezone";
 import { parse } from "query-string";
 import { replaceLikeChars } from "../components/table/utils";
