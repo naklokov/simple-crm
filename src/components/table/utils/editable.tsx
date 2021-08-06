@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useContext, useMemo } from "react";
-import { Input, Form, InputNumber } from "antd";
+import { Form, InputNumber } from "antd";
 import { noop, isEqual, toNumber } from "lodash";
 
 import { useTranslation } from "react-i18next";
@@ -45,7 +45,7 @@ const EditableCell = ({
 }: any) => {
   const [t] = useTranslation("clientCardPriceList");
   const [editing, setEditing] = useState(false);
-  const inputRef = useRef<Input>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const { form } = useContext(FormContext);
   const { onSaveRow } = useContext(TableActionsContext);
   const [formValues] = useFormValues<ClientEntityProps>(FORM_NAMES.CLIENT_CARD);

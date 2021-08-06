@@ -26,7 +26,7 @@
     "@types/react-router-dom": "5.1.5",
     "@types/react-text-mask": "5.4.6",
     "@types/uuid": "8.3.0",
-    "antd": "^4.12.3",
+    "antd": "4.15.6",
     "axios": "0.21.0",
     "classnames": "2.2.6",
     "history": "5.0.0",
@@ -73,7 +73,11 @@
     "extends": "react-app"
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -112,6 +116,9 @@
     "typedoc-neo-theme": "^1.1.1"
   },
   "jest": {
-    "testMatch": ["**/*.spec.ts", "**/*.spec.tsx"]
+    "testMatch": [
+      "**/*.spec.ts",
+      "**/*.spec.tsx"
+    ]
   }
 }
