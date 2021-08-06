@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Form, Col } from "antd";
+import { Rule } from "antd/lib/form";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
 import {
@@ -20,7 +21,7 @@ export const Phone = ({
   span = DEFAULT_FIELD_SPAN,
 }: FieldProps) => {
   const { form } = useContext(FormContext);
-  const value = form.getFieldValue(fieldCode);
+  const value = form?.getFieldValue(fieldCode);
 
   const formatFunc = (input: string) => getConformedValue(input);
 
@@ -31,7 +32,7 @@ export const Phone = ({
         name={fieldCode}
         label={fieldName}
         extra={fieldDescription}
-        rules={rules}
+        rules={rules as Rule[]}
         validateTrigger="onBlur"
         normalize={getNormalizePhone}
       >

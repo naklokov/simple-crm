@@ -24,7 +24,7 @@ const Text: React.FC<FieldProps> = ({
 
   const handleBlur = useCallback(
     (event: FocusEvent<HTMLInputElement>) => {
-      form.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? "" });
+      form?.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? "" });
     },
     [fieldCode, form]
   );

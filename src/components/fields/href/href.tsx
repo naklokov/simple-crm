@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Form, Input, Col, Tooltip } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import { Rule } from "antd/lib/form";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
 
@@ -50,7 +51,7 @@ export const Href = ({
         label={fieldName}
         extra={fieldDescription}
         validateTrigger="onBlur"
-        rules={rules}
+        rules={rules as Rule[]}
         getValueProps={handleValueProps}
       >
         {readonly ? (

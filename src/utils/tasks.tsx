@@ -1,7 +1,6 @@
 import moment from "moment-timezone";
 import {
   RsqlParamProps,
-  TASK_DATE_FIELD_CODE,
   TASK_STATUSES,
   TASK_STATUS_FIELD_CODE,
 } from "../constants";
@@ -19,9 +18,6 @@ export const getExtraRsql = (profileInfoId: string): RsqlParamProps[] => [
     fieldCode: TASK_STATUS_FIELD_CODE,
   }),
 ];
-
-export const getTasksSorted = (order: "asc" | "desc" = "asc") =>
-  `${TASK_DATE_FIELD_CODE}:${order}`;
 
 export const getDateRsql = (
   date: string,

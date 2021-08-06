@@ -1,5 +1,6 @@
 import React from "react";
 import { Col, Form, Select } from "antd";
+import { Rule } from "antd/lib/form";
 import {
   DictionaryProps,
   FieldProps,
@@ -53,7 +54,7 @@ export const Dictionary: React.FC<FieldProps> = ({
         style={style}
         label={fieldName}
         extra={fieldDescription}
-        rules={rules}
+        rules={rules as Rule[]}
         validateTrigger="onBlur"
       >
         {readonly ? (

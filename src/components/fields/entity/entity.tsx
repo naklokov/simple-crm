@@ -8,6 +8,7 @@ import React, {
 import axios from "axios";
 import { Col, Form, Select, Spin } from "antd";
 import { useTranslation } from "react-i18next";
+import { Rule } from "antd/lib/form";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import {
   defaultErrorHandler,
@@ -38,7 +39,7 @@ export const Entity = ({
   let delayTimer: NodeJS.Timeout;
 
   const { form } = useContext(FormContext) ?? {};
-  const [t] = useTranslation("entity");
+  const [t] = useTranslation("fields");
   const [initial, setInitial] = useState(false);
   const [searched, setSearched] = useState("");
   const [options, setOptions] = useState<{ label: string; value: string }[]>();
@@ -135,7 +136,7 @@ export const Entity = ({
       loading ? (
         <Spin size="small" />
       ) : (
-        <span>{t("not.found.description")}</span>
+        <span>{t("entity.not.found.description")}</span>
       ),
     [loading, t]
   );
@@ -161,7 +162,7 @@ export const Entity = ({
         label={fieldName}
         style={style}
         extra={fieldDescription}
-        rules={rules}
+        rules={rules as Rule[]}
         validateTrigger="onBlur"
       >
         {readonly ? (

@@ -5,6 +5,7 @@ import {
   WarningOutlined,
 } from "@ant-design/icons";
 import { Popover } from "antd";
+import { parseUrl } from "query-string";
 import { VALIDATION_COLOR, ValidationTooltipProps } from "../../constants";
 
 export const ValidationTooltip: React.FC<ValidationTooltipProps> = ({
@@ -25,17 +26,21 @@ export const ValidationTooltip: React.FC<ValidationTooltipProps> = ({
         <div style={{ maxWidth: 250 }}>
           <h4>{title}</h4>
           <span>{message}</span>
-          {href.map((x) => (
-            <a
-              key={x?.url}
-              href={x?.url}
-              style={{ display: "block" }}
-              target={x?.external ? "_blank" : ""}
-              rel="noreferrer"
-            >
-              {x?.text}
-            </a>
-          ))}
+          {href.map((x) => {
+            console.log(parseUrl(x.url));
+
+            return (
+              <a
+                key={x?.url}
+                href={x?.url}
+                style={{ display: "block" }}
+                target={x?.external ? "_blank" : ""}
+                rel="noreferrer"
+              >
+                {x?.text}
+              </a>
+            );
+          })}
         </div>
       }
       placement="bottomRight"

@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Form, Input, Col, Tooltip } from "antd";
 import { MailOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import { Rule } from "antd/lib/form";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
 import { checkEmail } from "../../../utils";
@@ -48,7 +49,7 @@ export const Email = ({
         label={fieldName}
         extra={fieldDescription}
         validateTrigger="onBlur"
-        rules={rules}
+        rules={rules as Rule[]}
         getValueProps={handleValueProps}
       >
         {readonly ? (

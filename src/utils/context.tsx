@@ -1,13 +1,14 @@
+import { FormInstance } from "antd";
 import React from "react";
 import { ClientEntityProps, ValidationStatusType } from "../constants";
 
 interface FormContextProps {
   name?: string;
-  form: any;
+  form?: FormInstance;
 }
 
 export const FormContext = React.createContext<FormContextProps>({
-  form: {},
+  form: undefined,
   name: undefined,
 });
 

@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment-timezone";
 import { Col, Form, DatePicker } from "antd";
+import { Rule } from "antd/lib/form";
 import {
   DATE_FORMATS,
   DEFAULT_FIELD_SPAN,
@@ -70,7 +71,7 @@ export const DateTime = ({
         name={fieldCode}
         label={fieldName}
         extra={fieldDescription}
-        rules={rules}
+        rules={rules as Rule[]}
         getValueProps={handleValueProp}
         validateTrigger="onBlur"
       >

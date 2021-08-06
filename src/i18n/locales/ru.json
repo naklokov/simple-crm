@@ -214,7 +214,10 @@
     "button.load.more": "Загрузить ещё",
     "list.empty": "Нет задач",
     "spin.loading": "Загрузка...",
-    "drawer.add.title": "Новая задача"
+    "drawer.add.title": "Новая задача",
+    "sort.tooltip.default": "Нажмите для сортировки по возрастанию",
+    "sort.tooltip.asc": "Нажмите для сортировки по убыванию",
+    "sort.tooltip.desc": "Нажмите, чтобы отменить сортировку"
   },
   "card": {
     "tooltip.complete": "Выполнить задачу",
@@ -264,7 +267,10 @@
   },
   "fields": {
     "email.tooltip": "Написать письмо",
-    "href.tooltip": "Перейти по ссылке"
+    "href.tooltip": "Перейти по ссылке",
+    "switch.title.true": "Да",
+    "switch.title.false": "Нет",
+    "entity.not.found.description": "Вариантов не найдено"
   },
   "documents": {
     "button.title": "Сгенерировать",
@@ -286,9 +292,6 @@
   },
   "departmentsDrawer": {
     "move.message.success": "Отдел успешно перемещён"
-  },
-  "entity": {
-    "not.found.description": "Вариантов не найдено"
   },
   "activity": {
     "active": "Актуально",
