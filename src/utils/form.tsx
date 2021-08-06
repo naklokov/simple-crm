@@ -1,16 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { parseInt, isEqual } from "lodash";
 import some from "lodash/some";
 import moment, { Moment } from "moment";
 import { fields, Table } from "../components";
 import { FieldProps, TabPaneFormProps, TabProps } from "../constants";
 import { getNormalizePhone } from "./phone";
-import { fillLinks } from "./common";
-import { FormContext } from "./context";
+import { fillLinks, getDateWithTimezone } from "./common";
 
 interface EntityWithId {
   [key: string]: any;
-
   id: string;
 }
 
@@ -21,8 +19,10 @@ const {
   Dictionary,
   Phone,
   Entity,
+  EntityLazy,
   Email,
   Href,
+  Switch,
 } = fields;
 
 export const isValuesChanged = (
@@ -101,6 +101,10 @@ export const createFormField = (field: FieldProps): JSX.Element => {
       return <Dictionary {...field} />;
     case "entity":
       return <Entity {...field} />;
+    case "switch":
+      return <Switch {...field} />;
+    case "entity-lazy":
+      return <EntityLazy {...field} />;
     default:
       return <div />;
   }
@@ -119,6 +123,7 @@ export const getFiteredEntityArray = (id: string, array: any[]) =>
 
 export const vatRule = {
   validator: (_: any, value: string) => {
+    // может быть пустым
     if (!value) {
       return Promise.resolve();
     }
@@ -271,9 +276,16 @@ export const checkEmail = (email: string) => {
 
 export const checkActualDate = {
   validator: async (_: any, value: Moment) => {
-    const currentDate = moment().startOf("minute");
-    if (value?.isBefore(currentDate)) {
-      throw new Error("Задачу можно установить на данный момент или в будущем");
+    const currentDate = moment().startOf("day");
+
+    if (value) {
+      const valueMoment = getDateWithTimezone(value);
+
+      if (valueMoment.isBefore(currentDate)) {
+        throw new Error(
+          "Задачу можно установить на данный момент или в будущем"
+        );
+      }
     }
   },
 };

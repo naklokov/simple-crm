@@ -5,7 +5,7 @@ import {
   FieldProps,
   DEFAULT_FIELD_SPAN,
 } from "../../../constants";
-import { useFetch } from "../../../utils";
+import { useFetch, useValidationService } from "../../../utils";
 import { Readonly } from "../readonly";
 import { Loading } from "../loading";
 
@@ -22,6 +22,10 @@ export const Dictionary: React.FC<FieldProps> = ({
   _links,
   span = DEFAULT_FIELD_SPAN,
 }) => {
+  const { wrappedRules } = useValidationService(
+    rules,
+    _links?.validation?.href ?? ""
+  );
   const url = _links?.self.href ?? "";
   const [dictionary, loading] = useFetch<DictionaryProps>({
     url,
@@ -53,7 +57,7 @@ export const Dictionary: React.FC<FieldProps> = ({
         style={style}
         label={fieldName}
         extra={fieldDescription}
-        rules={rules}
+        rules={wrappedRules}
         validateTrigger="onBlur"
       >
         {readonly ? (

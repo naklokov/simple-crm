@@ -31,6 +31,7 @@ module.exports = {
   departments: {
     path: "/main/departments",
     entity: "/crm/rest/entity/departments",
+    paging: "/crm/rest/entity/departments/paging",
   },
   departmentCard: {
     path: "/main/departments/:id",

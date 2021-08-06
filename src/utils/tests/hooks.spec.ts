@@ -113,11 +113,3 @@ test("useTabs get activeTab from query", () => {
   expect(pushSpy).not.toHaveBeenCalled();
   expect(replaceSpy).not.toHaveBeenCalled();
 });
-
-test("useValidationService", () => {
-  const {
-    wrappedRules,
-    validationStyle,
-    validationIcon,
-  } = useValidationService([], {}, "");
-});

@@ -4,10 +4,10 @@ import {
   InfoCircleOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
-import { Popover } from "antd";
+import { Popover, Typography } from "antd";
 import { VALIDATION_COLOR, ValidationTooltipProps } from "../../constants";
 
-export const ValidationTooltip: React.FC<ValidationTooltipProps> = ({
+const ValidationTooltip: React.FC<ValidationTooltipProps> = ({
   messageType,
   title,
   message,
@@ -24,17 +24,15 @@ export const ValidationTooltip: React.FC<ValidationTooltipProps> = ({
       content={
         <div style={{ maxWidth: 250 }}>
           <h4>{title}</h4>
-          <span>{message}</span>
-          {href.map((x) => (
-            <a
-              key={x?.url}
-              href={x?.url}
-              style={{ display: "block" }}
-              target={x?.external ? "_blank" : ""}
-              rel="noreferrer"
+          <div>{message}</div>
+          {href?.map((link) => (
+            <Typography.Link
+              href={link?.url}
+              key={link?.url}
+              target={link?.external ? "_blank" : ""}
             >
-              {x?.text}
-            </a>
+              {link?.text}
+            </Typography.Link>
           ))}
         </div>
       }
@@ -46,7 +44,9 @@ export const ValidationTooltip: React.FC<ValidationTooltipProps> = ({
         margin: 0,
       }}
     >
-      {validationIcon?.[messageType]}
+      {messageType && validationIcon?.[messageType]}
     </Popover>
   );
 };
+
+export default ValidationTooltip;

@@ -91,8 +91,10 @@ const getDateViewColumns = (selectedDate: string, profileInfoId: string) => {
   });
 };
 
-export const checkDaysEqual = (date: string, comparedDate?: string) =>
-  getDateWithTimezone(date).isSame(comparedDate, "day");
+export const checkDaysEqual = (date: string, comparedDate?: string) => {
+  const comparedDateWithTZ = getDateWithTimezone(comparedDate);
+  return getDateWithTimezone(date).isSame(comparedDateWithTZ, "day");
+};
 
 export const getUpdatedColumns = (columns: ColumnTaskProps[], date: string) =>
   columns.map((column) => {

@@ -7,7 +7,6 @@ import {
   getExtraRsql,
   getDateRsql,
   getOverdueRsql,
-  getTasksSorted,
   getTommorowRsql,
 } from "../tasks";
 
@@ -52,10 +51,4 @@ test("getTommorowRsql", () => {
   expect(getTommorowRsql(date, userProfileId)).toBe(
     'userProfileId==1234;entityData=JEQ=(taskStatus,"NOT_COMPLETED");entityData=JDATEBTWN=(taskEndDate,"2020-12-01T21:00:00.000Z","2020-12-02T20:59:59.999Z")'
   );
-});
-
-test("getTasksSorted", () => {
-  expect(getTasksSorted()).toBe("taskEndDate:asc");
-  expect(getTasksSorted("asc")).toBe("taskEndDate:asc");
-  expect(getTasksSorted("desc")).toBe("taskEndDate:desc");
 });

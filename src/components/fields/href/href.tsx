@@ -6,7 +6,7 @@ import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
 
 import style from "./href.module.scss";
-import { openUrlTargetBlank } from "../../../utils";
+import { openUrlTargetBlank, useValidationService } from "../../../utils";
 
 const getPrefixedUrl = (value: string) =>
   /^(http|https|www):/.test(value) ? value : `http://${value}`;
@@ -20,9 +20,14 @@ export const Href = ({
   disabled = false,
   readonly = false,
   span = DEFAULT_FIELD_SPAN,
+  _links,
 }: FieldProps) => {
   const [t] = useTranslation("fields");
   const [value, setValue] = useState("");
+  const { wrappedRules } = useValidationService(
+    rules,
+    _links?.validation?.href ?? ""
+  );
 
   const handleValueProps = useCallback((input: string) => {
     setValue(input);
@@ -50,7 +55,7 @@ export const Href = ({
         label={fieldName}
         extra={fieldDescription}
         validateTrigger="onBlur"
-        rules={rules}
+        rules={wrappedRules}
         getValueProps={handleValueProps}
       >
         {readonly ? (

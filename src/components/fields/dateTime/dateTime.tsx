@@ -6,7 +6,7 @@ import {
   DEFAULT_FIELD_SPAN,
   FieldProps,
 } from "../../../constants";
-import { getDateWithTimezone } from "../../../utils";
+import { getDateWithTimezone, useValidationService } from "../../../utils";
 import { Readonly } from "../readonly";
 
 const getDisabledDate = (currentDate: moment.Moment) =>
@@ -56,7 +56,13 @@ export const DateTime = ({
   readonly = false,
   withSelectBefore = false,
   span = DEFAULT_FIELD_SPAN,
+  _links,
 }: FieldProps) => {
+  const { wrappedRules } = useValidationService(
+    rules,
+    _links?.validation?.href ?? ""
+  );
+
   const showTime = /hh:mm/gi.test(format)
     ? { hideDisabledOptions: true }
     : false;
@@ -70,7 +76,7 @@ export const DateTime = ({
         name={fieldCode}
         label={fieldName}
         extra={fieldDescription}
-        rules={rules}
+        rules={wrappedRules}
         getValueProps={handleValueProp}
         validateTrigger="onBlur"
       >

@@ -15,16 +15,16 @@ const Text: React.FC<FieldProps> = ({
   span = DEFAULT_FIELD_SPAN,
   _links,
 }) => {
-  const { form, name } = useContext(FormContext);
+  const { form } = useContext(FormContext);
   const {
     wrappedRules,
     validationIcon,
     validationStyle,
-  } = useValidationService(rules, name ?? "", _links?.validation?.href ?? "");
+  } = useValidationService(rules, _links?.validation?.href ?? "");
 
   const handleBlur = useCallback(
     (event: FocusEvent<HTMLInputElement>) => {
-      form.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? "" });
+      form?.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? "" });
     },
     [fieldCode, form]
   );

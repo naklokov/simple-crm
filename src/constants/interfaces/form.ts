@@ -15,9 +15,11 @@ export type FieldType =
   | "date"
   | "dictionary"
   | "entity"
+  | "entity-lazy"
   | "email"
   | "href"
-  | "phone";
+  | "phone"
+  | "switch";
 
 export type RecordType = { [key: string]: string };
 
@@ -153,6 +155,7 @@ export interface FieldProps {
   rows?: number;
   permissions: string[];
   placeholder?: string;
+  pageSize?: number;
   _links?: LinksType;
 }
 
@@ -202,5 +205,3 @@ export interface ValidationTooltipProps {
     external: boolean;
   }[];
 }
-
-// ValidationTooltipProps.messageType.prototype.isError = () => {};

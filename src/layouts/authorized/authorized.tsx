@@ -3,7 +3,7 @@ import { Layout, notification, Space } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { About, Logo, Menu, Profile, MenuSubDrawer } from "./components";
 import { ContainerWrapper } from "../../wrappers";
-import { AddUser, Notifications } from "../../components";
+import { AddUser, Notifications, JivoSupport } from "../../components";
 import style from "./authorized.module.scss";
 import { MenuItemProps, State } from "../../constants";
 import { closeMenuSubDrawer, openMenuSubDrawer } from "../../__data__";
@@ -44,7 +44,7 @@ export const Authorized = ({ children }: AuthorizedProps) => {
     []
   );
 
-  const toogleCollapse = useCallback(() => {
+  const toggleCollapse = useCallback(() => {
     setCollapsed(!collapsed);
   }, [collapsed]);
 
@@ -56,7 +56,7 @@ export const Authorized = ({ children }: AuthorizedProps) => {
           collapsible
           collapsed={collapsed}
           className={style.sider}
-          onCollapse={toogleCollapse}
+          onCollapse={toggleCollapse}
         >
           <Logo collapsed={collapsed} />
           <Menu onClickItem={handleClickMenuItem} />
@@ -75,6 +75,7 @@ export const Authorized = ({ children }: AuthorizedProps) => {
           <Content>{children}</Content>
         </Layout>
       </Layout>
+      <JivoSupport />
     </ContainerWrapper>
   );
 };

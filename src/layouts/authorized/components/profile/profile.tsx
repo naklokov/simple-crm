@@ -28,10 +28,16 @@ export const Profile = ({ profileInfo }: ProfileProps) => {
 
   const profilePath = getFullUrl(urls.profile.path, id);
 
+  const jivoClear = useCallback(() => {
+    jivo_api.close();
+    window.location.reload();
+  }, []);
+
   const handleClickLogout = useCallback(() => {
     history.replace("/");
     logout(dispatch);
-  }, [dispatch, history]);
+    jivoClear();
+  }, [jivoClear, dispatch, history]);
 
   const menu = (
     <Menu>

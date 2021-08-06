@@ -4,7 +4,7 @@ import { MailOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
-import { checkEmail } from "../../../utils";
+import { checkEmail, useValidationService } from "../../../utils";
 
 import style from "./email.module.scss";
 
@@ -19,7 +19,12 @@ export const Email = ({
   disabled = false,
   readonly = false,
   span = DEFAULT_FIELD_SPAN,
+  _links,
 }: FieldProps) => {
+  const { wrappedRules } = useValidationService(
+    rules,
+    _links?.validation?.href ?? ""
+  );
   const [t] = useTranslation("fields");
   const [value, setValue] = useState("");
 
@@ -48,7 +53,7 @@ export const Email = ({
         label={fieldName}
         extra={fieldDescription}
         validateTrigger="onBlur"
-        rules={rules}
+        rules={wrappedRules}
         getValueProps={handleValueProps}
       >
         {readonly ? (
