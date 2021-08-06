@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -21,10 +17,7 @@
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "src",
-    "types"
-  ],
+  "include": ["src", "types", "e2e"],
   "typedocOptions": {
     "exclude": [
       "**/*+.spec.ts",
@@ -32,13 +25,11 @@
       "**/constants/*",
       "**/index.js",
       "**/index.ts",
-      "**/index.tsx",
+      "**/index.tsx"
     ],
-    "entryPoints": [
-      "./src"
-    ],
+    "entryPoints": ["./src"],
     "out": "docs",
     "includeVersion": true,
-    "name": "CRM-MCPR",
+    "name": "CRM-MCPR"
   }
 }
