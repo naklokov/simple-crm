@@ -1,17 +1,26 @@
 import { adminRole } from "../helpers/roles";
 import { clearAuthCookies } from "../helpers/utils";
-import { BASE_URL } from "../helpers/constants";
-import { addClientButton } from "../helpers/selectors";
+import {
+  BASE_URL,
+  STUB_CLIENT_DATA,
+  TEXT_OVER_1000_CHARS,
+} from "../helpers/constants";
+import { ClientCardPage } from "../helpers/pages";
+import { getFieldByLabel } from "../helpers/selectors";
 
 // https://olivje-group.atlassian.net/projects/OLVETEST?selectedItem=com.atlassian.plugins.atlassian-connect-plugin:com.kanoah.test-manager__main-project-page#!/design?projectId=10003
 fixture`Валидация`.beforeEach(async (t) => {
   clearAuthCookies();
   await t.useRole(adminRole).navigateTo(BASE_URL);
 });
-// .page(CLIENTS_URL);
 
 test("OLVETEST-T115", async (t) => {
-  await t.click(addClientButton);
+  t.debug();
+  const label = "Полное название";
 
-  // await t.expect();
+  await ClientCardPage.addClient(STUB_CLIENT_DATA);
+  await ClientCardPage.typeField(label, TEXT_OVER_1000_CHARS);
+  await ClientCardPage.clickSave();
+
+  await t.expect(getFieldByLabel(label));
 });

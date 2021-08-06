@@ -17,3 +17,7 @@ export const getTabByTitle = (title: string) =>
 
 export const getFieldByLabel = (label: string) =>
   Selector("ant-form-item").withText(label);
+
+export const selectOption = Selector(".ant-select-item-option");
+
+export const messageSuccess = Selector(".ant-message-success");

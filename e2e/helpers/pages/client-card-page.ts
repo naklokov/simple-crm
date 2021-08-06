@@ -1,24 +1,37 @@
 import { t, Selector } from "testcafe";
+import { ClientEntityProps } from "../../../src/constants";
+import { getFieldByLabel, messageSuccess, selectOption } from "../selectors";
 
-interface ClientCardProps {
-  nameInput: SelectorOptions;
-}
+const FIELDS_LABEL = {
+  shortName: "Сокращенное название",
+  phone: "Телефон компании",
+  inn: "ИНН",
+  activity: "Тип деятельности",
+};
 
-class ClientCard<ClientCardProps> {
+class ClientCardPage {
   deleteButton: Selector;
+
   callButton: Selector;
 
   saveButton: Selector;
+
   cancelButton: Selector;
 
   returnButton: Selector;
 
   mainTab: Selector;
+
   contactTab: Selector;
+
   requisitesTab: Selector;
+
   priceListTab: Selector;
+
   tasksTab: Selector;
+
   commentsTab: Selector;
+
   docsTab: Selector;
 
   constructor() {
@@ -53,6 +66,30 @@ class ClientCard<ClientCardProps> {
       .withText("Документы");
   }
 
+  addClient = async (fields: any) => {
+    await t.typeText(
+      getFieldByLabel(FIELDS_LABEL.shortName),
+      fields?.shortName
+    );
+    await t.typeText(getFieldByLabel(FIELDS_LABEL.phone), fields?.phone);
+    await t.typeText(getFieldByLabel(FIELDS_LABEL.inn), fields?.inn);
+
+    await t
+      .click(getFieldByLabel(FIELDS_LABEL?.activity))
+      .click(selectOption.nth(0));
+
+    await t.click(this.saveButton);
+
+    await t.expect(messageSuccess).ok();
+  };
+
+  typeField = async (fieldLabel: string, value: string) => {
+    await t.typeText(getFieldByLabel(fieldLabel), value);
+  };
+
+  clickSave = async () => {
+    await t.click(this.saveButton);
+  };
   //   async selectFeature(number) {
   //     await t.click(this.importantFeaturesLabels.nth(number));
   //   }
@@ -66,4 +103,4 @@ class ClientCard<ClientCardProps> {
   //   }
 }
 
-export default new Page();
+export default new ClientCardPage();
