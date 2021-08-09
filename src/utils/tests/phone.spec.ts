@@ -1,7 +1,5 @@
-import { PHONE_MASK, PHONE_MASK_WITH_CODE } from "../../constants";
 import {
   getConformedValue,
-  getMask,
   getNormalizePhone,
   isNeedReplaceFirstChar,
 } from "../phone";
@@ -16,14 +14,6 @@ test("getConformedValue", () => {
   expect(getConformedValue("7999")).toBe("+7 (799) 9");
   expect(getConformedValue(phoneBase)).toBe("+7 (999) 888-77-66");
   expect(getConformedValue(phoneWithCode)).toBe("+7 (999) 888-77-66, 22");
-});
-
-test("getMask", () => {
-  expect(getMask(phoneBase.substring(phoneBase.length - 1))).toEqual(
-    PHONE_MASK
-  );
-  expect(getMask(phoneBase)).toEqual(PHONE_MASK);
-  expect(getMask(phoneWithCode)).toEqual(PHONE_MASK_WITH_CODE);
 });
 
 test("isNeedReplaceFirstChar", () => {

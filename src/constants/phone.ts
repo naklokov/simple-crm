@@ -24,10 +24,6 @@ export const PHONE_MASK = [
   "-",
   /\d/,
   /\d/,
-];
-
-export const PHONE_MASK_WITH_CODE = [
-  ...PHONE_MASK,
   ",",
   " ",
   /\d/,

@@ -2,6 +2,7 @@ import React, { useCallback, useContext } from "react";
 import { Popconfirm, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { trimEnd } from "lodash";
 import { HighlightTextWrapper } from "../../../../wrappers";
 import { callTel, getConformedValue } from "../../../../utils";
 import { SearchedAllContext, SearchedColumnsContext } from "../../utils";
@@ -46,7 +47,7 @@ export const Call: React.FC<CallProps> = ({ phone, column }) => {
       <Typography.Link style={{ marginRight: 8 }}>
         <HighlightTextWrapper
           loading={tableLoading}
-          text={getConformedValue(phone)}
+          text={trimEnd(getConformedValue(phone), ", ")}
           searched={searchedOptions}
         />
       </Typography.Link>
