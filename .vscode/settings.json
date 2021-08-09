@@ -23,5 +23,6 @@
     "sourcemaps": "inline",
     "disableOptimisticBPs": true
   },
-  "liveServer.settings.port": 5501
+  "liveServer.settings.port": 5501,
+  "testlatte.filePath": "e2e/",
 }

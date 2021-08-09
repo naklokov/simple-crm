@@ -1,12 +1,32 @@
 import { t, Selector } from "testcafe";
-import { ClientEntityProps } from "../../../src/constants";
 import { getFieldByLabel, messageSuccess, selectOption } from "../selectors";
 
-const FIELDS_LABEL = {
-  shortName: "Сокращенное название",
-  phone: "Телефон компании",
-  inn: "ИНН",
-  activity: "Тип деятельности",
+export type FieldType = "text" | "dictionary";
+
+export interface FieldsInfoProps {
+  [key: string]: {
+    label: string;
+    type: FieldType;
+  };
+}
+
+const FIELDS_INFO: FieldsInfoProps = {
+  shortName: {
+    label: "Сокращенное название",
+    type: "text",
+  },
+  phone: {
+    label: "Телефон компании",
+    type: "text",
+  },
+  inn: {
+    label: "ИНН",
+    type: "text",
+  },
+  activityField: {
+    label: "Тип деятельности",
+    type: "dictionary",
+  },
 };
 
 class ClientCardPage {
@@ -66,41 +86,56 @@ class ClientCardPage {
       .withText("Документы");
   }
 
-  addClient = async (fields: any) => {
-    await t.typeText(
-      getFieldByLabel(FIELDS_LABEL.shortName),
-      fields?.shortName
-    );
-    await t.typeText(getFieldByLabel(FIELDS_LABEL.phone), fields?.phone);
-    await t.typeText(getFieldByLabel(FIELDS_LABEL.inn), fields?.inn);
-
-    await t
-      .click(getFieldByLabel(FIELDS_LABEL?.activity))
-      .click(selectOption.nth(0));
-
-    await t.click(this.saveButton);
-
-    await t.expect(messageSuccess).ok();
+  clearFieldByLabel = async (label: string) => {
+    await t.click(getFieldByLabel(label)).pressKey("ctrl+a delete");
   };
 
-  typeField = async (fieldLabel: string, value: string) => {
-    await t.typeText(getFieldByLabel(fieldLabel), value);
+  addClient = async (fields: any) => {
+    Object.keys(fields).forEach(async (key) => {
+      if (fields[key]) {
+        if (FIELDS_INFO?.[key]?.type === "dictionary") {
+          await t
+            .click(getFieldByLabel(FIELDS_INFO?.[key]?.label))
+            .click(selectOption.withText(fields[key]));
+          return;
+        }
+
+        await t.typeText(
+          getFieldByLabel(FIELDS_INFO?.[key]?.label),
+          fields[key]
+        );
+      }
+    });
+
+    await t.click(this.saveButton);
   };
 
   clickSave = async () => {
     await t.click(this.saveButton);
   };
-  //   async selectFeature(number) {
-  //     await t.click(this.importantFeaturesLabels.nth(number));
-  //   }
 
-  //   async clickSubmit() {
-  //     await t.click(this.submitButton);
-  //   }
+  checkMessageSuccess = async () => {
+    await t
+      .expect(messageSuccess.textContent)
+      .contains("Информация о клиенте обновлена");
+  };
 
-  //   async typeName(name) {
-  //     await t.typeText(this.nameInput, name);
-  //   }
+  checkValidationMessage = async (
+    label: string,
+    message: string,
+    ok: boolean = true
+  ) => {
+    if (ok) {
+      await t.expect(getFieldByLabel(label).textContent).contains(message);
+    } else {
+      await t.expect(getFieldByLabel(label).textContent).notContains(message);
+    }
+  };
+
+  isTabActive = async (tab: Selector) => {
+    const activeTab = tab.withAttribute("aria-selected", "true");
+    await t.expect(activeTab.exists).ok();
+  };
 }
 
 export default new ClientCardPage();

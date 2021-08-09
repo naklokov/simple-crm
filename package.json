@@ -67,17 +67,14 @@
     "postversion": "git push && git push --tags",
     "docs": "npx typedoc",
     "e2e": "testcafe chrome e2e/",
+    "e2e:current": "testcafe chrome e2e/ --test OLVETEST-T116",
     "build:less:theme": "npx lessc \"./src/assets/themes/light.less ./src/assets/themes/light.css\" --js"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -116,9 +113,6 @@
     "typedoc-neo-theme": "^1.1.1"
   },
   "jest": {
-    "testMatch": [
-      "**/*.spec.ts",
-      "**/*.spec.tsx"
-    ]
+    "testMatch": ["**/*.spec.ts", "**/*.spec.tsx"]
   }
 }
