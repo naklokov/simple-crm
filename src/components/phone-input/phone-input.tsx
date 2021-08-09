@@ -28,17 +28,14 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   const handlePipe = useCallback((conformedValue: string, config: any) => {
     const normalizePhone = getNormalizePhone(config.rawValue).trim();
 
-    // заменяем не кошерные первые символы кода ("7", "8") на кошерную "+7"
-    if (isNeedReplaceFirstChar(normalizePhone)) {
-      const phoneWithReplacedCode = RU_PHONE_CODE + normalizePhone.substring(1);
-      return trimEnd(
-        conformToMask(phoneWithReplacedCode, PHONE_MASK, config).conformedValue,
-        ", "
-      );
-    }
-
     return trimEnd(
-      conformToMask(normalizePhone, PHONE_MASK, config).conformedValue,
+      conformToMask(
+        isNeedReplaceFirstChar(normalizePhone)
+          ? RU_PHONE_CODE + normalizePhone.substring(1)
+          : normalizePhone,
+        PHONE_MASK,
+        config
+      ).conformedValue,
       ", "
     );
   }, []);
