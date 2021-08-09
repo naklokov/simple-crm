@@ -67,7 +67,7 @@
     "postversion": "git push && git push --tags",
     "docs": "npx typedoc",
     "e2e": "testcafe chrome e2e/",
-    "e2e:current": "testcafe chrome e2e/ --test OLVETEST-T116",
+    "e2e:current": "testcafe chrome e2e/ --test OLVETEST-T122",
     "build:less:theme": "npx lessc \"./src/assets/themes/light.less ./src/assets/themes/light.css\" --js"
   },
   "eslintConfig": {

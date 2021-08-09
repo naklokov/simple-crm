@@ -32,6 +32,10 @@ const FIELDS_INFO: FieldsInfoProps = {
 class ClientCardPage {
   deleteButton: Selector;
 
+  popoverConfirm: Selector;
+
+  popoverCancel: Selector;
+
   callButton: Selector;
 
   saveButton: Selector;
@@ -56,6 +60,8 @@ class ClientCardPage {
 
   constructor() {
     this.deleteButton = Selector("button").withText("Удалить");
+    this.popoverConfirm = Selector(".ant-btn-sm").withText("OK");
+    this.popoverCancel = Selector(".ant-btn-sm").withText("Отмена");
     this.callButton = Selector("button").withText("Звонок");
 
     this.saveButton = Selector("button").withAttribute("type", "submit");
@@ -135,6 +141,10 @@ class ClientCardPage {
   isTabActive = async (tab: Selector) => {
     const activeTab = tab.withAttribute("aria-selected", "true");
     await t.expect(activeTab.exists).ok();
+  };
+
+  deleteClient = async () => {
+    await t.click(this.deleteButton).click(this.popoverConfirm);
   };
 }
 
