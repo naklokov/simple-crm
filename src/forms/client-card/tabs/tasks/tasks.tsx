@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
+  getDateWithTimezone,
   getFullUrl,
   getRsqlParams,
   useFetch,
@@ -75,7 +76,9 @@ export const Tasks = ({ tab, formName }: TabPaneFormProps) => {
   const [viewDrawerVisible, setViewDrawerVisible] = useState(false);
   const [completedDrawerVisible, setCompletedDrawerVisible] = useState(false);
 
-  const [client] = useFormValues<ClientEntityProps>(FORM_NAMES.CLIENT_CARD);
+  const [client, updateClient] = useFormValues<ClientEntityProps>(
+    FORM_NAMES.CLIENT_CARD
+  );
   const [, setViewTask] = useFormValues<TaskEntityProps>(FORM_NAMES.TASK_VIEW);
   const [, setCompleteTask] = useFormValues<TaskEntityProps>(
     FORM_NAMES.TASK_COMPLETED
@@ -162,10 +165,14 @@ export const Tasks = ({ tab, formName }: TabPaneFormProps) => {
     (task) => {
       setCompletedDrawerVisible(false);
       if (!isEmpty(task)) {
+        updateClient({
+          ...client,
+          clientActivityDate: moment().toISOString(),
+        });
         reload();
       }
     },
-    [reload]
+    [client, reload, updateClient]
   );
 
   const activeTasks = useMemo(
