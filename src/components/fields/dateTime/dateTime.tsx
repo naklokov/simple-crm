@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import moment from "moment-timezone";
 import { Col, Form, DatePicker } from "antd";
 import {
@@ -6,7 +6,12 @@ import {
   DEFAULT_FIELD_SPAN,
   FieldProps,
 } from "../../../constants";
-import { getDateWithTimezone, useValidationService } from "../../../utils";
+import {
+  FormContext,
+  getDateWithTimezone,
+  useFormValues,
+  useValidationService,
+} from "../../../utils";
 import { Readonly } from "../readonly";
 
 const getDisabledDate = (currentDate: moment.Moment) =>
@@ -58,9 +63,12 @@ export const DateTime = ({
   span = DEFAULT_FIELD_SPAN,
   _links,
 }: FieldProps) => {
+  const { name } = useContext(FormContext);
+  const [formValues] = useFormValues(name ?? "");
   const { wrappedRules } = useValidationService(
     rules,
-    _links?.validation?.href ?? ""
+    _links?.validation?.href ?? "",
+    formValues
   );
 
   const showTime = /hh:mm/gi.test(format)

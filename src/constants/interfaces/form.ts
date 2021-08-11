@@ -195,7 +195,7 @@ export interface MenuItemProps {
   subIcon?: ReactNode;
 }
 
-export interface ValidationTooltipProps {
+export interface ValidationIconProps {
   title?: string;
   message?: string;
   messageType?: ValidationStatusType;

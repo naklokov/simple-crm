@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { Form, Input, Col, Tooltip } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
@@ -6,7 +6,12 @@ import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
 
 import style from "./href.module.scss";
-import { openUrlTargetBlank, useValidationService } from "../../../utils";
+import {
+  FormContext,
+  openUrlTargetBlank,
+  useFormValues,
+  useValidationService,
+} from "../../../utils";
 
 const getPrefixedUrl = (value: string) =>
   /^(http|https|www):/.test(value) ? value : `http://${value}`;
@@ -24,9 +29,12 @@ export const Href = ({
 }: FieldProps) => {
   const [t] = useTranslation("fields");
   const [value, setValue] = useState("");
+  const { name } = useContext(FormContext);
+  const [formValues] = useFormValues(name ?? "");
   const { wrappedRules } = useValidationService(
     rules,
-    _links?.validation?.href ?? ""
+    _links?.validation?.href ?? "",
+    formValues
   );
 
   const handleValueProps = useCallback((input: string) => {

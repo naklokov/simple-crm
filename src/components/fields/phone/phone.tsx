@@ -6,6 +6,7 @@ import {
   FormContext,
   getConformedValue,
   getNormalizePhone,
+  useFormValues,
   useValidationService,
 } from "../../../utils";
 import { PhoneInput } from "../..";
@@ -21,11 +22,13 @@ export const Phone = ({
   span = DEFAULT_FIELD_SPAN,
   _links,
 }: FieldProps) => {
-  const { form } = useContext(FormContext);
+  const { form, name } = useContext(FormContext);
   const value = form?.getFieldValue(fieldCode);
+  const [formValues] = useFormValues(name ?? "");
   const { wrappedRules } = useValidationService(
     rules,
-    _links?.validation?.href ?? ""
+    _links?.validation?.href ?? "",
+    formValues
   );
 
   const formatFunc = (input: string) => getConformedValue(input);

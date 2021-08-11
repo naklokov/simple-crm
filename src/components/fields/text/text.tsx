@@ -2,7 +2,11 @@ import React, { useCallback, useContext, FocusEvent } from "react";
 import { Form, Input, Col } from "antd";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
-import { FormContext, useValidationService } from "../../../utils";
+import {
+  FormContext,
+  useFormValues,
+  useValidationService,
+} from "../../../utils";
 
 const Text: React.FC<FieldProps> = ({
   fieldCode,
@@ -15,13 +19,13 @@ const Text: React.FC<FieldProps> = ({
   span = DEFAULT_FIELD_SPAN,
   _links,
 }) => {
-  const { form } = useContext(FormContext);
+  const { form, name } = useContext(FormContext);
+  const [formValues] = useFormValues(name ?? "");
   const {
     wrappedRules,
     validationIcon,
     validationStyle,
-  } = useValidationService(rules, _links?.validation?.href ?? "");
-
+  } = useValidationService(rules, _links?.validation?.href ?? "", formValues);
   const handleBlur = useCallback(
     (event: FocusEvent<HTMLInputElement>) => {
       form?.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? "" });

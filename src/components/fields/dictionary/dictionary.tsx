@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Col, Form, Select } from "antd";
 import {
   DictionaryProps,
   FieldProps,
   DEFAULT_FIELD_SPAN,
 } from "../../../constants";
-import { useFetch, useValidationService } from "../../../utils";
+import {
+  FormContext,
+  useFetch,
+  useFormValues,
+  useValidationService,
+} from "../../../utils";
 import { Readonly } from "../readonly";
 import { Loading } from "../loading";
 
@@ -22,9 +27,12 @@ export const Dictionary: React.FC<FieldProps> = ({
   _links,
   span = DEFAULT_FIELD_SPAN,
 }) => {
+  const { name } = useContext(FormContext);
+  const [formValues] = useFormValues(name ?? "");
   const { wrappedRules } = useValidationService(
     rules,
-    _links?.validation?.href ?? ""
+    _links?.validation?.href ?? "",
+    formValues
   );
   const url = _links?.self.href ?? "";
   const [dictionary, loading] = useFetch<DictionaryProps>({

@@ -3,7 +3,11 @@ import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
-import { FormContext, useValidationService } from "../../../utils";
+import {
+  FormContext,
+  useFormValues,
+  useValidationService,
+} from "../../../utils";
 
 export const Switch = ({
   fieldCode,
@@ -15,12 +19,14 @@ export const Switch = ({
   readonly = false,
   span = DEFAULT_FIELD_SPAN,
 }: FieldProps) => {
-  const { form } = useContext(FormContext);
+  const { form, name } = useContext(FormContext);
   const value = form?.getFieldValue(fieldCode);
   const [t] = useTranslation("fields");
+  const [formValues] = useFormValues(name ?? "");
   const { wrappedRules } = useValidationService(
     rules,
-    _links?.validation?.href ?? ""
+    _links?.validation?.href ?? "",
+    formValues
   );
 
   const formatText = (data: any) => t(`switch.title.${data}`);

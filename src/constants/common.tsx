@@ -1,6 +1,11 @@
 import React, { ReactNode } from "react";
+import {
+  CloseCircleOutlined,
+  InfoCircleOutlined,
+  WarningOutlined,
+} from "@ant-design/icons";
 import { PhoneColored } from "../assets/icons";
-import { ExtendedRuleType } from "./interfaces";
+import { ExtendedRuleType, ValidationStatusType } from "./interfaces";
 
 export const DATE_FORMATS = {
   DATE: "DD.MM.YYYY",
@@ -96,8 +101,39 @@ export const VALIDATION_SERVICE: ExtendedRuleType = {
   type: "VALIDATION_SERVICE",
 };
 
-export const VALIDATION_COLOR = {
-  info: "#1890ff",
-  warning: "#faad14",
-  error: "#f5222d",
+export const validationIcons = {
+  info: {
+    color: "#1890ff",
+    get icon() {
+      return (
+        <InfoCircleOutlined style={{ color: this.color, cursor: "pointer" }} />
+      );
+    },
+  },
+  warning: {
+    color: "#faad14",
+    get icon() {
+      return (
+        <WarningOutlined style={{ color: this.color, cursor: "pointer" }} />
+      );
+    },
+  },
+  error: {
+    color: "#f5222d",
+    get icon() {
+      return (
+        <CloseCircleOutlined style={{ color: this.color, cursor: "pointer" }} />
+      );
+    },
+  },
+  get(type: ValidationStatusType | undefined) {
+    return (
+      (type && this?.[type]) ?? {
+        color: "",
+        get icon() {
+          return null;
+        },
+      }
+    );
+  },
 };

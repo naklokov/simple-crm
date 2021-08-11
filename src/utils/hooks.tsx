@@ -12,10 +12,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { parse, stringify } from "query-string";
 import { History } from "history";
-import { Button, Col, Row, Select, Space, Spin, Typography } from "antd";
+import { Button, Col, Row, Select, Space, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { TableRowSelection } from "antd/lib/table/interface";
-import { DeleteOutlined, LoadingOutlined } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import { Rule } from "antd/lib/form";
 import { defaultErrorHandler, pluralize } from "./common";
 import {
@@ -26,13 +26,13 @@ import {
   TabPositionType,
   MethodType,
   ExtendedRuleType,
-  ValidationTooltipProps,
   VALIDATION_SERVICE,
-  VALIDATION_COLOR,
+  ValidationIconProps,
+  validationIcons,
 } from "../constants";
 import { updateForm } from "../__data__";
 import { getRsqlParams } from "./rsql";
-import { ValidationTooltip } from "../components";
+import { ValidationIcon } from "../components";
 import { FormContext } from "./context";
 
 interface FetchProps {
@@ -317,22 +317,21 @@ export const useSelectableFooter = ({
 
 export const useValidationService = (
   rules: ExtendedRuleType[] | undefined,
-  validationLink: string
+  validationLink: string,
+  otherFieldValues: any
 ) => {
-  const [result, setResult] = useState<ValidationTooltipProps>({});
-  const { name } = useContext(FormContext);
-  const [formFields] = useFormValues(name ?? "");
+  const [result, setResult] = useState<ValidationIconProps>({});
 
   const validator = {
     async validator(rule: any, value: any) {
-      let validationData: ValidationTooltipProps = {};
+      let validationData: ValidationIconProps = {};
       try {
         const {
           data: [message],
         } = await axios.post(validationLink, {
           fieldCode: rule.field,
           fieldValue: value,
-          otherFieldValues: formFields,
+          otherFieldValues,
         });
 
         validationData =
@@ -352,17 +351,23 @@ export const useValidationService = (
     },
   };
 
+  const validationIcon = result?.messageType ? (
+    <ValidationIcon {...result} />
+  ) : (
+    <span />
+  );
+
+  const validationStyle = result?.messageType && {
+    border: `1px solid ${validationIcons.get(result.messageType).color}`,
+  };
+
+  const wrappedRules = rules?.map((rule: ExtendedRuleType) =>
+    rule === VALIDATION_SERVICE ? validator : rule
+  ) as Rule[];
+
   return {
-    wrappedRules: rules?.map((rule: ExtendedRuleType) =>
-      rule === VALIDATION_SERVICE ? validator : rule
-    ) as Rule[],
-    validationIcon: result?.messageType ? (
-      <ValidationTooltip {...result} />
-    ) : (
-      <span />
-    ),
-    validationStyle: result?.messageType && {
-      border: `1px solid ${VALIDATION_COLOR[result.messageType]}`,
-    },
+    wrappedRules,
+    validationIcon,
+    validationStyle,
   };
 };

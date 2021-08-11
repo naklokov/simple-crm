@@ -1,10 +1,15 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { Form, Input, Col, Tooltip } from "antd";
 import { MailOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
-import { checkEmail, useValidationService } from "../../../utils";
+import {
+  checkEmail,
+  FormContext,
+  useFormValues,
+  useValidationService,
+} from "../../../utils";
 
 import style from "./email.module.scss";
 
@@ -21,9 +26,12 @@ export const Email = ({
   span = DEFAULT_FIELD_SPAN,
   _links,
 }: FieldProps) => {
+  const { name } = useContext(FormContext);
+  const [formValues] = useFormValues(name ?? "");
   const { wrappedRules } = useValidationService(
     rules,
-    _links?.validation?.href ?? ""
+    _links?.validation?.href ?? "",
+    formValues
   );
   const [t] = useTranslation("fields");
   const [value, setValue] = useState("");

@@ -18,6 +18,7 @@ import {
   getInitialParams,
   getConcatenationQueryRsql,
   useValidationService,
+  useFormValues,
 } from "../../../utils";
 import { Readonly } from "../readonly";
 import { Loading } from "../loading";
@@ -38,11 +39,14 @@ export const Entity = ({
 }: FieldProps) => {
   let delayTimer: NodeJS.Timeout;
 
-  const { form } = useContext(FormContext) ?? {};
+  const { form, name } = useContext(FormContext);
+  const [formValues] = useFormValues(name ?? "");
   const { wrappedRules } = useValidationService(
     rules,
-    _links?.validation?.href ?? ""
+    _links?.validation?.href ?? "",
+    formValues
   );
+
   const [t] = useTranslation("fields");
   const [initial, setInitial] = useState(false);
   const [searched, setSearched] = useState("");

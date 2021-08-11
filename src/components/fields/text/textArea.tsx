@@ -3,7 +3,11 @@ import { Form, Input, Col } from "antd";
 import { Rule } from "antd/lib/form";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
-import { FormContext } from "../../../utils";
+import {
+  FormContext,
+  useFormValues,
+  useValidationService,
+} from "../../../utils";
 
 export const TextArea = ({
   fieldCode,
@@ -15,8 +19,15 @@ export const TextArea = ({
   readonly = false,
   rows = 4,
   span = DEFAULT_FIELD_SPAN,
+  _links,
 }: FieldProps) => {
-  const { form } = useContext(FormContext);
+  const { form, name } = useContext(FormContext);
+  const [formValues] = useFormValues(name ?? "");
+  const { wrappedRules } = useValidationService(
+    rules,
+    _links?.validation?.href ?? "",
+    formValues
+  );
 
   const handleBlur = useCallback(
     (event: FocusEvent<HTMLTextAreaElement>) => {
@@ -31,7 +42,7 @@ export const TextArea = ({
         name={fieldCode}
         label={fieldName}
         extra={fieldDescription}
-        rules={rules as Rule[]}
+        rules={wrappedRules}
         validateTrigger="onBlur"
         style={{ width: "100%" }}
       >
