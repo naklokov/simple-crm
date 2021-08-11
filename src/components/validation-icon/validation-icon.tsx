@@ -20,6 +20,7 @@ const ValidationIcon: React.FC<ValidationIconProps> = ({
           <Text style={{ display: "block" }}>{message}</Text>
           {href?.map((link) => (
             <Link
+              style={{ display: "block" }}
               href={link?.url}
               key={link?.url}
               target={link?.external ? "_blank" : ""}
