@@ -17,7 +17,7 @@ const ValidationIcon: React.FC<ValidationIconProps> = ({
           <Text style={{ display: "block" }} strong>
             {title}
           </Text>
-          <Text>{message}</Text>
+          <Text style={{ display: "block" }}>{message}</Text>
           {href?.map((link) => (
             <Link
               href={link?.url}
