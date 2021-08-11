@@ -9,6 +9,7 @@ import {
   useFormValues,
   useValidationService,
 } from "../../../utils";
+import { SuffixIcon } from "./suffix-icon";
 import { PhoneInput } from "../..";
 
 export const Phone = ({
@@ -25,11 +26,11 @@ export const Phone = ({
   const { form, name } = useContext(FormContext);
   const value = form?.getFieldValue(fieldCode);
   const [formValues] = useFormValues(name ?? "");
-  const { wrappedRules } = useValidationService(
-    rules,
-    _links?.validation?.href ?? "",
-    formValues
-  );
+  const {
+    wrappedRules,
+    validationIcon,
+    validationStyle,
+  } = useValidationService(rules, _links?.validation?.href ?? "", formValues);
 
   const formatFunc = (input: string) => getConformedValue(input);
 
@@ -47,11 +48,15 @@ export const Phone = ({
         {readonly ? (
           <Readonly format={formatFunc} />
         ) : (
-          <PhoneInput
-            value={value}
-            placeholder={placeholder}
-            disabled={disabled}
-          />
+          <div style={{ position: "relative" }}>
+            <PhoneInput
+              style={validationStyle}
+              value={value}
+              placeholder={placeholder}
+              disabled={disabled}
+            />
+            {validationIcon && <SuffixIcon icon={validationIcon} />}
+          </div>
         )}
       </Form.Item>
     </Col>
