@@ -72,7 +72,7 @@ export const DepartmentsTree: React.FC<DepartmentTreeProps> = ({
     setDragDepartmentId(info?.node?.key);
   }, []);
 
-  const handleDragEnd = useCallback((info) => {
+  const handleDragEnd = useCallback(() => {
     setDragDepartmentId("");
   }, []);
 
@@ -85,14 +85,12 @@ export const DepartmentsTree: React.FC<DepartmentTreeProps> = ({
   );
 
   const handleSelect = useCallback(
-    (selectedKeys: Key[]) => {
+    (selectedKeys: Key[], { node }) => {
       dispatch(closeMenuSubDrawer());
-
-      const key = selectedKeys?.[0]?.toString();
-      const url = getFullUrl(urls.departments.path, key);
+      const url = getFullUrl(urls.departments.path, node?.key);
       history.push(url);
     },
-    [history, dispatch]
+    [dispatch, history]
   );
 
   const renderLoading = () =>

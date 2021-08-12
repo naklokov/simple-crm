@@ -6,10 +6,11 @@ import {
   FormContext,
   getConformedValue,
   getNormalizePhone,
+  useFormValues,
   useValidationService,
 } from "../../../utils";
-import { PhoneInput } from "../..";
 import { SuffixIcon } from "./suffix-icon";
+import { PhoneInput } from "../..";
 
 export const Phone = ({
   fieldCode,
