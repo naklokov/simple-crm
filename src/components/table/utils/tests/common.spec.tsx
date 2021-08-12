@@ -40,9 +40,10 @@ const links = {
   },
 };
 
-test("useFetchDictionaries", () => {
+test("useFetchDictionaries all", () => {
   const dispatch = jest.fn();
   jest.spyOn(reactRedux, "useDispatch").mockReturnValue(dispatch);
+  jest.spyOn(reactRedux, "useSelector").mockReturnValue({});
   const fetchDictionarySpy = jest.spyOn(fetches, "fetchDictionary");
 
   renderHook(() => useFetchDictionaries(columns, links));
@@ -59,6 +60,24 @@ test("useFetchDictionaries", () => {
     2,
     "/cards",
     "cards",
+    dispatch
+  );
+});
+
+test("useFetchDictionaries with cards", () => {
+  const dispatch = jest.fn();
+  jest.spyOn(reactRedux, "useDispatch").mockReturnValue(dispatch);
+  jest.spyOn(reactRedux, "useSelector").mockReturnValue({ cards: {} });
+  const fetchDictionarySpy = jest.spyOn(fetches, "fetchDictionary");
+
+  renderHook(() => useFetchDictionaries(columns, links));
+
+  expect(fetchDictionarySpy).toHaveBeenCalledTimes(1);
+
+  expect(fetchDictionarySpy).toHaveBeenNthCalledWith(
+    1,
+    "/profiles",
+    "profile",
     dispatch
   );
 });

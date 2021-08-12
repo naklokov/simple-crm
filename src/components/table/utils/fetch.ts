@@ -1,7 +1,7 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import axios from "axios";
 import { defaultErrorHandler } from "../../../utils";
-import { setDictionaries, setTableLoading } from "../../../__data__";
+import { setDictionaries } from "../../../__data__";
 
 export const fetchDictionary = async (
   url: string,

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import isEmpty from "lodash/isEmpty";
 import pick from "lodash/pick";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { columns as tableColumns } from "../components";
 
 import {
@@ -11,6 +11,7 @@ import {
   EntityOwnerProps,
   LinksType,
   RecordType,
+  State,
 } from "../../../constants";
 import { getSorterProp } from "./sorter";
 import { getEditableProp } from "./editable";
@@ -181,6 +182,7 @@ export const useFetchDictionaries = (
   links: LinksType
 ) => {
   const dispatch = useDispatch();
+  const dictionaries = useSelector((state: State) => state.app.dictionaries);
 
   useEffect(() => {
     if (!isEmpty(links)) {
@@ -189,13 +191,14 @@ export const useFetchDictionaries = (
 
       linksKeys
         .filter((key) => visibleColumns.includes(key))
-        .forEach((dictionaryName) =>
+        .filter((key) => !(key in dictionaries))
+        .forEach((dictionaryName) => {
           fetchDictionary(
             links?.[dictionaryName]?.href,
             dictionaryName,
             dispatch
-          )
-        );
+          );
+        });
     }
   }, [columns, dispatch]);
 };
