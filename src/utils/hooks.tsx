@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { parse, stringify } from "query-string";
 import { History } from "history";
-import { Button, Col, Row, Select, Space, Typography } from "antd";
+import { Button, Col, Row, Select, Space, Tag, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { TableRowSelection } from "antd/lib/table/interface";
-import { DeleteOutlined } from "@ant-design/icons";
-import { xor } from "lodash";
-import { defaultErrorHandler, pluralize } from "./common";
+import { DeleteOutlined, SyncOutlined } from "@ant-design/icons";
+import { defaultErrorHandler, getFullUrl, pluralize } from "./common";
 import {
   State,
   urls,
@@ -18,6 +17,9 @@ import {
   TabProps,
   TabPositionType,
   MethodType,
+  FORM_NAMES,
+  TIME_ZONE_COLOR,
+  PROCESSED_STATUS,
 } from "../constants";
 import { updateForm } from "../__data__";
 import { getRsqlParams } from "./rsql";
@@ -300,4 +302,49 @@ export const useSelectableFooter = ({
   );
 
   return { rowSelection, footer };
+};
+
+export const useClientTimeZone = (clientId: string) => {
+  const [client, setClient] = useState<ClientEntityProps>();
+  const [loading, setLoading] = useState(false);
+  const [clientFormValues] = useFormValues<ClientEntityProps>(
+    FORM_NAMES.CLIENT_CARD
+  );
+
+  const icon = useMemo(() => (loading ? <SyncOutlined spin /> : undefined), [
+    loading,
+  ]);
+
+  const color = useMemo(() => {
+    const key = client?.clientTimeZone ?? PROCESSED_STATUS;
+    return TIME_ZONE_COLOR[key];
+  }, [client?.clientTimeZone]);
+
+  useEffect(() => {
+    const fetchClient = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          getFullUrl(urls.clients.entity, clientId)
+        );
+        setClient(response?.data ?? {});
+      } catch (error) {
+        defaultErrorHandler({ error });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (clientId === clientFormValues.id) {
+      setClient(clientFormValues);
+    } else {
+      fetchClient();
+    }
+  }, [clientId, clientFormValues]);
+
+  return (
+    <Tag icon={icon} color={color}>
+      {client?.clientTimeZone}
+    </Tag>
+  );
 };

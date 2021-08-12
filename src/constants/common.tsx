@@ -90,3 +90,20 @@ export const RSQL_OPERATORS_REGEXP_MAP = {
 export const TOOLTIP_SHOW_DELAY = 1;
 
 export const RSQL_DELIMETER = ";";
+
+export const PROCESSED_STATUS = "PROCESSED";
+
+export const TIME_ZONE_COLOR: { [key: string]: string } = {
+  [PROCESSED_STATUS]: "processed",
+  "-1": "#00b0b0",
+  "0": "#00a761",
+  "+1": "#76c245",
+  "+2": "#fdf000",
+  "+3": "#f8aa14",
+  "+4": "#f3861f",
+  "+5": "#ee3f3a",
+  "+6": "#ef1721",
+  "+7": "#a61b92",
+  "+8": "#5b2d98",
+  "+9": "#1a409d",
+};

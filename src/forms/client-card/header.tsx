@@ -104,13 +104,18 @@ export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
     itemRender: loading ? getItemLoadingRender : getItemRender,
   };
 
+  const activity = useMemo(
+    () =>
+      !loading ? (
+        <Dot color={dotColor} style={{ margin: "0 auto" }} />
+      ) : undefined,
+    [loading, dotColor]
+  );
+
   return (
     <FormHeader
-      tags={
-        !loading ? (
-          <Dot color={dotColor} style={{ margin: "0 auto" }} />
-        ) : undefined
-      }
+      tags={}
+      subTitle={activity}
       position="upper"
       breadcrumb={breadcrumb}
       title={title}
