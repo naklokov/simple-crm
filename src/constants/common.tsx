@@ -5,7 +5,7 @@ import {
   WarningOutlined,
 } from "@ant-design/icons";
 import { PhoneColored } from "../assets/icons";
-import { ExtendedRuleType, ValidationStatusType } from "./interfaces";
+import { ValidationStatusType } from "./interfaces";
 
 export const DATE_FORMATS = {
   DATE: "DD.MM.YYYY",
@@ -97,10 +97,6 @@ export const TOOLTIP_SHOW_DELAY = 1;
 
 export const RSQL_DELIMETER = ";";
 
-export const VALIDATION_SERVICE: ExtendedRuleType = {
-  type: "VALIDATION_SERVICE",
-};
-
 export const validationIcons = {
   info: {
     color: "#1890ff",
@@ -115,14 +111,6 @@ export const validationIcons = {
     get icon() {
       return (
         <WarningOutlined style={{ color: this.color, cursor: "pointer" }} />
-      );
-    },
-  },
-  error: {
-    color: "#f5222d",
-    get icon() {
-      return (
-        <CloseCircleOutlined style={{ color: this.color, cursor: "pointer" }} />
       );
     },
   },

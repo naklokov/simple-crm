@@ -9,6 +9,7 @@ import { fillLinks, getDateWithTimezone } from "./common";
 
 interface EntityWithId {
   [key: string]: any;
+
   id: string;
 }
 
@@ -120,6 +121,21 @@ export const getUpdatedEntityArray = <T extends EntityWithId>(
 
 export const getFiteredEntityArray = (id: string, array: any[]) =>
   array.filter((o) => o.id !== id);
+
+export const vatRule = {
+  validator: (_: any, value: string) => {
+    // может быть пустым
+    if (!value) {
+      return Promise.resolve();
+    }
+
+    if (checkINN(value)) {
+      return Promise.resolve();
+    }
+
+    return Promise.reject(new Error("Некорректный формат ИНН"));
+  },
+};
 
 export const ogrnRule = {
   validator: (_: any, value: string) => {

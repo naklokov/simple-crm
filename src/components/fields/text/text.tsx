@@ -19,18 +19,19 @@ const Text: React.FC<FieldProps> = ({
   span = DEFAULT_FIELD_SPAN,
   _links,
 }) => {
-  const { form, name } = useContext(FormContext);
-  const [formValues] = useFormValues(name ?? "");
-  const {
-    wrappedRules,
-    validationIcon,
-    validationStyle,
-  } = useValidationService(rules, _links?.validation?.href ?? "", formValues);
+  const { form } = useContext(FormContext);
+
+  const { validationCallback, validationIcon } = useValidationService(
+    _links?.validation?.href ?? "",
+    fieldCode
+  );
+
   const handleBlur = useCallback(
     (event: FocusEvent<HTMLInputElement>) => {
       form?.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? "" });
+      validationCallback();
     },
-    [fieldCode, form]
+    [fieldCode, form, validationCallback]
   );
 
   return (
@@ -41,7 +42,7 @@ const Text: React.FC<FieldProps> = ({
         label={fieldName}
         extra={fieldDescription}
         validateTrigger="onBlur"
-        rules={wrappedRules}
+        rules={rules}
       >
         {readonly ? (
           <Readonly />
@@ -50,9 +51,8 @@ const Text: React.FC<FieldProps> = ({
             autoComplete="off"
             placeholder={placeholder}
             disabled={disabled}
-            onBlur={handleBlur}
-            style={validationStyle}
             suffix={validationIcon}
+            onBlur={handleBlur}
           />
         )}
       </Form.Item>

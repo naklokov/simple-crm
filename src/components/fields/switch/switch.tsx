@@ -19,15 +19,9 @@ export const Switch = ({
   readonly = false,
   span = DEFAULT_FIELD_SPAN,
 }: FieldProps) => {
-  const { form, name } = useContext(FormContext);
+  const { form } = useContext(FormContext);
   const value = form?.getFieldValue(fieldCode);
   const [t] = useTranslation("fields");
-  const [formValues] = useFormValues(name ?? "");
-  const { wrappedRules } = useValidationService(
-    rules,
-    _links?.validation?.href ?? "",
-    formValues
-  );
 
   const formatText = (data: any) => t(`switch.title.${data}`);
 
@@ -39,7 +33,7 @@ export const Switch = ({
         label={fieldName}
         extra={fieldDescription}
         validateTrigger="onBlur"
-        rules={wrappedRules}
+        rules={rules}
       >
         {readonly ? (
           <Readonly value={value} format={formatText} />

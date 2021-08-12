@@ -39,12 +39,10 @@ export const Entity = ({
 }: FieldProps) => {
   let delayTimer: NodeJS.Timeout;
 
-  const { form, name } = useContext(FormContext);
-  const [formValues] = useFormValues(name ?? "");
-  const { wrappedRules } = useValidationService(
-    rules,
+  const { form } = useContext(FormContext);
+  const { validationCallback, validationIcon } = useValidationService(
     _links?.validation?.href ?? "",
-    formValues
+    fieldCode
   );
 
   const [t] = useTranslation("fields");
@@ -109,6 +107,7 @@ export const Entity = ({
 
   const handleBlur = useCallback(() => {
     setOpen(false);
+    validationCallback();
   }, []);
 
   const handleSelect = useCallback(() => {
@@ -170,7 +169,7 @@ export const Entity = ({
         label={fieldName}
         style={style}
         extra={fieldDescription}
-        rules={wrappedRules}
+        rules={rules}
         validateTrigger="onBlur"
       >
         {readonly ? (
@@ -191,6 +190,7 @@ export const Entity = ({
             notFoundContent={notFoundContent}
             showArrow={false}
             showSearch
+            suffixIcon={validationIcon}
           >
             {options?.map(({ label, value }) => (
               <Select.Option key={value} value={value}>

@@ -26,12 +26,9 @@ export const Email = ({
   span = DEFAULT_FIELD_SPAN,
   _links,
 }: FieldProps) => {
-  const { name } = useContext(FormContext);
-  const [formValues] = useFormValues(name ?? "");
-  const { wrappedRules } = useValidationService(
-    rules,
+  const { validationCallback, validationIcon } = useValidationService(
     _links?.validation?.href ?? "",
-    formValues
+    fieldCode
   );
   const [t] = useTranslation("fields");
   const [value, setValue] = useState("");
@@ -61,17 +58,18 @@ export const Email = ({
         label={fieldName}
         extra={fieldDescription}
         validateTrigger="onBlur"
-        rules={wrappedRules}
+        rules={rules}
         getValueProps={handleValueProps}
       >
         {readonly ? (
           <Readonly type="href" onClickLink={handleSend} />
         ) : (
           <Input
-            suffix={actionIcon}
+            suffix={validationIcon ?? actionIcon}
             autoComplete="off"
             placeholder={placeholder}
             disabled={disabled}
+            onBlur={validationCallback}
           />
         )}
       </Form.Item>

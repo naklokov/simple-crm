@@ -27,12 +27,9 @@ export const Dictionary: React.FC<FieldProps> = ({
   _links,
   span = DEFAULT_FIELD_SPAN,
 }) => {
-  const { name } = useContext(FormContext);
-  const [formValues] = useFormValues(name ?? "");
-  const { wrappedRules } = useValidationService(
-    rules,
+  const { validationCallback, validationIcon } = useValidationService(
     _links?.validation?.href ?? "",
-    formValues
+    fieldCode
   );
   const url = _links?.self.href ?? "";
   const [dictionary, loading] = useFetch<DictionaryProps>({
@@ -65,7 +62,7 @@ export const Dictionary: React.FC<FieldProps> = ({
         style={style}
         label={fieldName}
         extra={fieldDescription}
-        rules={wrappedRules}
+        rules={rules}
         validateTrigger="onBlur"
       >
         {readonly ? (
@@ -75,6 +72,8 @@ export const Dictionary: React.FC<FieldProps> = ({
             placeholder={placeholder}
             style={{ width: "100%" }}
             disabled={disabled}
+            suffixIcon={validationIcon}
+            onBlur={validationCallback}
           >
             {options.map(({ id, value, valueCode }) => (
               <Option key={id} value={valueCode}>

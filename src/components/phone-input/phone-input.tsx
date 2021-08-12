@@ -17,6 +17,7 @@ interface PhoneInputProps {
   value: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   placeholder?: string;
   disabled?: boolean;
   ref?: any;
@@ -27,6 +28,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   value = "",
   onChange = noop,
   onKeyDown = noop,
+  onBlur = noop,
   placeholder = "",
   disabled = false,
   style = {},
@@ -48,10 +50,14 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
     [onChange]
   );
 
-  const handleBlur = useCallback((event) => {
-    const currentMask = getMask(event.target.value);
-    setMask(currentMask);
-  }, []);
+  const handleBlur = useCallback(
+    (event) => {
+      const currentMask = getMask(event.target.value);
+      setMask(currentMask);
+      onBlur();
+    },
+    [onBlur]
+  );
 
   const handlePipe = useCallback(
     (conformedValue: string, config: any) => {

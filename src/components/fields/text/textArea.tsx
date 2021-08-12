@@ -21,17 +21,16 @@ export const TextArea = ({
   span = DEFAULT_FIELD_SPAN,
   _links,
 }: FieldProps) => {
-  const { form, name } = useContext(FormContext);
-  const [formValues] = useFormValues(name ?? "");
-  const { wrappedRules } = useValidationService(
-    rules,
+  const { form } = useContext(FormContext);
+  const { validationCallback, validationIcon } = useValidationService(
     _links?.validation?.href ?? "",
-    formValues
+    fieldCode
   );
 
   const handleBlur = useCallback(
     (event: FocusEvent<HTMLTextAreaElement>) => {
       form?.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? "" });
+      validationCallback();
     },
     [fieldCode, form]
   );
@@ -42,7 +41,7 @@ export const TextArea = ({
         name={fieldCode}
         label={fieldName}
         extra={fieldDescription}
-        rules={wrappedRules}
+        rules={rules}
         validateTrigger="onBlur"
         style={{ width: "100%" }}
       >

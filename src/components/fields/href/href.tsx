@@ -29,12 +29,9 @@ export const Href = ({
 }: FieldProps) => {
   const [t] = useTranslation("fields");
   const [value, setValue] = useState("");
-  const { name } = useContext(FormContext);
-  const [formValues] = useFormValues(name ?? "");
-  const { wrappedRules } = useValidationService(
-    rules,
+  const { validationCallback, validationIcon } = useValidationService(
     _links?.validation?.href ?? "",
-    formValues
+    fieldCode
   );
 
   const handleValueProps = useCallback((input: string) => {
@@ -63,14 +60,14 @@ export const Href = ({
         label={fieldName}
         extra={fieldDescription}
         validateTrigger="onBlur"
-        rules={wrappedRules}
+        rules={rules}
         getValueProps={handleValueProps}
       >
         {readonly ? (
           <Readonly type="href" onClickLink={handleClick} />
         ) : (
           <Input
-            suffix={actionIcon}
+            suffix={validationIcon ?? actionIcon}
             autoComplete="off"
             placeholder={placeholder}
             disabled={disabled}

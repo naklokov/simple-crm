@@ -1,8 +1,8 @@
 import { TabProps, DrawerProps } from "../interfaces";
 import { urls } from "../index";
 import { PERMISSIONS_SET } from "../permissions";
-import { DATE_FORMATS, VALIDATION_SERVICE } from "../common";
-import { checkActualDate, phoneRule } from "../../utils";
+import { DATE_FORMATS } from "../common";
+import { checkActualDate, ogrnRule, phoneRule, vatRule } from "../../utils";
 import { PHONE_PLACEHOLDER } from "../phone";
 
 interface UpperProps {
@@ -18,7 +18,11 @@ interface LowerProps {
 const REQUIRED_MESSAGE = "Пожалуйста, заполните поле";
 const EMAIL_MESSAGE = "Пожалуйста, введите корректный e-mail";
 const URL_MESSAGE = "Пожалуйста, введите корректный url";
+const KPP_MESSAGE = "Некорректный формат КПП";
+const CHECKING_ACCOUNT_MESSAGE = "Некорректный формат расчётного счёта";
 const BANK_BIK_ACCOUNT_MESSAGE = "Некорректный формат БИК банка";
+const CORRESPONDENT_ACCOUNT_MESSAGE =
+  "Некорректный формат корреспондентского счёта";
 
 const PLACEHOLDER_DEFAULT = "Введите значение";
 const getMaxLengthMessage = (len: number) =>
@@ -307,15 +311,12 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PHONE_PLACEHOLDER,
-          rules: [
-            { required: true, message: REQUIRED_MESSAGE },
-            VALIDATION_SERVICE,
-          ],
+          rules: [{ required: true, message: REQUIRED_MESSAGE }, phoneRule],
           permissions: [],
         },
         {
           fieldCode: "email",
-          fieldName: "E-mail",
+          fieldName: "E-mail1",
           fieldDescription: "",
           readonly: false,
           disabled: false,
@@ -326,7 +327,6 @@ export const upper: UpperProps = {
               type: "email",
               message: EMAIL_MESSAGE,
             },
-            VALIDATION_SERVICE,
           ],
           permissions: [],
         },
@@ -338,10 +338,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [
-            { required: true, message: REQUIRED_MESSAGE },
-            VALIDATION_SERVICE,
-          ],
+          rules: [{ required: true, message: REQUIRED_MESSAGE }, vatRule],
           permissions: [],
           _links: {
             validation: {
@@ -535,7 +532,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [VALIDATION_SERVICE],
+          rules: [vatRule],
           permissions: [],
           _links: {
             validation: {
@@ -551,7 +548,7 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [VALIDATION_SERVICE],
+          rules: [ogrnRule],
           permissions: [],
         },
         {
@@ -562,7 +559,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           type: "string",
-          rules: [VALIDATION_SERVICE],
+          rules: [{ pattern: /^([0-9]{9})?$/, message: KPP_MESSAGE }],
           permissions: [],
         },
         {
@@ -614,7 +611,7 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           type: "string",
-          rules: [VALIDATION_SERVICE],
+          rules: [{ pattern: /^\d{20}$/, message: CHECKING_ACCOUNT_MESSAGE }],
           permissions: [],
         },
         {
@@ -625,7 +622,9 @@ export const upper: UpperProps = {
           readonly: false,
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
-          rules: [VALIDATION_SERVICE],
+          rules: [
+            { pattern: /^\d{20}$/, message: CORRESPONDENT_ACCOUNT_MESSAGE },
+          ],
           permissions: [],
         },
         {

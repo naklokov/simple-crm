@@ -1,6 +1,6 @@
 import urls from "../urls";
 import { PERMISSIONS_SET } from "../permissions";
-import { DATE_FORMATS, VALIDATION_SERVICE } from "../common";
+import { DATE_FORMATS } from "../common";
 import { phoneRule } from "../../utils";
 import { TabProps } from "../interfaces";
 
@@ -77,7 +77,12 @@ export const FORM: { tabs: TabProps[] } = {
           type: "string",
           readonly: false,
           disabled: false,
-          rules: [VALIDATION_SERVICE],
+          rules: [
+            {
+              type: "email",
+              message: "Пожалуйста, введите корректный email",
+            },
+          ],
           permissions: [],
         },
         {

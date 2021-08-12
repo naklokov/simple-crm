@@ -34,9 +34,7 @@ export type ColumnType =
   | "entity"
   | "boolean";
 
-export type ValidationStatusType = "info" | "warning" | "error";
-
-export type ExtendedRuleType = { type: "VALIDATION_SERVICE" } | Rule;
+export type ValidationStatusType = "info" | "warning";
 
 export interface SpanProps {
   xxl?: number;
@@ -148,7 +146,7 @@ export interface FieldProps {
   type: FieldType;
   readonly?: boolean;
   disabled?: boolean;
-  rules?: ExtendedRuleType[];
+  rules?: Rule[];
   withSelectBefore?: boolean;
   format?: FieldFormatType;
   span?: SpanProps;

@@ -53,12 +53,10 @@ export const EntityLazy = ({
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(DEFAULT_PAGE_NUMBER);
 
-  const { form, name } = useContext(FormContext);
-  const [formValues] = useFormValues(name ?? "");
-  const { wrappedRules } = useValidationService(
-    rules,
+  const { form } = useContext(FormContext);
+  const { validationCallback, validationIcon } = useValidationService(
     _links?.validation?.href ?? "",
-    formValues
+    fieldCode
   );
 
   const style = { width: "100%" };
@@ -227,7 +225,7 @@ export const EntityLazy = ({
         label={fieldName}
         style={style}
         extra={fieldDescription}
-        rules={wrappedRules}
+        rules={rules}
         validateTrigger="onBlur"
       >
         {readonly ? (
@@ -239,6 +237,8 @@ export const EntityLazy = ({
             onPopupScroll={handleScroll}
             onSearch={handleSearch}
             onSelect={handleSelect}
+            onBlur={validationCallback}
+            suffixIcon={validationIcon}
             defaultActiveFirstOption={false}
             filterOption={false}
             disabled={disabled}

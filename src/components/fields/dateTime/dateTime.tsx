@@ -63,12 +63,9 @@ export const DateTime = ({
   span = DEFAULT_FIELD_SPAN,
   _links,
 }: FieldProps) => {
-  const { name } = useContext(FormContext);
-  const [formValues] = useFormValues(name ?? "");
-  const { wrappedRules } = useValidationService(
-    rules,
+  const { validationCallback, validationIcon } = useValidationService(
     _links?.validation?.href ?? "",
-    formValues
+    fieldCode
   );
 
   const showTime = /hh:mm/gi.test(format)
@@ -84,7 +81,7 @@ export const DateTime = ({
         name={fieldCode}
         label={fieldName}
         extra={fieldDescription}
-        rules={wrappedRules}
+        rules={rules}
         getValueProps={handleValueProp}
         validateTrigger="onBlur"
       >
@@ -101,6 +98,8 @@ export const DateTime = ({
             inputReadOnly={readonly}
             disabledDate={!withSelectBefore ? getDisabledDate : undefined}
             disabledTime={!withSelectBefore ? getDisabledTime : undefined}
+            onBlur={validationCallback}
+            suffixIcon={validationIcon}
           />
         )}
       </Form.Item>

@@ -12,11 +12,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { parse, stringify } from "query-string";
 import { History } from "history";
-import { Button, Col, Row, Select, Space, Typography } from "antd";
+import { Button, Col, Row, Select, Space, Spin, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { TableRowSelection } from "antd/lib/table/interface";
-import { DeleteOutlined } from "@ant-design/icons";
-import { Rule } from "antd/lib/form";
+import { DeleteOutlined, LoadingOutlined } from "@ant-design/icons";
 import { defaultErrorHandler, pluralize } from "./common";
 import {
   State,
@@ -25,8 +24,6 @@ import {
   TabProps,
   TabPositionType,
   MethodType,
-  ExtendedRuleType,
-  VALIDATION_SERVICE,
   ValidationIconProps,
   validationIcons,
 } from "../constants";
@@ -316,22 +313,26 @@ export const useSelectableFooter = ({
 };
 
 export const useValidationService = (
-  rules: ExtendedRuleType[] | undefined,
   validationLink: string,
-  otherFieldValues: any
+  fieldCode: string
 ) => {
   const [result, setResult] = useState<ValidationIconProps>({});
+  const { form, name } = useContext(FormContext);
+  const [values] = useFormValues(name ?? "");
+  const [value, setValue] = useState<any>();
+  const [loading, setLoading] = useState(false);
 
-  const validator = {
-    async validator(rule: any, value: any) {
+  useEffect(() => {
+    const fetch = async () => {
       let validationData: ValidationIconProps = {};
       try {
+        setLoading(true);
         const {
           data: [message],
         } = await axios.post(validationLink, {
-          fieldCode: rule.field,
+          fieldCode,
           fieldValue: value,
-          otherFieldValues,
+          otherFieldValues: values,
         });
 
         validationData =
@@ -343,31 +344,29 @@ export const useValidationService = (
         defaultErrorHandler({ error });
       } finally {
         setResult(validationData);
+        setLoading(false);
       }
+    };
 
-      return validationData?.messageType === "error"
-        ? Promise.reject(new Error(validationData?.title))
-        : Promise.resolve();
-    },
-  };
+    if (value && validationLink) fetch();
+  }, [value]);
+
+  const validationCallback = useCallback(() => {
+    setValue(form?.getFieldValue(fieldCode));
+  }, [form, fieldCode]);
+
+  const isLoading = loading ? (
+    <Spin indicator={<LoadingOutlined style={{ fontSize: 14 }} spin />} />
+  ) : null;
 
   const validationIcon = result?.messageType ? (
     <ValidationIcon {...result} />
   ) : (
-    <span />
+    isLoading
   );
 
-  const validationStyle = result?.messageType && {
-    border: `1px solid ${validationIcons.get(result.messageType).color}`,
-  };
-
-  const wrappedRules = rules?.map((rule: ExtendedRuleType) =>
-    rule === VALIDATION_SERVICE ? validator : rule
-  ) as Rule[];
-
   return {
-    wrappedRules,
+    validationCallback,
     validationIcon,
-    validationStyle,
   };
 };
