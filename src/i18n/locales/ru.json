@@ -297,5 +297,8 @@
     "active": "Актуально",
     "warning": "Внимание",
     "expired": "Просрочено"
+  },
+  "clientTimeZone": {
+    "tooltip.title": "{{value}} от Московского времени"
   }
 }

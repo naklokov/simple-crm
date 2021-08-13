@@ -1,11 +1,27 @@
-import React, { useState, useEffect, useCallback, useMemo, Key } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  Key,
+  useContext,
+} from "react";
 import { v4 as uuidV4 } from "uuid";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { parse, stringify } from "query-string";
 import { History } from "history";
-import { Button, Col, Row, Select, Space, Tag, Typography } from "antd";
+import {
+  Button,
+  Col,
+  Row,
+  Select,
+  Space,
+  Tag,
+  Tooltip,
+  Typography,
+} from "antd";
 import { useTranslation } from "react-i18next";
 import { TableRowSelection } from "antd/lib/table/interface";
 import { DeleteOutlined, SyncOutlined } from "@ant-design/icons";
@@ -19,10 +35,11 @@ import {
   MethodType,
   FORM_NAMES,
   TIME_ZONE_COLOR,
-  PROCESSED_STATUS,
+  PROCESSING_STATUS,
 } from "../constants";
 import { updateForm } from "../__data__";
 import { getRsqlParams } from "./rsql";
+import { ClientsPersonalContext } from "./context";
 
 interface FetchProps {
   url: string;
@@ -304,19 +321,21 @@ export const useSelectableFooter = ({
   return { rowSelection, footer };
 };
 
+const getClientFromCache = (id: string, clients: ClientEntityProps[]) =>
+  clients?.find((client) => client.id === id) ?? ({} as ClientEntityProps);
+
 export const useClientTimeZone = (clientId: string) => {
-  const [client, setClient] = useState<ClientEntityProps>();
+  const [t] = useTranslation("clientTimeZone");
   const [loading, setLoading] = useState(false);
-  const [clientFormValues] = useFormValues<ClientEntityProps>(
-    FORM_NAMES.CLIENT_CARD
-  );
+  const [client, setClient] = useState<ClientEntityProps>();
+  const cachingClients = useContext(ClientsPersonalContext);
 
   const icon = useMemo(() => (loading ? <SyncOutlined spin /> : undefined), [
     loading,
   ]);
 
   const color = useMemo(() => {
-    const key = client?.clientTimeZone ?? PROCESSED_STATUS;
+    const key = client?.clientTimeZone ?? PROCESSING_STATUS;
     return TIME_ZONE_COLOR[key];
   }, [client?.clientTimeZone]);
 
@@ -335,16 +354,30 @@ export const useClientTimeZone = (clientId: string) => {
       }
     };
 
-    if (clientId === clientFormValues.id) {
-      setClient(clientFormValues);
-    } else {
+    const catchClient = getClientFromCache(clientId, cachingClients);
+    if (clientId && !catchClient.id) {
+      console.log("fetch", cachingClients, clientId);
       fetchClient();
     }
-  }, [clientId, clientFormValues]);
+  }, [clientId, cachingClients]);
 
-  return (
-    <Tag icon={icon} color={color}>
-      {client?.clientTimeZone}
-    </Tag>
+  // const tzTag = client?.clientTimeZone ? (
+  //   <Tooltip title={t("tooltip.title", { value: client.clientTimeZone })}>
+  //     <Tag icon={icon} color={color}>
+  //       {client.clientTimeZone}
+  //     </Tag>
+  //   </Tooltip>
+  // ) : (
+  //   <span />
+  // );
+
+  const tzTag = (
+    <Tooltip title={t("tooltip.title", { value: client?.clientTimeZone })}>
+      <Tag icon={icon} color={color}>
+        +5
+      </Tag>
+    </Tooltip>
   );
+
+  return { tzTag };
 };

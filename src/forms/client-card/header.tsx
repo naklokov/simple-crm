@@ -19,6 +19,7 @@ import {
   getItemRender,
   getItemLoadingRender,
   useFormValues,
+  useClientTimeZone,
 } from "../../utils";
 import { Call, Delete } from "./components";
 import { Dot, FormHeader, Skeleton } from "../../components";
@@ -49,6 +50,7 @@ export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
     ClientEntityProps
   >(FORM_NAMES.CLIENT_CARD);
   const { status } = useActivity(clientActivityDate);
+  const { tzTag } = useClientTimeZone(id);
 
   const dotColor = status
     ? COLUMN_COLORS_MAP[status]
@@ -114,7 +116,7 @@ export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
 
   return (
     <FormHeader
-      tags={}
+      tags={[tzTag]}
       subTitle={activity}
       position="upper"
       breadcrumb={breadcrumb}

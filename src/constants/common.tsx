@@ -91,10 +91,10 @@ export const TOOLTIP_SHOW_DELAY = 1;
 
 export const RSQL_DELIMETER = ";";
 
-export const PROCESSED_STATUS = "PROCESSED";
+export const PROCESSING_STATUS = "PROCESSING";
 
 export const TIME_ZONE_COLOR: { [key: string]: string } = {
-  [PROCESSED_STATUS]: "processed",
+  [PROCESSING_STATUS]: "processing",
   "-1": "#00b0b0",
   "0": "#00a761",
   "+1": "#76c245",

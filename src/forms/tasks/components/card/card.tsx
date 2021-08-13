@@ -11,6 +11,7 @@ import {
   Card as CardUI,
   Popconfirm,
   Skeleton,
+  Space,
   Tooltip,
   Typography,
 } from "antd";
@@ -30,6 +31,7 @@ import {
   defaultErrorHandler,
   getDateWithTimezone,
   getFullUrl,
+  useClientTimeZone,
 } from "../../../../utils";
 
 import style from "./card.module.scss";
@@ -57,6 +59,7 @@ export const Card: React.FC<CardProps> = ({
   const [client, setClient] = useState({} as ClientEntityProps);
   const [loading, setLoading] = useState(false);
   const cachingClients = useContext(ClientsPersonalContext);
+  const { tzTag } = useClientTimeZone(client.id);
 
   const {
     clientId,
@@ -142,14 +145,17 @@ export const Card: React.FC<CardProps> = ({
   ];
 
   const titleContent = (
-    <Link
-      to={{
-        pathname: getFullUrl(urls.clients.path, clientId),
-        search: stringify({ "lower:tab": "tasks" }),
-      }}
-    >
-      {client?.shortName ?? title}
-    </Link>
+    <Space>
+      <Link
+        to={{
+          pathname: getFullUrl(urls.clients.path, clientId),
+          search: stringify({ "lower:tab": "tasks" }),
+        }}
+      >
+        {client?.shortName ?? title}
+      </Link>
+      {tzTag}
+    </Space>
   );
 
   const titleSkeleton = (

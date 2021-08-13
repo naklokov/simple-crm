@@ -362,22 +362,22 @@ export const upper: UpperProps = {
           rules: [{ pattern: /.+\..+/, message: URL_MESSAGE }],
           permissions: [],
         },
-        {
-          fieldCode: "clientTimeZone",
-          fieldName: "Часовой пояс",
-          fieldDescription: "",
-          type: "dictionary",
-          disabled: false,
-          readonly: false,
-          placeholder: PLACEHOLDER_DEFAULT,
-          rules: [],
-          _links: {
-            self: {
-              href: urls.dictionaries.clientTimeZone,
-            },
-          },
-          permissions: [],
-        },
+        // {
+        //   fieldCode: "clientTimeZone",
+        //   fieldName: "Часовой пояс",
+        //   fieldDescription: "",
+        //   type: "dictionary",
+        //   disabled: false,
+        //   readonly: false,
+        //   placeholder: PLACEHOLDER_DEFAULT,
+        //   rules: [],
+        //   _links: {
+        //     self: {
+        //       href: urls.dictionaries.clientTimeZone,
+        //     },
+        //   },
+        //   permissions: [],
+        // },
         {
           fieldCode: "activityField",
           fieldName: "Тип деятельности",
