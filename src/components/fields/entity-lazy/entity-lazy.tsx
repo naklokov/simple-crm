@@ -254,7 +254,7 @@ export const EntityLazy = ({
             filterOption={false}
             disabled={disabled}
             notFoundContent={notFoundContent}
-            allowClear={!redirectIcon}
+            allowClear={!redirectIcon || !validationIcon}
             showSearch
             suffixIcon={validationIcon ?? redirectIcon}
             onMouseEnter={redirectHandleMouseEvent}
