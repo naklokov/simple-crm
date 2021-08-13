@@ -11,13 +11,13 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { LabeledValue } from "antd/lib/select";
-import { useHistory } from "react-router-dom";
 import { DEFAULT_FIELD_SPAN, FieldProps, State } from "../../../constants";
 import {
   callAfterDelay,
   defaultErrorHandler,
   fillLinks,
   FormContext,
+  useRedirectLink,
 } from "../../../utils";
 import { Loading } from "../loading";
 import {
@@ -52,12 +52,18 @@ export const EntityLazy = ({
   const [searched, setSearched] = useState("");
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(DEFAULT_PAGE_NUMBER);
-  const history = useHistory();
 
   const style = { width: "100%" };
 
   const { form } = useContext(FormContext);
   const fieldValue = form?.getFieldValue(fieldCode);
+  const {
+    redirectHandleMouseEvent,
+    redirectHandleClick,
+    redirectIcon,
+  } = useRedirectLink(_links, {
+    id: fieldValue,
+  });
   const profileInfo = useSelector((state: State) => state.persist.profileInfo);
   const filledLinks = useMemo(
     () =>
@@ -214,13 +220,6 @@ export const EntityLazy = ({
     );
   }
 
-  const redirect: { type: "href" | "text"; onClickLink: () => void } = {
-    type: "href",
-    onClickLink: () => {
-      history.push(fillLinks(_links, { id: fieldValue })?.redirect?.href ?? "");
-    },
-  };
-
   return (
     <Col {...span} key={fieldCode}>
       <Form.Item
@@ -232,7 +231,11 @@ export const EntityLazy = ({
         validateTrigger="onBlur"
       >
         {readonly ? (
-          <Readonly format={formatFunc} {...redirect} />
+          <Readonly
+            format={formatFunc}
+            type={_links.redirect ? "href" : "text"}
+            onClickLink={redirectHandleClick}
+          />
         ) : (
           <Select
             loading={loading}
@@ -244,8 +247,11 @@ export const EntityLazy = ({
             filterOption={false}
             disabled={disabled}
             notFoundContent={notFoundContent}
-            allowClear
+            allowClear={!redirectIcon}
             showSearch
+            suffixIcon={redirectIcon}
+            onMouseEnter={redirectHandleMouseEvent}
+            onMouseLeave={redirectHandleMouseEvent}
           >
             {options?.map(({ value, label }) => (
               <Select.Option key={value} value={value}>

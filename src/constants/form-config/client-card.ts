@@ -417,7 +417,7 @@ export const upper: UpperProps = {
               href: urls.userProfiles.paging,
             },
             redirect: {
-              href: `${urls.clientCard.entity}/{{id}}`,
+              href: `${urls.profile.path}/{{id}}`,
             },
           },
         },

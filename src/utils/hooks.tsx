@@ -8,9 +8,8 @@ import { History } from "history";
 import { Button, Col, Row, Select, Space, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { TableRowSelection } from "antd/lib/table/interface";
-import { DeleteOutlined } from "@ant-design/icons";
-import { xor } from "lodash";
-import { defaultErrorHandler, pluralize } from "./common";
+import { DeleteOutlined, LinkOutlined } from "@ant-design/icons";
+import { defaultErrorHandler, fillLinks, pluralize } from "./common";
 import {
   State,
   urls,
@@ -18,6 +17,7 @@ import {
   TabProps,
   TabPositionType,
   MethodType,
+  LinksType,
 } from "../constants";
 import { updateForm } from "../__data__";
 import { getRsqlParams } from "./rsql";
@@ -300,4 +300,34 @@ export const useSelectableFooter = ({
   );
 
   return { rowSelection, footer };
+};
+
+export const useRedirectLink = (
+  links: LinksType,
+  replace: { [p: string]: string }
+) => {
+  const [hover, setHover] = useState(false);
+  const history = useHistory();
+
+  const redirectHandleMouseEvent = useCallback(() => {
+    setHover(!hover);
+  }, [hover]);
+
+  const redirectHandleClick = useCallback(() => {
+    history.push(fillLinks(links, replace).redirect?.href ?? "");
+  }, [links, history, replace]);
+
+  const redirectIcon =
+    links.redirect && hover ? (
+      <LinkOutlined
+        onClick={redirectHandleClick}
+        style={{ cursor: "pointer", color: "black" }}
+      />
+    ) : null;
+
+  return {
+    redirectHandleMouseEvent,
+    redirectHandleClick,
+    redirectIcon,
+  };
 };
