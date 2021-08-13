@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { Form, Col, Select, Spin } from "antd";
 import axios from "axios";
+
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { LabeledValue } from "antd/lib/select";
@@ -16,7 +17,7 @@ import {
   defaultErrorHandler,
   fillLinks,
   FormContext,
-  useFormValues,
+  useRedirectLink,
   useValidationService,
 } from "../../../utils";
 import { Loading } from "../loading";
@@ -67,8 +68,12 @@ export const EntityLazy = ({
     () =>
       fillLinks(_links, {
         userProfileId: profileInfo?.id ?? "",
+        id: fieldValue ?? "",
       }),
-    [_links, profileInfo?.id]
+    [_links, profileInfo?.id, fieldValue]
+  );
+  const { toggleHover, redirect, redirectIcon } = useRedirectLink(
+    filledLinks?.redirect?.href ?? ""
   );
 
   /**
@@ -229,7 +234,11 @@ export const EntityLazy = ({
         validateTrigger="onBlur"
       >
         {readonly ? (
-          <Readonly format={formatFunc} />
+          <Readonly
+            format={formatFunc}
+            type={_links.redirect ? "href" : "text"}
+            onClickLink={redirect}
+          />
         ) : (
           <Select
             loading={loading}
@@ -238,13 +247,14 @@ export const EntityLazy = ({
             onSearch={handleSearch}
             onSelect={handleSelect}
             onBlur={validationCallback}
-            suffixIcon={validationIcon}
             defaultActiveFirstOption={false}
             filterOption={false}
             disabled={disabled}
             notFoundContent={notFoundContent}
-            allowClear
             showSearch
+            suffixIcon={validationIcon ?? redirectIcon}
+            onMouseEnter={toggleHover}
+            onMouseLeave={toggleHover}
           >
             {options?.map(({ value, label }) => (
               <Select.Option key={value} value={value}>

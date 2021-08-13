@@ -15,8 +15,12 @@ import { History } from "history";
 import { Button, Col, Row, Select, Space, Spin, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { TableRowSelection } from "antd/lib/table/interface";
-import { DeleteOutlined, LoadingOutlined } from "@ant-design/icons";
-import { defaultErrorHandler, pluralize } from "./common";
+import {
+  DeleteOutlined,
+  LinkOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
+import { defaultErrorHandler, fillLinks, pluralize } from "./common";
 import {
   State,
   urls,
@@ -24,8 +28,8 @@ import {
   TabProps,
   TabPositionType,
   MethodType,
+  LinksType,
   ValidationIconProps,
-  validationIcons,
 } from "../constants";
 import { updateForm } from "../__data__";
 import { getRsqlParams } from "./rsql";
@@ -269,7 +273,6 @@ export const useSelectableFooter = ({
     <Row justify="space-between">
       <Col flex="auto">
         <Space size="middle">
-          ent
           <Select
             value={selectedTarget}
             placeholder={placeholder || t("select.placeholder")}
@@ -309,7 +312,35 @@ export const useSelectableFooter = ({
       </Col>
     </Row>
   );
+
   return { rowSelection, footer };
+};
+
+export const useRedirectLink = (link: string) => {
+  const [hover, setHover] = useState(false);
+  const history = useHistory();
+
+  const toggleHover = useCallback(() => {
+    setHover(!hover);
+  }, [hover]);
+
+  const redirect = useCallback(() => {
+    history.push(link ?? "");
+  }, [history, link]);
+
+  const redirectIcon =
+    link && hover ? (
+      <LinkOutlined
+        onClick={redirect}
+        style={{ cursor: "pointer", color: "black" }}
+      />
+    ) : null;
+
+  return {
+    toggleHover,
+    redirect,
+    redirectIcon,
+  };
 };
 
 export const useValidationService = (

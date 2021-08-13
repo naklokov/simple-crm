@@ -432,6 +432,9 @@ export const upper: UpperProps = {
             self: {
               href: urls.userProfiles.paging,
             },
+            redirect: {
+              href: `${urls.profile.path}/{{id}}`,
+            },
           },
         },
         {
