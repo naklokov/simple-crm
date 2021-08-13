@@ -11,6 +11,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { LabeledValue } from "antd/lib/select";
+import { useHistory } from "react-router-dom";
 import { DEFAULT_FIELD_SPAN, FieldProps, State } from "../../../constants";
 import {
   callAfterDelay,
@@ -51,6 +52,7 @@ export const EntityLazy = ({
   const [searched, setSearched] = useState("");
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(DEFAULT_PAGE_NUMBER);
+  const history = useHistory();
 
   const style = { width: "100%" };
 
@@ -212,6 +214,13 @@ export const EntityLazy = ({
     );
   }
 
+  const redirect: { type: "href" | "text"; onClickLink: () => void } = {
+    type: "href",
+    onClickLink: () => {
+      history.push(fillLinks(_links, { id: fieldValue })?.redirect?.href ?? "");
+    },
+  };
+
   return (
     <Col {...span} key={fieldCode}>
       <Form.Item
@@ -223,7 +232,7 @@ export const EntityLazy = ({
         validateTrigger="onBlur"
       >
         {readonly ? (
-          <Readonly format={formatFunc} />
+          <Readonly format={formatFunc} {...redirect} />
         ) : (
           <Select
             loading={loading}
