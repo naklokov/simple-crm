@@ -18,6 +18,7 @@ import {
   fillLinks,
   FormContext,
   useRedirectLink,
+  useValidationService,
 } from "../../../utils";
 import { Loading } from "../loading";
 import {
@@ -53,9 +54,14 @@ export const EntityLazy = ({
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(DEFAULT_PAGE_NUMBER);
 
+  const { form } = useContext(FormContext);
+  const { validationCallback, validationIcon } = useValidationService(
+    _links?.validation?.href ?? "",
+    fieldCode
+  );
+
   const style = { width: "100%" };
 
-  const { form } = useContext(FormContext);
   const fieldValue = form?.getFieldValue(fieldCode);
   const {
     redirectHandleMouseEvent,
@@ -243,13 +249,14 @@ export const EntityLazy = ({
             onPopupScroll={handleScroll}
             onSearch={handleSearch}
             onSelect={handleSelect}
+            onBlur={validationCallback}
             defaultActiveFirstOption={false}
             filterOption={false}
             disabled={disabled}
             notFoundContent={notFoundContent}
             allowClear={!redirectIcon}
             showSearch
-            suffixIcon={redirectIcon}
+            suffixIcon={validationIcon ?? redirectIcon}
             onMouseEnter={redirectHandleMouseEvent}
             onMouseLeave={redirectHandleMouseEvent}
           >

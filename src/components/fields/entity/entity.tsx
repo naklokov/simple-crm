@@ -17,6 +17,8 @@ import {
   getSearchRsql,
   getInitialParams,
   getConcatenationQueryRsql,
+  useValidationService,
+  useFormValues,
 } from "../../../utils";
 import { Readonly } from "../readonly";
 import { Loading } from "../loading";
@@ -37,7 +39,12 @@ export const Entity = ({
 }: FieldProps) => {
   let delayTimer: NodeJS.Timeout;
 
-  const { form } = useContext(FormContext) ?? {};
+  const { form } = useContext(FormContext);
+  const { validationCallback, validationIcon } = useValidationService(
+    _links?.validation?.href ?? "",
+    fieldCode
+  );
+
   const [t] = useTranslation("fields");
   const [initial, setInitial] = useState(false);
   const [searched, setSearched] = useState("");
@@ -100,6 +107,7 @@ export const Entity = ({
 
   const handleBlur = useCallback(() => {
     setOpen(false);
+    validationCallback();
   }, []);
 
   const handleSelect = useCallback(() => {
@@ -182,6 +190,7 @@ export const Entity = ({
             notFoundContent={notFoundContent}
             showArrow={false}
             showSearch
+            suffixIcon={validationIcon}
           >
             {options?.map(({ label, value }) => (
               <Select.Option key={value} value={value}>

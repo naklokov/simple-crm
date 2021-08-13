@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { noop } from "lodash";
 import MaskedInput from "react-text-mask";
 import { getConformedValue, getNormalizePhone } from "../../utils";
@@ -8,6 +8,7 @@ interface PhoneInputProps {
   value: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   placeholder?: string;
   disabled?: boolean;
   ref?: any;
@@ -18,6 +19,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   value = "",
   onChange = noop,
   onKeyDown = noop,
+  onBlur = noop,
   placeholder = "",
   disabled = false,
   style = {},
@@ -41,6 +43,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
       mask={PHONE_MASK}
       onKeyDown={onKeyDown}
       onChange={onChange}
+      onBlur={onBlur}
       value={value}
     />
   );

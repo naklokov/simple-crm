@@ -1,14 +1,25 @@
-import React, { useState, useEffect, useCallback, useMemo, Key } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  Key,
+  useContext,
+} from "react";
 import { v4 as uuidV4 } from "uuid";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { parse, stringify } from "query-string";
 import { History } from "history";
-import { Button, Col, Row, Select, Space, Typography } from "antd";
+import { Button, Col, Row, Select, Space, Spin, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { TableRowSelection } from "antd/lib/table/interface";
-import { DeleteOutlined, LinkOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  LinkOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import { defaultErrorHandler, fillLinks, pluralize } from "./common";
 import {
   State,
@@ -18,9 +29,12 @@ import {
   TabPositionType,
   MethodType,
   LinksType,
+  ValidationIconProps,
 } from "../constants";
 import { updateForm } from "../__data__";
 import { getRsqlParams } from "./rsql";
+import { ValidationIcon } from "../components";
+import { FormContext } from "./context";
 
 interface FetchProps {
   url: string;
@@ -329,5 +343,66 @@ export const useRedirectLink = (
     redirectHandleMouseEvent,
     redirectHandleClick,
     redirectIcon,
+  };
+};
+
+export const useValidationService = (
+  validationLink: string,
+  fieldCode: string
+) => {
+  const [result, setResult] = useState<ValidationIconProps>({});
+  const { form, name } = useContext(FormContext);
+  const [values] = useFormValues(name ?? "");
+  const [value, setValue] = useState<any>();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetch = async () => {
+      let validationData: ValidationIconProps = {};
+      try {
+        if (value && validationLink) {
+          setLoading(true);
+          const {
+            data: [message],
+          } = await axios.post(validationLink, {
+            fieldCode,
+            fieldValue: value,
+            otherFieldValues: values,
+          });
+
+          validationData =
+            {
+              ...message,
+              messageType: message.messageType.toLowerCase(),
+            } ?? {};
+        }
+      } catch (error) {
+        defaultErrorHandler({ error });
+      } finally {
+        setResult(validationData);
+        setLoading(false);
+      }
+    };
+
+    fetch();
+  }, [value]);
+
+  const validationCallback = useCallback(() => {
+    setValue(form?.getFieldValue(fieldCode));
+  }, [form, fieldCode]);
+
+  const isLoading = loading ? (
+    <Spin indicator={<LoadingOutlined style={{ fontSize: 14 }} spin />} />
+  ) : null;
+
+  const validationIcon = result?.messageType ? (
+    <ValidationIcon {...result} />
+  ) : (
+    isLoading
+  );
+
+  return {
+    validationCallback,
+    validationIcon,
   };
 };

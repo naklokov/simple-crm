@@ -12,6 +12,7 @@ import {
   getFullUrl,
   pluralize,
   getHierarchyParentId,
+  encodeURIChars,
 } from "../common";
 
 const mock = new MockAdapter(axios);
@@ -148,4 +149,16 @@ test("getHierarchyParentId", () => {
   const hierarchy = "1.2.3";
 
   expect(getHierarchyParentId(hierarchy)).toBe("3");
+});
+
+test("encodeURIChars plus", () => {
+  const urlWithPlus = "/gogogo?+123";
+
+  expect(encodeURIChars(urlWithPlus)).toBe("/gogogo?%2B123");
+});
+
+test("encodeURIChars space", () => {
+  const urlWithPlus = "/gogogo? 123";
+
+  expect(encodeURIChars(urlWithPlus)).toBe("/gogogo?%20123");
 });
