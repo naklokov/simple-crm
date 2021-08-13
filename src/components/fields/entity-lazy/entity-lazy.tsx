@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import { Form, Col, Select, Spin } from "antd";
 import axios from "axios";
-
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { LabeledValue } from "antd/lib/select";
@@ -17,6 +16,8 @@ import {
   defaultErrorHandler,
   fillLinks,
   FormContext,
+  useFormValues,
+  useValidationService,
 } from "../../../utils";
 import { Loading } from "../loading";
 import {
@@ -52,9 +53,14 @@ export const EntityLazy = ({
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(DEFAULT_PAGE_NUMBER);
 
+  const { form } = useContext(FormContext);
+  const { validationCallback, validationIcon } = useValidationService(
+    _links?.validation?.href ?? "",
+    fieldCode
+  );
+
   const style = { width: "100%" };
 
-  const { form } = useContext(FormContext);
   const fieldValue = form?.getFieldValue(fieldCode);
   const profileInfo = useSelector((state: State) => state.persist.profileInfo);
   const filledLinks = useMemo(
@@ -231,6 +237,8 @@ export const EntityLazy = ({
             onPopupScroll={handleScroll}
             onSearch={handleSearch}
             onSelect={handleSelect}
+            onBlur={validationCallback}
+            suffixIcon={validationIcon}
             defaultActiveFirstOption={false}
             filterOption={false}
             disabled={disabled}

@@ -9,6 +9,7 @@ import { fillLinks, getDateWithTimezone } from "./common";
 
 interface EntityWithId {
   [key: string]: any;
+
   id: string;
 }
 

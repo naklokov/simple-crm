@@ -34,6 +34,8 @@ export type ColumnType =
   | "entity"
   | "boolean";
 
+export type ValidationStatusType = "info" | "warning";
+
 export interface SpanProps {
   xxl?: number;
   xl?: number;
@@ -189,4 +191,15 @@ export interface MenuItemProps {
   icon?: ReactNode;
   url?: string;
   subIcon?: ReactNode;
+}
+
+export interface ValidationIconProps {
+  title?: string;
+  message?: string;
+  messageType?: ValidationStatusType;
+  href?: {
+    url: string;
+    text: string;
+    external: boolean;
+  }[];
 }
