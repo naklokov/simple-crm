@@ -27,11 +27,10 @@ import {
   TOOLTIP_SHOW_DELAY,
 } from "../../../../constants";
 import {
-  ClientsPersonalContext,
-  defaultErrorHandler,
   getDateWithTimezone,
   getFullUrl,
   useClientTimeZone,
+  useFetch,
 } from "../../../../utils";
 
 import style from "./card.module.scss";
@@ -55,12 +54,6 @@ export const Card: React.FC<CardProps> = ({
   onView,
   title = "",
 }) => {
-  const [t] = useTranslation("card");
-  const [client, setClient] = useState({} as ClientEntityProps);
-  const [loading, setLoading] = useState(false);
-  const cachingClients = useContext(ClientsPersonalContext);
-  const { tzTag } = useClientTimeZone(client.id);
-
   const {
     clientId,
     taskEndDate: date,
@@ -68,28 +61,13 @@ export const Card: React.FC<CardProps> = ({
     taskType: type,
   } = task;
 
-  const fetchClient = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(
-        getFullUrl(urls.clients.entity, clientId)
-      );
-      setClient(response?.data ?? {});
-    } catch (error) {
-      defaultErrorHandler({ error });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    const cachingClient = cachingClients.find(({ id }) => id === clientId);
-    if (cachingClient) {
-      setClient(cachingClient);
-    } else {
-      fetchClient();
-    }
-  }, []);
+  const [t] = useTranslation("card");
+  const [client, loading] = useFetch<ClientEntityProps>({
+    url: getFullUrl(urls.clients.entity, clientId),
+    cache: true,
+    cacheMaxAge: "short",
+  });
+  const { tzTag } = useClientTimeZone(client.clientTimeZone);
 
   const extra = date ? (
     <div>

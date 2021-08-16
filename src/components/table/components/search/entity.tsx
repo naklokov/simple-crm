@@ -1,12 +1,14 @@
 import React, { useCallback, useContext } from "react";
 import { Select } from "antd";
-import { flow } from "lodash";
-import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { State } from "../../../../constants";
 import { SearchFooter } from ".";
 import { TableActionsContext } from "../../utils";
 import { SearchComponentProps } from "../../constants";
+import {
+  getConcatenationQueryRsql,
+  getInitialParams,
+  useFetch,
+} from "../../../../utils";
 
 interface EntitySearchProps extends SearchComponentProps {
   dictionaries: any;
@@ -28,12 +30,23 @@ export const EntitySearch: React.FC<EntitySearchProps> = ({
   selectedKeys,
   confirm,
   clearFilters,
-  dictionaries,
 }) => {
-  const options = dictionaries?.[column.columnCode] ?? [];
   const { onSearchColumn } = useContext(TableActionsContext);
   const [t] = useTranslation("columnSearch");
   const [searched] = selectedKeys;
+  const [url, initialSearch] = column?._links?.self?.href?.split("?") ?? [];
+  const { initialQueries, initialSearchParams } = getInitialParams(
+    initialSearch
+  );
+
+  const [entities, loading] = useFetch<any>({
+    url,
+    params: {
+      query: getConcatenationQueryRsql("", initialQueries),
+      ...initialSearchParams,
+    },
+    cache: true,
+  });
 
   const handleChange = useCallback(
     (value: string) => {
@@ -54,12 +67,13 @@ export const EntitySearch: React.FC<EntitySearchProps> = ({
         placeholder={t("placeholder.entity")}
         optionFilterProp="children"
         value={selectedKeys[0]}
+        loading={loading}
         onChange={handleChange}
         filterOption={(input, option) =>
           option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
       >
-        {options.map((o: any) => {
+        {entities.map((o: any) => {
           const value = o?.[column?.valueField ?? ""];
           const title = o?.[column?.titleField ?? ""];
           return (
@@ -78,8 +92,4 @@ export const EntitySearch: React.FC<EntitySearchProps> = ({
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  dictionaries: state?.app?.dictionaries,
-});
-
-export default flow([connect(mapStateToProps)])(EntitySearch);
+export default EntitySearch;

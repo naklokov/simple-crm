@@ -1,5 +1,5 @@
 import { Rule } from "antd/lib/form";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { LinksType } from "./entities";
 
 // Типы
@@ -124,6 +124,7 @@ export interface ColumnProps {
   isJsonField?: boolean;
   columnActions?: ActionProps[];
   customCode?: string;
+  _links?: LinksType;
 }
 
 export interface ActionProps {

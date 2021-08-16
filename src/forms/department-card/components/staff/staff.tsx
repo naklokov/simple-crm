@@ -39,6 +39,7 @@ export const Staff: React.FC<FormProps> = ({ tab, drawers }) => {
 
   const [departments] = useFetch<DepartmentEntityProps[]>({
     url: urls.departments.entity,
+    cache: true,
   });
 
   const dataSource = useMemo(

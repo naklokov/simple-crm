@@ -24,6 +24,7 @@ export const DepartmentsSelect = () => {
 
   const [departments, loading, reload] = useFetch<DepartmentEntityProps[]>({
     url: urls.departments.entity,
+    cache: true,
   });
 
   // сделать все отделы раскрытыми по умолчанию

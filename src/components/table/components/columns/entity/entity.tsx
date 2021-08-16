@@ -1,7 +1,11 @@
-import { isEmpty } from "lodash";
-import React, { useContext } from "react";
-import { connect } from "react-redux";
+import React, { useContext, useMemo } from "react";
+import { useSelector } from "react-redux";
 import { ColumnProps, RecordType, State } from "../../../../../constants";
+import {
+  getConcatenationQueryRsql,
+  getInitialParams,
+  useFetch,
+} from "../../../../../utils";
 import { HighlightTextWrapper } from "../../../../../wrappers";
 import { Skeleton } from "../../../../skeleton";
 import { SearchedAllContext, SearchedColumnsContext } from "../../../utils";
@@ -9,24 +13,47 @@ import { SearchedAllContext, SearchedColumnsContext } from "../../../utils";
 interface EntityProps {
   value: string;
   column: ColumnProps;
-  dictionaries: any;
-  tableLoading: boolean;
 }
 
-export const Entity = ({
-  value,
-  column,
-  dictionaries,
-  tableLoading,
-}: EntityProps) => {
+export const Entity = ({ value, column }: EntityProps) => {
+  const {
+    columnCode,
+    valueField = "",
+    titleField = "",
+    _links: links,
+  } = column;
+
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
+  const tableLoading = useSelector((state: State) => state?.app?.tableLoading);
+  const [url, initialSearch] = links?.self?.href?.split("?") ?? [];
+  const { initialQueries, initialSearchParams } = getInitialParams(
+    initialSearch
+  );
 
-  const { columnCode, valueField = "", titleField = "" } = column;
-  const entities = dictionaries?.[columnCode];
-  const option = entities?.find((o: any) => o[valueField] === value);
+  const [entities, loading] = useFetch<any>({
+    url,
+    params: {
+      query: getConcatenationQueryRsql("", initialQueries),
+      ...initialSearchParams,
+    },
+    cache: true,
+  });
 
-  if (!option && value) {
+  const searchedColumnText = useMemo(
+    () =>
+      entities?.find(
+        (o: any) => o[valueField] === searchedColumns?.[columnCode]
+      )?.[titleField] ?? "",
+    [entities, searchedColumns, columnCode, valueField, titleField]
+  );
+
+  const option = useMemo(
+    () => entities?.find((o: any) => o[valueField] === value),
+    [entities, value, valueField]
+  );
+
+  if (loading) {
     return <Skeleton.Input />;
   }
 
@@ -34,16 +61,11 @@ export const Entity = ({
 
   return (
     <HighlightTextWrapper
-      loading={tableLoading}
+      loading={loading}
       text={text}
-      searched={[searched, searchedColumns[column.columnCode]]}
+      searched={[searched, !tableLoading ? searchedColumnText : ""]}
     />
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  dictionaries: state?.app?.dictionaries,
-  tableLoading: state?.app?.tableLoading,
-});
-
-export default connect(mapStateToProps)(Entity);
+export default Entity;

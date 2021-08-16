@@ -48,6 +48,7 @@ export const CLIENTS: { tabs: TabProps[] } = {
           columnType: "string",
           columnDescription: "Телефон",
           filterable: true,
+          width: "170px",
           columnActions: [
             {
               actionType: "call",
@@ -91,6 +92,11 @@ export const CLIENTS: { tabs: TabProps[] } = {
           sorter: false,
           isJsonField: true,
           filterable: true,
+          _links: {
+            self: {
+              href: urls.dictionaries.activityFields,
+            },
+          },
         },
       ],
       _links: {
@@ -99,9 +105,6 @@ export const CLIENTS: { tabs: TabProps[] } = {
         },
         userProfileId: {
           href: urls.userProfiles.entity,
-        },
-        activityField: {
-          href: urls.dictionaries.activityFields,
         },
       },
     },
@@ -149,6 +152,7 @@ export const CLIENTS: { tabs: TabProps[] } = {
           columnCode: "phone",
           columnType: "string",
           columnDescription: "Телефон",
+          width: "170px",
           filterable: true,
           columnActions: [
             {
@@ -193,6 +197,11 @@ export const CLIENTS: { tabs: TabProps[] } = {
           isJsonField: true,
           sorter: false,
           filterable: true,
+          _links: {
+            self: {
+              href: urls.dictionaries.activityFields,
+            },
+          },
         },
         {
           columnName: "Куратор",
@@ -203,17 +212,16 @@ export const CLIENTS: { tabs: TabProps[] } = {
           sorter: false,
           filterable: true,
           columnDescription: "Куратор компании",
+          _links: {
+            self: {
+              href: urls.userProfiles.entity,
+            },
+          },
         },
       ],
       _links: {
         self: {
           href: urls.clients.paging,
-        },
-        userProfileId: {
-          href: urls.userProfiles.entity,
-        },
-        activityField: {
-          href: urls.dictionaries.activityFields,
         },
       },
     },

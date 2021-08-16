@@ -26,8 +26,9 @@ export const Dictionary: React.FC<FieldProps> = ({
   const [dictionary, loading] = useFetch<DictionaryProps>({
     url,
     initial: {},
+    cache: true,
   });
-  const { dictionaryValueEntities: options = [] } = dictionary;
+  const { values: options = [] } = dictionary;
 
   const formatFunc = (value: string) =>
     options.find((o) => o.valueCode === value)?.value ?? "";

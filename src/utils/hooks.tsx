@@ -1,13 +1,6 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  Key,
-  useContext,
-} from "react";
-import { v4 as uuidV4 } from "uuid";
+import React, { useState, useEffect, useCallback, useMemo, Key } from "react";
 import axios from "axios";
+import { v4 as uuidV4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { parse, stringify } from "query-string";
@@ -25,7 +18,8 @@ import {
 import { useTranslation } from "react-i18next";
 import { TableRowSelection } from "antd/lib/table/interface";
 import { DeleteOutlined, SyncOutlined } from "@ant-design/icons";
-import { defaultErrorHandler, getFullUrl, pluralize } from "./common";
+import { toNumber } from "lodash";
+import { defaultErrorHandler, pluralize } from "./common";
 import {
   State,
   urls,
@@ -33,13 +27,14 @@ import {
   TabProps,
   TabPositionType,
   MethodType,
-  FORM_NAMES,
   TIME_ZONE_COLOR,
   PROCESSING_STATUS,
+  DictionaryProps,
+  axiosCacheLong,
+  axiosCacheShort,
 } from "../constants";
 import { updateForm } from "../__data__";
 import { getRsqlParams } from "./rsql";
-import { ClientsPersonalContext } from "./context";
 
 interface FetchProps {
   url: string;
@@ -47,6 +42,8 @@ interface FetchProps {
   data?: object;
   params?: object;
   initial?: any;
+  cache?: boolean;
+  cacheMaxAge?: "short" | "long";
 }
 
 type FetchResponseType<T> = [T, boolean, () => void, any];
@@ -100,6 +97,8 @@ export function useFetch<T>({
   data = {},
   params = {},
   initial = [],
+  cache = false,
+  cacheMaxAge = "long",
 }: FetchProps): FetchResponseType<T> {
   const [responseData, setResponseData] = useState<T>(initial);
   const [error, setError] = useState(null);
@@ -110,11 +109,23 @@ export function useFetch<T>({
     setReloadKey(uuidV4());
   }, []);
 
+  const axiosMethod = useMemo(
+    () => (cacheMaxAge === "long" ? axiosCacheLong : axiosCacheShort),
+    [cacheMaxAge]
+  );
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+
       try {
-        const res = await axios({ method, params, data, url });
+        const res = await axiosMethod?.({
+          method,
+          cache,
+          params,
+          data,
+          url,
+        });
         setResponseData(res?.data);
       } catch (err) {
         setError(err);
@@ -124,8 +135,10 @@ export function useFetch<T>({
       }
     };
 
-    fetchData();
-  }, [reloadKey, url]);
+    if (axiosMethod) {
+      fetchData();
+    }
+  }, [reloadKey, url, method, cache, axiosMethod]);
 
   return [responseData, loading, reload, error];
 }
@@ -321,62 +334,48 @@ export const useSelectableFooter = ({
   return { rowSelection, footer };
 };
 
-const getClientFromCache = (id: string, clients: ClientEntityProps[]) =>
-  clients?.find((client) => client.id === id) ?? ({} as ClientEntityProps);
-
-export const useClientTimeZone = (clientId: string) => {
+export const useClientTimeZone = (tz: string) => {
   const [t] = useTranslation("clientTimeZone");
-  const [loading, setLoading] = useState(false);
-  const [client, setClient] = useState<ClientEntityProps>();
-  const cachingClients = useContext(ClientsPersonalContext);
 
-  const icon = useMemo(() => (loading ? <SyncOutlined spin /> : undefined), [
-    loading,
+  const [{ values: options }, loadingDictionary] = useFetch<DictionaryProps>({
+    url: urls.dictionaries.clientTimeZone,
+    initial: {},
+    cache: true,
+  });
+
+  const option = useMemo(() => options?.find((o: any) => o.valueCode === tz), [
+    options,
+    tz,
   ]);
 
+  const icon = useMemo(
+    () => (loadingDictionary ? <SyncOutlined spin /> : undefined),
+    [loadingDictionary]
+  );
+
   const color = useMemo(() => {
-    const key = client?.clientTimeZone ?? PROCESSING_STATUS;
+    const key = option?.value ?? PROCESSING_STATUS;
     return TIME_ZONE_COLOR[key];
-  }, [client?.clientTimeZone]);
+  }, [option?.value]);
 
-  useEffect(() => {
-    const fetchClient = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(
-          getFullUrl(urls.clients.entity, clientId)
-        );
-        setClient(response?.data ?? {});
-      } catch (error) {
-        defaultErrorHandler({ error });
-      } finally {
-        setLoading(false);
-      }
-    };
+  const getPluralizedTitle = (value: string) => {
+    const hour = toNumber(value);
 
-    const catchClient = getClientFromCache(clientId, cachingClients);
-    if (clientId && !catchClient.id) {
-      console.log("fetch", cachingClients, clientId);
-      fetchClient();
-    }
-  }, [clientId, cachingClients]);
+    return pluralize(hour, [
+      t("tooltip.title.one", { value }),
+      t("tooltip.title.some", { value }),
+      t("tooltip.title.many", { value }),
+    ]);
+  };
 
-  // const tzTag = client?.clientTimeZone ? (
-  //   <Tooltip title={t("tooltip.title", { value: client.clientTimeZone })}>
-  //     <Tag icon={icon} color={color}>
-  //       {client.clientTimeZone}
-  //     </Tag>
-  //   </Tooltip>
-  // ) : (
-  //   <span />
-  // );
-
-  const tzTag = (
-    <Tooltip title={t("tooltip.title", { value: client?.clientTimeZone })}>
+  const tzTag = option?.value ? (
+    <Tooltip title={getPluralizedTitle(option?.value)}>
       <Tag icon={icon} color={color}>
-        +5
+        {option?.value}
       </Tag>
     </Tooltip>
+  ) : (
+    <span />
   );
 
   return { tzTag };

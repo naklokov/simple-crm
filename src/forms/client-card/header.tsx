@@ -46,11 +46,11 @@ export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [{ shortName, phone, clientActivityDate }] = useFormValues<
-    ClientEntityProps
-  >(FORM_NAMES.CLIENT_CARD);
+  const [
+    { shortName, phone, clientActivityDate, clientTimeZone },
+  ] = useFormValues<ClientEntityProps>(FORM_NAMES.CLIENT_CARD);
   const { status } = useActivity(clientActivityDate);
-  const { tzTag } = useClientTimeZone(id);
+  const { tzTag } = useClientTimeZone(clientTimeZone);
 
   const dotColor = status
     ? COLUMN_COLORS_MAP[status]
