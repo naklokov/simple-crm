@@ -29,10 +29,11 @@ export const Href = ({
 }: FieldProps) => {
   const [t] = useTranslation("fields");
   const [value, setValue] = useState("");
-  const { validationCallback, validationIcon } = useValidationService(
-    _links?.validation?.href ?? "",
-    fieldCode
-  );
+  const {
+    validationCallback,
+    validationIcon,
+    validationStyle,
+  } = useValidationService(_links?.validation?.href ?? "", fieldCode);
 
   const handleValueProps = useCallback((input: string) => {
     setValue(input);
@@ -68,6 +69,8 @@ export const Href = ({
         ) : (
           <Input
             suffix={validationIcon ?? actionIcon}
+            style={validationStyle}
+            onBlur={validationCallback}
             autoComplete="off"
             placeholder={placeholder}
             disabled={disabled}

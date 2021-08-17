@@ -28,8 +28,8 @@ import {
   TabProps,
   TabPositionType,
   MethodType,
-  LinksType,
   ValidationIconProps,
+  validationIcons,
 } from "../constants";
 import { updateForm } from "../__data__";
 import { getRsqlParams } from "./rsql";
@@ -358,6 +358,7 @@ export const useValidationService = (
       let validationData: ValidationIconProps = {};
       try {
         if (value && validationLink) {
+          setResult({});
           setLoading(true);
           const {
             data: [message],
@@ -398,8 +399,14 @@ export const useValidationService = (
     isLoading
   );
 
+  const validationStyle =
+    !isLoading && result?.messageType
+      ? { borderColor: validationIcons.get(result.messageType).color }
+      : {};
+
   return {
     validationCallback,
     validationIcon,
+    validationStyle,
   };
 };

@@ -55,10 +55,11 @@ export const EntityLazy = ({
   const [page, setPage] = useState(DEFAULT_PAGE_NUMBER);
 
   const { form } = useContext(FormContext);
-  const { validationCallback, validationIcon } = useValidationService(
-    _links?.validation?.href ?? "",
-    fieldCode
-  );
+  const {
+    validationCallback,
+    validationIcon,
+    validationStyle,
+  } = useValidationService(_links?.validation?.href ?? "", fieldCode);
 
   const style = { width: "100%" };
 
@@ -253,6 +254,7 @@ export const EntityLazy = ({
             notFoundContent={notFoundContent}
             showSearch
             suffixIcon={validationIcon ?? redirectIcon}
+            style={validationStyle}
             onMouseEnter={toggleHover}
             onMouseLeave={toggleHover}
           >

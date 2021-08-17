@@ -1,13 +1,9 @@
 import React, { FocusEvent, useCallback, useContext } from "react";
 import { Form, Input, Col } from "antd";
-import { Rule } from "antd/lib/form";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
-import {
-  FormContext,
-  useFormValues,
-  useValidationService,
-} from "../../../utils";
+import { FormContext, useValidationService } from "../../../utils";
+import { SuffixIcon } from "../..";
 
 export const TextArea = ({
   fieldCode,
@@ -48,14 +44,17 @@ export const TextArea = ({
         {readonly ? (
           <Readonly />
         ) : (
-          <Input.TextArea
-            autoComplete="off"
-            placeholder={placeholder}
-            disabled={disabled}
-            autoSize={{ minRows: 1, maxRows: 6 }}
-            rows={rows}
-            onBlur={handleBlur}
-          />
+          <div style={{ position: "relative" }}>
+            <Input.TextArea
+              autoComplete="off"
+              placeholder={placeholder}
+              disabled={disabled}
+              autoSize={{ minRows: 1, maxRows: 6 }}
+              rows={rows}
+              onBlur={handleBlur}
+            />
+            {validationIcon && <SuffixIcon icon={validationIcon} />}
+          </div>
         )}
       </Form.Item>
     </Col>

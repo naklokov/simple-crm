@@ -1,16 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Col, Form, Select } from "antd";
 import {
   DictionaryProps,
   FieldProps,
   DEFAULT_FIELD_SPAN,
 } from "../../../constants";
-import {
-  FormContext,
-  useFetch,
-  useFormValues,
-  useValidationService,
-} from "../../../utils";
+import { useFetch, useValidationService } from "../../../utils";
 import { Readonly } from "../readonly";
 import { Loading } from "../loading";
 
@@ -27,10 +22,11 @@ export const Dictionary: React.FC<FieldProps> = ({
   _links,
   span = DEFAULT_FIELD_SPAN,
 }) => {
-  const { validationCallback, validationIcon } = useValidationService(
-    _links?.validation?.href ?? "",
-    fieldCode
-  );
+  const {
+    validationCallback,
+    validationIcon,
+    validationStyle,
+  } = useValidationService(_links?.validation?.href ?? "", fieldCode);
   const url = _links?.self.href ?? "";
   const [dictionary, loading] = useFetch<DictionaryProps>({
     url,
@@ -70,7 +66,7 @@ export const Dictionary: React.FC<FieldProps> = ({
         ) : (
           <Select
             placeholder={placeholder}
-            style={{ width: "100%" }}
+            style={{ width: "100%", ...validationStyle }}
             disabled={disabled}
             suffixIcon={validationIcon}
             onBlur={validationCallback}

@@ -2,11 +2,7 @@ import React, { useCallback, useContext, FocusEvent } from "react";
 import { Form, Input, Col } from "antd";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
-import {
-  FormContext,
-  useFormValues,
-  useValidationService,
-} from "../../../utils";
+import { FormContext, useValidationService } from "../../../utils";
 
 const Text: React.FC<FieldProps> = ({
   fieldCode,
@@ -21,10 +17,11 @@ const Text: React.FC<FieldProps> = ({
 }) => {
   const { form } = useContext(FormContext);
 
-  const { validationCallback, validationIcon } = useValidationService(
-    _links?.validation?.href ?? "",
-    fieldCode
-  );
+  const {
+    validationCallback,
+    validationIcon,
+    validationStyle,
+  } = useValidationService(_links?.validation?.href ?? "", fieldCode);
 
   const handleBlur = useCallback(
     (event: FocusEvent<HTMLInputElement>) => {
@@ -53,6 +50,7 @@ const Text: React.FC<FieldProps> = ({
             disabled={disabled}
             suffix={validationIcon}
             onBlur={handleBlur}
+            style={validationStyle}
           />
         )}
       </Form.Item>

@@ -6,11 +6,9 @@ import {
   FormContext,
   getConformedValue,
   getNormalizePhone,
-  useFormValues,
   useValidationService,
 } from "../../../utils";
-import { SuffixIcon } from "./suffix-icon";
-import { PhoneInput } from "../..";
+import { PhoneInput, SuffixIcon } from "../..";
 
 export const Phone = ({
   fieldCode,
@@ -25,10 +23,11 @@ export const Phone = ({
 }: FieldProps) => {
   const { form } = useContext(FormContext);
   const value = form?.getFieldValue(fieldCode);
-  const { validationCallback, validationIcon } = useValidationService(
-    _links?.validation?.href ?? "",
-    fieldCode
-  );
+  const {
+    validationCallback,
+    validationIcon,
+    validationStyle,
+  } = useValidationService(_links?.validation?.href ?? "", fieldCode);
 
   const formatFunc = (input: string) => getConformedValue(input);
 
@@ -52,6 +51,7 @@ export const Phone = ({
               placeholder={placeholder}
               disabled={disabled}
               onBlur={validationCallback}
+              style={validationStyle}
             />
             {validationIcon && <SuffixIcon icon={validationIcon} />}
           </div>
