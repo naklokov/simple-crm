@@ -50,6 +50,11 @@ export const TASKS: TasksConfigProps = {
             checkActualDate,
           ],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.tasks.validation,
+            },
+          },
         },
         {
           fieldCode: "taskDescription",
@@ -91,6 +96,11 @@ export const TASKS: TasksConfigProps = {
             checkActualDate,
           ],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.tasks.validation,
+            },
+          },
         },
         {
           fieldCode: "taskDescription",

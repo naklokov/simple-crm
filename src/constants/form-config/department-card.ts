@@ -196,6 +196,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           columnType: "string",
           columnDescription: "Телефон",
           filterable: true,
+          width: "170px",
           columnActions: [
             {
               actionType: "call",

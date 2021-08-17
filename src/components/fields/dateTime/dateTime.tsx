@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import moment from "moment-timezone";
-import { Col, Form, DatePicker } from "antd";
+import { Col, Form, DatePicker, Space } from "antd";
+import { CalendarOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import {
   DATE_FORMATS,
   DEFAULT_FIELD_SPAN,
   FieldProps,
 } from "../../../constants";
-import { getDateWithTimezone, useValidationService } from "../../../utils";
+import {
+  FormContext,
+  getDateWithTimezone,
+  useValidationService,
+} from "../../../utils";
 import { Readonly } from "../readonly";
+import { SuffixIcon } from "../../suffix-icon";
 
 const getDisabledDate = (currentDate: moment.Moment) =>
   currentDate
@@ -62,6 +68,7 @@ export const DateTime = ({
     validationCallback,
     validationIcon,
     validationStyle,
+    validationHelp,
   } = useValidationService(_links?.validation?.href ?? "", fieldCode);
 
   const showTime = /hh:mm/gi.test(format)
@@ -78,6 +85,7 @@ export const DateTime = ({
         label={fieldName}
         extra={fieldDescription}
         rules={rules}
+        help={validationHelp}
         getValueProps={handleValueProp}
         validateTrigger="onBlur"
       >

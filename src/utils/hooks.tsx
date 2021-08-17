@@ -432,12 +432,14 @@ export const useValidationService = (
 ) => {
   const [result, setResult] = useState<ValidationIconProps>({});
   const { form, name } = useContext(FormContext);
-  const [values] = useFormValues(name ?? "");
+  const [values] = useFormValues<any>(name ?? "");
   const [value, setValue] = useState<any>();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
+      const filledValues = form?.getFieldsValue();
+
       let validationData: ValidationIconProps = {};
       try {
         if (value && validationLink) {
@@ -448,7 +450,7 @@ export const useValidationService = (
           } = await axios.post(validationLink, {
             fieldCode,
             fieldValue: value,
-            otherFieldValues: values,
+            otherFieldValues: { ...filledValues, ...values },
           });
 
           validationData =
@@ -474,7 +476,7 @@ export const useValidationService = (
 
   const isLoading = loading ? (
     <Spin indicator={<LoadingOutlined style={{ fontSize: 14 }} spin />} />
-  ) : null;
+  ) : undefined;
 
   const validationIcon = result?.messageType ? (
     <ValidationIcon {...result} />
@@ -487,7 +489,16 @@ export const useValidationService = (
       ? { borderColor: validationIcons.get(result.messageType).color }
       : {};
 
+  const validationHelp = result?.message ? (
+    <Typography.Text
+      style={{ color: validationIcons.get(result.messageType).color }}
+    >
+      {result.message}
+    </Typography.Text>
+  ) : null;
+
   return {
+    validationHelp,
     validationCallback,
     validationIcon,
     validationStyle,

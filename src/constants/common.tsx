@@ -1,9 +1,5 @@
 import React, { ReactNode } from "react";
-import {
-  CloseCircleOutlined,
-  InfoCircleOutlined,
-  WarningOutlined,
-} from "@ant-design/icons";
+import { InfoCircleOutlined, WarningOutlined } from "@ant-design/icons";
 import { PhoneColored } from "../assets/icons";
 import { ValidationStatusType } from "./interfaces";
 
