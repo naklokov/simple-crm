@@ -23,6 +23,7 @@ const CHECKING_ACCOUNT_MESSAGE = "Некорректный формат расч
 const BANK_BIK_ACCOUNT_MESSAGE = "Некорректный формат БИК банка";
 const CORRESPONDENT_ACCOUNT_MESSAGE =
   "Некорректный формат корреспондентского счёта";
+
 const PLACEHOLDER_DEFAULT = "Введите значение";
 const getMaxLengthMessage = (len: number) =>
   `Превышена максимальная длина - ${len} символов`;
@@ -312,6 +313,11 @@ export const upper: UpperProps = {
           placeholder: PHONE_PLACEHOLDER,
           rules: [{ required: true, message: REQUIRED_MESSAGE }, phoneRule],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.clients.validation,
+            },
+          },
         },
         {
           fieldCode: "email",
@@ -328,6 +334,11 @@ export const upper: UpperProps = {
             },
           ],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.clients.validation,
+            },
+          },
         },
         {
           fieldCode: "inn",
@@ -339,6 +350,11 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [{ required: true, message: REQUIRED_MESSAGE }, vatRule],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.clients.validation,
+            },
+          },
         },
         {
           fieldCode: "fullName",
@@ -431,6 +447,9 @@ export const upper: UpperProps = {
           _links: {
             self: {
               href: urls.userProfiles.paging,
+            },
+            redirect: {
+              href: `${urls.profile.path}/{{id}}`,
             },
           },
         },
@@ -544,6 +563,11 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [vatRule],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.clients.validation,
+            },
+          },
         },
         {
           fieldCode: "ogrn",
@@ -555,6 +579,11 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [ogrnRule],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.clients.validation,
+            },
+          },
         },
         {
           fieldCode: "kpp",
@@ -566,6 +595,11 @@ export const upper: UpperProps = {
           type: "string",
           rules: [{ pattern: /^([0-9]{9})?$/, message: KPP_MESSAGE }],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.clients.validation,
+            },
+          },
         },
         {
           fieldCode: "legalAddress",
@@ -616,13 +650,13 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           type: "string",
-          rules: [
-            {
-              pattern: /^\d{20}$/,
-              message: CHECKING_ACCOUNT_MESSAGE,
-            },
-          ],
+          rules: [{ pattern: /^\d{20}$/, message: CHECKING_ACCOUNT_MESSAGE }],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.clients.validation,
+            },
+          },
         },
         {
           fieldCode: "correspondentAccount",
@@ -633,12 +667,14 @@ export const upper: UpperProps = {
           disabled: false,
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [
-            {
-              pattern: /^\d{20}$/,
-              message: CORRESPONDENT_ACCOUNT_MESSAGE,
-            },
+            { pattern: /^\d{20}$/, message: CORRESPONDENT_ACCOUNT_MESSAGE },
           ],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.clients.validation,
+            },
+          },
         },
         {
           fieldCode: "chiefFio",

@@ -17,6 +17,8 @@ import {
   defaultErrorHandler,
   fillLinks,
   FormContext,
+  useRedirectLink,
+  useValidationService,
 } from "../../../utils";
 import { Loading } from "../loading";
 import {
@@ -52,17 +54,26 @@ export const EntityLazy = ({
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(DEFAULT_PAGE_NUMBER);
 
+  const { form } = useContext(FormContext);
+  const { validationCallback, validationIcon } = useValidationService(
+    _links?.validation?.href ?? "",
+    fieldCode
+  );
+
   const style = { width: "100%" };
 
-  const { form } = useContext(FormContext);
   const fieldValue = form?.getFieldValue(fieldCode);
   const profileInfo = useSelector((state: State) => state.persist.profileInfo);
   const filledLinks = useMemo(
     () =>
       fillLinks(_links, {
         userProfileId: profileInfo?.id ?? "",
+        id: fieldValue ?? "",
       }),
-    [_links, profileInfo?.id]
+    [_links, profileInfo?.id, fieldValue]
+  );
+  const { toggleHover, redirect, redirectIcon } = useRedirectLink(
+    filledLinks?.redirect?.href ?? ""
   );
 
   /**
@@ -223,7 +234,11 @@ export const EntityLazy = ({
         validateTrigger="onBlur"
       >
         {readonly ? (
-          <Readonly format={formatFunc} />
+          <Readonly
+            format={formatFunc}
+            type={_links.redirect ? "href" : "text"}
+            onClickLink={redirect}
+          />
         ) : (
           <Select
             loading={loading}
@@ -231,12 +246,15 @@ export const EntityLazy = ({
             onPopupScroll={handleScroll}
             onSearch={handleSearch}
             onSelect={handleSelect}
+            onBlur={validationCallback}
             defaultActiveFirstOption={false}
             filterOption={false}
             disabled={disabled}
             notFoundContent={notFoundContent}
-            allowClear
             showSearch
+            suffixIcon={validationIcon ?? redirectIcon}
+            onMouseEnter={toggleHover}
+            onMouseLeave={toggleHover}
           >
             {options?.map(({ value, label }) => (
               <Select.Option key={value} value={value}>

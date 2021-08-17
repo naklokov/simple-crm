@@ -84,6 +84,11 @@ export const FORM: { tabs: TabProps[] } = {
             },
           ],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.userProfiles.validation,
+            },
+          },
         },
         {
           fieldCode: "phone",

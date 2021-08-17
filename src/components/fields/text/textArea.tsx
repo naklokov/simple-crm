@@ -1,8 +1,13 @@
 import React, { FocusEvent, useCallback, useContext } from "react";
 import { Form, Input, Col } from "antd";
+import { Rule } from "antd/lib/form";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
-import { FormContext } from "../../../utils";
+import {
+  FormContext,
+  useFormValues,
+  useValidationService,
+} from "../../../utils";
 
 export const TextArea = ({
   fieldCode,
@@ -14,12 +19,18 @@ export const TextArea = ({
   readonly = false,
   rows = 4,
   span = DEFAULT_FIELD_SPAN,
+  _links,
 }: FieldProps) => {
   const { form } = useContext(FormContext);
+  const { validationCallback, validationIcon } = useValidationService(
+    _links?.validation?.href ?? "",
+    fieldCode
+  );
 
   const handleBlur = useCallback(
     (event: FocusEvent<HTMLTextAreaElement>) => {
       form?.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? "" });
+      validationCallback();
     },
     [fieldCode, form]
   );

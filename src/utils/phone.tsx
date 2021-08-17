@@ -13,7 +13,7 @@ export const getNormalizePhone = (value: string) =>
   value?.replace(/[^+,\d]/g, "") ?? "";
 
 export const isNeedReplaceFirstChar = (phone: string) =>
-  PHONE_TRIM_START_CHARS.includes(phone?.[0]);
+  PHONE_TRIM_START_CHARS.includes(phone?.[0] ?? "");
 
 /**
  * Получение номера телефона с замененым кодом страны если он начинается с 7 или 8 на +7

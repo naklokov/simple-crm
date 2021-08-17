@@ -2,9 +2,13 @@ import React, { useCallback, useContext, FocusEvent } from "react";
 import { Form, Input, Col } from "antd";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
-import { FormContext } from "../../../utils";
+import {
+  FormContext,
+  useFormValues,
+  useValidationService,
+} from "../../../utils";
 
-export const Text = ({
+const Text: React.FC<FieldProps> = ({
   fieldCode,
   rules,
   fieldName,
@@ -13,14 +17,21 @@ export const Text = ({
   disabled = false,
   readonly = false,
   span = DEFAULT_FIELD_SPAN,
-}: FieldProps) => {
+  _links,
+}) => {
   const { form } = useContext(FormContext);
+
+  const { validationCallback, validationIcon } = useValidationService(
+    _links?.validation?.href ?? "",
+    fieldCode
+  );
 
   const handleBlur = useCallback(
     (event: FocusEvent<HTMLInputElement>) => {
       form?.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? "" });
+      validationCallback();
     },
-    [fieldCode, form]
+    [fieldCode, form, validationCallback]
   );
 
   return (
@@ -40,6 +51,7 @@ export const Text = ({
             autoComplete="off"
             placeholder={placeholder}
             disabled={disabled}
+            suffix={validationIcon}
             onBlur={handleBlur}
           />
         )}

@@ -19,5 +19,6 @@ export { Skeleton } from "./skeleton";
 export { Dot } from "./dot";
 export { JivoSupport } from "./jivo-support";
 export { Arrow } from "./arrow";
+export { ValidationIcon } from "./validation-icon";
 
 export { fields };

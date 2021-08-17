@@ -1,7 +1,7 @@
 import * as reactRouter from "react-router-dom";
 import { renderHook, act } from "@testing-library/react-hooks";
 import { stringify } from "query-string";
-import { useTabs, useClientTimeZone } from "../hooks";
+import { useTabs, useValidationService } from "../hooks";
 import { TabProps } from "../../constants";
 
 const getHistoryMock = (search: string, push: Function, replace: Function) => ({
