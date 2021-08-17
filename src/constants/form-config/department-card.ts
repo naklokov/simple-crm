@@ -136,6 +136,11 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           isJsonField: true,
           sorter: false,
           filterable: true,
+          _links: {
+            self: {
+              href: urls.dictionaries.position,
+            },
+          },
         },
       ],
       _links: {
@@ -144,9 +149,6 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
         },
         id: {
           href: `${urls.userProfiles.entity}?query=departmentId=={{departmentId}}`,
-        },
-        position: {
-          href: urls.dictionaries.position,
         },
       },
     },
@@ -194,6 +196,7 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           columnType: "string",
           columnDescription: "Телефон",
           filterable: true,
+          width: "170px",
           columnActions: [
             {
               actionType: "call",
@@ -237,6 +240,11 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           isJsonField: true,
           sorter: false,
           filterable: true,
+          _links: {
+            self: {
+              href: urls.dictionaries.activityFields,
+            },
+          },
         },
         {
           columnName: "Куратор",
@@ -247,6 +255,11 @@ export const FORM: { drawers: DrawerProps[]; tabs: TabProps[] } = {
           sorter: false,
           filterable: true,
           columnDescription: "Куратор компании",
+          _links: {
+            self: {
+              href: urls.userProfiles.entity,
+            },
+          },
         },
       ],
       _links: {

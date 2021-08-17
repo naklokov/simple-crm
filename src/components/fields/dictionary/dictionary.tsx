@@ -28,14 +28,14 @@ export const Dictionary: React.FC<FieldProps> = ({
     validationStyle,
   } = useValidationService(_links?.validation?.href ?? "", fieldCode);
   const url = _links?.self.href ?? "";
-  const [dictionary, loading] = useFetch<DictionaryProps>({
+  const [{ values: options }, loading] = useFetch<DictionaryProps>({
     url,
     initial: {},
+    cache: true,
   });
-  const { dictionaryValueEntities: options = [] } = dictionary;
 
   const formatFunc = (value: string) =>
-    options.find((o) => o.valueCode === value)?.value ?? "";
+    options?.find((o) => o.valueCode === value)?.value ?? "";
 
   const style = { width: "100%" };
 
@@ -71,7 +71,7 @@ export const Dictionary: React.FC<FieldProps> = ({
             suffixIcon={validationIcon}
             onBlur={validationCallback}
           >
-            {options.map(({ id, value, valueCode }) => (
+            {options?.map(({ id, value, valueCode }) => (
               <Option key={id} value={valueCode}>
                 {value}
               </Option>

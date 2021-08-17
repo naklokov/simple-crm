@@ -1,32 +1,46 @@
-import { isEmpty } from "lodash";
-import React, { useContext } from "react";
-import { connect } from "react-redux";
-import { State, ColumnProps, RecordType } from "../../../../../constants";
+import React, { useContext, useMemo } from "react";
+import { useSelector } from "react-redux";
+import {
+  ColumnProps,
+  RecordType,
+  DictionaryProps,
+  State,
+} from "../../../../../constants";
+import { useFetch } from "../../../../../utils";
 import { HighlightTextWrapper } from "../../../../../wrappers";
 import { Skeleton } from "../../../../skeleton";
 import { SearchedAllContext, SearchedColumnsContext } from "../../../utils";
 
-interface DictionaryProps {
+interface DictionaryFieldProps {
   value: string;
   column: ColumnProps;
-  dictionaries: any;
-  tableLoading: boolean;
 }
 
-export const Dictionary = ({
-  value,
-  column,
-  dictionaries,
-  tableLoading,
-}: DictionaryProps) => {
+export const Dictionary = ({ value, column }: DictionaryFieldProps) => {
   const searched = useContext(SearchedAllContext);
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
-  const { columnCode } = column;
+  const tableLoading = useSelector((state: State) => state?.app?.tableLoading);
+  const { columnCode, _links: links } = column;
 
-  const options = dictionaries?.[columnCode]?.dictionaryValueEntities ?? [];
-  const option = options?.find((o: any) => o.valueCode === value);
+  const [{ values: options }, loading] = useFetch<DictionaryProps>({
+    url: links?.self?.href ?? "",
+    initial: {},
+    cache: true,
+  });
 
-  if (value && !option) {
+  const option = useMemo(
+    () => options?.find((o: any) => o.valueCode === value),
+    [options, value]
+  );
+
+  const searchedColumnText = useMemo(
+    () =>
+      options?.find((o: any) => o.valueCode === searchedColumns?.[columnCode])
+        ?.value ?? "",
+    [options, searchedColumns, columnCode]
+  );
+
+  if (loading) {
     return <Skeleton.Input />;
   }
 
@@ -34,16 +48,11 @@ export const Dictionary = ({
 
   return (
     <HighlightTextWrapper
-      loading={tableLoading}
+      loading={loading}
       text={text}
-      searched={[searched, searchedColumns[column.columnCode]]}
+      searched={[searched, !tableLoading ? searchedColumnText : ""]}
     />
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  dictionaries: state?.app?.dictionaries,
-  tableLoading: state?.app?.tableLoading,
-});
-
-export default connect(mapStateToProps)(Dictionary);
+export default Dictionary;

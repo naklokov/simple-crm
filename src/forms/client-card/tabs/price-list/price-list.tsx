@@ -48,6 +48,7 @@ export const PriceList: React.FC<ContactsProps> = ({
   const [positions, loading, reload] = useFetch<PositionsEntityProps[]>({
     url: urls.priceList.entity,
     params,
+    cache: true,
   });
 
   useEffect(() => {

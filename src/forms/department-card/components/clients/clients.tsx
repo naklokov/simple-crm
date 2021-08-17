@@ -40,6 +40,7 @@ export const Clients: React.FC<FormProps> = ({ tab, drawers }) => {
 
   const [userProfiles] = useFetch<ProfileInfoEntityProps[]>({
     url: urls.userProfiles.entity,
+    cache: true,
   });
 
   const dataSource = useMemo(

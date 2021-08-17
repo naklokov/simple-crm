@@ -67,6 +67,7 @@ module.exports = {
     path: "/main/tasks",
     entity: "/crm/rest/entity/tasks",
     paging: "/crm/rest/entity/tasks/paging",
+    validation: "/crm/rest/entity/tasks/validation",
   },
   templates: {
     generation: "/crm/rest/generation",
@@ -83,5 +84,6 @@ module.exports = {
     position: "/crm/rest/dictionary/position",
     activityFields: "/crm/rest/dictionary/ACTIVITY_FIELDS",
     positionUnit: "/crm/rest/dictionary/POSITION_UNIT",
+    clientTimeZone: "/crm/rest/dictionary/TIME_ZONES",
   },
 };

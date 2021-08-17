@@ -17,6 +17,7 @@ import {
   defaultErrorHandler,
   fillLinks,
   FormContext,
+  getFullUrl,
   useRedirectLink,
   useValidationService,
 } from "../../../utils";
@@ -69,13 +70,12 @@ export const EntityLazy = ({
     () =>
       fillLinks(_links, {
         userProfileId: profileInfo?.id ?? "",
-        id: fieldValue ?? "",
       }),
-    [_links, profileInfo?.id, fieldValue]
+    [_links, profileInfo?.id]
   );
-  const { toggleHover, redirect, redirectIcon } = useRedirectLink(
-    filledLinks?.redirect?.href ?? ""
-  );
+
+  const redirectLink = getFullUrl(filledLinks?.redirect?.href, fieldValue);
+  const { toggleHover, redirect, redirectIcon } = useRedirectLink(redirectLink);
 
   /**
    * Инициализация опций для начального значения

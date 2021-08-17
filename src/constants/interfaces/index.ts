@@ -24,7 +24,7 @@ export interface DictionaryProps {
   dictionaryCode?: string;
   dictionaryName?: string;
   dictionaryDescription?: string;
-  dictionaryValueEntities?: OptionProps[];
+  values?: OptionProps[];
 }
 
 export interface OptionProps {

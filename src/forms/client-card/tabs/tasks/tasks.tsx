@@ -79,6 +79,7 @@ export const Tasks = ({ tab, formName }: TabPaneFormProps) => {
   const [client, updateClient] = useFormValues<ClientEntityProps>(
     FORM_NAMES.CLIENT_CARD
   );
+  const [, setAddTask] = useFormValues<TaskEntityProps>(FORM_NAMES.TASK_ADD);
   const [, setViewTask] = useFormValues<TaskEntityProps>(FORM_NAMES.TASK_VIEW);
   const [, setCompleteTask] = useFormValues<TaskEntityProps>(
     FORM_NAMES.TASK_COMPLETED
@@ -122,6 +123,7 @@ export const Tasks = ({ tab, formName }: TabPaneFormProps) => {
   );
 
   const handleAddClick = useCallback(() => {
+    setAddTask({ clientId } as TaskEntityProps);
     setAddDrawerVisible(true);
   }, []);
 

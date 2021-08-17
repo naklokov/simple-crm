@@ -54,6 +54,11 @@ export const lower: LowerProps = {
             checkActualDate,
           ],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.tasks.validation,
+            },
+          },
         },
         {
           fieldCode: "taskDescription",
@@ -379,6 +384,22 @@ export const upper: UpperProps = {
           permissions: [],
         },
         {
+          fieldCode: "clientTimeZone",
+          fieldName: "Часовой пояс",
+          fieldDescription: "",
+          type: "dictionary",
+          disabled: false,
+          readonly: false,
+          placeholder: PLACEHOLDER_DEFAULT,
+          rules: [],
+          _links: {
+            self: {
+              href: urls.dictionaries.clientTimeZone,
+            },
+          },
+          permissions: [],
+        },
+        {
           fieldCode: "activityField",
           fieldName: "Тип деятельности",
           fieldDescription: "",
@@ -433,7 +454,7 @@ export const upper: UpperProps = {
               href: urls.userProfiles.paging,
             },
             redirect: {
-              href: `${urls.profile.path}/{{id}}`,
+              href: urls.profile.path,
             },
           },
         },
