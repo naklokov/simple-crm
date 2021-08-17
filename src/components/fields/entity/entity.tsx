@@ -40,10 +40,11 @@ export const Entity = ({
   let delayTimer: NodeJS.Timeout;
 
   const { form } = useContext(FormContext);
-  const { validationCallback, validationIcon } = useValidationService(
-    _links?.validation?.href ?? "",
-    fieldCode
-  );
+  const {
+    validationCallback,
+    validationIcon,
+    validationStyle,
+  } = useValidationService(_links?.validation?.href ?? "", fieldCode);
 
   const [t] = useTranslation("fields");
   const [initial, setInitial] = useState(false);
@@ -180,7 +181,7 @@ export const Entity = ({
             filterOption={false}
             onSearch={handleSearch}
             placeholder={placeholder}
-            style={{ width: "100%" }}
+            style={{ width: "100%", ...validationStyle }}
             loading={loading}
             disabled={disabled}
             open={open}

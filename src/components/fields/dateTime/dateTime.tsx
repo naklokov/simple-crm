@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import moment from "moment-timezone";
 import { Col, Form, DatePicker } from "antd";
 import {
@@ -6,12 +6,7 @@ import {
   DEFAULT_FIELD_SPAN,
   FieldProps,
 } from "../../../constants";
-import {
-  FormContext,
-  getDateWithTimezone,
-  useFormValues,
-  useValidationService,
-} from "../../../utils";
+import { getDateWithTimezone, useValidationService } from "../../../utils";
 import { Readonly } from "../readonly";
 
 const getDisabledDate = (currentDate: moment.Moment) =>
@@ -63,10 +58,11 @@ export const DateTime = ({
   span = DEFAULT_FIELD_SPAN,
   _links,
 }: FieldProps) => {
-  const { validationCallback, validationIcon } = useValidationService(
-    _links?.validation?.href ?? "",
-    fieldCode
-  );
+  const {
+    validationCallback,
+    validationIcon,
+    validationStyle,
+  } = useValidationService(_links?.validation?.href ?? "", fieldCode);
 
   const showTime = /hh:mm/gi.test(format)
     ? { hideDisabledOptions: true }
@@ -90,7 +86,7 @@ export const DateTime = ({
         ) : (
           <DatePicker
             autoComplete="off"
-            style={{ width: "100%" }}
+            style={{ width: "100%", ...validationStyle }}
             format={format}
             placeholder={placeholder}
             disabled={disabled}
