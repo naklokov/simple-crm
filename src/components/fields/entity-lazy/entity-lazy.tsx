@@ -74,7 +74,9 @@ export const EntityLazy = ({
     [_links, profileInfo?.id]
   );
 
-  const redirectLink = getFullUrl(filledLinks?.redirect?.href, fieldValue);
+  const redirectLink = filledLinks?.redirect?.href
+    ? getFullUrl(filledLinks?.redirect?.href, fieldValue)
+    : "";
   const { toggleHover, redirect, redirectIcon } = useRedirectLink(redirectLink);
 
   /**
