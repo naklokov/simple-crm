@@ -21,7 +21,6 @@ import {
   SearchedAllContext,
   SearchedColumnsContext,
   TableActionsContext,
-  useFetchDictionaries,
 } from "./utils";
 
 import style from "./table.module.scss";
@@ -100,8 +99,6 @@ export const Table: React.FC<TableProps> & TableExtendsProps = ({
   footer,
 }) => {
   const [t] = useTranslation("table");
-
-  useFetchDictionaries(columns, links);
 
   const dataSourceWithKeys = useMemo(
     () =>

@@ -1,5 +1,7 @@
 import React, { ReactNode } from "react";
+import { InfoCircleOutlined, WarningOutlined } from "@ant-design/icons";
 import { PhoneColored } from "../assets/icons";
+import { ValidationStatusType } from "./interfaces";
 
 export const DATE_FORMATS = {
   DATE: "DD.MM.YYYY",
@@ -90,3 +92,49 @@ export const RSQL_OPERATORS_REGEXP_MAP = {
 export const TOOLTIP_SHOW_DELAY = 1;
 
 export const RSQL_DELIMETER = ";";
+
+export const PROCESSING_STATUS = "PROCESSING";
+
+export const TIME_ZONE_COLOR: { [key: string]: string } = {
+  [PROCESSING_STATUS]: "processing",
+  "-1": "cyan",
+  "0": "green",
+  "+1": "lime",
+  "+2": "gold",
+  "+3": "orange",
+  "+4": "volcano",
+  "+5": "red",
+  "+6": "magenta",
+  "+7": "purple",
+  "+8": "geekblue",
+  "+9": "blue",
+};
+
+export const validationIcons = {
+  info: {
+    color: "#1890ff",
+    get icon() {
+      return (
+        <InfoCircleOutlined style={{ color: this.color, cursor: "pointer" }} />
+      );
+    },
+  },
+  warning: {
+    color: "#faad14",
+    get icon() {
+      return (
+        <WarningOutlined style={{ color: this.color, cursor: "pointer" }} />
+      );
+    },
+  },
+  get(type: ValidationStatusType | undefined) {
+    return (
+      (type && this?.[type]) ?? {
+        color: "",
+        get icon() {
+          return null;
+        },
+      }
+    );
+  },
+};

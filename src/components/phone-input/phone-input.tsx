@@ -1,22 +1,14 @@
 import React, { useCallback, useState } from "react";
 import { noop } from "lodash";
-import MaskedInput, { conformToMask } from "react-text-mask";
-import {
-  getMask,
-  getNormalizePhone,
-  isNeedReplaceFirstChar,
-} from "../../utils";
-import {
-  NORMALIZE_PHONE_LENGTH,
-  PHONE_MASK,
-  PHONE_MASK_WITH_CODE,
-  RU_PHONE_CODE,
-} from "../../constants";
+import MaskedInput from "react-text-mask";
+import { getConformedValue, getNormalizePhone } from "../../utils";
+import { PHONE_MASK } from "../../constants";
 
 interface PhoneInputProps {
   value: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   placeholder?: string;
   disabled?: boolean;
   ref?: any;
@@ -27,47 +19,16 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   value = "",
   onChange = noop,
   onKeyDown = noop,
+  onBlur = noop,
   placeholder = "",
   disabled = false,
   style = {},
   ref,
 }) => {
-  const [mask, setMask] = useState(getMask(value));
-
-  const handleChange = useCallback(
-    (event) => {
-      const normalizeValue = getNormalizePhone(event.target.value);
-
-      // до ввода 12 символа показываем маску без запятой для доп кода
-      const withoutAdditionalCode =
-        normalizeValue.length < NORMALIZE_PHONE_LENGTH;
-      setMask(withoutAdditionalCode ? PHONE_MASK : PHONE_MASK_WITH_CODE);
-
-      onChange(event);
-    },
-    [onChange]
-  );
-
-  const handleBlur = useCallback((event) => {
-    const currentMask = getMask(event.target.value);
-    setMask(currentMask);
-  }, []);
-
   const handlePipe = useCallback(
-    (conformedValue: string, config: any) => {
-      const normalizePhone = getNormalizePhone(config.rawValue).trim();
-
-      // заменяем не кошерные первые символы кода ("7", "8") на кошерную "+7"
-      if (isNeedReplaceFirstChar(normalizePhone)) {
-        const phoneWithReplacedCode =
-          RU_PHONE_CODE + normalizePhone.substring(1);
-        return conformToMask(phoneWithReplacedCode, mask, config)
-          .conformedValue;
-      }
-
-      return conformToMask(normalizePhone, mask, config).conformedValue;
-    },
-    [mask]
+    (conformedValue: string, config: any) =>
+      getConformedValue(getNormalizePhone(config.rawValue).trim(), config),
+    []
   );
 
   return (
@@ -79,10 +40,10 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
       pipe={handlePipe}
       placeholder={placeholder}
       disabled={disabled}
-      mask={mask}
+      mask={PHONE_MASK}
       onKeyDown={onKeyDown}
-      onChange={handleChange}
-      onBlur={handleBlur}
+      onChange={onChange}
+      onBlur={onBlur}
       value={value}
     />
   );

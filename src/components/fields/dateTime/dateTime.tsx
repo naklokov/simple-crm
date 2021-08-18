@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import moment from "moment-timezone";
-import { Col, Form, DatePicker } from "antd";
+import { Col, Form, DatePicker, Space } from "antd";
+import { CalendarOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import {
   DATE_FORMATS,
   DEFAULT_FIELD_SPAN,
   FieldProps,
 } from "../../../constants";
-import { getDateWithTimezone } from "../../../utils";
+import {
+  FormContext,
+  getDateWithTimezone,
+  useValidationService,
+} from "../../../utils";
 import { Readonly } from "../readonly";
+import { SuffixIcon } from "../../suffix-icon";
 
 const getDisabledDate = (currentDate: moment.Moment) =>
   currentDate
@@ -56,7 +62,15 @@ export const DateTime = ({
   readonly = false,
   withSelectBefore = false,
   span = DEFAULT_FIELD_SPAN,
+  _links,
 }: FieldProps) => {
+  const {
+    validationCallback,
+    validationIcon,
+    validationStyle,
+    validationHelp,
+  } = useValidationService(_links?.validation?.href ?? "", fieldCode);
+
   const showTime = /hh:mm/gi.test(format)
     ? { hideDisabledOptions: true }
     : false;
@@ -71,6 +85,7 @@ export const DateTime = ({
         label={fieldName}
         extra={fieldDescription}
         rules={rules}
+        help={validationHelp}
         getValueProps={handleValueProp}
         validateTrigger="onBlur"
       >
@@ -79,7 +94,7 @@ export const DateTime = ({
         ) : (
           <DatePicker
             autoComplete="off"
-            style={{ width: "100%" }}
+            style={{ width: "100%", ...validationStyle }}
             format={format}
             placeholder={placeholder}
             disabled={disabled}
@@ -87,6 +102,8 @@ export const DateTime = ({
             inputReadOnly={readonly}
             disabledDate={!withSelectBefore ? getDisabledDate : undefined}
             disabledTime={!withSelectBefore ? getDisabledTime : undefined}
+            onBlur={validationCallback}
+            suffixIcon={validationIcon}
           />
         )}
       </Form.Item>

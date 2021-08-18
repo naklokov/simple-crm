@@ -7,5 +7,6 @@ export * from "./common";
 export * from "./permissions";
 export * from "./phone";
 export * from "./layouts";
+export * from "./axios";
 
 export { urls, http, formConfig };

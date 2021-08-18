@@ -36,7 +36,7 @@ const formsMap: {
 };
 
 export const DepartmentCard = () => {
-  const { activeTab, onChange } = useTabs(tabs, "replace");
+  const { activeTab, onChange } = useTabs(tabs);
   const { id: departmentId } = useParams<QueryProps>();
 
   const FormComponent = useMemo(() => formsMap?.[activeTab.tabCode] ?? null, [

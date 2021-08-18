@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import axios from "axios";
-import { Button, Col, Row, Select, Space } from "antd";
+import { Button, Col, Row, Select } from "antd";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import {
@@ -22,12 +22,15 @@ const DEFAULT_EXTENSION = "docx";
 
 export const Documents: React.FC<TabPaneFormProps> = ({ formName }) => {
   const [t] = useTranslation("documents");
-  const [selectedTemplate, setSelectedTemplate] = useState<TemplateEntityProps>();
+  const [selectedTemplate, setSelectedTemplate] = useState<
+    TemplateEntityProps
+  >();
   const { id: entityId } = useParams<QueryProps>();
   const query = getRsqlParams([{ key: "linkedEntityType", value: "CLIENTS" }]);
   const [templates, loading] = useFetch<TemplateEntityProps[]>({
     url: urls.templates.entity,
     params: { query },
+    cache: true,
   });
 
   const generateDocument = useCallback(async () => {
@@ -43,7 +46,7 @@ export const Documents: React.FC<TabPaneFormProps> = ({ formName }) => {
         url,
         { entityId },
         // без этого параметра входной массив байт парсится некорректно и в Blob не преобразуется
-        { responseType: "arraybuffer" },
+        { responseType: "arraybuffer" }
       );
 
       const fileName = `${templateName}.${fileExtension}`;
@@ -68,8 +71,8 @@ export const Documents: React.FC<TabPaneFormProps> = ({ formName }) => {
     generateDocument();
   }, [generateDocument]);
 
-  const spanSelect = { xs: 14, sm: 14, md: 16, lg: 8, xl: 6, xxl:4}
-  const spanBtn = { xs: 8, sm: 8, md: 8, lg: 4, xl: 4, xxl:4}
+  const spanSelect = { xs: 14, sm: 14, md: 16, lg: 8, xl: 6, xxl: 4 };
+  const spanBtn = { xs: 8, sm: 8, md: 8, lg: 4, xl: 4, xxl: 4 };
 
   return (
     <FormWrapper name={formName}>
@@ -95,7 +98,6 @@ export const Documents: React.FC<TabPaneFormProps> = ({ formName }) => {
           </Button>
         </Col>
       </Row>
-
     </FormWrapper>
   );
 };

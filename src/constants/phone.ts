@@ -1,6 +1,7 @@
 export const PHONE_TRIM_START_CHARS = ["7", "8"];
 
-// +79998887766
+export const ADDITIONAL_CODE_PREFIX = ", ";
+
 export const NORMALIZE_PHONE_LENGTH = 12;
 
 export const RU_PHONE_CODE = "+7";
@@ -24,10 +25,6 @@ export const PHONE_MASK = [
   "-",
   /\d/,
   /\d/,
-];
-
-export const PHONE_MASK_WITH_CODE = [
-  ...PHONE_MASK,
   ",",
   " ",
   /\d/,
