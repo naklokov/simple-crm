@@ -8,6 +8,8 @@ export type NotificationType = "CALL";
 
 export type NotificationStatusType = "read" | "unread";
 
+export type ThemeType = "light" | "dark";
+
 export interface NotificationProps {
   id: string;
   status?: NotificationStatusType;

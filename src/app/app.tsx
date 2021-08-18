@@ -10,7 +10,7 @@ import { reducers } from "../__data__";
 import { errorsInterceptor } from "./interceptors";
 import { storage, checkMobile } from "../utils";
 
-import { ErrorBoundary } from "../wrappers";
+import { ErrorBoundary, ThemeWrapper } from "../wrappers";
 
 declare global {
   interface Window {
@@ -45,9 +45,11 @@ window.isMobile = checkMobile();
 const App = () => (
   <ConfigProvider locale={ruRu}>
     <Provider store={store}>
-      <ErrorBoundary>
-        <Routes />
-      </ErrorBoundary>
+      <ThemeWrapper>
+        <ErrorBoundary>
+          <Routes />
+        </ErrorBoundary>
+      </ThemeWrapper>
     </Provider>
   </ConfigProvider>
 );

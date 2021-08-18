@@ -17,6 +17,8 @@ interface AuthorizedProps {
 export const Authorized = ({ children }: AuthorizedProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const dispatch = useDispatch();
+  const theme = useSelector((state: State) => state?.app?.theme);
+
   const isSubDrawerOpened = useSelector(
     (state: State) => !!state?.menuSubDrawer?.id
   );
@@ -52,7 +54,7 @@ export const Authorized = ({ children }: AuthorizedProps) => {
     <ContainerWrapper>
       <Layout className={style.main}>
         <Sider
-          theme="light"
+          theme={theme}
           collapsible
           collapsed={collapsed}
           className={style.sider}

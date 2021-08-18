@@ -14,7 +14,7 @@ import {
   useFetch,
   useFetchPersonalClients,
 } from "../utils";
-import { setProfileInfo, setPermissions } from "../__data__";
+import { setProfileInfo, setPermissions, setTheme } from "../__data__";
 
 interface ContainerWrapperProps {
   children: ReactNode;
@@ -48,6 +48,7 @@ export const ContainerWrapper = ({
   const personalClients = useFetchPersonalClients();
 
   useEffect(() => {
+    dispatch(setTheme("dark"));
     dispatch(setProfileInfo(profile));
     dispatch(setPermissions(credentials?.permissions ?? []));
   }, [credentials, profile, dispatch]);

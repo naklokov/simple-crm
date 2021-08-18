@@ -7,7 +7,7 @@ export { setFormLoading, updateForm } from "./form";
 
 export { setPermissions, setAuth, setProfileInfo, logout } from "./persist";
 
-export { setDictionaries, setTableLoading, setError } from "./app";
+export { setDictionaries, setTableLoading, setError, setTheme } from "./app";
 
 export {
   open as openMenuSubDrawer,

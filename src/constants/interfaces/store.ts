@@ -1,3 +1,4 @@
+import { ThemeType } from ".";
 import { ProfileInfoEntityProps } from "./entities";
 
 export interface PersistState {
@@ -10,6 +11,7 @@ export interface AppState {
   dictionaries: object;
   error: ErrorAppState;
   tableLoading: boolean;
+  theme: ThemeType;
 }
 
 export interface MenuSubDrawerState {
