@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { noop } from "lodash";
 import MaskedInput from "react-text-mask";
 import { getConformedValue, getNormalizePhone } from "../../utils";
@@ -27,7 +27,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
 }) => {
   const handlePipe = useCallback(
     (conformedValue: string, config: any) =>
-      getConformedValue(getNormalizePhone(config.rawValue).trim(), config),
+      getConformedValue(getNormalizePhone(config.rawValue), config),
     []
   );
 
