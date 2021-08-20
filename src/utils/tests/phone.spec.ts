@@ -26,6 +26,8 @@ test("isNeedReplaceFirstChar", () => {
 
 test("getNormalizePhone", () => {
   expect(getNormalizePhone("+7 (911) 222-33-44")).toBe("+79112223344");
+  expect(getNormalizePhone("+7 (911) 222-33-44,")).toBe("+79112223344");
+  expect(getNormalizePhone("+7 (911) 222-33-44, ")).toBe("+79112223344");
   expect(getNormalizePhone("+7 (911) 222-33-44, 1")).toBe("+79112223344,1");
   expect(getNormalizePhone("+7 (911) 222-33-44, 11111")).toBe(
     "+79112223344,11111"

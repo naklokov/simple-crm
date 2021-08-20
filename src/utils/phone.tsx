@@ -9,8 +9,16 @@ import {
 } from "../constants";
 
 // +79998887766
-export const getNormalizePhone = (value: string) =>
-  value?.replace(/[^+,\d]/g, "") ?? "";
+export const getNormalizePhone = (value: string) => {
+  const clearValue = value?.replace(/[^+,\d]/g, "")?.trim() ?? "";
+
+  // если длина больше чем телефон без маски, то образаем с конца запятую и пробел
+  if (value.length >= NORMALIZE_PHONE_LENGTH) {
+    return trimEnd(clearValue, ADDITIONAL_CODE_PREFIX);
+  }
+
+  return clearValue;
+};
 
 export const isNeedReplaceFirstChar = (phone: string) =>
   PHONE_TRIM_START_CHARS.includes(phone[0]);
@@ -31,9 +39,12 @@ export const getConformedValue = (
 
     const { conformedValue } = conformToMask(phone, PHONE_MASK, config);
 
-    return phone.length >= NORMALIZE_PHONE_LENGTH
-      ? trimEnd(conformedValue, ADDITIONAL_CODE_PREFIX)
-      : conformedValue;
+    // если длина больше чем телефон без маски, то образаем с конца запятую и пробел
+    if (phone.length >= NORMALIZE_PHONE_LENGTH) {
+      return trimEnd(conformedValue, ADDITIONAL_CODE_PREFIX);
+    }
+
+    return conformedValue;
   }
 
   return "";
