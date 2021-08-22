@@ -2,8 +2,7 @@ import React, { FocusEvent, useCallback, useContext } from "react";
 import { Form, Input, Col } from "antd";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
-import { FormContext, useValidationService } from "../../../utils";
-import { SuffixIcon } from "../..";
+import { FormContext } from "../../../utils";
 
 export const TextArea = ({
   fieldCode,
@@ -18,15 +17,10 @@ export const TextArea = ({
   _links,
 }: FieldProps) => {
   const { form } = useContext(FormContext);
-  const { validationCallback, validationIcon } = useValidationService(
-    _links?.validation?.href ?? "",
-    fieldCode
-  );
 
   const handleBlur = useCallback(
     (event: FocusEvent<HTMLTextAreaElement>) => {
       form?.setFieldsValue({ [fieldCode]: event?.target?.value?.trim() ?? "" });
-      validationCallback();
     },
     [fieldCode, form]
   );
@@ -44,17 +38,14 @@ export const TextArea = ({
         {readonly ? (
           <Readonly />
         ) : (
-          <div style={{ position: "relative" }}>
-            <Input.TextArea
-              autoComplete="off"
-              placeholder={placeholder}
-              disabled={disabled}
-              autoSize={{ minRows: 1, maxRows: 6 }}
-              rows={rows}
-              onBlur={handleBlur}
-            />
-            {validationIcon && <SuffixIcon icon={validationIcon} />}
-          </div>
+          <Input.TextArea
+            autoComplete="off"
+            placeholder={placeholder}
+            disabled={disabled}
+            autoSize={{ minRows: 1, maxRows: 6 }}
+            rows={rows}
+            onBlur={handleBlur}
+          />
         )}
       </Form.Item>
     </Col>

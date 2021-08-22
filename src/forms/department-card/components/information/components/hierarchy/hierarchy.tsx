@@ -15,7 +15,6 @@ export const Hierarchy = () => {
   const [t] = useTranslation("departmentInformation");
   const [departments, , reload] = useFetch<DepartmentEntityProps[]>({
     url: urls.departments.entity,
-    cache: true,
   });
   const [department] = useFormValues<DepartmentEntityProps>(
     FORM_NAMES.DEPARTMENT_CARD

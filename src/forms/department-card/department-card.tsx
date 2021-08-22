@@ -90,6 +90,12 @@ export const DepartmentCard = () => {
               key={formDepartmentKey}
               tab={{
                 ...activeTab,
+                columns: activeTab?.columns?.map((col) => ({
+                  ...col,
+                  _links: col._links
+                    ? fillLinks(col._links, { departmentId })
+                    : {},
+                })),
                 _links: fillLinks(activeTab._links, { departmentId }),
               }}
               drawers={formDrawers}
