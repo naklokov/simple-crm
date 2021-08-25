@@ -9,11 +9,7 @@ import {
   ErrorAppState,
   urls,
 } from "../constants";
-import {
-  ClientsPersonalContext,
-  useFetch,
-  useFetchPersonalClients,
-} from "../utils";
+import { useFetch } from "../utils";
 import { setProfileInfo, setPermissions, setTheme } from "../__data__";
 
 interface ContainerWrapperProps {
@@ -45,8 +41,6 @@ export const ContainerWrapper = ({
     url: urls.profile.credentials,
   });
 
-  const personalClients = useFetchPersonalClients();
-
   useEffect(() => {
     dispatch(setTheme("dark"));
     dispatch(setProfileInfo(profile));
@@ -73,11 +67,7 @@ export const ContainerWrapper = ({
     return <Loader />;
   }
 
-  return (
-    <ClientsPersonalContext.Provider value={personalClients}>
-      {children}
-    </ClientsPersonalContext.Provider>
-  );
+  return <>{children}</>;
 };
 
 const mapStateToProps = (state: State) => ({

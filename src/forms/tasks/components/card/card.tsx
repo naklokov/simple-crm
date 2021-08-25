@@ -5,6 +5,7 @@ import {
   Card as CardUI,
   Popconfirm,
   Skeleton,
+  Space,
   Tooltip,
   Typography,
 } from "antd";
@@ -22,10 +23,10 @@ import {
   State,
 } from "../../../../constants";
 import {
-  ClientsPersonalContext,
-  defaultErrorHandler,
   getDateWithTimezone,
   getFullUrl,
+  useClientTimeZone,
+  useFetch,
 } from "../../../../utils";
 
 import style from "./card.module.scss";
@@ -56,11 +57,6 @@ export const Card: React.FC<CardProps> = ({
   title = "",
 }) => {
   const theme = useSelector((state: State) => state?.app?.theme);
-  const [t] = useTranslation("card");
-  const [client, setClient] = useState({} as ClientEntityProps);
-  const [loading, setLoading] = useState(false);
-  const cachingClients = useContext(ClientsPersonalContext);
-
   const {
     clientId,
     taskEndDate: date,
@@ -68,28 +64,13 @@ export const Card: React.FC<CardProps> = ({
     taskType: type,
   } = task;
 
-  const fetchClient = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(
-        getFullUrl(urls.clients.entity, clientId)
-      );
-      setClient(response?.data ?? {});
-    } catch (error) {
-      defaultErrorHandler({ error });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    const cachingClient = cachingClients.find(({ id }) => id === clientId);
-    if (cachingClient) {
-      setClient(cachingClient);
-    } else {
-      fetchClient();
-    }
-  }, []);
+  const [t] = useTranslation("card");
+  const [client, loading] = useFetch<ClientEntityProps>({
+    url: getFullUrl(urls.clients.entity, clientId),
+    cache: true,
+    cacheMaxAge: "short",
+  });
+  const { tzTag } = useClientTimeZone(client.clientTimeZone);
 
   const extra = date ? (
     <div>
@@ -143,14 +124,17 @@ export const Card: React.FC<CardProps> = ({
   ];
 
   const titleContent = (
-    <Link
-      to={{
-        pathname: getFullUrl(urls.clients.path, clientId),
-        search: stringify({ "lower:tab": "tasks" }),
-      }}
-    >
-      {client?.shortName ?? title}
-    </Link>
+    <Space>
+      <Link
+        to={{
+          pathname: getFullUrl(urls.clients.path, clientId),
+          search: stringify({ "lower:tab": "tasks" }),
+        }}
+      >
+        {client?.shortName ?? title}
+      </Link>
+      {tzTag}
+    </Space>
   );
 
   const titleSkeleton = (

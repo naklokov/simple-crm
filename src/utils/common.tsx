@@ -322,3 +322,12 @@ export const callAfterDelay = (() => {
 })();
 
 export const getEmailLink = (value: string) => `mailto:${value}`;
+
+export const encodeURIChars = (uri: string) => {
+  const REPLACED_CHARS: { [key: string]: string } = { "+": "%2B", " ": "%20" };
+
+  return uri
+    .split("")
+    .map((char) => REPLACED_CHARS?.[char] ?? char)
+    .join("");
+};

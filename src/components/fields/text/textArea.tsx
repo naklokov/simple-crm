@@ -14,6 +14,7 @@ export const TextArea = ({
   readonly = false,
   rows = 4,
   span = DEFAULT_FIELD_SPAN,
+  _links,
 }: FieldProps) => {
   const { form } = useContext(FormContext);
 

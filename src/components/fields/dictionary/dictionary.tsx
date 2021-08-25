@@ -5,7 +5,7 @@ import {
   FieldProps,
   DEFAULT_FIELD_SPAN,
 } from "../../../constants";
-import { useFetch } from "../../../utils";
+import { useFetch, useValidationService } from "../../../utils";
 import { Readonly } from "../readonly";
 import { Loading } from "../loading";
 
@@ -22,15 +22,20 @@ export const Dictionary: React.FC<FieldProps> = ({
   _links,
   span = DEFAULT_FIELD_SPAN,
 }) => {
+  const {
+    validationCallback,
+    validationIcon,
+    validationStyle,
+  } = useValidationService(_links?.validation?.href ?? "", fieldCode);
   const url = _links?.self.href ?? "";
-  const [dictionary, loading] = useFetch<DictionaryProps>({
+  const [{ values: options }, loading] = useFetch<DictionaryProps>({
     url,
     initial: {},
+    cache: true,
   });
-  const { dictionaryValueEntities: options = [] } = dictionary;
 
   const formatFunc = (value: string) =>
-    options.find((o) => o.valueCode === value)?.value ?? "";
+    options?.find((o) => o.valueCode === value)?.value ?? "";
 
   const style = { width: "100%" };
 
@@ -61,10 +66,12 @@ export const Dictionary: React.FC<FieldProps> = ({
         ) : (
           <Select
             placeholder={placeholder}
-            style={{ width: "100%" }}
+            style={{ width: "100%", ...validationStyle }}
             disabled={disabled}
+            suffixIcon={validationIcon}
+            onBlur={validationCallback}
           >
-            {options.map(({ id, value, valueCode }) => (
+            {options?.map(({ id, value, valueCode }) => (
               <Option key={id} value={valueCode}>
                 {value}
               </Option>

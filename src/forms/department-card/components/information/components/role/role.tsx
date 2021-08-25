@@ -3,12 +3,14 @@ import axios from "axios";
 import { Button, Popconfirm, Spin, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   ProfileInfoEntityProps,
   urls,
   USER_ROLES_ID,
   QueryProps,
   TOOLTIP_SHOW_DELAY,
+  State,
 } from "../../../../../../constants";
 import {
   getFullUrl,
@@ -42,6 +44,7 @@ export const Role: React.FC<RoleProps> = ({
 }) => {
   const [t] = useTranslation("departmentInformation");
   const { id: departmentId } = useParams<QueryProps>();
+  const userId = useSelector((state: State) => state.persist.profileInfo.id);
 
   const handleClickDelete = useCallback(
     async (id: string) => {
@@ -97,7 +100,7 @@ export const Role: React.FC<RoleProps> = ({
           fullName={fullName}
           phone={phone}
           email={email}
-          actions={getActions(id, isOwner?.UPDATE)}
+          actions={getActions(id, isOwner?.UPDATE && id !== userId)}
         />
       ))}
       {footer}

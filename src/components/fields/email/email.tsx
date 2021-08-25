@@ -3,7 +3,7 @@ import { Form, Input, Col, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
-import { checkEmail, getEmailLink } from "../../../utils";
+import { checkEmail, useValidationService, getEmailLink } from "../../../utils";
 
 import style from "./email.module.scss";
 import { MailIcon } from "../../../assets/icons";
@@ -17,7 +17,13 @@ export const Email = ({
   disabled = false,
   readonly = false,
   span = DEFAULT_FIELD_SPAN,
+  _links,
 }: FieldProps) => {
+  const {
+    validationCallback,
+    validationIcon,
+    validationStyle,
+  } = useValidationService(_links?.validation?.href ?? "", fieldCode);
   const [t] = useTranslation("fields");
   const [value, setValue] = useState("");
 
@@ -53,10 +59,12 @@ export const Email = ({
           <Readonly type="href" onClickLink={handleSend} />
         ) : (
           <Input
-            suffix={actionIcon}
+            suffix={validationIcon ?? actionIcon}
             autoComplete="off"
             placeholder={placeholder}
             disabled={disabled}
+            onBlur={validationCallback}
+            style={validationStyle}
           />
         )}
       </Form.Item>

@@ -1,12 +1,11 @@
 import React, { useCallback, useContext } from "react";
 import { Select } from "antd";
-import { useTranslation, withTranslation } from "react-i18next";
-import { flow } from "lodash";
-import { connect } from "react-redux";
-import { State, DictionaryProps } from "../../../../constants";
+import { useTranslation } from "react-i18next";
+import { DictionaryProps } from "../../../../constants";
 import { SearchFooter } from ".";
 import { TableActionsContext } from "../../utils";
 import { SearchComponentProps } from "../../constants";
+import { useFetch } from "../../../../utils";
 
 interface DictionarySearchProps extends SearchComponentProps {
   dictionaries: { [key: string]: DictionaryProps };
@@ -28,7 +27,6 @@ export const DictionarySearch: React.FC<DictionarySearchProps> = ({
   selectedKeys,
   confirm,
   clearFilters,
-  dictionaries,
 }) => {
   const { onSearchColumn } = useContext(TableActionsContext);
   const [t] = useTranslation("columnSearch");
@@ -45,8 +43,11 @@ export const DictionarySearch: React.FC<DictionarySearchProps> = ({
     onSearchColumn(searched, confirm, column);
   }, [onSearchColumn, searched, confirm, column]);
 
-  const options =
-    dictionaries?.[column.columnCode]?.dictionaryValueEntities ?? [];
+  const [{ values: options }, loading] = useFetch<DictionaryProps>({
+    url: column?._links?.self?.href ?? "",
+    initial: {},
+    cache: true,
+  });
 
   return (
     <div style={{ padding: 8 }}>
@@ -55,8 +56,9 @@ export const DictionarySearch: React.FC<DictionarySearchProps> = ({
         placeholder={t("placeholder.dictionary")}
         value={selectedKeys[0]}
         onChange={handleChange}
+        loading={loading}
       >
-        {options.map(({ value, valueCode }) => (
+        {options?.map(({ value, valueCode }) => (
           <Select.Option key={valueCode} value={valueCode}>
             {value}
           </Select.Option>
@@ -71,11 +73,4 @@ export const DictionarySearch: React.FC<DictionarySearchProps> = ({
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  dictionaries: state?.app?.dictionaries,
-});
-
-export default flow([
-  connect(mapStateToProps),
-  withTranslation(["columnSearch"]),
-])(DictionarySearch);
+export default DictionarySearch;
