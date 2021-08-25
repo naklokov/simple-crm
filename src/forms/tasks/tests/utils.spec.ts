@@ -2,10 +2,10 @@ import moment from "moment-timezone";
 import { renderHook } from "@testing-library/react-hooks";
 import * as reactRedux from "react-redux";
 import uuid from "uuid";
-import { DATE_FORMATS } from "../../../constants";
+import { DATE_FORMATS, SECONDARY_BACKGROUND_COLOR } from "../../../constants";
 
 import { useColumns, checkDaysEqual, getUpdatedColumns } from "../utils";
-import { ColumnTaskProps, DIVIDER_COLORS } from "../constants";
+import { ColumnTaskProps, DIVIDER_CLASS_NAMES } from "../constants";
 
 const dateSampleIso = "2080-07-30T15:00:58.475";
 const profileInfoId = "123";
@@ -19,7 +19,7 @@ const columns: ColumnTaskProps[] = [
     title: "Сегодня",
     date: moment().toISOString(),
     dateFormat: DATE_FORMATS.DATE_TIME,
-    dividerColor: "#FFFFFF",
+    dividerClassName: SECONDARY_BACKGROUND_COLOR,
     query: "ololo",
     reloadKey: "111",
     titleType: undefined,
@@ -28,7 +28,7 @@ const columns: ColumnTaskProps[] = [
     title: "Просроченные",
     date: null,
     dateFormat: DATE_FORMATS.DATE_TIME,
-    dividerColor: "#FFFFFF",
+    dividerClassName: SECONDARY_BACKGROUND_COLOR,
     query: "ololo",
     reloadKey: "222",
     titleType: undefined,
@@ -37,7 +37,7 @@ const columns: ColumnTaskProps[] = [
     title: moment(dateSampleIso).format(DATE_FORMATS.DATE),
     date: dateSampleIso,
     dateFormat: DATE_FORMATS.DATE_TIME,
-    dividerColor: "#FFFFFF",
+    dividerClassName: SECONDARY_BACKGROUND_COLOR,
     query: "ololo",
     reloadKey: "333",
     titleType: undefined,
@@ -112,7 +112,7 @@ test("useColumns date mode", () => {
     query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,"NOT_COMPLETED");entityData=JDATEBTWN=(taskEndDate,"${firstDate
       .startOf("day")
       .toISOString()}","${firstDate.endOf("day").toISOString()}")`,
-    dividerColor: DIVIDER_COLORS[0],
+    dividerClassName: DIVIDER_CLASS_NAMES[0],
     reloadKey: "1",
     title: firstDate.format(DATE_FORMATS.DATE),
     titleType: "secondary",
@@ -125,7 +125,7 @@ test("useColumns date mode", () => {
     query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,"NOT_COMPLETED");entityData=JDATEBTWN=(taskEndDate,"${secondDay
       .startOf("day")
       .toISOString()}","${secondDay.endOf("day").toISOString()}")`,
-    dividerColor: DIVIDER_COLORS[1],
+    dividerClassName: DIVIDER_CLASS_NAMES[1],
     reloadKey: "1",
     title: secondDay.format(DATE_FORMATS.DATE),
     titleType: undefined,
@@ -138,7 +138,7 @@ test("useColumns date mode", () => {
     query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,"NOT_COMPLETED");entityData=JDATEBTWN=(taskEndDate,"${thirdDay
       .startOf("day")
       .toISOString()}","${thirdDay.endOf("day").toISOString()}")`,
-    dividerColor: DIVIDER_COLORS[2],
+    dividerClassName: DIVIDER_CLASS_NAMES[2],
     reloadKey: "1",
     title: thirdDay.format(DATE_FORMATS.DATE),
     titleType: "secondary",
@@ -156,7 +156,7 @@ test("useColumns date mode (near today date)", () => {
     query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,"NOT_COMPLETED");entityData=JDATEBTWN=(taskEndDate,"${firstDate
       .startOf("day")
       .toISOString()}","${firstDate.endOf("day").toISOString()}")`,
-    dividerColor: DIVIDER_COLORS[0],
+    dividerClassName: DIVIDER_CLASS_NAMES[0],
     reloadKey: "1",
     title: firstDate.format(DATE_FORMATS.DATE),
     titleType: "secondary",
@@ -169,7 +169,7 @@ test("useColumns date mode (near today date)", () => {
     query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,"NOT_COMPLETED");entityData=JDATEBTWN=(taskEndDate,"${secondDay
       .startOf("day")
       .toISOString()}","${secondDay.endOf("day").toISOString()}")`,
-    dividerColor: DIVIDER_COLORS[1],
+    dividerClassName: DIVIDER_CLASS_NAMES[1],
     reloadKey: "1",
     title: secondDay.format(DATE_FORMATS.DATE),
     titleType: undefined,
@@ -182,7 +182,7 @@ test("useColumns date mode (near today date)", () => {
     query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,"NOT_COMPLETED");entityData=JDATEBTWN=(taskEndDate,"${thirdDay
       .startOf("day")
       .toISOString()}","${thirdDay.endOf("day").toISOString()}")`,
-    dividerColor: DIVIDER_COLORS[2],
+    dividerClassName: DIVIDER_CLASS_NAMES[2],
     reloadKey: "1",
     title: thirdDay.format(DATE_FORMATS.DATE),
     titleType: "secondary",
@@ -200,7 +200,7 @@ test("useColumns today mode", () => {
     query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,\"NOT_COMPLETED\");entityData=JDATEBTWN=(taskEndDate,\"${firstDate
       .startOf("day")
       .toISOString()}\",\"${firstDate.endOf("day").toISOString()}\")`,
-    dividerColor: DIVIDER_COLORS[0],
+    dividerClassName: DIVIDER_CLASS_NAMES[0],
     reloadKey: "1",
     title: "today.title",
     titleType: undefined,
@@ -213,7 +213,7 @@ test("useColumns today mode", () => {
     query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,\"NOT_COMPLETED\");entityData=JDATEBTWN=(taskEndDate,\"${secondDate
       .startOf("day")
       .toISOString()}\",\"${secondDate.endOf("day").toISOString()}\")`,
-    dividerColor: DIVIDER_COLORS[1],
+    dividerClassName: DIVIDER_CLASS_NAMES[1],
     reloadKey: "1",
     title: "tommorow.title",
     titleType: undefined,
@@ -224,7 +224,7 @@ test("useColumns today mode", () => {
     date: null,
     dateFormat: DATE_FORMATS.DATE_TIME,
     query: `userProfileId==${profileInfoId};entityData=JEQ=(taskStatus,\"NOT_COMPLETED\");entityData=JDATEBEFORE=(taskEndDate,\"${thirdDate.toISOString()}\")`,
-    dividerColor: DIVIDER_COLORS[2],
+    dividerClassName: DIVIDER_CLASS_NAMES[2],
     reloadKey: "1",
     title: "overdue.title",
     titleType: undefined,

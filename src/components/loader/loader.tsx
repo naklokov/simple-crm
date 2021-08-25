@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import style from "./loader.module.scss";
 import { State } from "../../constants";
 
-const Loader = () => {
+const Loader: React.FC = () => {
   const theme = useSelector((state: State) => state?.app?.theme);
   const themeStyle = theme === "dark" ? style.loaderDark : style.loaderLight;
 

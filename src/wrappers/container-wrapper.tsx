@@ -34,7 +34,7 @@ export const ContainerWrapper = ({ children }: ContainerWrapperProps) => {
   });
 
   useEffect(() => {
-    dispatch(setTheme("light"));
+    dispatch(setTheme("dark"));
     dispatch(setProfileInfo(profile));
     dispatch(setPermissions(credentials?.permissions ?? []));
   }, [credentials, profile, dispatch]);
