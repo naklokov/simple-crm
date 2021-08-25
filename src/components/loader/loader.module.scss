@@ -1,5 +1,5 @@
 /* Absolute Center Spinner */
-.loader {
+.loaderLight, .loaderDark {
   position: fixed;
   z-index: 999;
   height: 2em;
@@ -10,18 +10,21 @@
   left: 0;
   bottom: 0;
   right: 0;
+
+  &:before {
+    content: "";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(3px);
+  }
 }
 
 /* Transparent Overlay */
-.loader:before {
-  content: "";
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(3px);
+.loaderLight:before {
   background: radial-gradient(
     rgba(255, 255, 255, 0.9),
     rgba(255, 255, 255, 0.7)
@@ -30,5 +33,17 @@
   background: -webkit-radial-gradient(
     rgba(255, 255, 255, 0.9),
     rgba(255, 255, 255, 0.7)
+  );
+}
+
+.loaderLight:before {
+  background: radial-gradient(
+    rgba(1, 1, 1, 0.9),
+    rgba(1, 1, 1, 0.7)
+  );
+
+  background: -webkit-radial-gradient(
+    rgba(1, 1, 1, 0.9),
+    rgba(1, 1, 1, 0.7)
   );
 }
