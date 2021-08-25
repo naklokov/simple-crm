@@ -6,34 +6,6 @@
 @color-40: #2D2F34;
 @color-20: #383B40;
 
-.formWrapper {
-  border-radius: 4px;
-  padding: 16px;
-  margin: 24px;
-  background: @color-80;
-}
-
-// .background-100 {
-//   background-color: @color-100;
-// }
-
-// .background-80 {
-//   background-color: @color-80;
-// }
-
-// .background-60 {
-//   background-color: @color-60;
-// }
-
-// .background-40 {
-//   background-color: @color-40;
-// }
-
-// .background-20 {
-//   background-color: @color-20;
-// }
-
-
 @background-color-base: @color-100;
 @body-background: @color-100;
 @primary-color: fade(@blue-6, 75%);
@@ -44,6 +16,20 @@
 @layout-sider-background: @color-80;
 @table-header-bg: @color-60;
 @layout-body-background: @color-100;
+@card-head-background: @color-60;
+
+
+
+.form-wrapper {
+  border-radius: 4px;
+  padding: 16px;
+  margin: 24px;
+  background: @color-80;
+}
+
+.jivo-button {
+  background: @color-20;
+}
 
 .secondary {
   &-color {
@@ -51,7 +37,7 @@
   }
 
   &-background {
-    background: @color-60;
+    background: @color-60 !important;
   }
 }
 
@@ -61,7 +47,7 @@
   }
 
   &-background {
-    background: fade(@success-color, 75%);
+    background: fade(@success-color, 75%) !important;
   }
 }
 
@@ -71,7 +57,7 @@
   }
 
   &-background {
-    background: fade(@error-color, 75%);
+    background: fade(@error-color, 75%) !important;
   }
 }
 
@@ -81,7 +67,7 @@
   }
 
   &-background {
-    background: fade(@warning-color, 75%);
+    background: fade(@warning-color, 75%) !important;
   }
 }
 
@@ -91,6 +77,6 @@
   }
 
   &-background {
-    background: fade(@blue-6, 75%);
+    background: fade(@blue-6, 75%) !important;
   }
 }

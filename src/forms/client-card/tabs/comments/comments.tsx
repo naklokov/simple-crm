@@ -48,6 +48,8 @@ export const Comments = ({ profileInfo, formName }: CommentsProps) => {
   const [comments, fetchLoading, reload] = useFetch<CommentEntityProps[]>({
     url: urls.comments.entity,
     params: { query },
+    cache: true,
+    cacheMaxAge: "short",
   });
 
   const scrollToBottom = () => {

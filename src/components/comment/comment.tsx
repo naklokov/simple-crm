@@ -1,21 +1,13 @@
-import React, { useEffect, useState, useCallback } from "react";
-import axios from "axios";
+import React, { useState, useCallback } from "react";
 import { Comment as CommentUI, Typography, Skeleton } from "antd";
-import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
-import { noop, isEmpty } from "lodash";
+import { noop } from "lodash";
 import { Avatar } from "../avatar";
-import {
-  defaultErrorHandler,
-  getFullUrl,
-  getDateWithTimezone,
-} from "../../utils";
+import { getFullUrl, getDateWithTimezone, useFetch } from "../../utils";
 import {
   CommentEntityProps,
   urls,
   DATE_FORMATS,
   ProfileInfoEntityProps,
-  State,
 } from "../../constants";
 import { getActions, getContent } from "./utils";
 
@@ -23,23 +15,16 @@ const { Text } = Typography;
 
 interface CommentProps {
   comment: CommentEntityProps;
-  profileInfo: ProfileInfoEntityProps;
   onDeleteComment?: (id: string) => void;
   onEditComment?: (id: string, value: string) => void;
 }
 
 export const Comment: React.FC<CommentProps> = ({
   comment,
-  profileInfo,
   onDeleteComment = noop,
   onEditComment = noop,
 }) => {
-  const [loading, setLoading] = useState(false);
-  const [commentAuthor, setCommentAuthor] = useState(
-    {} as ProfileInfoEntityProps
-  );
   const [isEdit, setIsEdit] = useState(false);
-  const [t] = useTranslation("comment");
 
   const {
     id,
@@ -49,39 +34,17 @@ export const Comment: React.FC<CommentProps> = ({
     userProfileId = "",
   } = comment;
   const date = getDateWithTimezone(creationDate).format(DATE_FORMATS.DATE_TIME);
-
-  const fetchProfile = useCallback(async () => {
-    try {
-      setLoading(true);
-      const url = getFullUrl(urls.userProfiles.entity, userProfileId);
-      const response = await axios.get(url);
-      setCommentAuthor(response?.data ?? {});
-    } catch (error) {
-      defaultErrorHandler({
-        error,
-        defaultErrorMessage: t("comment.profile.error"),
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [t, userProfileId]);
-
-  useEffect(() => {
-    if (isEmpty(commentAuthor) && userProfileId) {
-      if (userProfileId === profileInfo.id) {
-        setCommentAuthor(profileInfo);
-        return;
-      }
-
-      fetchProfile();
-    }
-  }, [userProfileId, profileInfo, commentAuthor, fetchProfile]);
+  const url = getFullUrl(urls.userProfiles.entity, userProfileId);
+  const [commentAuthor, loading] = useFetch<ProfileInfoEntityProps>({
+    url,
+    cache: true,
+  });
 
   const handleDeleteComment = useCallback(() => {
     if (id) {
       onDeleteComment(id);
     }
-  }, [comment, id, onDeleteComment]);
+  }, [id, onDeleteComment]);
 
   const handleEditComment = useCallback(
     (value) => {
@@ -91,7 +54,7 @@ export const Comment: React.FC<CommentProps> = ({
         onEditComment(id, value);
       }
     },
-    [comment, isEdit, id, onEditComment]
+    [isEdit, id, onEditComment]
   );
 
   const content = getContent(isEdit, commentText, handleEditComment);
@@ -120,8 +83,4 @@ export const Comment: React.FC<CommentProps> = ({
   );
 };
 
-const mapStateToProps = (state: State) => ({
-  profileInfo: state?.persist?.profileInfo,
-});
-
-export default connect(mapStateToProps)(Comment);
+export default Comment;

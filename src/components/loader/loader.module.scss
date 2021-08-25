@@ -36,14 +36,14 @@
   );
 }
 
-.loaderLight:before {
+.loaderDark:before {
   background: radial-gradient(
-    rgba(1, 1, 1, 0.9),
-    rgba(1, 1, 1, 0.7)
+    rgba(39,41,45, 0.9),
+    rgba(39,41,45, 0.7)
   );
 
   background: -webkit-radial-gradient(
-    rgba(1, 1, 1, 0.9),
-    rgba(1, 1, 1, 0.7)
+    rgba(39,41,45, 0.9),
+    rgba(39,41,45, 0.7)
   );
 }

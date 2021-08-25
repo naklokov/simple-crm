@@ -26,7 +26,7 @@ export const About = () => {
   return (
     <>
       <ButtonLayout onClick={handleClick} tooltip={t("tooltip")}>
-        <QuestionIcon className={style.icon} />
+        <QuestionIcon colored={false} className={style.icon} />
       </ButtonLayout>
       <Modal visible={visible} onCancel={handleCancel} footer={null} centered>
         <Title level={5}>{t("title")}</Title>

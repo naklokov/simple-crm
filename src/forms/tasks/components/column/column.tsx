@@ -1,6 +1,7 @@
-import axios from "axios";
-import { Divider, List, Empty, Row } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
+import axios from "axios";
+import cn from "classnames";
+import { Divider, List, Empty, Row } from "antd";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroller";
 import { Card } from "..";
@@ -10,6 +11,7 @@ import {
   TASK_DATE_FIELD_CODE,
   TaskEntityProps,
   urls,
+  SECONDARY_COLOR,
 } from "../../../../constants";
 import { defaultErrorHandler } from "../../../../utils";
 import { ColumnTaskProps, INFINITY_SCROLL_STEP } from "../../constants";
@@ -30,7 +32,7 @@ export const Column = ({
   title,
   query,
   dateFormat,
-  dividerColor = "#ffffff",
+  dividerClassName = SECONDARY_COLOR,
   onComplete,
   onDelete,
   onView,
@@ -93,10 +95,7 @@ export const Column = ({
         <Title title={`${title} - ${count}`} />
         <Sort onSort={handleSort} />
       </Row>
-      <Divider
-        className={style.divider}
-        style={{ backgroundColor: dividerColor }}
-      />
+      <Divider className={cn(style.divider, dividerClassName)} />
       <InfiniteScroll
         initialLoad={false}
         pageStart={0}

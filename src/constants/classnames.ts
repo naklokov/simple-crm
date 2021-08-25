@@ -1,3 +1,5 @@
+export const FORM_WRAPPER = "form-wrapper";
+
 export const PRIMARY_COLOR = "primary-color";
 export const PRIMARY_BACKGROUND_COLOR = "primary-background";
 
@@ -12,3 +14,5 @@ export const ERROR_BACKGROUND_COLOR = "error-background";
 
 export const SECONDARY_COLOR = "secondary-color";
 export const SECONDARY_BACKGROUND_COLOR = "secondary-background";
+
+export const JIVO_BUTTON = "jivo-button";

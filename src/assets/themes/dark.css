@@ -4262,7 +4262,7 @@ a.ant-btn-sm {
   color: rgba(255, 255, 255, 0.85);
   font-weight: 500;
   font-size: 16px;
-  background: transparent;
+  background: #27292D;
   border-bottom: 1px solid #303030;
   border-radius: 2px 2px 0 0;
 }
@@ -25119,39 +25119,42 @@ div.ant-typography-edit-content.ant-typography-rtl {
   margin: 8px 0 0;
   padding: 0;
 }
-.formWrapper {
+.form-wrapper {
   border-radius: 4px;
   padding: 16px;
   margin: 24px;
   background: #1f2023;
 }
+.jivo-button {
+  background: #383B40;
+}
 .secondary-color {
   color: rgba(255, 255, 255, 0.45) !important;
 }
 .secondary-background {
-  background: #27292D;
+  background: #27292D !important;
 }
 .success-color {
   color: rgba(74, 171, 27, 0.75) !important;
 }
 .success-background {
-  background: rgba(74, 171, 27, 0.75);
+  background: rgba(74, 171, 27, 0.75) !important;
 }
 .error-color {
   color: rgba(170, 33, 41, 0.75) !important;
 }
 .error-background {
-  background: rgba(170, 33, 41, 0.75);
+  background: rgba(170, 33, 41, 0.75) !important;
 }
 .warning-color {
   color: rgba(217, 152, 22, 0.75) !important;
 }
 .warning-background {
-  background: rgba(217, 152, 22, 0.75);
+  background: rgba(217, 152, 22, 0.75) !important;
 }
 .primary-color {
   color: rgba(25, 127, 222, 0.75) !important;
 }
 .primary-background {
-  background: rgba(25, 127, 222, 0.75);
+  background: rgba(25, 127, 222, 0.75) !important;
 }

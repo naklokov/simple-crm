@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from "react";
 import { Spin } from "antd";
 import { useSelector } from "react-redux";
-import { State } from "../constants";
+import { FORM_WRAPPER, State } from "../constants";
 
 interface FormWrapperProps {
   children: React.ReactNode;
@@ -17,7 +17,7 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
   );
 
   return (
-    <div className="formWrapper">
+    <div className={FORM_WRAPPER}>
       <Spin spinning={loading}>{children}</Spin>
     </div>
   );

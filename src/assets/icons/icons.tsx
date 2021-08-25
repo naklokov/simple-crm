@@ -25,8 +25,13 @@ import {
 } from "@ant-design/icons";
 import { ArrowDirection } from "../../components/arrow/constants";
 
-import style from "./icons.module.scss";
-import { PRIMARY_COLOR, SUCCESS_COLOR } from "../../constants";
+import {
+  ERROR_COLOR,
+  PRIMARY_COLOR,
+  SECONDARY_COLOR,
+  SUCCESS_COLOR,
+  WARNING_COLOR,
+} from "../../constants";
 
 interface IconProps {
   className?: any;
@@ -56,7 +61,7 @@ export const MailIcon: React.FC<IconProps> = ({ onClick, className }) => (
 export const InfoIcon: React.FC<IconProps> = ({
   className,
   onClick,
-  colored,
+  colored = true,
 }) => (
   <InfoCircleOutlined
     onClick={onClick}
@@ -64,10 +69,14 @@ export const InfoIcon: React.FC<IconProps> = ({
   />
 );
 
-export const QuestionIcon: React.FC<IconProps> = ({ className, onClick }) => (
+export const QuestionIcon: React.FC<IconProps> = ({
+  className,
+  onClick,
+  colored = true,
+}) => (
   <QuestionCircleOutlined
     onClick={onClick}
-    className={cn(className, style.question)}
+    className={cn(className, { [SECONDARY_COLOR]: colored })}
   />
 );
 
@@ -78,22 +87,33 @@ export const DeleteIcon: React.FC<IconProps> = ({
 }) => (
   <DeleteOutlined
     onClick={onClick}
-    className={cn(className, { [style.delete]: colored })}
+    className={cn(className, { [ERROR_COLOR]: colored })}
   />
 );
 
 export const UserIcon: React.FC<IconProps> = ({ className, onClick }) => (
-  <UserOutlined onClick={onClick} className={cn(className, style)} />
+  <UserOutlined onClick={onClick} className={cn(className)} />
 );
 
-export const UserAddIcon: React.FC<IconProps> = ({ className, onClick }) => (
-  <UserAddOutlined onClick={onClick} className={cn(className, style.userAdd)} />
+export const UserAddIcon: React.FC<IconProps> = ({
+  className,
+  onClick,
+  colored = true,
+}) => (
+  <UserAddOutlined
+    onClick={onClick}
+    className={cn(className, { [PRIMARY_COLOR]: colored })}
+  />
 );
 
-export const ClockIcon: React.FC<IconProps> = ({ className, onClick }) => (
+export const ClockIcon: React.FC<IconProps> = ({
+  className,
+  onClick,
+  colored = true,
+}) => (
   <ClockCircleOutlined
     onClick={onClick}
-    className={cn(className, style.clock)}
+    className={cn(className, { [PRIMARY_COLOR]: colored })}
   />
 );
 
@@ -108,21 +128,36 @@ export const CheckIcon: React.FC<IconProps> = ({
   />
 );
 
-export const ViewIcon: React.FC<IconProps> = ({ className, onClick }) => (
-  <FormOutlined onClick={onClick} className={cn(className)} />
+export const ViewIcon: React.FC<IconProps> = ({
+  className,
+  onClick,
+  colored = true,
+}) => (
+  <FormOutlined
+    onClick={onClick}
+    className={cn(className, { [SECONDARY_COLOR]: colored })}
+  />
 );
 
-export const LockIcon: React.FC<IconProps> = ({ className, onClick }) => (
-  <LockOutlined onClick={onClick} className={cn(className, style.warning)} />
+export const LockIcon: React.FC<IconProps> = ({
+  className,
+  onClick,
+  colored = true,
+}) => (
+  <LockOutlined
+    onClick={onClick}
+    className={cn(className, { [WARNING_COLOR]: colored })}
+  />
 );
 
 export const NotificationWarning: React.FC<IconProps> = ({
   className,
   onClick,
+  colored = true,
 }) => (
   <NotificationOutlined
     onClick={onClick}
-    className={cn(className, style.warning)}
+    className={cn(className, { [WARNING_COLOR]: colored })}
   />
 );
 
