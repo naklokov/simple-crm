@@ -1,12 +1,11 @@
-import { Breadcrumb, Space, Tag, Typography } from "antd";
+import { Breadcrumb, Tag, Typography } from "antd";
 import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Skeleton } from "../../../../../../components";
 import {
   DepartmentEntityProps,
   FORM_NAMES,
-  QueryProps,
   urls,
 } from "../../../../../../constants";
 import { useFetch, getFullUrl, useFormValues } from "../../../../../../utils";

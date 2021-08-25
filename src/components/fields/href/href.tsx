@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { Form, Input, Col, Tooltip } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
@@ -6,7 +6,12 @@ import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
 
 import style from "./href.module.scss";
-import { openUrlTargetBlank } from "../../../utils";
+import {
+  FormContext,
+  openUrlTargetBlank,
+  useFormValues,
+  useValidationService,
+} from "../../../utils";
 
 const getPrefixedUrl = (value: string) =>
   /^(http|https|www):/.test(value) ? value : `http://${value}`;
@@ -20,9 +25,15 @@ export const Href = ({
   disabled = false,
   readonly = false,
   span = DEFAULT_FIELD_SPAN,
+  _links,
 }: FieldProps) => {
   const [t] = useTranslation("fields");
   const [value, setValue] = useState("");
+  const {
+    validationCallback,
+    validationIcon,
+    validationStyle,
+  } = useValidationService(_links?.validation?.href ?? "", fieldCode);
 
   const handleValueProps = useCallback((input: string) => {
     setValue(input);
@@ -57,7 +68,9 @@ export const Href = ({
           <Readonly type="href" onClickLink={handleClick} />
         ) : (
           <Input
-            suffix={actionIcon}
+            suffix={validationIcon ?? actionIcon}
+            style={validationStyle}
+            onBlur={validationCallback}
             autoComplete="off"
             placeholder={placeholder}
             disabled={disabled}

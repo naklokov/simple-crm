@@ -1,10 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { notification, Skeleton, Typography } from "antd";
+import { notification, Skeleton, Space, Typography } from "antd";
 import { History } from "history";
 import { ClientEntityProps, urls } from "../../../../constants";
 import { defaultErrorHandler, getFullUrl } from "../../../common";
 import { ClientsPersonalContext } from "../../../context";
+import { useClientTimeZone } from "../../../hooks";
 
 interface TitleProps {
   id: string;
@@ -22,6 +23,7 @@ export const Title: React.FC<TitleProps> = ({
   const [client, setClient] = useState({} as ClientEntityProps);
   const [loading, setLoading] = useState(false);
   const cachingClients = useContext(ClientsPersonalContext);
+  const { tzTag } = useClientTimeZone(client?.clientTimeZone);
 
   const fetchClient = async () => {
     try {
@@ -62,13 +64,16 @@ export const Title: React.FC<TitleProps> = ({
       {loading ? (
         skeleton
       ) : (
-        <Typography.Link
-          href={getFullUrl(urls.clients.path, clientId)}
-          onClick={handleClickCurrent}
-          target="_blank"
-        >
-          {client.shortName}
-        </Typography.Link>
+        <Space>
+          <Typography.Link
+            href={getFullUrl(urls.clients.path, clientId)}
+            onClick={handleClickCurrent}
+            target="_blank"
+          >
+            {client.shortName}
+          </Typography.Link>
+          {tzTag}
+        </Space>
       )}
     </>
   );
