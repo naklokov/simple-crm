@@ -1,4 +1,5 @@
 @import "node_modules/antd/dist/antd.dark.less";
+@import '../common/status-colors.less';
 
 @color-100: #010101;
 @color-80: #1f2023;
@@ -29,4 +30,9 @@
 
 .jivo-button {
   background: @color-20;
+}
+
+.highlight-fill {
+  padding: 0;
+  background: fade(@orange-8, 85%);
 }

@@ -1,5 +1,7 @@
 import React from "react";
 import Highlighter from "react-highlight-words";
+import { useSelector } from "react-redux";
+import { HIGHLIGHT_FILL, State } from "../constants";
 
 interface HighlightTextWrapperProps {
   text: string;
@@ -24,7 +26,7 @@ export const HighlightTextWrapper: React.FC<HighlightTextWrapperProps> = ({
 
   return (
     <Highlighter
-      highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+      highlightClassName={HIGHLIGHT_FILL}
       searchWords={searched}
       autoEscape
       textToHighlight={text ? text.toString() : ""}

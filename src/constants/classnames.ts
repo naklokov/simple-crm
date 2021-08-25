@@ -16,3 +16,4 @@ export const SECONDARY_COLOR = "secondary-color";
 export const SECONDARY_BACKGROUND_COLOR = "secondary-background";
 
 export const JIVO_BUTTON = "jivo-button";
+export const HIGHLIGHT_FILL = "highlight-fill";

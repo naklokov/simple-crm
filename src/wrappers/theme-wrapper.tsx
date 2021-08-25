@@ -1,9 +1,7 @@
 import React, { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { State } from "../constants";
-
-const LightTheme = React.lazy(() => import("../assets/themes/lightTheme"));
-const DarkTheme = React.lazy(() => import("../assets/themes/darkTheme"));
+import { DarkTheme, LightTheme } from "../assets/themes";
 
 interface ThemeWrapperProps {
   children: ReactNode;

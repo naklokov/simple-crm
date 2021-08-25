@@ -25119,15 +25119,6 @@ div.ant-typography-edit-content.ant-typography-rtl {
   margin: 8px 0 0;
   padding: 0;
 }
-.form-wrapper {
-  border-radius: 4px;
-  padding: 16px;
-  margin: 24px;
-  background: #1f2023;
-}
-.jivo-button {
-  background: #383B40;
-}
 .secondary-color {
   color: rgba(255, 255, 255, 0.45) !important;
 }
@@ -25157,4 +25148,17 @@ div.ant-typography-edit-content.ant-typography-rtl {
 }
 .primary-background {
   background: rgba(25, 127, 222, 0.75) !important;
+}
+.form-wrapper {
+  border-radius: 4px;
+  padding: 16px;
+  margin: 24px;
+  background: #1f2023;
+}
+.jivo-button {
+  background: #383B40;
+}
+.highlight-fill {
+  padding: 0;
+  background: rgba(244, 184, 102, 0.85);
 }
