@@ -1,7 +1,8 @@
 import React, { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { State } from "../constants";
-import { DarkTheme, LightTheme } from "../assets/themes";
+import LightTheme from "../assets/themes/lightTheme";
+import DarkTheme from "../assets/themes/darkTheme";
 
 interface ThemeWrapperProps {
   children: ReactNode;
