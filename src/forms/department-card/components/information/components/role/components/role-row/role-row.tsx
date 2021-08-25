@@ -1,9 +1,9 @@
 import React, { CSSProperties, ReactNode } from "react";
-import { Col, Row, Space, Spin } from "antd";
-import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
+import { Col, Row, Space } from "antd";
 import { useTranslation } from "react-i18next";
 import { Info, Person } from "./component";
 import { getConformedValue } from "../../../../../../../../utils";
+import { MailIcon, PhoneIcon } from "../../../../../../../../assets/icons";
 
 interface RoleRowProps {
   title: string;
@@ -31,7 +31,7 @@ export const RoleRow: React.FC<RoleRowProps> = ({
     <Row
       align="middle"
       wrap={false}
-      className="background-lightgray"
+      className="background-60"
       style={{
         padding: "8px 16px",
         ...style,
@@ -45,14 +45,14 @@ export const RoleRow: React.FC<RoleRowProps> = ({
           {phone && (
             <Col {...colSpan}>
               <Info
-                icon={<PhoneOutlined />}
+                icon={<PhoneIcon colored={false} />}
                 text={t("role.row.phone", { phone: conformedPhone })}
               />
             </Col>
           )}
           {email && (
             <Col {...colSpan}>
-              <Info icon={<MailOutlined />} text={email} />
+              <Info icon={<MailIcon />} text={email} />
             </Col>
           )}
         </Row>

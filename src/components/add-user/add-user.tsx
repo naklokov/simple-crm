@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react";
 import axios from "axios";
-import { UserAddOutlined } from "@ant-design/icons";
 import { Store } from "antd/es/form/interface";
 import { DrawerForm } from "../drawer-form";
 import {
@@ -16,6 +15,7 @@ import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 
 import style from "./add-user.module.scss";
 import { ButtonLayout } from "../button-layout";
+import { UserAddIcon } from "../../assets/icons";
 
 const AddUser = () => {
   const [visible, setVisible] = useState(false);
@@ -54,7 +54,7 @@ const AddUser = () => {
     >
       <>
         <ButtonLayout tooltip={TITLE} onClick={handleClick}>
-          <UserAddOutlined className={style.icon} />
+          <UserAddIcon className={style.icon} />
         </ButtonLayout>
         <DrawerForm
           fields={FIELDS}

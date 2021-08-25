@@ -1,16 +1,9 @@
 import React from "react";
-import { Card, Menu, Typography } from "antd";
-import {
-  UserOutlined,
-  CalendarOutlined,
-  ClusterOutlined,
-  RightOutlined,
-} from "@ant-design/icons";
-
 import { urls } from ".";
 import { logo } from "../assets/img";
 import { PERMISSIONS_SET } from "./permissions";
 import { MenuItemProps } from "./interfaces";
+import { CalendarIcon, UserIcon, DepartmentsIcon } from "../assets/icons";
 
 export const LOGO = logo;
 
@@ -19,7 +12,7 @@ export const MENU_ITEMS: MenuItemProps[] = [
     id: "clients",
     title: "Клиенты",
     type: "link",
-    icon: <UserOutlined />,
+    icon: <UserIcon />,
     permissions: PERMISSIONS_SET.CLIENT_GET,
     url: urls.clients.path,
   },
@@ -27,7 +20,7 @@ export const MENU_ITEMS: MenuItemProps[] = [
     id: "tasks",
     title: "Задачи",
     type: "link",
-    icon: <CalendarOutlined />,
+    icon: <CalendarIcon colored={false} />,
     permissions: PERMISSIONS_SET.TASK_GET,
     url: urls.tasks.path,
   },
@@ -35,7 +28,7 @@ export const MENU_ITEMS: MenuItemProps[] = [
     id: "departments",
     title: "Отделы",
     type: "drawer",
-    icon: <ClusterOutlined />,
+    icon: <DepartmentsIcon />,
     permissions: PERMISSIONS_SET.DEPARTMENTS_GET,
   },
 ];

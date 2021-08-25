@@ -1,7 +1,7 @@
-import { DeleteTwoTone } from "@ant-design/icons";
 import { Button, Popconfirm } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { DeleteIcon } from "../../../../assets/icons";
 import { ClientEntityProps, FORM_NAMES } from "../../../../constants";
 import { useFormValues } from "../../../../utils";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
@@ -20,9 +20,7 @@ export const Delete = ({ onClick }: DeleteProps) => {
         onConfirm={onClick}
         placement="left"
       >
-        <Button icon={<DeleteTwoTone twoToneColor="#f5222d" />}>
-          {t("button.delete")}
-        </Button>
+        <Button icon={<DeleteIcon />}>{t("button.delete")}</Button>
       </Popconfirm>
     </ComponentPermissionsChecker>
   );

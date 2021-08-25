@@ -2,12 +2,6 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import cn from "classnames";
 import axios from "axios";
 import {
-  CheckOutlined,
-  ClockCircleTwoTone,
-  DeleteOutlined,
-  FormOutlined,
-} from "@ant-design/icons";
-import {
   Card as CardUI,
   Popconfirm,
   Skeleton,
@@ -17,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { stringify } from "query-string";
+import { useSelector } from "react-redux";
 import {
   TASK_TYPES_MAP,
   urls,
@@ -24,6 +19,7 @@ import {
   TaskEntityProps,
   DATE_FORMATS,
   TOOLTIP_SHOW_DELAY,
+  State,
 } from "../../../../constants";
 import {
   ClientsPersonalContext,
@@ -33,6 +29,12 @@ import {
 } from "../../../../utils";
 
 import style from "./card.module.scss";
+import {
+  CheckIcon,
+  ClockIcon,
+  DeleteIcon,
+  ViewIcon,
+} from "../../../../assets/icons";
 
 const { Paragraph, Text } = Typography;
 
@@ -53,6 +55,7 @@ export const Card: React.FC<CardProps> = ({
   onView,
   title = "",
 }) => {
+  const theme = useSelector((state: State) => state?.app?.theme);
   const [t] = useTranslation("card");
   const [client, setClient] = useState({} as ClientEntityProps);
   const [loading, setLoading] = useState(false);
@@ -90,7 +93,7 @@ export const Card: React.FC<CardProps> = ({
 
   const extra = date ? (
     <div>
-      <ClockCircleTwoTone />
+      <ClockIcon />
       <Text strong style={{ marginLeft: "4px" }}>
         {getDateWithTimezone(date).format(dateFormat)}
       </Text>
@@ -115,19 +118,17 @@ export const Card: React.FC<CardProps> = ({
       mouseEnterDelay={TOOLTIP_SHOW_DELAY}
       title={t("tooltip.complete")}
     >
-      <CheckOutlined
-        className={cn(style.complete, style.hovered)}
-        onClick={handleComplete}
-      />
+      <CheckIcon className={style.hovered} onClick={handleComplete} />
     </Tooltip>,
     <Tooltip
       key="view"
       mouseEnterDelay={TOOLTIP_SHOW_DELAY}
       title={t("tooltip.edit")}
     >
-      <FormOutlined
-        className={cn(style.view, style.hovered)}
+      <ViewIcon
+        className={style.hovered}
         onClick={handleView}
+        colored={theme === "light"}
       />
     </Tooltip>,
     <Tooltip
@@ -136,7 +137,7 @@ export const Card: React.FC<CardProps> = ({
       title={t("tooltip.delete")}
     >
       <Popconfirm title={t("delete.confirm")} onConfirm={handleDelete}>
-        <DeleteOutlined className={cn(style.delete, style.hovered)} />
+        <DeleteIcon className={style.hovered} />
       </Popconfirm>
     </Tooltip>,
   ];

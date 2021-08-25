@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import axios from "axios";
 import { Tabs } from "antd";
-import { UserOutlined } from "@ant-design/icons";
 
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -28,6 +27,7 @@ import {
 } from "../../utils";
 import { FormHeader, Skeleton } from "../../components";
 import { setFormLoading } from "../../__data__";
+import { UserIcon } from "../../assets/icons";
 
 interface FormProps {
   formName: string;
@@ -95,7 +95,7 @@ export const Profile = () => {
   const avatar = {
     size: 64,
     src: userProfile.avatar,
-    icon: userProfile?.id ? <UserOutlined /> : <Skeleton.Avatar size="large" />,
+    icon: userProfile?.id ? <UserIcon /> : <Skeleton.Avatar size="large" />,
   };
 
   const Form = formsMap[activeTab?.tabCode];

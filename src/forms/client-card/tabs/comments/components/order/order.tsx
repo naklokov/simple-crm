@@ -1,7 +1,8 @@
 import React, { FC } from "react";
 import { Button, Dropdown, Menu, Space } from "antd";
-import { DownOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import style from "./order.module.scss";
+import { DownIcon } from "../../../../../../assets/icons";
 
 type TDirection = "asc" | "desc";
 
@@ -33,7 +34,7 @@ const Order: FC<Props> = ({ value, onChange }) => {
       <Button type="link" style={{ padding: 0 }}>
         <Space size="small">
           {orderLabel}
-          <DownOutlined style={{ fontSize: "10px" }} />
+          <DownIcon className={style.icon} />
         </Space>
       </Button>
     </Dropdown>

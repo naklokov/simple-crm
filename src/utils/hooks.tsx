@@ -8,7 +8,6 @@ import { History } from "history";
 import { Button, Col, Row, Select, Space, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { TableRowSelection } from "antd/lib/table/interface";
-import { DeleteOutlined } from "@ant-design/icons";
 import { xor } from "lodash";
 import { defaultErrorHandler, pluralize } from "./common";
 import {
@@ -21,6 +20,7 @@ import {
 } from "../constants";
 import { updateForm } from "../__data__";
 import { getRsqlParams } from "./rsql";
+import { DeleteIcon } from "../assets/icons";
 
 interface FetchProps {
   url: string;
@@ -290,7 +290,7 @@ export const useSelectableFooter = ({
             {t("button.reset")}
           </Button>
           {onDelete && (
-            <Button icon={<DeleteOutlined />} onClick={handleDelete}>
+            <Button icon={<DeleteIcon />} onClick={handleDelete}>
               {t("button.delete")}
             </Button>
           )}

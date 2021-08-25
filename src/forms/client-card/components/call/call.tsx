@@ -1,7 +1,7 @@
-import { PhoneTwoTone } from "@ant-design/icons";
-import { Button, Popconfirm } from "antd";
 import React from "react";
+import { Button, Popconfirm } from "antd";
 import { useTranslation } from "react-i18next";
+import { PhoneIcon } from "../../../../assets/icons";
 import { ClientEntityProps, FORM_NAMES } from "../../../../constants";
 import { useFormValues } from "../../../../utils";
 import { ComponentPermissionsChecker } from "../../../../wrappers";
@@ -21,9 +21,7 @@ export const Call = ({ onClick }: CallProps) => {
         onConfirm={onClick}
         placement="left"
       >
-        <Button icon={<PhoneTwoTone twoToneColor="#52c41a" />}>
-          {t("button.call")}
-        </Button>
+        <Button icon={<PhoneIcon />}>{t("button.call")}</Button>
       </Popconfirm>
     </ComponentPermissionsChecker>
   );

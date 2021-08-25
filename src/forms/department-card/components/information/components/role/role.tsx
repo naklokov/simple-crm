@@ -1,6 +1,5 @@
 import React, { ReactNode, useCallback, useMemo } from "react";
 import axios from "axios";
-import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Popconfirm, Spin, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -18,6 +17,7 @@ import {
 } from "../../../../../../utils";
 import { ComponentPermissionsChecker } from "../../../../../../wrappers";
 import { RoleRow } from "./components";
+import { DeleteIcon } from "../../../../../../assets/icons";
 
 interface RoleProps {
   drawer: ReactNode;
@@ -77,7 +77,7 @@ export const Role: React.FC<RoleProps> = ({
             placement="topRight"
             title={t("actions.delete.tooltip")}
           >
-            <Button type="link" icon={<DeleteOutlined />} />
+            <Button type="link" icon={<DeleteIcon colored={false} />} />
           </Tooltip>
         </Popconfirm>
       </ComponentPermissionsChecker>

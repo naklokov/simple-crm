@@ -12,6 +12,8 @@ interface ThemeWrapperProps {
 export const ThemeWrapper: React.FC<ThemeWrapperProps> = ({ children }) => {
   const theme = useSelector((state: State) => state?.app?.theme);
 
+  console.log(theme);
+
   return (
     <>
       <React.Suspense fallback={<></>}>

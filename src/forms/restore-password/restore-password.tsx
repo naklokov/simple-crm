@@ -1,22 +1,18 @@
 import React, { useEffect, SyntheticEvent, useState } from "react";
 import axios from "axios";
 import { Form as FormUI, Input, Button, message } from "antd";
-import { LockOutlined } from "@ant-design/icons";
-
 import { useTranslation } from "react-i18next";
 
 import { useHistory } from "react-router-dom";
 import { Store } from "antd/lib/form/interface";
-import { connect } from "react-redux";
-import { Dispatch } from "@reduxjs/toolkit";
 import style from "./restore-password.module.scss";
 import { urls } from "../../constants";
 import { FIELDS, FORM_NAME } from "./constants";
 import { defaultErrorHandler, defaultSuccessHandler } from "../../utils";
 
 import { getRules, checkEqualPasswords, checkToken, getToken } from "./utils";
-import * as actions from "../../__data__";
 import { LoginHeader } from "../../components";
+import { LockIcon } from "../../assets/icons";
 
 const { Item } = FormUI;
 const token = getToken();
@@ -68,7 +64,7 @@ export const RestorePassword = ({ setLoading }: RestorePasswordProps) => {
         <Item name={FIELDS.PASSWORD} rules={rules.password}>
           <Input.Password
             className={style.password}
-            prefix={<LockOutlined />}
+            prefix={<LockIcon />}
             type="password"
             placeholder={t("placeholder.password")}
           />
@@ -76,7 +72,7 @@ export const RestorePassword = ({ setLoading }: RestorePasswordProps) => {
         <Item name={FIELDS.PASSWORD_CONFIRM} rules={rules.password}>
           <Input.Password
             className={style.passwordConfirm}
-            prefix={<LockOutlined />}
+            prefix={<LockIcon />}
             type="password"
             placeholder={t("placeholder.password.confirm")}
           />

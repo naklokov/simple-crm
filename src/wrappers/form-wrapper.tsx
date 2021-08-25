@@ -17,7 +17,7 @@ export const FormWrapper: React.FC<FormWrapperProps> = ({
   );
 
   return (
-    <div className="formWrapper background-white">
+    <div className="formWrapper background-80">
       <Spin spinning={loading}>{children}</Spin>
     </div>
   );

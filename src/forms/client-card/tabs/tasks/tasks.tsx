@@ -2,7 +2,6 @@ import React, { useState, useCallback, useMemo, useEffect } from "react";
 import axios from "axios";
 import moment from "moment-timezone";
 import { Tabs, Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { isEmpty } from "lodash";
@@ -35,6 +34,7 @@ import {
 } from "../../../../drawers";
 import { ComponentPermissionsChecker, FormWrapper } from "../../../../wrappers";
 import { setTableLoading } from "../../../../__data__";
+import { PlusIcon } from "../../../../assets/icons";
 
 const { TabPane } = Tabs;
 
@@ -226,7 +226,7 @@ export const Tasks = ({ tab, formName }: TabPaneFormProps) => {
             left: (
               <ComponentPermissionsChecker hasRight={client?.isOwner?.UPDATE}>
                 <Button
-                  icon={<PlusOutlined />}
+                  icon={<PlusIcon />}
                   onClick={handleAddClick}
                   className={style.button}
                 />

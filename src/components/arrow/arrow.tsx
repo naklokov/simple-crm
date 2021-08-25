@@ -1,17 +1,14 @@
 import React from "react";
-import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
-import { ArrowType, ARROW_COLOR } from "./constants";
+import { ArrowType } from "./constants";
+import { ArrowIcon } from "../../assets/icons";
 
-const Arrow: React.FC<ArrowType> = ({ direction, isActive }) => {
-  const color = isActive ? ARROW_COLOR.ACTIVE : ARROW_COLOR.DEFAULT;
-  switch (direction) {
-    case "up":
-      return <CaretUpOutlined style={{ color }} />;
-    case "down":
-      return <CaretDownOutlined style={{ color }} />;
-    default:
-      return null;
-  }
-};
+import style from "./arrow.module.scss";
+
+const Arrow: React.FC<ArrowType> = ({ direction, isActive }) => (
+  <ArrowIcon
+    direction={direction}
+    className={isActive ? style.active : style.default}
+  />
+);
 
 export default Arrow;

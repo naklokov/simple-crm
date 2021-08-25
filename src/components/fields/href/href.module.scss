@@ -1,3 +1,5 @@
+@import '../../../assets/styles/colors';
+
 .icon:hover {
-  color: #1890ff;
+  color: var(--primary-color);
 }

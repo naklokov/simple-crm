@@ -1,9 +1,9 @@
 import React, { useCallback, useContext } from "react";
 import { Button, Space } from "antd";
 import { useTranslation } from "react-i18next";
-import { SearchOutlined } from "@ant-design/icons";
 import { TableActionsContext } from "../../utils";
 import { ColumnProps } from "../../../../constants";
+import { SearchIcon } from "../../../../assets/icons";
 
 interface FooterProps {
   column: ColumnProps;
@@ -35,7 +35,7 @@ export const Footer: React.FC<FooterProps> = ({
       <Button
         type="primary"
         onClick={onSearch}
-        icon={<SearchOutlined />}
+        icon={<SearchIcon />}
         size="small"
         style={{ width: 90 }}
       >

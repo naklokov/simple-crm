@@ -1,7 +1,6 @@
 import React, { SyntheticEvent, useState, useEffect } from "react";
 import axios from "axios";
 import { Form as FormUI, Input, Button, Checkbox } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
 import { useTranslation } from "react-i18next";
 
@@ -17,6 +16,7 @@ import { FORM_NAME, FIELDS } from "./constants";
 import { getRules, getInitialValues } from "./utils";
 import { setAuth as setAuthAction } from "../../__data__";
 import { LoginHeader } from "../../components";
+import { LockIcon, UserIcon } from "../../assets/icons";
 
 const { Item } = FormUI;
 
@@ -92,14 +92,14 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
         >
           <Input
             className={style.username}
-            prefix={<UserOutlined />}
+            prefix={<UserIcon />}
             placeholder={t("placeholder.username")}
           />
         </Item>
         <Item name={FIELDS.PASSWORD} rules={rules.password}>
           <Input.Password
             className={style.password}
-            prefix={<LockOutlined />}
+            prefix={<LockIcon />}
             type="password"
             placeholder={t("placeholder.password")}
           />

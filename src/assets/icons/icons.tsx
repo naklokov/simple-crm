@@ -1,17 +1,153 @@
 import React from "react";
+import cn from "classnames";
 import {
-  InfoCircleTwoTone,
-  NotificationTwoTone,
-  PhoneTwoTone,
+  BellOutlined,
+  CalendarOutlined,
+  CaretDownOutlined,
+  CaretUpOutlined,
+  CheckOutlined,
+  ClockCircleOutlined,
+  ClusterOutlined,
+  DeleteOutlined,
+  DownOutlined,
+  FormOutlined,
+  InfoCircleOutlined,
+  LinkOutlined,
+  LockOutlined,
+  MailOutlined,
+  NotificationOutlined,
+  PhoneOutlined,
+  PlusOutlined,
+  QuestionCircleOutlined,
+  SearchOutlined,
+  UserAddOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
+import { ArrowDirection } from "../../components/arrow/constants";
 
-export const PhoneColored = () => <PhoneTwoTone twoToneColor="#52c41a" />;
+import style from "./icons.module.scss";
 
-export const InfoIcon = () => <InfoCircleTwoTone twoToneColor="#1890ff" />;
+interface IconProps {
+  className?: any;
+  onClick?: () => void;
+  colored?: boolean;
+}
 
-export const NotificationWarning = () => (
-  <NotificationTwoTone twoToneColor="#faad14" />
+interface ArrowIconProps extends IconProps {
+  direction: ArrowDirection;
+}
+
+export const PhoneIcon: React.FC<IconProps> = ({
+  className,
+  onClick,
+  colored = true,
+}) => (
+  <PhoneOutlined
+    onClick={onClick}
+    className={cn(className, { [style.phone]: colored })}
+  />
 );
+
+export const MailIcon: React.FC<IconProps> = ({ onClick, className }) => (
+  <MailOutlined onClick={onClick} className={cn(className)} />
+);
+
+export const InfoIcon: React.FC<IconProps> = ({ className, onClick }) => (
+  <InfoCircleOutlined onClick={onClick} className={cn(className, style.info)} />
+);
+
+export const QuestionIcon: React.FC<IconProps> = ({ className, onClick }) => (
+  <QuestionCircleOutlined
+    onClick={onClick}
+    className={cn(className, style.question)}
+  />
+);
+
+export const DeleteIcon: React.FC<IconProps> = ({
+  className,
+  onClick,
+  colored = true,
+}) => (
+  <DeleteOutlined
+    onClick={onClick}
+    className={cn(className, { [style.delete]: colored })}
+  />
+);
+
+export const UserIcon: React.FC<IconProps> = ({ className, onClick }) => (
+  <UserOutlined onClick={onClick} className={cn(className, style)} />
+);
+
+export const UserAddIcon: React.FC<IconProps> = ({ className, onClick }) => (
+  <UserAddOutlined onClick={onClick} className={cn(className, style.userAdd)} />
+);
+
+export const ClockIcon: React.FC<IconProps> = ({ className, onClick }) => (
+  <ClockCircleOutlined
+    onClick={onClick}
+    className={cn(className, style.clock)}
+  />
+);
+
+export const CheckIcon: React.FC<IconProps> = ({ className, onClick }) => (
+  <CheckOutlined onClick={onClick} className={cn(className, style.check)} />
+);
+
+export const ViewIcon: React.FC<IconProps> = ({ className, onClick }) => (
+  <FormOutlined onClick={onClick} className={cn(className)} />
+);
+
+export const LockIcon: React.FC<IconProps> = ({ className, onClick }) => (
+  <LockOutlined onClick={onClick} className={cn(className, style.warning)} />
+);
+
+export const NotificationWarning: React.FC<IconProps> = ({
+  className,
+  onClick,
+}) => (
+  <NotificationOutlined
+    onClick={onClick}
+    className={cn(className, style.warning)}
+  />
+);
+
+export const CalendarIcon: React.FC<IconProps> = ({ className, onClick }) => (
+  <CalendarOutlined onClick={onClick} className={cn(className)} />
+);
+
+export const DownIcon: React.FC<IconProps> = ({ className, onClick }) => (
+  <DownOutlined onClick={onClick} className={cn(className)} />
+);
+
+export const PlusIcon: React.FC<IconProps> = ({ className, onClick }) => (
+  <PlusOutlined onClick={onClick} className={cn(className)} />
+);
+
+export const SearchIcon: React.FC<IconProps> = ({ className, onClick }) => (
+  <SearchOutlined onClick={onClick} className={cn(className)} />
+);
+
+export const BellIcon: React.FC<IconProps> = ({ className, onClick }) => (
+  <BellOutlined onClick={onClick} className={cn(className)} />
+);
+
+export const DepartmentsIcon: React.FC<IconProps> = ({
+  className,
+  onClick,
+}) => <ClusterOutlined onClick={onClick} className={cn(className)} />;
+
+export const LinkIcon: React.FC<IconProps> = ({ className, onClick }) => (
+  <LinkOutlined onClick={onClick} className={cn(className)} />
+);
+
+export const ArrowIcon: React.FC<ArrowIconProps> = ({
+  direction,
+  className,
+  onClick,
+}) => {
+  const Icon = direction === "up" ? CaretUpOutlined : CaretDownOutlined;
+  return <Icon onClick={onClick} className={cn(className)} />;
+};
 
 export const SupportIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="-4.5 -4.5 35 35">

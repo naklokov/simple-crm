@@ -4,7 +4,6 @@ import axios from "axios";
 import { BackTop, Button, Col, Row } from "antd";
 import { useTranslation } from "react-i18next";
 import { isEmpty } from "lodash";
-import { CalendarOutlined } from "@ant-design/icons";
 import { TasksHeader } from ".";
 import { Calendar, Column } from "./components";
 
@@ -34,6 +33,7 @@ import {
   FormWrapper,
   PagePermissionsChecker,
 } from "../../wrappers";
+import { CalendarIcon } from "../../assets/icons";
 
 const {
   TASKS: { drawers },
@@ -139,7 +139,7 @@ export const Tasks = () => {
     <>
       <Calendar
         title={t("calendar.title")}
-        icon={<CalendarOutlined />}
+        icon={<CalendarIcon />}
         selectedDate={selectedDate}
         onChange={handleChangeDate}
       />

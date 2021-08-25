@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { Badge, Popover, Collapse, Typography } from "antd";
-import { BellOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import {
   useNotificationService,
@@ -8,6 +7,9 @@ import {
 } from "../../utils/notification-service";
 import { ButtonLayout } from "../button-layout";
 import { ButtonSecondary, NotificationList } from "./components";
+
+import style from "./notifications.module.scss";
+import { BellIcon } from "../../assets/icons";
 
 const { Panel } = Collapse;
 
@@ -113,7 +115,7 @@ const Notifications = () => {
         arrowPointAtCenter
       >
         <Badge count={unreadNotifications.length}>
-          <BellOutlined style={{ fontSize: "24px" }} />
+          <BellIcon className={style.icon} />
         </Badge>
       </Popover>
     </ButtonLayout>

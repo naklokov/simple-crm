@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Form as FormUI, Input, Button } from "antd";
-import { UserOutlined } from "@ant-design/icons";
 
 import { useTranslation } from "react-i18next";
 
@@ -14,6 +13,7 @@ import { FORM_NAME, FIELDS } from "./constants";
 
 import { getRules, getInitialValues } from "./utils";
 import { LoginHeader } from "../../components";
+import { UserIcon } from "../../assets/icons";
 
 const { Item } = FormUI;
 
@@ -54,7 +54,7 @@ export const ForgotPassword = () => {
         >
           <Input
             className={style.username}
-            prefix={<UserOutlined />}
+            prefix={<UserIcon />}
             placeholder={t("placeholder.username")}
           />
         </Item>

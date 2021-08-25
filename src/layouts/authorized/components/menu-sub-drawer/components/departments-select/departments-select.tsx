@@ -92,7 +92,7 @@ export const DepartmentsSelect = () => {
     <>
       <SearchBar
         style={{ padding: "16px 24px" }}
-        className="background-gray"
+        className="background-60"
         value={value}
         onChange={handleChange}
         onSearch={handleSearch}

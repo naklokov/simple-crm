@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { HighlightTextWrapper } from "../../../../wrappers";
 import { SearchedAllContext, SearchedColumnsContext } from "../../utils";
 import { ColumnProps, RecordType, State } from "../../../../constants";
+import { getEmailLink } from "../../../../utils";
 
 interface EmailProps {
   mail: string;
@@ -18,7 +19,7 @@ export const Email: React.FC<EmailProps> = ({ mail, column }) => {
   const searchedColumns = useContext<RecordType>(SearchedColumnsContext);
 
   const handleCall = useCallback(() => {
-    window.location.assign(`mailto:${mail}`);
+    window.location.assign(getEmailLink(mail));
   }, [mail]);
 
   return (

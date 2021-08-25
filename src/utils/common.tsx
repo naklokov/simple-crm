@@ -320,3 +320,5 @@ export const callAfterDelay = (() => {
     }, delay);
   };
 })();
+
+export const getEmailLink = (value: string) => `mailto:${value}`;

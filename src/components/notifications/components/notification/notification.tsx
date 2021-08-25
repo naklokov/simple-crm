@@ -1,11 +1,11 @@
 import React, { ReactNode, useCallback } from "react";
 import { List } from "antd";
 import { useTranslation } from "react-i18next";
-import { BellOutlined } from "@ant-design/icons";
 import { NotificationProps } from "../../../../constants";
 import { ButtonSecondary } from "../button-secondary";
 
 import style from "./notification.module.scss";
+import { BellIcon } from "../../../../assets/icons";
 
 interface NotificationComponentProps extends NotificationProps {
   icon?: ReactNode;
@@ -16,7 +16,7 @@ interface NotificationComponentProps extends NotificationProps {
 
 const Notification: React.FC<NotificationComponentProps> = ({
   id,
-  icon = <BellOutlined />,
+  icon = <BellIcon />,
   title,
   content,
   onHide,

@@ -1,13 +1,42 @@
 @import "node_modules/antd/dist/antd.dark.less";
 
+@color-100: #010101;
+@color-80: #1f2023;
+@color-60: #27292D;
+@color-40: #2D2F34;
+@color-20: #383B40;
+
 .formWrapper {
   border-radius: 4px;
   padding: 16px;
   margin: 24px;
 }
 
-.background-white {
-  background-color: rgba(255, 255, 255, 0.75);
+.background-100 {
+  background-color: @color-100;
 }
 
+.background-80 {
+  background-color: @color-80;
+}
+
+.background-60 {
+  background-color: @color-60;
+}
+
+.background-40 {
+  background-color: @color-40;
+}
+
+.background-20 {
+  background-color: @color-20;
+}
+
+@primary-color: rgb(25, 127, 222, .65);
+@text-color: rgba(255, 255, 255, .65);
 @page-header-tabs-tab-font-size: 14px;
+@component-background: @color-80;
+@layout-header-background: @color-80;
+@layout-sider-background: @color-80;
+@table-header-bg: rgba()#27292D;
+@layout-body-background: @color-100;

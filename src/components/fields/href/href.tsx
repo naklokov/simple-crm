@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from "react";
 import { Form, Input, Col, Tooltip } from "antd";
-import { LinkOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
 
 import style from "./href.module.scss";
 import { openUrlTargetBlank } from "../../../utils";
+import { LinkIcon } from "../../../assets/icons";
 
 const getPrefixedUrl = (value: string) =>
   /^(http|https|www):/.test(value) ? value : `http://${value}`;
@@ -36,7 +36,7 @@ export const Href = ({
 
   const actionIcon = value ? (
     <Tooltip title={t("href.tooltip")}>
-      <LinkOutlined onClick={handleClick} className={style.icon} />
+      <LinkIcon onClick={handleClick} className={style.icon} />
     </Tooltip>
   ) : (
     <div />

@@ -40,7 +40,10 @@ const JivoSupport: React.FC = () => {
         [style.hiddenSupport]: isOpen,
       })}
     >
-      <Typography.Link className={style.supportBtn} onClick={handleOpen}>
+      <Typography.Link
+        className={cn(style.supportBtn, "background-40")}
+        onClick={handleOpen}
+      >
         <SupportIcon />
       </Typography.Link>
     </Space>

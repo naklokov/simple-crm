@@ -1,14 +1,12 @@
 import React, { useCallback, useState } from "react";
 import { Form, Input, Col, Tooltip } from "antd";
-import { MailOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { DEFAULT_FIELD_SPAN, FieldProps } from "../../../constants";
 import { Readonly } from "../readonly";
-import { checkEmail } from "../../../utils";
+import { checkEmail, getEmailLink } from "../../../utils";
 
 import style from "./email.module.scss";
-
-const getEmailLink = (value: string) => `mailto:${value}`;
+import { MailIcon } from "../../../assets/icons";
 
 export const Email = ({
   fieldCode,
@@ -34,7 +32,7 @@ export const Email = ({
 
   const actionIcon = checkEmail(value) ? (
     <Tooltip title={t("email.tooltip")}>
-      <MailOutlined onClick={handleSend} className={style.icon} />
+      <MailIcon onClick={handleSend} className={style.icon} />
     </Tooltip>
   ) : (
     <div />

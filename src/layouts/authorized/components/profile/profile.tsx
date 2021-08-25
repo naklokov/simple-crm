@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import { Typography, Dropdown, Menu, Tooltip } from "antd";
-import { DownOutlined } from "@ant-design/icons";
 import { Link, useHistory } from "react-router-dom";
 
 import { connect, useDispatch } from "react-redux";
@@ -15,6 +14,7 @@ import {
   TOOLTIP_SHOW_DELAY,
 } from "../../../../constants";
 import { Avatar } from "../../../../components";
+import { DownIcon } from "../../../../assets/icons";
 
 interface ProfileProps {
   profileInfo: ProfileInfoEntityProps;
@@ -65,7 +65,7 @@ export const Profile = ({ profileInfo }: ProfileProps) => {
       <Dropdown overlay={menu} trigger={["click"]}>
         <div className={style.dropdownContainer}>
           <Typography.Text strong>{fullName}</Typography.Text>
-          <DownOutlined />
+          <DownIcon />
         </div>
       </Dropdown>
     </div>

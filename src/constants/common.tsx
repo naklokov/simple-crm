@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { PhoneColored } from "../assets/icons";
+import { PhoneIcon } from "../assets/icons";
 
 export const DATE_FORMATS = {
   DATE: "DD.MM.YYYY",
@@ -29,7 +29,7 @@ export const TASK_TYPES_MAP: { [key: string]: string } = {
 };
 
 export const TASKS_TYPES_ICONS_MAP: { [key: string]: ReactNode } = {
-  CALL: <PhoneColored />,
+  CALL: <PhoneIcon />,
 };
 export const TASK_STATUS_FIELD_CODE = "taskStatus";
 

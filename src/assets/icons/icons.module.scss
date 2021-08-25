@@ -1,0 +1,26 @@
+@import '../styles/colors';
+
+
+.phone, .check {
+    color: var(--success-color) !important;
+}
+
+.userAdd, .clock, .info {
+    color: var(--primary-color) !important;    
+}
+
+.question {
+    color: #595959 !important;
+}
+
+.view {
+    color: var(--text-color-secondary) !important;
+}
+
+.delete {
+    color: var(--error-color) !important;
+}
+
+.warning {
+    color: var(--warning-color) !important;
+}
