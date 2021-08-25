@@ -1,20 +1,14 @@
 import React, { ReactNode, useEffect, useMemo } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { isEmpty } from "lodash";
 import { Loader } from "../components";
-import {
-  State,
-  ProfileInfoEntityProps,
-  ErrorAppState,
-  urls,
-} from "../constants";
+import { State, ProfileInfoEntityProps, urls } from "../constants";
 import { useFetch } from "../utils";
 import { setProfileInfo, setPermissions, setTheme } from "../__data__";
 
 interface ContainerWrapperProps {
   children: ReactNode;
-  error: ErrorAppState;
 }
 
 interface CredentialsProps {
@@ -22,11 +16,9 @@ interface CredentialsProps {
   roles: string[];
 }
 
-export const ContainerWrapper = ({
-  children,
-  error,
-}: ContainerWrapperProps) => {
+export const ContainerWrapper = ({ children }: ContainerWrapperProps) => {
   const dispatch = useDispatch();
+  const error = useSelector((state: State) => state?.app?.error);
 
   const { permissions, profileInfo } = useSelector(
     (state: State) => state?.persist
@@ -42,7 +34,7 @@ export const ContainerWrapper = ({
   });
 
   useEffect(() => {
-    dispatch(setTheme("dark"));
+    dispatch(setTheme("light"));
     dispatch(setProfileInfo(profile));
     dispatch(setPermissions(credentials?.permissions ?? []));
   }, [credentials, profile, dispatch]);
@@ -70,8 +62,4 @@ export const ContainerWrapper = ({
   return <>{children}</>;
 };
 
-const mapStateToProps = (state: State) => ({
-  error: state?.app?.error,
-});
-
-export default connect(mapStateToProps)(ContainerWrapper);
+export default ContainerWrapper;
