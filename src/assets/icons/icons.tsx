@@ -26,6 +26,7 @@ import {
 import { ArrowDirection } from "../../components/arrow/constants";
 
 import style from "./icons.module.scss";
+import { PRIMARY_COLOR, SUCCESS_COLOR } from "../../constants";
 
 interface IconProps {
   className?: any;
@@ -44,7 +45,7 @@ export const PhoneIcon: React.FC<IconProps> = ({
 }) => (
   <PhoneOutlined
     onClick={onClick}
-    className={cn(className, { [style.phone]: colored })}
+    className={cn(className, { [SUCCESS_COLOR]: colored })}
   />
 );
 
@@ -52,8 +53,15 @@ export const MailIcon: React.FC<IconProps> = ({ onClick, className }) => (
   <MailOutlined onClick={onClick} className={cn(className)} />
 );
 
-export const InfoIcon: React.FC<IconProps> = ({ className, onClick }) => (
-  <InfoCircleOutlined onClick={onClick} className={cn(className, style.info)} />
+export const InfoIcon: React.FC<IconProps> = ({
+  className,
+  onClick,
+  colored,
+}) => (
+  <InfoCircleOutlined
+    onClick={onClick}
+    className={cn(className, { [PRIMARY_COLOR]: colored })}
+  />
 );
 
 export const QuestionIcon: React.FC<IconProps> = ({ className, onClick }) => (
@@ -89,8 +97,15 @@ export const ClockIcon: React.FC<IconProps> = ({ className, onClick }) => (
   />
 );
 
-export const CheckIcon: React.FC<IconProps> = ({ className, onClick }) => (
-  <CheckOutlined onClick={onClick} className={cn(className, style.check)} />
+export const CheckIcon: React.FC<IconProps> = ({
+  className,
+  onClick,
+  colored = true,
+}) => (
+  <CheckOutlined
+    onClick={onClick}
+    className={cn(className, { [SUCCESS_COLOR]: colored })}
+  />
 );
 
 export const ViewIcon: React.FC<IconProps> = ({ className, onClick }) => (

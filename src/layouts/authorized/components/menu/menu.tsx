@@ -41,7 +41,6 @@ export const Menu: React.FC<MenuProps> = ({ onClickItem }) => {
       mode="inline"
       onClick={handleClick}
       selectedKeys={[selectedKey]}
-      className="background-80"
       style={{ border: "none" }}
     >
       {availableItems.map((item) => (

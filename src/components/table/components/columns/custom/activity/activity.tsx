@@ -18,11 +18,11 @@ interface ActivityProps {
 export const Activity: React.FC<ActivityProps> = ({ record, column }) => {
   const { status } = useActivity(record[column.columnCode]);
 
-  const color = status
+  const dotClassName = status
     ? COLUMN_COLORS_MAP[status]
     : COLUMN_COLORS_MAP[COLUMN_STATUS_MAP.ACTIVE];
 
-  return <Dot color={color} style={{ margin: "0 auto" }} />;
+  return <Dot className={dotClassName} style={{ margin: "0 auto" }} />;
 };
 
 export default Activity;

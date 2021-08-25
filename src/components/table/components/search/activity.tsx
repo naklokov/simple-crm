@@ -37,7 +37,7 @@ export const ActivitySearch: React.FC<SearchComponentProps> = ({
 
   const options = Object.values(COLUMN_STATUS_MAP).map((status) => ({
     value: status,
-    color: COLUMN_COLORS_MAP[status],
+    className: COLUMN_COLORS_MAP[status],
     title: tActivity(status),
   }));
 
@@ -62,10 +62,10 @@ export const ActivitySearch: React.FC<SearchComponentProps> = ({
         value={selectedStatus}
         onChange={handleChange}
       >
-        {options.map(({ value, title, color }) => (
+        {options.map(({ value, title, className }) => (
           <Select.Option key={value} value={value}>
             <Space align="center">
-              <Dot color={color} />
+              <Dot className={className} />
               <Typography.Text>{title}</Typography.Text>
             </Space>
           </Select.Option>

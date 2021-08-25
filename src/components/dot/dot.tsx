@@ -4,6 +4,7 @@ interface DotProps {
   size?: number;
   color?: string;
   style?: CSSProperties;
+  className?: string;
 }
 
 /**
@@ -13,8 +14,14 @@ interface DotProps {
  * @param style CSS свойства компонента
  * @returns JSX.Component
  */
-export const Dot: React.FC<DotProps> = ({ color, size = 16, style = {} }) => (
+export const Dot: React.FC<DotProps> = ({
+  className,
+  color,
+  size = 16,
+  style = {},
+}) => (
   <div
+    className={className}
     style={{
       backgroundColor: color,
       width: size,

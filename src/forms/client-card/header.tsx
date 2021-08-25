@@ -52,7 +52,7 @@ export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
   const { status } = useActivity(clientActivityDate);
   const { tzTag } = useClientTimeZone(clientTimeZone);
 
-  const dotColor = status
+  const dotClassName = status
     ? COLUMN_COLORS_MAP[status]
     : COLUMN_COLORS_MAP[COLUMN_STATUS_MAP.ACTIVE];
 
@@ -109,9 +109,9 @@ export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
   const activity = useMemo(
     () =>
       !loading ? (
-        <Dot color={dotColor} style={{ margin: "0 auto" }} />
+        <Dot className={dotClassName} style={{ margin: "0 auto" }} />
       ) : undefined,
-    [loading, dotColor]
+    [loading, dotClassName]
   );
 
   return (

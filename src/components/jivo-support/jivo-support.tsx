@@ -3,7 +3,7 @@ import { Space, Typography } from "antd";
 import cn from "classnames";
 import { useSelector } from "react-redux";
 import style from "./jivo-support.module.scss";
-import { State } from "../../constants";
+import { SECONDARY_BACKGROUND_COLOR, State } from "../../constants";
 import { SupportIcon } from "../../assets/icons";
 import {
   initJivoScript,
@@ -41,7 +41,7 @@ const JivoSupport: React.FC = () => {
       })}
     >
       <Typography.Link
-        className={cn(style.supportBtn, "background-40")}
+        className={cn(style.supportBtn, SECONDARY_BACKGROUND_COLOR)}
         onClick={handleOpen}
       >
         <SupportIcon />

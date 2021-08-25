@@ -68,7 +68,8 @@
     "version": "node scripts/create-changelog.js",
     "postversion": "git push && git push --tags",
     "docs": "npx typedoc",
-    "build:less:theme": "npx lessc \"./src/assets/themes/dark.less ./src/assets/themes/dark.css\" --js"
+    "build:less:light": "npx lessc ./src/assets/themes/light.less ./src/assets/themes/light.css --js",
+    "build:less:dark": "npx lessc ./src/assets/themes/dark.less ./src/assets/themes/dark.css --js"
   },
   "eslintConfig": {
     "extends": "react-app"

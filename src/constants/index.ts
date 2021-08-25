@@ -8,5 +8,6 @@ export * from "./permissions";
 export * from "./phone";
 export * from "./layouts";
 export * from "./axios";
+export * from "./classnames";
 
 export { urls, http, formConfig };

@@ -8,7 +8,11 @@ import {
   getFullUrl,
   useFetch,
 } from "../../../../../../utils";
-import { DepartmentEntityProps, urls } from "../../../../../../constants";
+import {
+  DepartmentEntityProps,
+  SECONDARY_BACKGROUND_COLOR,
+  urls,
+} from "../../../../../../constants";
 
 import { DepartmentsTree } from "./components";
 import {
@@ -92,7 +96,7 @@ export const DepartmentsSelect = () => {
     <>
       <SearchBar
         style={{ padding: "16px 24px" }}
-        className="background-60"
+        className={SECONDARY_BACKGROUND_COLOR}
         value={value}
         onChange={handleChange}
         onSearch={handleSearch}
