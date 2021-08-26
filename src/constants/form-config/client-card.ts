@@ -665,11 +665,6 @@ export const upper: UpperProps = {
             { pattern: /^\d{20}$/, message: CORRESPONDENT_ACCOUNT_MESSAGE },
           ],
           permissions: [],
-          _links: {
-            validation: {
-              href: urls.clients.validation,
-            },
-          },
         },
         {
           fieldCode: "chiefFio",
