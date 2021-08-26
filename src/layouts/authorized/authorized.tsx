@@ -17,7 +17,7 @@ interface AuthorizedProps {
 export const Authorized = ({ children }: AuthorizedProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const dispatch = useDispatch();
-  const theme = useSelector((state: State) => state?.app?.theme);
+  const theme = useSelector((state: State) => state?.persist?.theme);
 
   const isSubDrawerOpened = useSelector(
     (state: State) => !!state?.menuSubDrawer?.id

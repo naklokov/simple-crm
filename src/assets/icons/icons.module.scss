@@ -1,0 +1,15 @@
+.phone, .check {
+    color: var(--success-color) !important;
+}
+
+.info, .clock, .userAdd {
+    color: var(--primary-color) !important;
+}
+
+.delete {
+    color: var(--error-color) !important;
+}
+
+.lock, .notification {
+    color: var(--warning-color) !important;
+}

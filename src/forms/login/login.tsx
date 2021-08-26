@@ -99,7 +99,7 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
         <Item name={FIELDS.PASSWORD} rules={rules.password}>
           <Input.Password
             className={style.password}
-            prefix={<LockIcon />}
+            prefix={<LockIcon colored={false} />}
             type="password"
             placeholder={t("placeholder.password")}
           />

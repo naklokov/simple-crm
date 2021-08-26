@@ -56,7 +56,7 @@ export const Card: React.FC<CardProps> = ({
   onView,
   title = "",
 }) => {
-  const theme = useSelector((state: State) => state?.app?.theme);
+  const theme = useSelector((state: State) => state?.persist?.theme);
   const {
     clientId,
     taskEndDate: date,

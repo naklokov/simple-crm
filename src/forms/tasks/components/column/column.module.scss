@@ -17,3 +17,15 @@
 .divider {
   margin: var(--offset-sm) 0 !important;
 }
+
+.warning {
+  background: var(--warning-color);
+}
+
+.primary {
+  background: var(--primary-color);
+}
+
+.error {
+  background: var(--error-color);
+}

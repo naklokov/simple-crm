@@ -7,7 +7,6 @@ interface InitialStateProps {
   dictionaries: DictionariesType;
   tableLoading: boolean;
   error: object;
-  theme: ThemeType;
 }
 
 interface DictionaryProps {
@@ -19,7 +18,6 @@ const initialState: InitialStateProps = {
   dictionaries: {},
   tableLoading: false,
   error: {},
-  theme: "light",
 };
 
 /* eslint-disable */
@@ -37,17 +35,9 @@ const appSlide = createSlice({
     setTableLoading(state, action: PayloadAction<boolean>) {
       state.tableLoading = action.payload;
     },
-    setTheme(state, action: PayloadAction<ThemeType>) {
-      state.theme = action.payload;
-    },
   },
 });
 
-export const {
-  setDictionaries,
-  setTableLoading,
-  setError,
-  setTheme,
-} = appSlide.actions;
+export const { setDictionaries, setTableLoading, setError } = appSlide.actions;
 
 export default appSlide.reducer;

@@ -1,20 +1,20 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ProfileInfoEntityProps, State, TabProps } from "../../../../constants";
+import {
+  FORM_NAMES,
+  ProfileInfoEntityProps,
+  State,
+  TabPaneFormProps,
+} from "../../../../constants";
 
 import { FieldsContainer } from "../../../../components";
 import { useFormValues } from "../../../../utils";
 import { setProfileInfo } from "../../../../__data__";
 
-interface ProfileMainProps {
-  formName: string;
-  tab: TabProps;
-}
-
-export const ProfileMain: React.FC<ProfileMainProps> = ({ formName, tab }) => {
+export const ProfileMain: React.FC<TabPaneFormProps> = ({ formName, tab }) => {
   const dispatch = useDispatch();
   const [userProfile, setUserProfile] = useFormValues<ProfileInfoEntityProps>(
-    formName
+    formName ?? FORM_NAMES.PROFILE
   );
   const personalUserProfile = useSelector(
     (state: State) => state?.persist?.profileInfo

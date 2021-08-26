@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 import { Info, Person } from "./component";
 import { getConformedValue } from "../../../../../../../../utils";
 import { MailIcon, PhoneIcon } from "../../../../../../../../assets/icons";
-import { SECONDARY_BACKGROUND_COLOR } from "../../../../../../../../constants";
+
+import rowStyle from "./role-row.module.scss";
 
 interface RoleRowProps {
   title: string;
@@ -32,7 +33,7 @@ export const RoleRow: React.FC<RoleRowProps> = ({
     <Row
       align="middle"
       wrap={false}
-      className={SECONDARY_BACKGROUND_COLOR}
+      className={rowStyle.row}
       style={{
         padding: "8px 16px",
         ...style,

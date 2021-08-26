@@ -11,12 +11,7 @@ import { COOKIES } from "../constants/http";
 import { logger } from "./index";
 import { Skeleton } from "../components";
 
-import {
-  urls,
-  ErrorProps,
-  LinksType,
-  DepartmentEntityProps,
-} from "../constants";
+import { urls, ErrorProps, LinksType } from "../constants";
 
 interface DefaultErrorHandlerProps {
   error: ErrorProps;
@@ -330,4 +325,20 @@ export const encodeURIChars = (uri: string) => {
     .split("")
     .map((char) => REPLACED_CHARS?.[char] ?? char)
     .join("");
+};
+
+export const reloadCss = () => {
+  let h;
+  let a;
+  let f;
+  // eslint-disable-next-line
+  a = document.getElementsByTagName("link");
+  for (h = 0; h < a.length; h++) {
+    f = a[h];
+    if (f.rel.toLowerCase().match(/stylesheet/) && f.href) {
+      const g = f.href.replace(/(&|\?)rnd=\d+/, "");
+      f.href = g + (g.match(/\?/) ? "&" : "?");
+      f.href += `rnd=${new Date().valueOf()}`;
+    }
+  } // for
 };

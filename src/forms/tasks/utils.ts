@@ -11,11 +11,7 @@ import {
   getOverdueRsql,
   getTommorowRsql,
 } from "../../utils";
-import {
-  ColumnTaskProps,
-  DIVIDER_CLASS_NAMES,
-  TitleTypeType,
-} from "./constants";
+import { ColumnTaskProps, DIVIDER_COLORS, TitleTypeType } from "./constants";
 
 const checkOverdue = (date: string) =>
   moment(date).isBefore(moment().subtract(1, "days").endOf("day"));
@@ -23,7 +19,7 @@ const checkOverdue = (date: string) =>
 const getColumn = ({
   query,
   title,
-  dividerClassName,
+  dividerColor,
   date = null,
   titleType,
   dateFormat = DATE_FORMATS.TIME,
@@ -31,7 +27,7 @@ const getColumn = ({
 }: {
   query: string;
   title: string;
-  dividerClassName: typeof DIVIDER_CLASS_NAMES[number];
+  dividerColor: typeof DIVIDER_COLORS[number];
   date?: string | null;
   titleType?: TitleTypeType;
   dateFormat?: string;
@@ -42,7 +38,7 @@ const getColumn = ({
   query,
   title,
   titleType,
-  dividerClassName,
+  dividerColor,
   reloadKey,
 });
 
@@ -59,20 +55,20 @@ const getTodayColumns = (
     date,
     query: todayRsql,
     title: t("today.title"),
-    dividerClassName: DIVIDER_CLASS_NAMES[0],
+    dividerColor: DIVIDER_COLORS[0],
   });
 
   const tommorow = getColumn({
     date: moment(date).add(1, "day").toISOString(),
     query: tommorowRsql,
     title: t("tommorow.title"),
-    dividerClassName: DIVIDER_CLASS_NAMES[1],
+    dividerColor: DIVIDER_COLORS[1],
   });
 
   const overdue = getColumn({
     query: overdueRsql,
     title: t("overdue.title"),
-    dividerClassName: DIVIDER_CLASS_NAMES[2],
+    dividerColor: DIVIDER_COLORS[2],
     dateFormat: DATE_FORMATS.DATE_TIME,
   });
 
@@ -90,7 +86,7 @@ const getDateViewColumns = (selectedDate: string, profileInfoId: string) => {
       query: getDateRsql(date.toISOString(), profileInfoId),
       title: date.format(DATE_FORMATS.DATE),
       titleType: !isSelectedDate ? "secondary" : undefined,
-      dividerClassName: DIVIDER_CLASS_NAMES[idx],
+      dividerColor: DIVIDER_COLORS[idx],
     });
   });
 };

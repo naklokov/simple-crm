@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment-timezone";
-import { Badge } from "antd";
+import { Badge, Typography } from "antd";
 
 interface CellProps {
   date: moment.Moment;
@@ -22,7 +22,7 @@ export const Cell: React.FC<CellProps> = ({
       count={count}
       style={{ zIndex: 2 }}
     >
-      <span style={{ color }}>{day}</span>
+      <Typography.Text>{day}</Typography.Text>
     </Badge>
   );
 };

@@ -5,13 +5,13 @@ export interface PersistState {
   permissions: string[];
   auth: boolean;
   profileInfo: ProfileInfoEntityProps;
+  theme: ThemeType;
 }
 
 export interface AppState {
   dictionaries: object;
   error: ErrorAppState;
   tableLoading: boolean;
-  theme: ThemeType;
 }
 
 export interface MenuSubDrawerState {

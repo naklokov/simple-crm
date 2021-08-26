@@ -1,0 +1,15 @@
+.active, .warning, .expired {
+    margin: 0 auto;
+}
+
+.active {
+    background: var(--success-color);
+}
+
+.warning {
+    background: var(--warning-color);
+}
+
+.expired {
+    background: var(--error-color);
+}

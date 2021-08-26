@@ -49,12 +49,8 @@ export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
   const [
     { shortName, phone, clientActivityDate, clientTimeZone },
   ] = useFormValues<ClientEntityProps>(FORM_NAMES.CLIENT_CARD);
-  const { status } = useActivity(clientActivityDate);
+  const { status = COLUMN_STATUS_MAP.ACTIVE } = useActivity(clientActivityDate);
   const { tzTag } = useClientTimeZone(clientTimeZone);
-
-  const dotClassName = status
-    ? COLUMN_COLORS_MAP[status]
-    : COLUMN_COLORS_MAP[COLUMN_STATUS_MAP.ACTIVE];
 
   const loading = useMemo(() => !shortName && !isNew, [shortName, isNew]);
   const filledTitle = shortName || t("title.new");
@@ -109,9 +105,9 @@ export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
   const activity = useMemo(
     () =>
       !loading ? (
-        <Dot className={dotClassName} style={{ margin: "0 auto" }} />
+        <Dot color={COLUMN_COLORS_MAP[status]} style={{ margin: "0 auto" }} />
       ) : undefined,
-    [loading, dotClassName]
+    [loading, status]
   );
 
   return (

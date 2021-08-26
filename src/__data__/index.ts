@@ -5,9 +5,15 @@ import menuSubDrawerReducer from "./menu-sub-drawer";
 
 export { setFormLoading, updateForm } from "./form";
 
-export { setPermissions, setAuth, setProfileInfo, logout } from "./persist";
+export {
+  setPermissions,
+  setAuth,
+  setProfileInfo,
+  logout,
+  setTheme,
+} from "./persist";
 
-export { setDictionaries, setTableLoading, setError, setTheme } from "./app";
+export { setDictionaries, setTableLoading, setError } from "./app";
 
 export {
   open as openMenuSubDrawer,

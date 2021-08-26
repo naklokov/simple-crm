@@ -1,4 +1,6 @@
 import React, { CSSProperties } from "react";
+import cn from "classnames";
+import dotStyle from "./dot.module.scss";
 
 interface DotProps {
   size?: number;
@@ -16,14 +18,13 @@ interface DotProps {
  */
 export const Dot: React.FC<DotProps> = ({
   className,
-  color,
   size = 16,
+  color = "success",
   style = {},
 }) => (
   <div
-    className={className}
+    className={cn(dotStyle[color], className)}
     style={{
-      backgroundColor: color,
       width: size,
       height: size,
       borderRadius: size / 2,

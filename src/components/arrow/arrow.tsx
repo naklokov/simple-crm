@@ -1,13 +1,12 @@
 import React from "react";
 import { ArrowType } from "./constants";
 import { ArrowIcon } from "../../assets/icons";
-
-import { PRIMARY_COLOR, SECONDARY_COLOR } from "../../constants";
+import style from "./arrow.module.scss";
 
 const Arrow: React.FC<ArrowType> = ({ direction, isActive }) => (
   <ArrowIcon
     direction={direction}
-    className={isActive ? PRIMARY_COLOR : SECONDARY_COLOR}
+    className={isActive ? style.active : style.default}
   />
 );
 

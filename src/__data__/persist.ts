@@ -1,13 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ThemeType, ProfileInfoEntityProps } from "../constants";
+
+interface InitialStateProps {
+  permissions: string[];
+  profileInfo: ProfileInfoEntityProps;
+  auth: boolean;
+  theme: ThemeType;
+}
+
+const initialState: InitialStateProps = {
+  permissions: [],
+  profileInfo: {},
+  auth: false,
+  theme: "light",
+};
 
 /* eslint-disable */
 const persistSlice = createSlice({
   name: "persist",
-  initialState: {
-    permissions: [],
-    profileInfo: {},
-    auth: false,
-  },
+  initialState,
   reducers: {
     setProfileInfo(state, action) {
       state.profileInfo = action.payload;
@@ -17,6 +28,9 @@ const persistSlice = createSlice({
     },
     setAuth(state, action) {
       state.auth = action.payload;
+    },
+    setTheme(state, action: PayloadAction<ThemeType>) {
+      state.theme = action.payload;
     },
     logout(state) {
       state.auth = false;
@@ -30,6 +44,7 @@ export const {
   setPermissions,
   setAuth,
   setProfileInfo,
+  setTheme,
   logout,
 } = persistSlice.actions;
 

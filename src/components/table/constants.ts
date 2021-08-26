@@ -1,9 +1,4 @@
-import {
-  ColumnProps,
-  ERROR_BACKGROUND_COLOR,
-  SUCCESS_BACKGROUND_COLOR,
-  WARNING_BACKGROUND_COLOR,
-} from "../../constants";
+import { ColumnProps } from "../../constants";
 
 export const DEFAULT_PAGE_NUMBER = 1;
 export const DEFAULT_PAGE_SIZE = 10;
@@ -60,9 +55,9 @@ type RangesType = {
  * Цвета соответствующие статусам активности
  */
 export const COLUMN_COLORS_MAP = {
-  [COLUMN_STATUS_MAP.ACTIVE]: "success-background",
-  [COLUMN_STATUS_MAP.WARNING]: "warning-background",
-  [COLUMN_STATUS_MAP.EXPIRED]: "error-background",
+  [COLUMN_STATUS_MAP.ACTIVE]: "success",
+  [COLUMN_STATUS_MAP.WARNING]: "warning",
+  [COLUMN_STATUS_MAP.EXPIRED]: "error",
 };
 
 /**

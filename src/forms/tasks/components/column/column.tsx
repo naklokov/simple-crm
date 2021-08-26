@@ -11,7 +11,6 @@ import {
   TASK_DATE_FIELD_CODE,
   TaskEntityProps,
   urls,
-  SECONDARY_COLOR,
 } from "../../../../constants";
 import { defaultErrorHandler } from "../../../../utils";
 import { ColumnTaskProps, INFINITY_SCROLL_STEP } from "../../constants";
@@ -28,16 +27,16 @@ interface ColumnProps extends ColumnTaskProps {
 const getTasksSorted = (order: SortOrderType = "asc") =>
   `${TASK_DATE_FIELD_CODE}:${order}`;
 
-export const Column = ({
+export const Column: React.FC<ColumnProps> = ({
   title,
   query,
   dateFormat,
-  dividerClassName = SECONDARY_COLOR,
+  dividerColor = "",
   onComplete,
   onDelete,
   onView,
   reloadKey = "",
-}: ColumnProps) => {
+}) => {
   const [t] = useTranslation("tasks");
   const [tasks, setTasks] = useState<TaskEntityProps[]>([]);
   const [loading, setLoading] = useState(false);
@@ -95,7 +94,7 @@ export const Column = ({
         <Title title={`${title} - ${count}`} />
         <Sort onSort={handleSort} />
       </Row>
-      <Divider className={cn(style.divider, dividerClassName)} />
+      <Divider className={cn(style.divider, style[dividerColor])} />
       <InfiniteScroll
         initialLoad={false}
         pageStart={0}

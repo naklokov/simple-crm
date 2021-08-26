@@ -1,5 +1,4 @@
 @import "node_modules/antd/dist/antd.dark.less";
-@import './status-colors.less';
 
 @color-100: #010101;
 @color-80: #1f2023;
@@ -9,17 +8,16 @@
 
 @background-color-base: @color-100;
 @body-background: @color-100;
-@primary-color: fade(@blue-6, 75%);
+@primary-color: fade(@blue-6, 85%);
 @text-color: fade(@white, 65%);
 @page-header-tabs-tab-font-size: 14px;
 @component-background: @color-80;
 @layout-header-background: @color-80;
 @layout-sider-background: @color-80;
+@layout-trigger-background: @color-80;
 @table-header-bg: @color-60;
 @layout-body-background: @color-100;
 @card-head-background: @color-60;
-
-
 
 .form-wrapper {
   border-radius: 4px;
@@ -35,4 +33,14 @@
 .highlight-fill {
   padding: 0;
   background: fade(@orange-8, 85%);
+}
+
+:root {
+  --success-color: fade(@success-color, 75%);
+  --error-color: fade(@error-color, 75%);
+  --warning-color: fade(@warning-color, 75%);
+  --primary-color: fade(@blue-6, 75%);
+  --text-color: @text-color;
+  --text-color-secondary: @text-color-secondary;
+  --background-secondary: @color-60;
 }

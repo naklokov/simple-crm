@@ -8,11 +8,7 @@ import {
   getFullUrl,
   useFetch,
 } from "../../../../../../utils";
-import {
-  DepartmentEntityProps,
-  SECONDARY_BACKGROUND_COLOR,
-  urls,
-} from "../../../../../../constants";
+import { DepartmentEntityProps, urls } from "../../../../../../constants";
 
 import { DepartmentsTree } from "./components";
 import {
@@ -21,6 +17,8 @@ import {
   getUpdatedDepartmentHierarchy,
 } from "./utils";
 import { SearchBar } from "../../../../../../components";
+
+import style from "./departments-select.module.scss";
 
 export const DepartmentsSelect = () => {
   const [t] = useTranslation("departmentsDrawer");
@@ -96,7 +94,7 @@ export const DepartmentsSelect = () => {
     <>
       <SearchBar
         style={{ padding: "16px 24px" }}
-        className={SECONDARY_BACKGROUND_COLOR}
+        className={style.search}
         value={value}
         onChange={handleChange}
         onSearch={handleSearch}
