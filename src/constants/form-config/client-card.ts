@@ -584,11 +584,6 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [ogrnRule],
           permissions: [],
-          _links: {
-            validation: {
-              href: urls.clients.validation,
-            },
-          },
         },
         {
           fieldCode: "kpp",
@@ -600,11 +595,6 @@ export const upper: UpperProps = {
           type: "string",
           rules: [{ pattern: /^([0-9]{9})?$/, message: KPP_MESSAGE }],
           permissions: [],
-          _links: {
-            validation: {
-              href: urls.clients.validation,
-            },
-          },
         },
         {
           fieldCode: "legalAddress",
