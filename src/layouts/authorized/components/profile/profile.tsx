@@ -44,6 +44,9 @@ export const Profile = ({ profileInfo }: ProfileProps) => {
       <Menu.Item>
         <Link to={profilePath}>{t("profile.view")}</Link>
       </Menu.Item>
+      <Menu.Item>
+        <Link to={urls.settings.path}>{t("settings")}</Link>
+      </Menu.Item>
       <Menu.Item onClick={handleClickLogout}>{t("profile.logout")}</Menu.Item>
     </Menu>
   );

@@ -17,11 +17,13 @@ import {
   NotFoundScreen,
   Tasks,
   DepartmentCard,
+  Settings,
 } from "../../forms";
 
 import { ProtectedRoute } from ".";
 import { urls } from "../../constants";
 import { AuthorizedLayout, UnauthorizedLayout } from "../../layouts";
+import { settings } from "../../constants/urls";
 
 const {
   main,
@@ -40,7 +42,7 @@ const Routes = () => (
     <Switch>
       <ProtectedRoute
         path={[
-          main.path,
+          settings.path,
           clients.path,
           profile.pathWithId,
           clientCard.path,
@@ -75,6 +77,11 @@ const Routes = () => (
             key={departmentCard.path}
             path={departmentCard.path}
             component={DepartmentCard}
+          />
+          <ProtectedRoute
+            key={settings.path}
+            path={settings.path}
+            component={Settings}
           />
           <Redirect from={main.path} to={{ pathname: clients.path }} />
         </Switch>

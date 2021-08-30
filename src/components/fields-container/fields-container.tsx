@@ -28,6 +28,7 @@ interface FieldsContainerProps extends TabPaneFormProps {
   defaultUrl?: string;
   withCancel?: boolean;
   initialLoad?: boolean;
+  footer?: React.ReactNode;
 }
 
 /**
@@ -51,6 +52,7 @@ export const FieldsContainer: React.FC<FieldsContainerProps> = ({
   xhrMethod = "put",
   withCancel = true,
   initialLoad = true,
+  footer,
 }) => {
   const url = defaultUrl || tab?._links?.self?.href;
   const dispatch = useDispatch();
@@ -171,15 +173,19 @@ export const FieldsContainer: React.FC<FieldsContainerProps> = ({
             ))}
           </FormContext.Provider>
         </Row>
-        <ComponentPermissionsChecker hasRight={initialValues?.isOwner?.UPDATE}>
-          <FormFooter
-            style={{ marginTop: "16px", marginBottom: 0 }}
-            loading={submitLoading}
-            disabled={submitDisabled}
-            onCancel={handleGoBack}
-            withCancel={withCancel}
-          />
-        </ComponentPermissionsChecker>
+        {footer || (
+          <ComponentPermissionsChecker
+            hasRight={initialValues?.isOwner?.UPDATE}
+          >
+            <FormFooter
+              style={{ marginTop: "16px", marginBottom: 0 }}
+              loading={submitLoading}
+              disabled={submitDisabled}
+              onCancel={handleGoBack}
+              withCancel={withCancel}
+            />
+          </ComponentPermissionsChecker>
+        )}
       </Form>
     </FormWrapper>
   );

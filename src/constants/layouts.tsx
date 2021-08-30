@@ -42,6 +42,13 @@ export const MAIN_ROUTE = [
 
 export const BREADCRUMB_ROUTES = {
   PROFILE: [...MAIN_ROUTE],
+  SETTINGS: [
+    ...MAIN_ROUTE,
+    {
+      path: urls.settings.path.replace(urls.main.path, ""),
+      breadcrumbName: "Настройки",
+    },
+  ],
   CLIENTS: [
     ...MAIN_ROUTE,
     {

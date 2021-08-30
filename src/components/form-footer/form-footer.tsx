@@ -8,8 +8,8 @@ import { ComponentPermissionsChecker } from "../../wrappers";
 
 interface FormFooterProps {
   form?: FormInstance;
-  disabled: boolean;
-  loading: boolean;
+  disabled?: boolean;
+  loading?: boolean;
   permissions?: string[];
   withCancel?: boolean;
   onCancel?: () => void;
@@ -18,7 +18,7 @@ interface FormFooterProps {
 
 export const FormFooter: React.FC<FormFooterProps> = ({
   form,
-  disabled,
+  disabled = false,
   loading = false,
   permissions = [],
   withCancel = true,

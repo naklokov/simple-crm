@@ -15,7 +15,7 @@ import {
   FORM_NAMES,
   TabProps,
 } from "../../constants";
-import { ProfileMain, Personalization } from "./tabs";
+import { ProfileMain } from "./tabs";
 import {
   defaultErrorHandler,
   fillLinks,
@@ -44,7 +44,6 @@ const formsMap: {
   [key: string]: ({ formName, tab }: FormProps) => any;
 } = {
   profileMain: ProfileMain,
-  personalization: Personalization,
 };
 
 export const Profile = () => {

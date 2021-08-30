@@ -7,3 +7,4 @@ export { ClientCard } from "./client-card";
 export { Profile } from "./profile";
 export { Tasks } from "./tasks";
 export { DepartmentCard } from "./department-card";
+export { Settings } from "./settings";

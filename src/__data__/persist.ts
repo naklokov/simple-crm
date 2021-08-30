@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ThemeType, ProfileInfoEntityProps } from "../constants";
+import {
+  ThemeType,
+  ProfileInfoEntityProps,
+  COLOR_THEME_DEFAULT,
+} from "../constants";
 
 interface InitialStateProps {
   permissions: string[];
@@ -12,7 +16,7 @@ const initialState: InitialStateProps = {
   permissions: [],
   profileInfo: {},
   auth: false,
-  theme: "light",
+  theme: COLOR_THEME_DEFAULT,
 };
 
 /* eslint-disable */
@@ -30,7 +34,7 @@ const persistSlice = createSlice({
       state.auth = action.payload;
     },
     setTheme(state, action: PayloadAction<ThemeType>) {
-      state.theme = action.payload;
+      state.theme = action?.payload ?? "light";
     },
     logout(state) {
       state.auth = false;

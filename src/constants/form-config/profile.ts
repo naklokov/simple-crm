@@ -136,12 +136,5 @@ export const FORM: { tabs: TabProps[] } = {
         },
       },
     },
-    {
-      tabCode: "personalization",
-      tabName: "Персонализация",
-      tabDescription: "Персонализация системы",
-      type: "custom",
-      _links: {},
-    },
   ],
 };

@@ -51,6 +51,7 @@
   "authorizedLayout": {
     "title": "Проф - Ресурс CRM",
     "profile.view": "Просмотр профиля",
+    "settings": "Настройки",
     "profile.logout": "Выйти",
     "tooltip.edit.profile": "Просмотр данных профиля"
   },
@@ -302,5 +303,10 @@
     "tooltip.title.one": "{{value}} час от Московского времени",
     "tooltip.title.some": "{{value}} часа от Московского времени",
     "tooltip.title.many": "{{value}} часов от Московского времени"
+  },
+  "settings": {
+    "title": "Настройки",
+    "message.success": "Настройки успешно сохранены",
+    "message.error": "В процессе сохранения настроек произошла ошибка"
   }
 }

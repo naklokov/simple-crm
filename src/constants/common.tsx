@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { InfoCircleOutlined, WarningOutlined } from "@ant-design/icons";
 import { PhoneIcon } from "../assets/icons";
-import { ValidationStatusType } from "./interfaces";
+import { SpanProps, ValidationStatusType } from "./interfaces";
 
 export const DATE_FORMATS = {
   DATE: "DD.MM.YYYY",
@@ -9,7 +9,13 @@ export const DATE_FORMATS = {
   TIME: "HH:mm",
 };
 
-export const DEFAULT_FIELD_SPAN = { xs: 24, sm: 12, md: 8, lg: 6, xl: 6 };
+export const DEFAULT_FIELD_SPAN: SpanProps = {
+  xs: 24,
+  sm: 12,
+  md: 8,
+  lg: 6,
+  xl: 6,
+};
 export const GUTTER_FULL_WIDTH = {
   HORIZONTAL: 48,
   VERTICAL: 16,
@@ -51,6 +57,7 @@ export const FORM_NAMES = {
   TASK_VIEW: "taskView",
   DEPARTMENT_CARD: "departmentCard",
   DEPARTMENT_CHIEF_CHANGE: "departmentChiefChange",
+  SETTINGS: "settings",
 };
 
 export const RSQL_OPERATORS_MAP = {

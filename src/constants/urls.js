@@ -5,7 +5,7 @@ module.exports = {
     logout: "/crm/rest/logout",
   },
   main: {
-    path: "/main",
+    path: "/clients",
   },
   forgotPassword: {
     path: "/forgotPassword",
@@ -22,19 +22,23 @@ module.exports = {
   log: {
     base: "/crm/rest/log",
   },
+  settings: {
+    entity: "/crm/rest/user/meta",
+    path: "/settings",
+  },
   profile: {
-    path: "/main/profile",
-    pathWithId: "/main/profile/:id",
+    path: "/profile",
+    pathWithId: "/profile/:id",
     entity: "/crm/rest/user/profile",
     credentials: "/crm/rest/user/permissions",
   },
   departments: {
-    path: "/main/departments",
+    path: "/departments",
     entity: "/crm/rest/entity/departments",
     paging: "/crm/rest/entity/departments/paging",
   },
   departmentCard: {
-    path: "/main/departments/:id",
+    path: "/departments/:id",
     entity: "/crm/rest/entity/departments",
   },
   userProfiles: {
@@ -43,7 +47,7 @@ module.exports = {
     validation: "/crm/rest/entity/userProfiles/validation",
   },
   clients: {
-    path: "/main/clients",
+    path: "/clients",
     entity: "/crm/rest/entity/clients",
     paging: "/crm/rest/entity/clients/paging",
     customByDepartment:
@@ -51,7 +55,7 @@ module.exports = {
     validation: "/crm/rest/entity/clients/validation",
   },
   clientCard: {
-    path: "/main/clients/:id",
+    path: "/clients/:id",
     entity: "/crm/rest/entity/clients",
   },
   contacts: {
@@ -64,7 +68,7 @@ module.exports = {
     entity: "/crm/rest/entity/comments",
   },
   tasks: {
-    path: "/main/tasks",
+    path: "/tasks",
     entity: "/crm/rest/entity/tasks",
     paging: "/crm/rest/entity/tasks/paging",
     validation: "/crm/rest/entity/tasks/validation",

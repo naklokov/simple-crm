@@ -9,12 +9,12 @@ interface ThemeWrapperProps {
 
 export const ThemeWrapper: React.FC<ThemeWrapperProps> = ({ children }) => {
   const theme = useSelector((state: State) => state?.persist?.theme);
-  const Theme = theme === "light" ? LightTheme : DarkTheme;
 
   return (
     <>
       <React.Suspense fallback={<></>}>
-        <Theme />
+        {theme === "light" && <LightTheme />}
+        {theme === "dark" && <DarkTheme />}
       </React.Suspense>
       {children}
     </>

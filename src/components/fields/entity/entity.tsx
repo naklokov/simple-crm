@@ -18,7 +18,6 @@ import {
   getInitialParams,
   getConcatenationQueryRsql,
   useValidationService,
-  useFormValues,
 } from "../../../utils";
 import { Readonly } from "../readonly";
 import { Loading } from "../loading";

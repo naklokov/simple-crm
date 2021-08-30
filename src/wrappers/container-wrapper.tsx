@@ -3,7 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { isEmpty } from "lodash";
 import { Loader } from "../components";
-import { State, ProfileInfoEntityProps, urls } from "../constants";
+import {
+  State,
+  ProfileInfoEntityProps,
+  urls,
+  COLOR_THEME_FIELD,
+  ThemeType,
+} from "../constants";
 import { useFetch } from "../utils";
 import { setProfileInfo, setPermissions, setTheme } from "../__data__";
 
@@ -19,6 +25,7 @@ interface CredentialsProps {
 export const ContainerWrapper = ({ children }: ContainerWrapperProps) => {
   const dispatch = useDispatch();
   const error = useSelector((state: State) => state?.app?.error);
+  const persistTheme = useSelector((state: State) => state?.persist?.theme);
 
   const { permissions, profileInfo } = useSelector(
     (state: State) => state?.persist
@@ -29,15 +36,22 @@ export const ContainerWrapper = ({ children }: ContainerWrapperProps) => {
     initial: {},
   });
 
+  const [settings] = useFetch<{ [COLOR_THEME_FIELD]: ThemeType }>({
+    url: urls.settings.entity,
+    initial: {},
+  });
+
   const [credentials] = useFetch<CredentialsProps>({
     url: urls.profile.credentials,
   });
 
   useEffect(() => {
-    // dispatch(setTheme("dark"));
     dispatch(setProfileInfo(profile));
     dispatch(setPermissions(credentials?.permissions ?? []));
-  }, [credentials, profile, dispatch]);
+    dispatch(setTheme(settings?.[COLOR_THEME_FIELD]));
+  }, [credentials, profile, settings, dispatch]);
+
+  console.log(persistTheme);
 
   const loading = useMemo(() => isEmpty(profileInfo) || isEmpty(permissions), [
     profileInfo,
