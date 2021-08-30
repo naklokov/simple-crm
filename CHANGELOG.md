@@ -1,6 +1,15 @@
 
 
-## [0.14.0](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.14.0..0.13.0) (22.08.2021)
+## [0.14.1](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.14.1..0.14.0) (26.08.2021)
+
+### Features
+
+- Убрать валидацию полей КПП и кор. счет [OLVE-785]
+- Убрать валидацию полей КПП и ОГРН [OLVE-785]
+
+
+
+## [0.14.0](https://bitbucket.org/olivje_group/olivje.crm.pl/compare/0.14.0..0.13.0) (25.08.2021)
 
 ### Bug Fixes
 
