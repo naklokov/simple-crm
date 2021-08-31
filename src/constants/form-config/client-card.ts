@@ -584,6 +584,11 @@ export const upper: UpperProps = {
           placeholder: PLACEHOLDER_DEFAULT,
           rules: [ogrnRule],
           permissions: [],
+          _links: {
+            validation: {
+              href: urls.clients.validation,
+            },
+          },
         },
         {
           fieldCode: "kpp",
