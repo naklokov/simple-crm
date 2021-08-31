@@ -42,12 +42,12 @@ const Routes = () => (
     <Switch>
       <ProtectedRoute
         path={[
-          settings.path,
           clients.path,
           profile.pathWithId,
           clientCard.path,
           tasks.path,
           departmentCard.path,
+          settings.path,
         ]}
         component={AuthorizedLayout}
       >
@@ -104,6 +104,7 @@ const Routes = () => (
           </Switch>
         </UnauthorizedLayout>
       </Route>
+
       <Route
         key={urls.error.path}
         path={urls.error.path}

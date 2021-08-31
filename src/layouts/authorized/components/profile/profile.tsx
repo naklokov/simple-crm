@@ -1,8 +1,8 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Typography, Dropdown, Menu, Tooltip } from "antd";
 import { Link, useHistory } from "react-router-dom";
 
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 
 import { useTranslation } from "react-i18next";
 import style from "./profile.module.scss";
@@ -23,21 +23,13 @@ interface ProfileProps {
 export const Profile = ({ profileInfo }: ProfileProps) => {
   const [t] = useTranslation("authorizedLayout");
   const dispatch = useDispatch();
-  const history = useHistory();
   const { fullName, avatar, id } = profileInfo || {};
 
   const profilePath = getFullUrl(urls.profile.path, id);
 
-  const jivoClear = useCallback(() => {
-    jivo_api.close();
-    window.location.reload();
-  }, []);
-
   const handleClickLogout = useCallback(() => {
-    history.replace("/");
     logout(dispatch);
-    jivoClear();
-  }, [jivoClear, dispatch, history]);
+  }, [dispatch]);
 
   const menu = (
     <Menu>

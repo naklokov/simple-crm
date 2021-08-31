@@ -1,33 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, ReactNode } from "react";
 
-import { connect } from "react-redux";
-import { Dispatch } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
 import style from "./unauthorized.module.scss";
 import { logo } from "../../assets/img";
 import { State } from "../../constants";
-import { Loader } from "../../components";
 import { checkAuthCookie } from "../../utils";
-import { setAuth as setAuthAction } from "../../__data__";
+import { setAuth } from "../../__data__";
 
 interface LoginProps {
   title?: string;
-  auth: boolean;
-  setAuth: (auth: boolean) => void;
   description?: string;
-  children: JSX.Element;
+  children: ReactNode;
 }
 
-export const Unauthorized: React.FC<LoginProps> = ({
-  auth,
-  setAuth,
-  children,
-}) => {
+export const Unauthorized: React.FC<LoginProps> = ({ children }) => {
+  const auth = useSelector((state: State) => state?.persist?.auth);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const isCheckSuccessfull = checkAuthCookie();
     if (isCheckSuccessfull && !auth) {
-      setAuth(true);
+      dispatch(setAuth(true));
     }
-  }, [auth, setAuth]);
+  }, [auth, dispatch]);
 
   return (
     <div className={style.form}>
@@ -42,12 +37,5 @@ export const Unauthorized: React.FC<LoginProps> = ({
     </div>
   );
 };
-const mapStateToProps = (state: State) => ({
-  auth: state?.persist?.auth,
-});
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setAuth: (isAuth: boolean) => dispatch(setAuthAction(isAuth)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Unauthorized);
+export default Unauthorized;

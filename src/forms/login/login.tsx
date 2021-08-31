@@ -34,10 +34,6 @@ export const Login = ({ setAuth, auth }: LoginProps) => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const location = useLocation<LocationLogoutProps>();
 
-  useEffect(() => {
-    localStorage.clear();
-  }, []);
-
   if (auth) {
     history.push(urls.main.path);
   }

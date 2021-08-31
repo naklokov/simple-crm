@@ -41,7 +41,10 @@ export const Authorized = ({ children }: AuthorizedProps) => {
 
   useEffect(
     () => () => {
+      debugger;
       notification.destroy();
+      jivo_api.close();
+      window.location.reload();
     },
     []
   );

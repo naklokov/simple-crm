@@ -1,16 +1,12 @@
-import { SettingFilled, SettingOutlined } from "@ant-design/icons";
-import { Button, Form, Tabs } from "antd";
+import { SettingOutlined } from "@ant-design/icons";
+import { Form, Tabs } from "antd";
 import { Store } from "antd/lib/form/interface";
 import axios from "axios";
+import { isEmpty } from "lodash";
 import React, { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FormFooter, FormHeader } from "../../components";
-import {
-  BREADCRUMB_ROUTES,
-  FORM_NAMES,
-  RecordType,
-  urls,
-} from "../../constants";
+import { BREADCRUMB_ROUTES, RecordType, urls } from "../../constants";
 import {
   defaultErrorHandler,
   defaultSuccessHandler,
@@ -25,7 +21,7 @@ export const Settings = () => {
   const [t] = useTranslation("settings");
   const [loading, setLoading] = useState(false);
 
-  const [initialSettings] = useFetch<RecordType>({
+  const [initial] = useFetch<RecordType>({
     url: urls.settings.entity,
     initial: {},
   });
@@ -37,11 +33,11 @@ export const Settings = () => {
 
   const handleFinish = useCallback(
     async (values: Store) => {
-      console.log("values: ", values);
       setLoading(true);
       try {
         await axios.put(urls.settings.entity, values);
         defaultSuccessHandler(t("message.success"));
+        window.location.reload();
       } catch (error) {
         defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
       } finally {
@@ -50,7 +46,14 @@ export const Settings = () => {
     },
     [t]
   );
-  console.log("initialSettings: ", initialSettings);
+
+  if (isEmpty(initial)) {
+    return (
+      <FormWrapper>
+        <div style={{ height: "150px" }} />
+      </FormWrapper>
+    );
+  }
 
   return (
     <>
@@ -71,12 +74,16 @@ export const Settings = () => {
         <Form
           form={form}
           onFinish={handleFinish}
-          initialValues={initialSettings}
+          initialValues={initial}
           layout="vertical"
         >
           <ColorTheme />
         </Form>
-        <FormFooter loading={loading} form={form} />
+        <FormFooter
+          form={form}
+          loading={loading}
+          submitText={t("submit.text")}
+        />
       </FormWrapper>
     </>
   );

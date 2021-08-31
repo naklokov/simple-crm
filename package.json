@@ -56,7 +56,7 @@
     "url": "http://bitbucket.org/olivje_group/olivje.crm.pl.git"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env HTTPS=true react-scripts start",
     "server": "node stub/server.js",
     "dev": "cross-env STUB=true concurrently \"npm run server\" \"npm start\"",
     "rest": "npm start",

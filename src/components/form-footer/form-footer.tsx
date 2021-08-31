@@ -10,6 +10,7 @@ interface FormFooterProps {
   form?: FormInstance;
   disabled?: boolean;
   loading?: boolean;
+  submitText?: string;
   permissions?: string[];
   withCancel?: boolean;
   onCancel?: () => void;
@@ -23,6 +24,7 @@ export const FormFooter: React.FC<FormFooterProps> = ({
   permissions = [],
   withCancel = true,
   style = {},
+  submitText,
   onCancel,
 }) => {
   const [visible, setVisible] = useState(false);
@@ -73,7 +75,7 @@ export const FormFooter: React.FC<FormFooterProps> = ({
           disabled={disabled}
           onClick={handleClick}
         >
-          {t("submit")}
+          {submitText ?? t("submit")}
         </Button>
       </ComponentPermissionsChecker>
     </Form.Item>

@@ -25,7 +25,6 @@ interface CredentialsProps {
 export const ContainerWrapper = ({ children }: ContainerWrapperProps) => {
   const dispatch = useDispatch();
   const error = useSelector((state: State) => state?.app?.error);
-  const persistTheme = useSelector((state: State) => state?.persist?.theme);
 
   const { permissions, profileInfo } = useSelector(
     (state: State) => state?.persist
@@ -36,7 +35,9 @@ export const ContainerWrapper = ({ children }: ContainerWrapperProps) => {
     initial: {},
   });
 
-  const [settings] = useFetch<{ [COLOR_THEME_FIELD]: ThemeType }>({
+  const [{ [COLOR_THEME_FIELD]: colorTheme }] = useFetch<{
+    [COLOR_THEME_FIELD]: ThemeType;
+  }>({
     url: urls.settings.entity,
     initial: {},
   });
@@ -46,17 +47,20 @@ export const ContainerWrapper = ({ children }: ContainerWrapperProps) => {
   });
 
   useEffect(() => {
+    if (colorTheme) {
+      dispatch(setTheme(colorTheme));
+    }
+  }, [colorTheme, dispatch]);
+
+  useEffect(() => {
     dispatch(setProfileInfo(profile));
     dispatch(setPermissions(credentials?.permissions ?? []));
-    dispatch(setTheme(settings?.[COLOR_THEME_FIELD]));
-  }, [credentials, profile, settings, dispatch]);
+  }, [credentials, profile, dispatch]);
 
-  console.log(persistTheme);
-
-  const loading = useMemo(() => isEmpty(profileInfo) || isEmpty(permissions), [
-    profileInfo,
-    permissions,
-  ]);
+  const loading = useMemo(
+    () => isEmpty(profileInfo) || isEmpty(permissions) || !colorTheme,
+    [profileInfo, permissions, colorTheme]
+  );
 
   if (error.statusCode) {
     return (
