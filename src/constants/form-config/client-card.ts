@@ -428,7 +428,7 @@ export const upper: UpperProps = {
           permissions: [],
         },
         {
-          fieldCode: "updateDate",
+          fieldCode: "clientActivityDate",
           fieldName: "Дата обновления",
           fieldDescription: "",
           type: "date",
