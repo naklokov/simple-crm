@@ -77,8 +77,6 @@ export const ContainerWrapper = ({ children }: ContainerWrapperProps) => {
     return <Loader />;
   }
 
-  console.log(colorTheme);
-
   return <>{children}</>;
 };
 

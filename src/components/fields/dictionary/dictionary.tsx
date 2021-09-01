@@ -34,8 +34,6 @@ export const Dictionary: React.FC<FieldProps> = ({
     cache: true,
   });
 
-  console.log("load dict", options);
-
   const formatFunc = (value: string) =>
     options?.find((o) => o.valueCode === value)?.value ?? "";
 
