@@ -1,10 +1,11 @@
 import React, { Key, useCallback, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Tree } from "antd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   DepartmentEntityProps,
   FORM_NAMES,
+  State,
   urls,
 } from "../../../../../../../../constants";
 import { closeMenuSubDrawer } from "../../../../../../../../__data__";
@@ -36,6 +37,9 @@ export const DepartmentsTree: React.FC<DepartmentTreeProps> = ({
   const history = useHistory();
   const dispatch = useDispatch();
   const [dragDepartmentId, setDragDepartmentId] = useState("");
+  const userDepartmentId = useSelector(
+    (state: State) => state.persist.profileInfo.departmentId
+  );
 
   const [selectedDepartment] = useFormValues<DepartmentEntityProps>(
     FORM_NAMES.DEPARTMENT_CARD
@@ -52,8 +56,8 @@ export const DepartmentsTree: React.FC<DepartmentTreeProps> = ({
         ?.localeCompare(b?.departmentName?.toLowerCase())
     );
 
-    return getTreeData(sorted, searched);
-  }, [searched, departments]);
+    return getTreeData(sorted, searched, userDepartmentId);
+  }, [userDepartmentId, searched, departments]);
 
   const handleDrop = useCallback(
     (info) => {

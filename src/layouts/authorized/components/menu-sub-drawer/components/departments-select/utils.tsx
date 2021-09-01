@@ -1,10 +1,12 @@
 import React from "react";
 import { union } from "lodash";
+import { Tooltip } from "antd";
 import { DepartmentEntityProps } from "../../../../../../constants";
 import { TreeDataProps } from "./constants";
 import { getHierarchyParentId } from "../../../../../../utils";
 import { DepartmentInfoPopover } from "./components";
 import { HighlightTextWrapper } from "../../../../../../wrappers";
+import { Dot } from "../../../../../../components";
 
 const DEPARMENT_HIERARCHY_DELIMETER = ".";
 
@@ -75,7 +77,8 @@ export const getAllowDropMap = (departments: DepartmentEntityProps[]) =>
 
 export const getTreeData = (
   departments: DepartmentEntityProps[],
-  searched: string = ""
+  searched: string = "",
+  userDepartment: string = ""
 ) => {
   const mappedDepartments: TreeDataProps[] = departments.map(
     ({ id, departmentName, departmentHierarchy }) => {
@@ -90,6 +93,13 @@ export const getTreeData = (
                 text={departmentName}
                 searched={[searched.toLowerCase()]}
               />
+              {id === userDepartment && (
+                <Tooltip arrowPointAtCenter title="Мой отдел">
+                  <div style={{ display: "inline-block", marginLeft: 10 }}>
+                    <Dot color="#52c41a" size={8} />
+                  </div>
+                </Tooltip>
+              )}
             </div>
           </DepartmentInfoPopover>
         ),
