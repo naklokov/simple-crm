@@ -126,6 +126,26 @@ export const FORM: { tabs: TabProps[] } = {
           rules: [],
           permissions: PERMISSIONS_SET.USERPROFILES_UPDATE_DEPARTMENT,
         },
+        {
+          fieldCode: "departmentId",
+          fieldName: "Отдел",
+          fieldDescription: "",
+          codeField: "id",
+          titleField: "departmentName",
+          type: "entity-lazy",
+          readonly: true,
+          disabled: false,
+          rules: [],
+          permissions: [],
+          _links: {
+            self: {
+              href: urls.departments.paging,
+            },
+            redirect: {
+              href: `${urls.departments.path}`,
+            },
+          },
+        },
       ],
       _links: {
         self: {
