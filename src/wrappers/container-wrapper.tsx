@@ -35,7 +35,7 @@ export const ContainerWrapper = ({ children }: ContainerWrapperProps) => {
     initial: {},
   });
 
-  const [{ [COLOR_THEME_FIELD]: colorTheme }] = useFetch<{
+  const [{ [COLOR_THEME_FIELD]: colorTheme = "light" }] = useFetch<{
     [COLOR_THEME_FIELD]: ThemeType;
   }>({
     url: urls.settings.entity,

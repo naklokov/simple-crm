@@ -19,9 +19,9 @@ import { ColorTheme } from "./components";
 export const Settings = () => {
   const [form] = Form.useForm();
   const [t] = useTranslation("settings");
-  const [loading, setLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
-  const [initial] = useFetch<RecordType>({
+  const [initial, loading] = useFetch<RecordType>({
     url: urls.settings.entity,
     initial: {},
   });
@@ -33,7 +33,7 @@ export const Settings = () => {
 
   const handleFinish = useCallback(
     async (values: Store) => {
-      setLoading(true);
+      setSubmitLoading(true);
       try {
         await axios.put(urls.settings.entity, values);
         defaultSuccessHandler(t("message.success"));
@@ -41,13 +41,13 @@ export const Settings = () => {
       } catch (error) {
         defaultErrorHandler({ error, defaultErrorMessage: t("message.error") });
       } finally {
-        setLoading(false);
+        setSubmitLoading(false);
       }
     },
     [t]
   );
 
-  if (isEmpty(initial)) {
+  if (loading) {
     return (
       <FormWrapper>
         <div style={{ height: "150px" }} />
@@ -81,7 +81,7 @@ export const Settings = () => {
         </Form>
         <FormFooter
           form={form}
-          loading={loading}
+          loading={submitLoading}
           submitText={t("submit.text")}
         />
       </FormWrapper>
