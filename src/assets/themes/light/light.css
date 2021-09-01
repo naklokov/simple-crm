@@ -24847,6 +24847,9 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .jivo-button {
   background: #fff;
 }
+.ant-empty-img-simple-path {
+  stroke: #d9d9d9;
+}
 :root {
   --success-color: #52c41a;
   --error-color: #ff4d4f;

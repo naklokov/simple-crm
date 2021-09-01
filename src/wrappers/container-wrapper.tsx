@@ -35,7 +35,7 @@ export const ContainerWrapper = ({ children }: ContainerWrapperProps) => {
     initial: {},
   });
 
-  const [{ [COLOR_THEME_FIELD]: colorTheme = "light" }] = useFetch<{
+  const [{ [COLOR_THEME_FIELD]: colorTheme }] = useFetch<{
     [COLOR_THEME_FIELD]: ThemeType;
   }>({
     url: urls.settings.entity,
@@ -57,10 +57,10 @@ export const ContainerWrapper = ({ children }: ContainerWrapperProps) => {
     dispatch(setPermissions(credentials?.permissions ?? []));
   }, [credentials, profile, dispatch]);
 
-  const loading = useMemo(
-    () => isEmpty(profileInfo) || isEmpty(permissions) || !colorTheme,
-    [profileInfo, permissions, colorTheme]
-  );
+  const loading = useMemo(() => isEmpty(profileInfo) || isEmpty(permissions), [
+    profileInfo,
+    permissions,
+  ]);
 
   if (error.statusCode) {
     return (
@@ -76,6 +76,8 @@ export const ContainerWrapper = ({ children }: ContainerWrapperProps) => {
   if (loading) {
     return <Loader />;
   }
+
+  console.log(colorTheme);
 
   return <>{children}</>;
 };
