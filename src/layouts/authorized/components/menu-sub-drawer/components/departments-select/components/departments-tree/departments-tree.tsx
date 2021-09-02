@@ -38,7 +38,7 @@ export const DepartmentsTree: React.FC<DepartmentTreeProps> = ({
   const dispatch = useDispatch();
   const [dragDepartmentId, setDragDepartmentId] = useState("");
   const userDepartmentId = useSelector(
-    (state: State) => state.persist.profileInfo.departmentId
+    (state: State) => state?.persist?.profileInfo?.departmentId ?? ""
   );
 
   const [selectedDepartment] = useFormValues<DepartmentEntityProps>(
