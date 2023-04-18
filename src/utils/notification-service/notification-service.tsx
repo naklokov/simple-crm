@@ -56,7 +56,7 @@ export const useNotificationService = (onClickLink: (id: string) => void) => {
   useEffect(() => {
     const isMoreTasks = activeTasks.length > TASKS_SHOW_LIMIT;
 
-    activeTasks.forEach((task) => {
+    Array.isArray(activeTasks) && activeTasks?.forEach((task) => {
       const {
         taskType: type,
         taskDescription: description,

@@ -94,6 +94,7 @@ export const Tasks = ({ tab, formName }: TabPaneFormProps) => {
     params: { query },
   });
 
+
   useEffect(() => {
     dispatch(setTableLoading(loading));
   }, [loading, dispatch]);

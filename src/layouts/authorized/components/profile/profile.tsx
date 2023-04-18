@@ -36,7 +36,8 @@ export const Profile = ({ profileInfo }: ProfileProps) => {
   const handleClickLogout = useCallback(() => {
     history.replace("/");
     logout(dispatch);
-    jivoClear();
+    // jivoClear();
+    
   }, [jivoClear, dispatch, history]);
 
   const menu = (

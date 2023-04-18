@@ -75,7 +75,7 @@ export const Authorized = ({ children }: AuthorizedProps) => {
           <Content>{children}</Content>
         </Layout>
       </Layout>
-      <JivoSupport />
+      {/* <JivoSupport /> */}
     </ContainerWrapper>
   );
 };

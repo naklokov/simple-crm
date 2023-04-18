@@ -243,14 +243,14 @@ export const TableWithServerPaging: React.FC<TableWithServerPagingProps> = ({
     () =>
       withSearch || extraTitle
         ? () => (
-            <TableHeader
-              onClearAll={handleClearAll}
-              onSearch={handleSearchAll}
-              searchPlaceholder={searchPlaceholder}
-              withSearch={withSearch}
-              extra={extraTitle}
-            />
-          )
+          <TableHeader
+            onClearAll={handleClearAll}
+            onSearch={handleSearchAll}
+            searchPlaceholder={searchPlaceholder}
+            withSearch={withSearch}
+            extra={extraTitle}
+          />
+        )
         : undefined,
     [withSearch, extraTitle, handleClearAll, handleSearchAll, searchPlaceholder]
   );

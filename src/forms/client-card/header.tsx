@@ -117,7 +117,7 @@ export const ClientCardHeader: React.FC<ClientCardHeaderProps> = ({
   return (
     <FormHeader
       tags={[tzTag]}
-      subTitle={activity}
+      // subTitle={activity}
       position="upper"
       breadcrumb={breadcrumb}
       title={title}

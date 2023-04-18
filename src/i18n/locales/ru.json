@@ -13,7 +13,7 @@
     "front.expand.title": "Подробное описание ошибки"
   },
   "login": {
-    "title": "Проф - Ресурс CRM",
+    "title": "",
     "password.remember": "Запомнить меня",
     "password.forgot": "Забыл пароль",
     "submit.button": "Войти",
@@ -27,7 +27,7 @@
     "message.success": "Письмо на адрес {{username}} успешно отправлено"
   },
   "forgotPassword": {
-    "title": "Проф - Ресурс CRM",
+    "title": "OLVE CRM",
     "description": "Если вы забыли пароль, введите e-mail, указанный при регистрации. \n\nНа почту будет отправлена ссылка для сброса пароля.",
     "placeholder.username": "Почта",
     "rules.username.required": "Введите адрес почты",
@@ -37,7 +37,7 @@
     "message.error": "Произошла ошибка"
   },
   "restorePassword": {
-    "title": "Проф - Ресурс CRM",
+    "title": "OLVE CRM",
     "description": "Восстановление пароля",
     "placeholder.password": "Новый пароль",
     "placeholder.password.confirm": "Подтверждение пароля",
@@ -49,7 +49,7 @@
     "message.error": "Произошла ошибка"
   },
   "authorizedLayout": {
-    "title": "Проф - Ресурс CRM",
+    "title": "OLVE CRM",
     "profile.view": "Просмотр профиля",
     "profile.logout": "Выйти",
     "tooltip.edit.profile": "Просмотр данных профиля"
@@ -73,7 +73,7 @@
     "confirm.no": "Нет"
   },
   "clients": {
-    "table.search.placeholder": "Наименование, телефон, город, ИНН",
+    "table.search.placeholder": "Введите текст для быстрого поиска",
     "title": "Клиенты",
     "title.my": "Мои клиенты",
     "button.add.title": "＋ Добавить клиента",
@@ -102,12 +102,12 @@
     "actions.email.yes": "Да"
   },
   "tableHeader": {
-    "button.enter": "Найти",
-    "button.clear.all": "Очистить фильтры"
+    "button.enter": "Поиск",
+    "button.clear.all": "Удалить все фильтры"
   },
   "searchBar": {
     "placeholder": "Поиск",
-    "button": "Найти"
+    "button": "Поиск"
   },
   "clientCard": {
     "button.call": "Звонок",

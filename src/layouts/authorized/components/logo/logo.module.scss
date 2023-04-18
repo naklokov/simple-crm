@@ -2,10 +2,10 @@
 @import "../../../../assets/styles/common";
 
 .logo {
-  padding: var(--offset-md) 0;
+  padding: var(--offset-md) 20px;
   height: var(--authorize-header-height);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 

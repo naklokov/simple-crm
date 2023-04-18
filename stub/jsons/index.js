@@ -5,6 +5,8 @@ const clients = require("./clients.json");
 const departments = require("./departments.json");
 const userProfiles = require("./userProfiles.json");
 const templates = require("./templates.json");
+const tasks = require("./tasks.json");
+const tasksPaging = require("./tasksPaging.json");
 
 module.exports = {
   dictionaries,
@@ -14,4 +16,6 @@ module.exports = {
   departments,
   userProfiles,
   templates,
+  tasks,
+  tasksPaging,
 };

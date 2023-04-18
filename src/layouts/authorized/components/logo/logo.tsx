@@ -14,11 +14,12 @@ interface LogoProps {
 
 export const Logo = ({ collapsed }: LogoProps) => {
   const [t] = useTranslation("authorizedLayout");
+  const title = t("title");
   return (
     <Link to={urls.main.path}>
       <div className={style.logo}>
-        <img className={style.img} alt="logo" src={LOGO} />
-        {!collapsed && (
+        {/* <img className={style.img} alt="logo" src={LOGO} /> */}
+        {!collapsed && title && (
           <Typography.Text strong className={style.title}>
             {t("title").toUpperCase()}
           </Typography.Text>

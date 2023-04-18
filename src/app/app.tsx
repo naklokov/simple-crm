@@ -43,7 +43,7 @@ axios.interceptors.response.use(
 window.isMobile = checkMobile();
 
 const App = () => (
-  <ConfigProvider locale={ruRu}>
+  <ConfigProvider locale={ruRu} >
     <Provider store={store}>
       <ErrorBoundary>
         <Routes />

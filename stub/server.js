@@ -6,6 +6,10 @@ const {
   permissions,
   clients: clientsResponse,
   templates: templatesResponse,
+  profileInfo,
+  userProfiles: userProfilesResponse,
+  tasks: tasksResponse,
+  tasksPaging: tasksPagingResponse,
 } = require("./jsons");
 
 const {
@@ -19,6 +23,7 @@ const {
   departments,
   clients,
   templates,
+  tasks,
 } = require("../src/constants/urls");
 
 const {
@@ -30,15 +35,15 @@ const {
   sendPostResponse,
 } = require("./utils");
 
-// const middlewares = jsonServer.defaults()
+const middlewares = jsonServer.defaults();
 // Set default middlewares (logger, static, cors and no-cache)
-// server.use(middlewares)
+server.use(middlewares);
 
 server.use(jsonServer.bodyParser);
 
 // auth stub
-server.use(login.submit, addAuthCookie, checkLogin);
-server.use(login.logout, sendSuccessResponse());
+server.use("/crm/login", addAuthCookie, checkLogin);
+server.use("/crm/logout", sendSuccessResponse());
 
 //logger stub
 server.post(log.base, loggerStub);
@@ -57,14 +62,26 @@ server.post(restorePassword.submit, (req, res) => {
 });
 
 //getProfileInfo
-// server.get(profile.info, sendSuccessResponse(profileInfo));
-// server.put(profile.entity, sendPostResponse(profileInfo));
-server.get(profile.permissions, sendPostResponse(permissions));
+server.get(profile.entity, sendSuccessResponse(profileInfo));
+server.put(profile.entity, sendPostResponse(profileInfo));
+server.get(profile.credentials, sendPostResponse(permissions));
 
 // клиенты
+server.get(clients.paging, sendSuccessResponse(clientsResponse));
 server.get(clients.entity, sendSuccessResponse(clientsResponse));
-server.get(userProfiles.entity, sendSuccessResponse(userProfiles));
+server.get(
+  `${clients.entity}/:id`,
+  sendSuccessResponse(clientsResponse?.rows[0])
+);
+server.get(userProfiles.entity, sendSuccessResponse(userProfilesResponse));
+server.get(
+  `${userProfiles.entity}/:id`,
+  sendSuccessResponse(userProfilesResponse[0])
+);
 server.get(departments.entity, sendSuccessResponse(departments));
+
+server.use(tasks.paging, sendSuccessResponse(tasksPagingResponse));
+server.use(tasks.entity, sendSuccessResponse(tasksResponse));
 
 server.get(
   dictionariesUrls.position,

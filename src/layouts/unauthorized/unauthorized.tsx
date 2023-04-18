@@ -34,7 +34,7 @@ export const Unauthorized: React.FC<LoginProps> = ({
       <div className={style.container}>
         <div className={style.layout}>
           <div className={style.imgContainer}>
-            <img className={style.img} alt="logo" src={logo} />
+            <h1>OLVE CRM</h1>
           </div>
         </div>
         {children}
@@ -42,6 +42,7 @@ export const Unauthorized: React.FC<LoginProps> = ({
     </div>
   );
 };
+
 const mapStateToProps = (state: State) => ({
   auth: state?.persist?.auth,
 });

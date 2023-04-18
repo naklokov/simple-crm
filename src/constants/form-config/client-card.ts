@@ -175,13 +175,13 @@ export const lower: LowerProps = {
       type: "custom",
       _links: {},
     },
-    {
-      tabCode: "documents",
-      tabName: "Документы",
-      tabDescription: "Документы привязанные к клиенту",
-      type: "custom",
-      _links: {},
-    },
+    // {
+    //   tabCode: "documents",
+    //   tabName: "Документы",
+    //   tabDescription: "Документы привязанные к клиенту",
+    //   type: "custom",
+    //   _links: {},
+    // },
   ],
 };
 
@@ -710,56 +710,56 @@ export const upper: UpperProps = {
         },
       },
     },
-    {
-      tabCode: "priceList",
-      tabName: "Продукты и услуги",
-      tabDescription: "Продукты и услуги доступные в компании",
-      type: "table",
-      actions: [],
-      columns: [
-        {
-          columnName: "Наименование товара",
-          columnCode: "positionName",
-          columnType: "string",
-          columnDescription: "Наименование товара",
-          sorter: true,
-        },
-        {
-          columnName: "Описание",
-          columnCode: "positionDescription",
-          columnType: "string",
-          columnDescription: "Описание товара",
-          sorter: false,
-        },
-        {
-          columnName: "Примечание",
-          columnCode: "note",
-          columnType: "string",
-          columnDescription: "Описание товара",
-          sorter: false,
-        },
-        {
-          columnName: "Единица измерения",
-          columnCode: "positionUnit",
-          columnType: "dictionary",
-          columnDescription: "Описание товара",
-          sorter: false,
-        },
-        {
-          columnName: "Цена",
-          columnCode: "cost",
-          columnType: "number",
-          columnDescription: "Цена товара",
-          format: "currency",
-          sorter: true,
-          editable: true,
-        },
-      ],
-      _links: {
-        positionUnit: {
-          href: urls.dictionaries.positionUnit,
-        },
-      },
-    },
+    // {
+    //   tabCode: "priceList",
+    //   tabName: "Продукты и услуги",
+    //   tabDescription: "Продукты и услуги доступные в компании",
+    //   type: "table",
+    //   actions: [],
+    //   columns: [
+    //     {
+    //       columnName: "Наименование товара",
+    //       columnCode: "positionName",
+    //       columnType: "string",
+    //       columnDescription: "Наименование товара",
+    //       sorter: true,
+    //     },
+    //     {
+    //       columnName: "Описание",
+    //       columnCode: "positionDescription",
+    //       columnType: "string",
+    //       columnDescription: "Описание товара",
+    //       sorter: false,
+    //     },
+    //     {
+    //       columnName: "Примечание",
+    //       columnCode: "note",
+    //       columnType: "string",
+    //       columnDescription: "Описание товара",
+    //       sorter: false,
+    //     },
+    //     {
+    //       columnName: "Единица измерения",
+    //       columnCode: "positionUnit",
+    //       columnType: "dictionary",
+    //       columnDescription: "Описание товара",
+    //       sorter: false,
+    //     },
+    //     {
+    //       columnName: "Цена",
+    //       columnCode: "cost",
+    //       columnType: "number",
+    //       columnDescription: "Цена товара",
+    //       format: "currency",
+    //       sorter: true,
+    //       editable: true,
+    //     },
+    //   ],
+    //   _links: {
+    //     positionUnit: {
+    //       href: urls.dictionaries.positionUnit,
+    //     },
+    //   },
+    // },
   ],
 };
